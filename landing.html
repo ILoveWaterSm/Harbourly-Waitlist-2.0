@@ -1,0 +1,822 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Harbourly, verified esports coaching for Southeast Asia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#030b17;--bg-mid:#061024;--bg-deep:#01060f;--surface:#0b1628;
+    --green:#22d66f;--green-ink:#04160b;--amber:#fbbf24;--muted:#94a3b8;--ink:#e8eef7;
+    --pad:clamp(28px,6vw,120px);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;overflow-x:hidden}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--green);color:var(--green-ink)}
+  a{color:inherit}
+  h1,h2,h3{font-family:"Sora"}
+  .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.08;background-image:var(--grain);background-size:140px 140px}
+
+  /* keyframes */
+  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+  @keyframes stageIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @keyframes wlIn{from{opacity:0}to{opacity:1}}
+  @keyframes tick{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+  @keyframes breathe{0%,100%{opacity:.75;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
+  @keyframes shimmer{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+  @keyframes ctaGlow{0%,100%{opacity:.5}50%{opacity:.72}}
+
+  /* shared */
+  .page{position:relative;z-index:2}
+  .section{position:relative;padding-left:var(--pad);padding-right:var(--pad)}
+  .wrap{max-width:1180px;margin:0 auto}
+  .eyebrow{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:18px;display:inline-flex;align-items:center;gap:12px}
+  .eyebrow::before{content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--green));box-shadow:0 0 8px rgba(34,214,111,.5)}
+  .gdiv{height:1px;max-width:1180px;margin:0 auto;background:radial-gradient(closest-side,rgba(34,214,111,.45),transparent);box-shadow:0 0 12px rgba(34,214,111,.25)}
+  .reveal>*{opacity:0;transform:translateY(24px)}
+  .reveal.in>*{opacity:1;transform:none;transition:opacity .6s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+  .reveal.in>*:nth-child(2){transition-delay:.08s}
+  .reveal.in>*:nth-child(3){transition-delay:.16s}
+  .reveal.in>*:nth-child(4){transition-delay:.24s}
+
+  /* buttons */
+  .cta{position:relative;appearance:none;border:0;cursor:pointer;white-space:nowrap;padding:15px 30px;border-radius:999px;background:var(--green);color:var(--green-ink);font-family:"Geist";font-weight:700;font-size:15px;box-shadow:0 8px 26px rgba(34,214,111,.35);transition:transform .12s ease,box-shadow .25s}
+  .cta::before{content:"";position:absolute;inset:-5px;border-radius:999px;background:var(--green);filter:blur(18px);opacity:.35;z-index:-1;transition:opacity .3s}
+  .cta:hover{box-shadow:0 12px 40px rgba(34,214,111,.6)}
+  .cta:hover::before{opacity:.6}
+  .cta:active{transform:scale(.97)}
+  .cta-xl{padding:21px 46px;font-size:19px;border-radius:999px;box-shadow:0 14px 44px rgba(34,214,111,.5)}
+  .cta-xl::before{inset:-8px;filter:blur(26px);opacity:.5;animation:ctaGlow 4.5s ease-in-out infinite}
+  .link{color:var(--green);text-decoration:none;font-weight:600;font-size:15px;border-bottom:1px solid rgba(34,214,111,.35);padding-bottom:2px;transition:border-color .2s,text-shadow .2s;display:inline-block}
+  .link:hover{border-color:var(--green);text-shadow:0 0 14px rgba(34,214,111,.5)}
+
+  /* announcement bar with centre-out green glow */
+  .announce{position:relative;text-align:center;padding:10px 20px;font-family:"Sora";font-size:13px;letter-spacing:.03em;color:var(--muted);background:radial-gradient(70% 140% at 50% 0%,rgba(34,214,111,.14),transparent 72%)}
+  .announce b{color:var(--green)}
+  .announce::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.65),transparent);box-shadow:0 0 10px rgba(34,214,111,.4)}
+
+  /* nav: thicker, centred tabs, glowing */
+  nav{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+    padding:20px var(--pad);backdrop-filter:blur(12px);background:rgba(3,11,23,.72)}
+  nav::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.4),transparent)}
+  .brand{display:flex;align-items:center}
+  .brand img{height:45px;width:auto;display:block}
+  .navlinks{display:flex;align-items:center;gap:8px;justify-self:center}
+  .navlinks a{position:relative;text-decoration:none;color:var(--muted);font-size:16px;font-weight:600;padding:9px 16px;border-radius:999px;transition:color .2s,background .2s,box-shadow .3s}
+  .navlinks a:hover{color:var(--green);background:rgba(34,214,111,.08);box-shadow:0 0 18px rgba(34,214,111,.2)}
+  .navlinks a.on{color:var(--green);background:rgba(34,214,111,.1);box-shadow:0 0 20px rgba(34,214,111,.28),inset 0 0 0 1px rgba(34,214,111,.35)}
+  .navcta{position:relative;appearance:none;border:0;cursor:pointer;padding:12px 24px;border-radius:999px;background:var(--green);color:var(--green-ink);font-family:"Geist";font-weight:700;font-size:14.5px;justify-self:end;box-shadow:0 6px 22px rgba(34,214,111,.45);transition:transform .1s,box-shadow .25s}
+  .navcta::before{content:"";position:absolute;inset:-4px;border-radius:999px;background:var(--green);filter:blur(14px);opacity:.4;z-index:-1;transition:opacity .3s}
+  .navcta:hover{box-shadow:0 10px 30px rgba(34,214,111,.7)}
+  .navcta:hover::before{opacity:.65}
+  .navcta:active{transform:scale(.96)}
+  .burger{display:none;appearance:none;border:0;background:transparent;color:var(--ink);cursor:pointer;flex-direction:column;gap:5px;padding:6px;justify-self:end}
+  .burger span{width:22px;height:2px;background:var(--ink);border-radius:2px}
+  .mobilemenu{display:none}
+
+  /* hero: centred, glowing backdrop, dominant CTA */
+  .hero{position:relative;min-height:90vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:6vh;padding-bottom:10vh}
+  .hero::before{content:"";position:absolute;left:50%;top:46%;width:min(1000px,100vw);height:640px;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(34,214,111,.14),transparent 70%);filter:blur(30px);pointer-events:none;z-index:0;animation:breathe 9s ease-in-out infinite}
+  .hero-copy{position:relative;z-index:2;max-width:1000px}
+  .hero h1{font-weight:800;font-size:clamp(44px,7.4vw,104px);line-height:.92;letter-spacing:-.045em;margin:0 0 26px}
+  .hero h1 .ln{display:block;opacity:0;transform:translateY(20px)}
+  .hero h1 .l1{animation:rise .6s .1s ease forwards}
+  .hero h1 .l2{animation:rise .6s .22s ease forwards}
+  .hero h1 .l3{animation:rise .6s .34s ease forwards}
+  .trust{color:var(--green);text-shadow:0 0 34px rgba(34,214,111,.6)}
+  .hero .sub{color:#b6c2d4;font-size:clamp(16px,1.4vw,21px);line-height:1.55;max-width:30em;margin:0 auto 42px;opacity:0;transform:translateY(12px);animation:rise .6s .46s ease forwards}
+  .hero-cta{opacity:0;transform:translateY(14px) scale(.96);animation:rise .7s .62s cubic-bezier(.16,1,.3,1) forwards}
+  .hero-mini{margin-top:20px;font-family:"Geist Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--muted);opacity:0;animation:rise .6s .82s ease forwards}
+  .hero-mini b{color:var(--green)}
+
+  /* games strip */
+  .games{padding-top:52px;padding-bottom:52px;text-align:center}
+  .games .lbl{font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+  .games .row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:clamp(24px,4vw,60px)}
+  .games .g{font-family:"Sora";font-weight:700;font-size:clamp(18px,2vw,26px);letter-spacing:-.02em;color:#67788f;transition:color .3s,text-shadow .3s}
+  .games .g:hover{color:var(--ink);text-shadow:0 0 20px rgba(34,214,111,.3)}
+  .games .cap{margin-top:24px;color:var(--muted);font-size:14px}
+
+  /* section header (centred) */
+  .head{text-align:center;max-width:720px;margin:0 auto;padding-top:clamp(80px,10vh,140px)}
+  .head .eyebrow{margin-left:auto;margin-right:auto}
+  .head h2{font-weight:700;font-size:clamp(28px,3.8vw,50px);line-height:1.04;letter-spacing:-.025em;margin:0 0 16px}
+  .head p{color:var(--muted);font-size:17px;line-height:1.6;margin:0 auto;max-width:36em}
+
+  /* two-column split (feature + mock) */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:center;max-width:1440px;margin-left:auto;margin-right:auto;padding-top:clamp(70px,9vh,120px);padding-bottom:clamp(70px,9vh,120px)}  .split.rev .col-text{order:2}
+  .split h2{font-weight:700;font-size:clamp(26px,3.2vw,44px);line-height:1.06;letter-spacing:-.025em;margin:0 0 20px}
+  .split p{color:var(--muted);font-size:16.5px;line-height:1.65;margin:0 0 22px;max-width:44em}
+
+  /* how it works + verification (merged) */
+  .how{padding-top:clamp(80px,10vh,140px);padding-bottom:clamp(70px,9vh,120px)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.4vw,32px);margin:52px auto 0;max-width:1440px}
+  .step{text-align:center}
+  .step .num{font-family:"Sora";font-weight:800;font-size:clamp(40px,4.6vw,64px);line-height:1;color:rgba(148,163,184,.14);transition:color .6s,text-shadow .6s}
+  .step.lit .num{color:var(--green);text-shadow:0 0 24px rgba(34,214,111,.5)}
+  .step h3{font-weight:700;font-size:19px;margin:26px 0 8px;letter-spacing:-.01em}
+  .step p{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 auto;max-width:24em}
+  .how-verify{max-width:1180px;margin-left:auto;margin-right:auto;display:grid;grid-template-columns:minmax(0,460px) 1fr;gap:clamp(40px,6vw,80px);align-items:center}
+  .hv-text .eyebrow{margin-bottom:16px}
+  .hv-text h2{font-weight:700;font-size:clamp(24px,3vw,40px);line-height:1.06;letter-spacing:-.025em;margin:0 0 18px}
+  .hv-text p{color:var(--muted);font-size:16.5px;line-height:1.65;margin:0 0 22px;text-align:left;}
+  /* mcard: borderless feature-mock card. No outline ring, no boxed icon chips — a top glow line (same motif as nav/footer) and shadow do the framing instead. */
+  .mcard{position:relative;background:linear-gradient(180deg,rgba(11,22,40,.92),rgba(6,16,36,.95));border-radius:20px;padding:30px 28px;box-shadow:0 30px 70px rgba(0,0,0,.4),0 0 40px rgba(34,214,111,.05);max-width:440px;overflow:hidden}
+  .mcard::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.55),transparent)}
+  .mc-eyebrow{font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+  .mc-id{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .mc-name{font-family:"Sora";font-weight:700;font-size:24px;letter-spacing:-.01em}
+  .mc-verified{display:inline-flex;align-items:center;gap:5px;color:var(--green);font-family:"Geist Mono",monospace;font-size:11.5px;letter-spacing:.06em}
+  .mc-verified svg{width:12px;height:12px;stroke:var(--green)}
+  .mc-sub{font-family:"Geist Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:5px}
+  .mc-dash{height:1px;margin:20px 0;background-image:linear-gradient(90deg,rgba(148,163,184,.28) 0 6px,transparent 6px 12px);background-size:12px 1px;background-repeat:repeat-x}
+  .mc-line{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:15px;color:var(--ink)}
+  .mc-sess+.mc-sess{margin-top:12px}
+  .mc-val{font-family:"Geist Mono",monospace;color:var(--muted);font-size:13.5px;white-space:nowrap}
+  .mc-val.strong{color:var(--ink);font-weight:600;font-size:15px}
+  .mc-check{display:inline-flex;align-items:center;gap:9px}
+  .mc-check svg{width:13px;height:13px;stroke:var(--green);flex:0 0 auto}
+  .mc-foot{display:flex;align-items:center;gap:9px;color:var(--green);font-size:13.5px;font-weight:500}
+  .mc-foot svg{width:15px;height:15px;flex:0 0 auto;stroke:var(--green)}
+  .mc-subhead{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:20px 0 12px}
+  .mc-dash+.mc-subhead{margin-top:0}
+  .mc-tag{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--green)}
+  .mc-tag.amber{color:var(--amber)}
+  .mc-note{display:flex;align-items:center;gap:13px;font-size:14.5px;color:#c4cedb;padding:3px 0}
+  .mc-note+.mc-note{margin-top:14px}
+  .mc-bar{width:3px;height:16px;border-radius:2px;background:var(--green);flex:0 0 auto;box-shadow:0 0 8px rgba(34,214,111,.5)}
+  .mc-bar.todo{background:transparent;border:1px solid rgba(148,163,184,.35);box-shadow:none}
+  .mc-stats{display:flex}
+  .mc-stats>div{flex:1;text-align:center;position:relative}
+  .mc-stats>div+div::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:1px;background:rgba(148,163,184,.15)}
+  .mc-stats b{display:block;font-family:"Geist Mono",monospace;font-weight:600;font-size:19px;color:var(--ink)}
+  .mc-stats label{display:block;font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.12em;color:var(--muted);margin-top:5px;text-transform:uppercase}
+
+  /* dashboard mock: header bar + featured KPI/trend + mini activity chart */
+  .mc-kpi-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+  .mc-kpi-head .mc-eyebrow{margin-bottom:0}
+  .mc-kpi{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+  .mc-kpi-num{font-family:"Sora";font-weight:700;font-size:32px;letter-spacing:-.01em;line-height:1}
+  .mc-kpi-lbl{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--muted);margin-top:8px}
+  .mc-trend{display:inline-flex;align-items:center;gap:4px;color:var(--green);font-family:"Geist Mono",monospace;font-size:12.5px;font-weight:500;padding-bottom:4px}
+  .mc-trend svg{width:11px;height:11px;stroke:var(--green)}
+  .mc-chart{display:flex;align-items:flex-end;gap:6px;height:52px;margin-top:24px}
+  .mc-chart i{flex:1;border-radius:3px 3px 0 0;background:rgba(34,214,111,.18)}
+  .mc-chart i.now{background:var(--green);box-shadow:0 0 12px rgba(34,214,111,.5)}
+  .mc-chart i:nth-child(1){height:32%}
+  .mc-chart i:nth-child(2){height:52%}
+  .mc-chart i:nth-child(3){height:38%}
+  .mc-chart i:nth-child(4){height:66%}
+  .mc-chart i:nth-child(5){height:44%}
+  .mc-chart i:nth-child(6){height:58%}
+  .mc-chart i:nth-child(7){height:100%}
+
+  /* card rows that tick in on scroll (booking summary + post-session recap) */
+  #bookingMock .mc-reveal,#recapMock [data-rc]{opacity:0}
+  #bookingMock .mc-reveal.in,#recapMock [data-rc].in{animation:tick .4s ease forwards}
+
+  /* roadmap */
+  .roadmap{background:linear-gradient(180deg,rgba(1,6,15,0),rgba(1,6,15,.5) 40%,rgba(1,6,15,.5) 60%,rgba(1,6,15,0))}
+  .roadmap h2,.roadmap .head h2{color:#cdd6e3}
+  .rmfoot{padding-top:6px;padding-bottom:clamp(70px,9vh,120px);text-align:center;font-family:"Geist";font-size:15px;color:var(--green)}
+  .rmfoot span{display:inline-flex;align-items:center;gap:9px}
+  .rmfoot svg{width:16px;height:16px}
+
+  /* origin (word-reveal, plays on view) */
+  .origin{padding-top:clamp(90px,12vh,160px);padding-bottom:clamp(90px,12vh,160px);text-align:center;background:radial-gradient(60% 60% at 50% 50%,rgba(34,214,111,.05),transparent 70%)}
+  .origin .eyebrow{margin-left:auto;margin-right:auto}
+  .origin .stmt{max-width:22ch;margin:0 auto;font-family:"Sora";font-weight:700;font-size:clamp(30px,4.4vw,60px);line-height:1.1;letter-spacing:-.025em}
+  .origin .beat{display:block}
+  .origin .beat.mid{font-size:.6em;line-height:1.45;margin:20px auto;max-width:24em;font-weight:600}
+  .origin .w{color:rgba(148,163,184,.16);transition:color .35s ease,text-shadow .35s ease}
+  .origin .beat.a .w.lit,.origin .beat.c .w.lit{color:var(--ink)}
+  .origin .beat.mid .w.lit{color:#7d8ca1}
+  .origin .beat.c .w.hot{color:var(--green);text-shadow:0 0 22px rgba(34,214,111,.5)}
+
+  /* community */
+  .community{padding-top:clamp(80px,10vh,140px);padding-bottom:clamp(80px,10vh,140px)}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;max-width:1440px;margin-left:auto;margin-right:auto}
+  .qcard{position:relative;background:linear-gradient(180deg,rgba(11,22,40,.7),rgba(6,16,36,.75));border:1px solid rgba(148,163,184,.12);border-radius:16px;padding:24px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s,border-color .3s}
+  .qcard:hover{transform:translateY(-4px);border-color:rgba(34,214,111,.3);box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 30px rgba(34,214,111,.1)}
+  .qcard .quote{color:#c4cedb;font-size:14.5px;line-height:1.6;margin:0 0 20px;flex:1;text-align:left}
+  .qmark{font-family:"Sora";font-weight:800;font-size:34px;color:var(--green);line-height:.6;margin-bottom:14px;text-shadow:0 0 20px rgba(34,214,111,.4)}
+  .qwho{display:flex;align-items:center;gap:11px}
+  .qav{width:34px;height:34px;border-radius:9px;background:rgba(34,214,111,.12);border:1px solid rgba(34,214,111,.3);display:grid;place-items:center;font-family:"Sora";font-weight:700;font-size:14px;color:var(--green)}
+  .qname{font-weight:600;font-size:13.5px}
+  .qrole{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.04em;color:var(--muted);margin-top:2px}
+  .qvia{margin-left:auto;font-family:"Geist Mono",monospace;font-size:9.5px;color:#5b6b82}
+
+  /* faq */
+  .faq{padding-top:clamp(80px,10vh,140px);padding-bottom:clamp(80px,10vh,140px)}
+  .faqlist{margin:44px auto 0;max-width:820px;border-top:1px solid rgba(148,163,184,.1)}
+  .faqitem{border-bottom:1px solid rgba(148,163,184,.1)}
+  .faqq{width:100%;appearance:none;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 2px;text-align:left;color:var(--ink);font-family:"Sora";font-weight:600;font-size:clamp(16px,1.5vw,19px)}
+  .faqq .pm{width:30px;height:30px;border-radius:50%;border:1px solid rgba(148,163,184,.25);display:grid;place-items:center;flex:0 0 auto;transition:.3s;color:var(--muted)}
+  .faqq .pm svg{width:14px;height:14px;transition:transform .3s}
+  .faqitem.open .pm{border-color:var(--green);color:var(--green);box-shadow:0 0 16px rgba(34,214,111,.3)}
+  .faqitem.open .pm svg{transform:rotate(45deg)}
+  .faqa{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .faqa p{margin:0;padding:0 2px 24px;color:var(--muted);font-size:15.5px;line-height:1.65;max-width:60em}
+
+  /* final cta */
+  .final{position:relative;text-align:center;padding:clamp(110px,16vh,200px) var(--pad);background:radial-gradient(60% 70% at 50% 50%,rgba(34,214,111,.09),transparent 70%)}
+  .final h2{font-weight:800;font-size:clamp(36px,5.4vw,80px);line-height:.98;letter-spacing:-.03em;margin:0 0 18px}
+  .final .word{color:var(--green);text-shadow:0 0 40px rgba(34,214,111,.55)}
+  .final p{color:var(--muted);font-size:18px;margin:0 0 40px}
+
+  /* footer */
+  footer{position:relative;padding:56px var(--pad) 48px;background:rgba(1,6,15,.5)}
+  footer::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.4),transparent)}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;max-width:1180px;margin:0 auto}
+  .foot-brand .brand{margin-bottom:14px}
+  .foot-tag{color:var(--muted);font-size:14px;line-height:1.55;max-width:26em}
+  .foot-col h4{font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin:0 0 16px;font-weight:500}
+  .foot-col a{display:block;color:var(--muted);text-decoration:none;font-size:14px;margin-bottom:11px;transition:color .2s}
+  .foot-col a:hover{color:var(--ink)}
+  .foot-bottom{max-width:1180px;margin:44px auto 0;padding-top:22px;border-top:1px solid rgba(148,163,184,.07);font-family:"Geist Mono",monospace;font-size:11px;color:#4b5a72;letter-spacing:.04em}
+
+  /* ---- waitlist overlay ---- */
+  .wl{position:fixed;inset:0;z-index:60;background:radial-gradient(120% 80% at 50% 0%,rgba(34,214,111,.06),transparent 60%),linear-gradient(180deg,#050d1c,#020813);animation:wlIn .3s ease;display:flex;flex-direction:column}
+  .wl::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;background-image:var(--grain);background-size:140px 140px}
+  .wl[hidden]{display:none}
+  .wl>*{position:relative;z-index:1}
+  .wl-top{padding:22px clamp(24px,6vw,80px) 0}
+  .wl-bar-row{display:flex;align-items:center;gap:18px}
+  .wl-close{appearance:none;border:1px solid rgba(148,163,184,.22);background:transparent;color:var(--muted);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;flex:0 0 auto;transition:.2s}
+  .wl-close:hover{color:var(--ink);border-color:var(--ink)}
+  .wl-prog{flex:1;height:4px;border-radius:999px;background:rgba(148,163,184,.14);overflow:hidden}
+  .wl-prog-fill{height:100%;width:20%;background:linear-gradient(90deg,rgba(34,214,111,.6),var(--green));border-radius:999px;box-shadow:0 0 12px rgba(34,214,111,.6);transition:width .45s cubic-bezier(.4,0,.2,1)}
+  .wl-count{font-family:"Geist Mono",monospace;font-size:12px;letter-spacing:.1em;color:var(--muted);flex:0 0 auto}
+  .wl-count b{color:var(--green)}
+  .wl-body{flex:1;display:flex;align-items:center;justify-content:center;padding:20px clamp(24px,6vw,80px)}
+  .wl-inner{width:100%;max-width:640px}
+  .stage{display:none}
+  .stage.active{display:block;animation:stageIn .5s cubic-bezier(.2,.7,.2,1)}
+  .qnum{font-family:"Geist Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--green);margin-bottom:14px}
+  .qh{font-weight:700;font-size:clamp(26px,3.4vw,40px);line-height:1.08;letter-spacing:-.02em;margin:0 0 10px}
+  .qhelp{color:var(--muted);font-size:15.5px;line-height:1.55;margin:0 0 26px}
+  .qfield input,.qfield textarea{width:100%}
+  .wl input,.wl textarea{font-family:"Geist";color:var(--ink);background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.2);outline:none;transition:border-color .2s,box-shadow .2s}
+  .wl input{padding:15px 18px;border-radius:12px;font-size:16px}
+  .wl textarea{padding:15px 18px;border-radius:14px;font-size:16px;line-height:1.5;resize:none;min-height:120px}
+  .wl input::placeholder,.wl textarea::placeholder{color:#5b6b82}
+  .wl input:focus,.wl textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(34,214,111,.16)}
+  .counter{display:block;text-align:right;font-family:"Geist Mono",monospace;font-size:11px;color:#5b6b82;margin-top:8px}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  /* role cards */
+  .roles{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .role{position:relative;text-align:left;appearance:none;cursor:pointer;background:linear-gradient(180deg,rgba(11,22,40,.7),rgba(6,16,36,.78));border:1px solid rgba(148,163,184,.16);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px;transition:.25s;overflow:hidden;color:var(--ink)}
+  .role:hover{border-color:rgba(34,214,111,.45);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.35)}
+  .role-tag{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .role-ic{width:46px;height:46px;border-radius:12px;background:rgba(34,214,111,.1);border:1px solid rgba(34,214,111,.3);display:grid;place-items:center;margin-bottom:4px;transition:.25s}
+  .role-ic svg{width:23px;height:23px;stroke:var(--green);transition:.25s}
+  .role-t{font-family:"Sora";font-weight:700;font-size:18px}
+  .role-d{font-size:13.5px;color:var(--muted);line-height:1.45}
+  .role-wm{position:absolute;right:-6px;bottom:-16px;font-family:"Sora";font-weight:800;font-size:86px;color:rgba(148,163,184,.05);pointer-events:none;line-height:1}
+  .role-chk{position:absolute;top:18px;right:18px;width:24px;height:24px;border-radius:50%;background:var(--green);color:var(--green-ink);display:grid;place-items:center;font-size:13px;font-weight:700;opacity:0;transform:scale(.5);transition:.25s}
+  .role.sel{border-color:var(--green);box-shadow:0 0 0 1px var(--green),0 18px 44px rgba(34,214,111,.2),0 0 34px rgba(34,214,111,.16)}
+  .role.sel .role-ic{background:var(--green)}
+  .role.sel .role-ic svg{stroke:var(--green-ink)}
+  .role.sel .role-chk{opacity:1;transform:scale(1)}
+  .role.sel .role-wm{color:rgba(34,214,111,.09)}
+  /* games rows */
+  .grow{display:flex;gap:10px;margin-bottom:10px}
+  .grow input{flex:1}
+  .grow .rm{appearance:none;border:1px solid rgba(148,163,184,.2);background:transparent;color:var(--muted);width:52px;border-radius:12px;cursor:pointer;font-size:18px;flex:0 0 auto;transition:.2s}
+  .grow .rm:hover{color:var(--amber);border-color:rgba(251,191,36,.5)}
+  .addgame{appearance:none;border:1px dashed rgba(34,214,111,.4);background:rgba(34,214,111,.05);color:var(--green);padding:11px 16px;border-radius:12px;cursor:pointer;font-family:"Geist";font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:8px;transition:.2s}
+  .addgame:hover{background:rgba(34,214,111,.1)}
+  .addgame[hidden]{display:none}
+  .addgame svg{width:14px;height:14px}
+  .gamehint{font-family:"Geist";font-size:12.5px;color:var(--muted);margin:10px 2px 0}
+  .gamehint[hidden]{display:none}
+  .combo{position:relative}
+  .combo-list{position:absolute;left:0;right:0;top:calc(100% + 6px);max-height:240px;overflow-y:auto;background:#0a1424;border:1px solid rgba(148,163,184,.2);border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,.5);z-index:5}
+  .combo-list[hidden]{display:none}
+  .combo-opt{padding:11px 16px;cursor:pointer;font-size:15px}
+  .combo-opt:hover{background:rgba(34,214,111,.12);color:var(--green)}
+  .combo-empty{padding:14px 16px;color:var(--muted);font-size:14px}
+  .wl-nav{display:flex;align-items:center;justify-content:space-between;padding:20px clamp(24px,6vw,80px) clamp(24px,5vh,44px)}
+  .wl-nav-right{display:flex;align-items:center;gap:16px}
+  .wl-back,.wl-skip{appearance:none;border:0;background:transparent;color:var(--muted);cursor:pointer;font-family:"Geist";font-size:14px;font-weight:500;transition:.2s}
+  .wl-back:hover,.wl-skip:hover{color:var(--ink)}
+  .wl-back[hidden]{visibility:hidden;display:inline-block}
+  .wl-skip[hidden]{display:none}
+  .qerr{color:var(--amber);font-family:"Geist";font-size:13.5px;font-weight:500;margin:14px 0 0;min-height:1em}
+  .wl-done{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:14px}
+  .wl-done[hidden]{display:none}
+  .donemark{width:64px;height:64px;border-radius:50%;background:var(--green);color:var(--green-ink);display:grid;place-items:center;font-size:30px;font-weight:700;animation:pop .5s ease both;box-shadow:0 0 40px rgba(34,214,111,.5)}
+  .donetitle{font-weight:700;font-size:clamp(26px,3.4vw,38px);margin:6px 0 0}
+  .donesub{color:var(--muted);font-size:16px;max-width:30em;line-height:1.55;margin:0}
+  .donesub b{color:var(--ink)}
+  .donelink{margin-top:10px}
+
+  /* responsive */
+  @media (max-width:1000px){
+    .navlinks{display:none}
+    .navcta{display:none}
+    .burger{display:flex}
+    nav{grid-template-columns:1fr auto}
+    .mobilemenu{display:none;position:sticky;top:65px;z-index:29;flex-direction:column;gap:2px;padding:14px var(--pad);background:rgba(3,11,23,.97);border-bottom:1px solid rgba(34,214,111,.15)}
+    .mobilemenu.open{display:flex}
+    .mobilemenu a{color:var(--muted);text-decoration:none;font-size:15px;padding:11px 0}
+    .mobilemenu .mcta{margin-top:8px;color:var(--green);font-weight:600}
+    .split,.how-verify{grid-template-columns:1fr;gap:34px}
+    .split.rev .col-text{order:0}
+    .steps{grid-template-columns:1fr;gap:40px}
+    .cards{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
+    .twocol,.roles{grid-template-columns:1fr}
+  }
+  @media (max-width:600px){
+    .hero{min-height:auto;padding-top:14vh;padding-bottom:12vh}
+    .hero h1{font-size:clamp(33px,10.5vw,50px);line-height:.95}
+    .hero .sub{font-size:15.5px}
+    .cta-xl{padding:18px 38px;font-size:17px}
+    .head h2,.split h2,.hv-text h2{font-size:clamp(24px,7.5vw,32px)}
+    .head p,.split p,.hv-text p{font-size:15px}
+    .qh{font-size:clamp(24px,7.5vw,32px)}
+    .origin .stmt{font-size:clamp(24px,8.5vw,36px)}
+    .final h2{font-size:clamp(30px,10vw,46px)}
+    /* centre on phone */
+    .split,.how-verify{text-align:center}
+    .split p{text-align:left;margin-left:auto;margin-right:auto}
+    .hv-text p{text-align:center;margin-left:auto;margin-right:auto}
+    .split .eyebrow,.hv-text .eyebrow{margin-left:auto;margin-right:auto}
+    .split .col-text{display:flex;flex-direction:column;align-items:center}
+    .mcard{margin-left:auto;margin-right:auto}
+    .foot-grid{grid-template-columns:1fr;text-align:center}
+    .foot-brand .brand{justify-content:center}
+    .foot-tag{margin-left:auto;margin-right:auto}
+    .foot-bottom{text-align:center}
+    .faqq{font-size:16px}
+    /* how-it-works steps: number and title on one row, description below */
+    .steps{gap:26px}
+    .step{display:grid;grid-template-columns:auto 1fr;column-gap:20px;text-align:left;align-items:center}
+    .step .num{font-size:38px;margin:0}
+    .step h3{margin:0}
+    .step p{grid-column:1/-1;margin:12px 0 0;text-align:left}
+    /* feature body text centred on phone */
+    .split p{text-align:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;scroll-behavior:auto}
+    .reveal>*{opacity:1!important;transform:none!important}
+    .hero h1 .ln,.hero .sub,.hero-cta,.hero-mini{opacity:1!important;transform:none!important}
+    .mc-reveal,#recapMock [data-rc]{opacity:1!important}
+    .origin .w{color:var(--ink)!important}
+    .origin .beat.mid .w{color:#7d8ca1!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<div class="page">
+  <div class="announce">Harbourly launches soon. <b>Join the waitlist for early access ↓</b></div>
+
+  <nav>
+    <div class="brand"><img src="Images/logo&amp;word-mark.png" alt="Harbourly"></div>
+    <div class="navlinks" id="navlinks">
+      <a href="#how" data-sec="how">Process</a>
+      <a href="#features" data-sec="features">Features</a>
+      <a href="#community" data-sec="community">Community</a>
+      <a href="#faq" data-sec="faq">FAQ</a>
+    </div>
+    <button class="navcta" data-openwl>Join waitlist</button>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobilemenu" id="mobilemenu">
+    <a href="#how">Process</a><a href="#features">Features</a><a href="#community">Community</a><a href="#faq">FAQ</a><a href="#coaches">For coaches</a><a class="mcta" data-openwl href="javascript:void(0)">Join waitlist →</a>
+  </div>
+
+  <!-- HERO -->
+  <header class="section hero">
+    <div class="hero-copy">
+      <h1><span class="ln l1">Find the coach</span><span class="ln l2">you can actually</span><span class="ln l3"><span class="trust">trust.</span></span></h1>
+      <p class="sub">Every coach is verified before they can take a booking, and your payment is held safely until the session's done.</p>
+      <button class="cta cta-xl hero-cta" data-openwl data-magnetic>Join the waitlist&nbsp;→</button>
+    </div>
+  </header>
+
+  <!-- GAMES -->
+  <section class="section games reveal">
+    <div class="lbl">Available at launch</div>
+    <div class="row"><span class="g">Mobile Legends</span><span class="g">Free Fire</span><span class="g">Valorant</span><span class="g">Counter-Strike 2</span></div>
+    <div class="cap">Mobile and PC. More titles as our coach roster grows.</div>
+  </section>
+
+  <div class="gdiv"></div>
+
+  <!-- ORIGIN (problem first, before the solution) -->
+  <section class="section origin reveal">
+    <div class="eyebrow">Why we built this</div>
+    <p class="stmt"><span class="beat a">We got tired of the scams.</span><span class="beat mid">Fake coaches, vanishing payments, players and good coaches alike getting burned.</span><span class="beat c">So we built the platform both sides deserved.</span></p>
+  </section>
+
+  <div class="gdiv"></div>
+
+  <!-- HOW IT WORKS -->
+  <section class="section how" id="how">
+    <div class="head reveal">
+      <div class="eyebrow">How Harbourly works</div>
+      <h2>Find a coach, book a session, and start improving.</h2>
+    </div>
+    <div class="steps" id="steps">
+      <div class="step" data-step><div class="num">01</div><h3>Discover</h3><p>Filter verified coaches by game, platform, rank, budget and language.</p></div>
+      <div class="step" data-step><div class="num">02</div><h3>Book</h3><p>Pick a slot, pay your way, get your invite.</p></div>
+      <div class="step" data-step><div class="num">03</div><h3>Improve</h3><p>Train one-on-one and leave a review.</p></div>
+    </div>
+  </section>
+
+  <div class="gdiv"></div>
+
+  <!-- TRUST / VERIFICATION -->
+  <section class="section how" id="verification">
+    <div class="how-verify">
+      <div class="col-visual reveal">
+        <div class="mcard">
+          <div class="mc-eyebrow">Coach verification</div>
+          <div class="mc-line"><span class="mc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>Voice check</span><span class="mc-val">Recorded</span></div>
+          <div class="mc-dash"></div>
+          <div class="mc-line"><span class="mc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>Rank &amp; history</span><span class="mc-val">Reviewed by hand</span></div>
+          <div class="mc-dash"></div>
+          <div class="mc-line"><span class="mc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>Legal identity</span><span class="mc-val strong">Verified</span></div>
+          <div class="mc-dash"></div>
+          <div class="mc-foot"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M12 3l7 4v5c0 4.4-3 7.7-7 9-4-1.3-7-4.6-7-9V7l7-4z"/><path d="M9 12l2 2 4-4"/></svg>Verified badge earned</div>
+        </div>
+      </div>
+      <div class="hv-text reveal">
+        <div class="eyebrow">Trust, built in</div>
+        <h2>Every coach is checked before they can list</h2>
+        <p>Anyone can call themselves a coach, so we don't take their word for it. Coaches record a short voice check, submit proof of rank and history for our team to review by hand, and their legal identity is verified by our payment partner when they set up payouts. That check is what earns the badge.</p>
+        <a class="link" href="verification-standard.html">Read the full verification standard →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="gdiv"></div>
+
+  <!-- FEATURES INTRO -->
+  <section class="section head reveal" id="features" style="padding-top:clamp(80px,10vh,140px)">
+    <div class="eyebrow">Live on day one</div>
+    <h2>Built for every side of the game</h2>
+    <p>Whether you're a gamer trying to improve or a coach building your business, here's what's ready from the start.</p>
+  </section>
+
+  <!-- FEATURE 1: booking -->
+  <section class="section split">
+    <div class="col-text reveal">
+      <h2>Book in 60 seconds. Only pay when it's done.</h2>
+      <p>Pick a slot, pay with your local e-wallet, bank transfer or card, and get a calendar invite to confirm. Your money is held safely until the session is confirmed complete. If a coach ghosts you, you get it back.</p>
+    </div>
+    <div class="col-visual reveal">
+      <div class="mcard" id="bookingMock">
+        <div class="mc-eyebrow">Booking summary</div>
+        <div class="mc-id"><span class="mc-name">m1rage</span><span class="mc-verified"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>Verified</span></div>
+        <div class="mc-sub">Mythical Glory · Mobile Legends</div>
+        <div class="mc-dash"></div>
+        <div class="mc-line mc-reveal"><span>Today · 15:00</span><span class="mc-val">1 hr session</span></div>
+        <div class="mc-dash"></div>
+        <div class="mc-line mc-reveal"><span>Session + platform fee</span><span class="mc-val strong">S$31.50</span></div>
+        <div class="mc-dash"></div>
+        <div class="mc-foot mc-reveal"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M12 3l7 4v5c0 4.4-3 7.7-7 9-4-1.3-7-4.6-7-9V7l7-4z"/></svg>Payment held until session is confirmed complete</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE 2: storefront -->
+  <section class="section split rev">
+    <div class="col-text reveal">
+      <h2>We treat coaching as a profession.</h2>
+      <p>Set up a storefront with your rank proof, reviews and live availability. No more proving your worth from scratch to every new student. Payments are secured before the session starts and released to you once it's complete, so you're never chasing anyone for money.</p>
+      <button class="cta" data-openwl style="margin-top:4px">Become a coach&nbsp;→</button>
+    </div>
+    <div class="col-visual reveal">
+      <div class="mcard">
+        <div class="mc-eyebrow">Coach profile</div>
+        <div class="mc-id"><span class="mc-name">vertex</span><span class="mc-verified"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>Verified</span></div>
+        <div class="mc-sub">Radiant · Valorant</div>
+        <div class="mc-dash"></div>
+        <div class="mc-note"><span class="mc-bar"></span>Identity verified via payment partner</div>
+        <div class="mc-note"><span class="mc-bar"></span>5.0 rating across 206 completed sessions</div>
+        <div class="mc-dash"></div>
+        <div class="mc-stats"><div><b data-count="45" data-prefix="S$">S$0</b><label>Rate / hr</label></div><div><b data-count="5" data-suffix=".0">0</b><label>Rating</label></div><div><b data-count="206">0</b><label>Sessions</label></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <div class="roadmap">
+    <section class="section head reveal">
+      <div class="eyebrow">On the roadmap</div>
+      <h2>What we're building next</h2>
+      <p>We've launched with the essentials done properly. Here's where Harbourly goes next.</p>
+    </section>
+    <section class="section split">
+      <div class="col-text reveal">
+        <h2>The session won't end when the call does.</h2>
+        <p>We're building AI session recaps: the coach's key advice, the mistakes to fix, and follow-up drills, saved with timestamped notes you can jump straight into. Coaches will be able to log student stats after each session, so both of you can track progress over time.</p>
+      </div>
+      <div class="col-visual reveal">
+        <div class="mcard" id="recapMock">
+          <div class="mc-id"><span class="mc-name">Post-session intel</span></div>
+          <div class="mc-sub"><span class="mc-tag">AI generated</span> &nbsp;·&nbsp; <span class="mc-tag amber">Coming soon</span></div>
+          <div class="mc-dash"></div>
+          <div class="mc-subhead">Key takeaways</div>
+          <div class="mc-note" data-rc><span class="mc-bar"></span>Drop crosshair to head height before peeking</div>
+          <div class="mc-note" data-rc><span class="mc-bar"></span>Rotate three seconds earlier when mid is lost</div>
+          <div class="mc-note" data-rc><span class="mc-bar"></span>Counter-strafe before every shot, not just duels</div>
+          <div class="mc-subhead">Homework</div>
+          <div class="mc-note" data-rc><span class="mc-bar todo"></span>20-min crosshair placement drill, daily</div>
+          <div class="mc-dash"></div>
+          <div class="mc-line"><span class="mc-val">Coached by m1rage</span><span class="mc-val">10 Feb 2026</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="section split rev">
+      <div class="col-text reveal">
+        <h2>A dashboard for your coaching business.</h2>
+        <p>Bookings, earnings, and every student's progress in one place, so running your coaching is as easy as doing it.</p>
+      </div>
+      <div class="col-visual reveal">
+        <div class="mcard">
+          <div class="mc-kpi-head"><span class="mc-eyebrow">Coach dashboard</span><span class="mc-val">This month</span></div>
+          <div class="mc-kpi">
+            <div><div class="mc-kpi-num">S$540</div><div class="mc-kpi-lbl">Earnings</div></div>
+            <span class="mc-trend"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+18%</span>
+          </div>
+          <div class="mc-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i class="now"></i></div>
+          <div class="mc-dash"></div>
+          <div class="mc-subhead">Today's sessions</div>
+          <div class="mc-line mc-sess"><span>15:00 · night_owl</span><span class="mc-val">Mobile Legends</span></div>
+          <div class="mc-line mc-sess"><span>18:30 · kaelyn</span><span class="mc-val">Mobile Legends</span></div>
+          <div class="mc-dash"></div>
+          <div class="mc-stats"><div><b>18</b><label>Bookings</label></div><div><b>7</b><label>Students</label></div><div><b>5.0</b><label>Rating</label></div></div>
+        </div>
+      </div>
+    </section>
+    <section class="section rmfoot reveal">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="#22d66f" stroke-width="2.2"><path d="M12 3l7 4v5c0 4.4-3 7.7-7 9-4-1.3-7-4.6-7-9V7l7-4z"/><path d="M9 12l2 2 4-4"/></svg>Waitlist members get these first.</span>
+    </section>
+  </div>
+
+  <div class="gdiv"></div>
+
+  <!-- COMMUNITY -->
+  <section class="section community" id="community">
+    <div class="head reveal">
+      <div class="eyebrow">Community</div>
+      <h2>What players and coaches told us.</h2>
+    </div>
+    <div class="cards">
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">So basically this app is like grab food, whenever your team decides to get a coach and want your team to get to know the game better, this app is one tap away. very efficient since other people dont have the connections that others have.</p><div class="qwho"><span class="qav">W</span><div><div class="qname">Wardz</div><div class="qrole">Competitive gamer · Philippines</div></div><span class="qvia">Messenger</span></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">this app can help players to find a coach and also the coach to find clients. so instead of learning without proper system or structure this app can help them improve more faster, especially in areas that is hard to learn without a proper coach.</p><div class="qwho"><span class="qav">J</span><div><div class="qname">Jhon Jocel</div><div class="qrole">Coach &amp; competitive player · Philippines</div></div><span class="qvia">Messenger</span></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">i think its really cool that there's an app that makes it convenient for esports player and coaches as well to get matched. i think its a win win as well.</p><div class="qwho"><span class="qav">A</span><div><div class="qname">Alexis Marie</div><div class="qrole">Competitive gamer · Indonesia</div></div><span class="qvia">Instagram</span></div></div>
+    </div>
+  </section>
+
+  <div class="gdiv"></div>
+
+  <!-- FAQ -->
+  <section class="section faq" id="faq">
+    <div class="head reveal"><div class="eyebrow">Answers</div><h2>Frequently asked questions</h2></div>
+    <div class="faqlist" id="faqlist">
+      <div class="faqitem"><button class="faqq">Do you guarantee rank boosts?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>No. Harbourly is coaching, not boosting. You're paying for a coach's time and guidance to improve your own play, not for someone to play on your account. Boosting is against the terms of every game we support.</p></div></div>
+      <div class="faqitem"><button class="faqq">How does verification work?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Three checks. The coach records a short voice clip reading a phrase we generate. They submit proof of their rank and history, which our team reviews by hand. And their legal identity is confirmed by our payment partner when they set up payouts. Clearing that identity check is what earns them the Verified badge.</p></div></div>
+      <div class="faqitem"><button class="faqq">What if my coach ghosts or underdelivers?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>You have 72 hours after a session to raise a dispute. If nothing's raised in that window, payment releases automatically to the coach. Once a dispute is filed, our team reviews it within 72 hours.</p></div></div>
+      <div class="faqitem"><button class="faqq">What does it cost?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Booking a coach is free. At checkout you pay the coach's listed rate plus a 5% platform fee, and you'll see the full total before you confirm, with nothing added after. Coaches pay a 7% commission on completed sessions, and nothing if they don't get booked.</p></div></div>
+      <div class="faqitem"><button class="faqq">Which games are supported?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>We're launching with Mobile Legends, Free Fire, Valorant and Counter-Strike 2: two mobile, two PC. We're adding titles as our coach roster grows, and the waitlist form lets you tell us which game you want next.</p></div></div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final reveal">
+    <h2>Your <span class="word">harbour</span> is waiting.</h2>
+    <p>We're launching soon. Join the waitlist to be the first in.</p>
+    <button class="cta cta-xl" data-openwl data-magnetic>Join the waitlist&nbsp;↑</button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-grid">
+      <div class="foot-brand"><div class="brand"><img src="Images/logo&amp;word-mark.png" alt="Harbourly"></div><p class="foot-tag">A place for gamers who want to grow and coaches who want to teach.</p></div>
+      <div class="foot-col"><h4>Platform</h4><a href="#verification">Process</a><a href="#features">Features</a><a href="#coaches">Community</a><a href="#faq">FAQ</a></div>
+      <div class="foot-col"><h4>Legal</h4><a href="terms-of-service.html">Terms of service</a><a href="privacy-policy.html">Privacy policy</a></div>
+      <div class="foot-col"><h4>Contact</h4><a href="mailto:hello@harbourly.gg">hello@harbourly.gg</a><a href="mailto:support@harbourly.gg">support@harbourly.gg</a></div>
+    </div>
+    <div class="foot-bottom">© 2026 Harbourly. Built for Southeast Asia.</div>
+  </footer>
+</div>
+
+<!-- ===== WAITLIST OVERLAY ===== -->
+<div class="wl" id="wl" hidden>
+  <div class="wl-top"><div class="wl-bar-row">
+    <button class="wl-close" id="wlClose" aria-label="Close">✕</button>
+    <div class="wl-prog"><div class="wl-prog-fill" id="wlFill"></div></div>
+    <div class="wl-count">step <b id="wlNum">1</b> / 5</div>
+  </div></div>
+  <div class="wl-body" id="wlBody"><div class="wl-inner">
+    <!-- STAGE 1: role -->
+    <div class="stage active" data-step="1">
+      <div class="qnum">01 / 05</div><h2 class="qh">First, who are you?</h2><p class="qhelp">This tailors the next questions to you.</p>
+      <div class="roles">
+        <button class="role" data-role="gamer">
+          <span class="role-tag">For players</span>
+          <span class="role-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1"/><circle cx="18.5" cy="13.5" r="1"/></svg></span>
+          <span class="role-t">Competitive gamer</span>
+          <span class="role-d">I want to find a coach and improve.</span>
+          <span class="role-chk">✓</span><span class="role-wm">01</span>
+        </button>
+        <button class="role" data-role="coach">
+          <span class="role-tag">For coaches</span>
+          <span class="role-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 20a8 8 0 0 1 16 0"/><circle cx="12" cy="7" r="4"/><path d="M18 8l3-1M6 8L3 7"/></svg></span>
+          <span class="role-t">Professional coach</span>
+          <span class="role-d">I want to coach and grow my business.</span>
+          <span class="role-chk">✓</span><span class="role-wm">02</span>
+        </button>
+      </div>
+      <p class="qerr" id="err1"></p>
+    </div>
+    <!-- STAGE 2: games (branched) -->
+    <div class="stage" data-step="2">
+      <div class="qnum">02 / 05</div><h2 class="qh" id="gamesQ">Which games do you play?</h2>
+      <p class="qhelp">Add up to five. Start typing to pick, or enter your own.</p>
+      <div class="qfield" id="gameRows"><div class="grow"><input list="gameSuggest" placeholder="Search or type a game" /></div></div>
+      <button class="addgame" id="addGame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>Add another game</button>
+      <p class="gamehint" id="gameHint" hidden>That's the maximum of 5 games.</p>
+      <datalist id="gameSuggest"><option>Mobile Legends</option><option>Free Fire</option><option>Valorant</option><option>Counter-Strike 2</option><option>League of Legends</option><option>Wild Rift</option><option>Honor of Kings</option><option>PUBG Mobile</option><option>Call of Duty Mobile</option><option>Rainbow Six Siege</option><option>Dota 2</option><option>Overwatch 2</option><option>Apex Legends</option><option>Fortnite</option><option>Brawl Stars</option><option>Clash Royale</option><option>Marvel Rivals</option><option>Teamfight Tactics</option></datalist>
+      <p class="qerr" id="err2"></p>
+    </div>
+    <!-- STAGE 3: country -->
+    <div class="stage" data-step="3">
+      <div class="qnum">03 / 05</div><h2 class="qh">Where are you based?</h2><p class="qhelp">Start typing to find your country.</p>
+      <div class="qfield combo"><input id="countrySearch" autocomplete="off" placeholder="Search your country" /><div class="combo-list" id="countryList" hidden></div></div>
+      <p class="qerr" id="err3"></p>
+    </div>
+    <!-- STAGE 4: name + email -->
+    <div class="stage" data-step="4">
+      <div class="qnum">04 / 05</div><h2 class="qh">How can we reach you?</h2><p class="qhelp">We'll only email you about early access.</p>
+      <div class="twocol"><div class="qfield"><input id="q_name" placeholder="Your name" /></div><div class="qfield"><input id="q_email" type="email" placeholder="you@email.com" /></div></div>
+      <p class="qerr" id="err4"></p>
+    </div>
+    <!-- STAGE 5: open question (branched, optional) -->
+    <div class="stage" data-step="5">
+      <div class="qnum">05 / 05</div><h2 class="qh" id="reasonQ">What are you hoping to improve?</h2>
+      <p class="qhelp">Optional. A sentence helps us build the right thing for you.</p>
+      <div class="qfield"><textarea id="q_reason" maxlength="200" placeholder="Tell us in a sentence..."></textarea><span class="counter"><span id="reasonCount">0</span> / 200</span></div>
+    </div>
+  </div></div>
+  <div class="wl-nav" id="wlNav">
+    <button class="wl-back" id="wlBack" hidden>← back</button>
+    <div class="wl-nav-right"><button class="wl-skip" id="wlSkip" hidden>Skip</button><button class="cta" id="wlNext">Continue&nbsp;→</button></div>
+  </div>
+  <div class="wl-done" id="wlDone" hidden>
+    <div class="donemark">✓</div><p class="donetitle">You're on the list.</p>
+    <p class="donesub">We'll email <b id="doneEmail">you</b> the moment early access opens.</p>
+    <a class="link donelink" href="#" id="backHome">Back to the homepage →</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* reveals + one-shot mock triggers */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(!e.isIntersecting)return;
+    e.target.classList.add('in');
+    if(e.target.id==='bookingMock')playBooking();
+    if(e.target.id==='recapMock')playRecap();
+    if(e.target.id==='steps')litSteps();
+    if(e.target.querySelector&&e.target.querySelector('[data-count]')&&!e.target.dataset.counted){e.target.dataset.counted='1';e.target.querySelectorAll('[data-count]').forEach(countUp)}
+  })},{threshold:.24});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+  ['bookingMock','recapMock','steps'].forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el)});
+
+  function countUp(el){var t=parseFloat(el.dataset.count),suf=el.dataset.suffix||'',pre=el.dataset.prefix||'',dec=(suf==='.0')?1:0;
+    if(reduce){el.textContent=pre+(dec?t.toFixed(1):t)+(suf==='.0'?'':suf);return}
+    var s=performance.now(),d=1000;(function step(now){var k=Math.min(1,(now-s)/d),e=1-Math.pow(1-k,3),v=t*e;el.textContent=pre+(dec?v.toFixed(1):Math.round(v))+(suf==='.0'?'':suf);if(k<1)requestAnimationFrame(step)})(s)}
+  var bookingDone=false;
+  function playBooking(){if(bookingDone)return;bookingDone=true;var rows=document.querySelectorAll('#bookingMock .mc-reveal');
+    if(reduce){rows.forEach(function(r){r.classList.add('in')});return}
+    rows.forEach(function(r,ix){setTimeout(function(){r.classList.add('in')},280+ix*240)})}
+  var recapDone=false;
+  function playRecap(){if(recapDone)return;recapDone=true;var items=document.querySelectorAll('#recapMock [data-rc]');
+    if(reduce){items.forEach(function(i){i.classList.add('in')});return}
+    items.forEach(function(i,ix){setTimeout(function(){i.classList.add('in')},250+ix*260)})}
+  var stepsDone=false;
+  function litSteps(){if(stepsDone)return;stepsDone=true;document.querySelectorAll('#steps [data-step]').forEach(function(s,ix){setTimeout(function(){s.classList.add('lit')},reduce?0:ix*200)})}
+
+  /* origin word-reveal: plays once, on a deliberate timer, when the section enters view (not scroll-linked, so fast scrollers still catch it) */
+  var owords=[];
+  (function(){var beats=document.querySelectorAll('.origin .beat');beats.forEach(function(b){var t=b.textContent;b.textContent='';t.split(' ').forEach(function(word){var sp=document.createElement('span');sp.className='w';sp.textContent=word+' ';if(b.classList.contains('c'))sp.dataset.hot='1';b.appendChild(sp);owords.push(sp)})})})();
+  var originSection=document.querySelector('.origin'),originPlayed=false;
+  function playOrigin(){if(originPlayed)return;originPlayed=true;
+    if(reduce){owords.forEach(function(w){w.classList.add('lit');if(w.dataset.hot)w.classList.add('hot')});return}
+    var per=105;
+    owords.forEach(function(w,i){setTimeout(function(){w.classList.add('lit');if(w.dataset.hot)w.classList.add('hot')},i*per)})}
+  if(originSection){var oio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)playOrigin()})},{threshold:.4});oio.observe(originSection)}
+
+  /* nav scroll-spy + mobile */
+  var secs=['how','features','community','faq'].map(function(id){return document.getElementById(id)}).filter(Boolean);  var navA=Array.prototype.slice.call(document.querySelectorAll('.navlinks a[data-sec]'));
+  function spy(){var y=window.scrollY+Math.round(window.innerHeight*0.35),cur='';secs.forEach(function(s){if(s.offsetTop<=y)cur=s.id});navA.forEach(function(a){a.classList.toggle('on',a.dataset.sec===cur)})}  var burger=document.getElementById('burger'),mm=document.getElementById('mobilemenu');
+  burger.addEventListener('click',function(){mm.classList.toggle('open')});
+  mm.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mm.classList.remove('open')})});
+
+  /* faq */
+  document.querySelectorAll('.faqitem').forEach(function(it){var q=it.querySelector('.faqq'),a=it.querySelector('.faqa');
+    q.addEventListener('click',function(){var open=it.classList.contains('open');
+      document.querySelectorAll('.faqitem').forEach(function(o){o.classList.remove('open');o.querySelector('.faqa').style.maxHeight=null});
+      if(!open){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}})});
+
+  /* magnetic ctas */
+  if(!reduce&&window.matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('[data-magnetic]').forEach(function(btn){var cx=0,cy=0,tx=0,ty=0;
+      document.addEventListener('mousemove',function(e){var r=btn.getBoundingClientRect();if(!r.width){tx=0;ty=0;return}var mx=r.left+r.width/2,my=r.top+r.height/2,dx=e.clientX-mx,dy=e.clientY-my;if(Math.hypot(dx,dy)<160){tx=dx*0.2;ty=dy*0.2}else{tx=0;ty=0}});
+      (function m(){cx+=(tx-cx)*0.15;cy+=(ty-cy)*0.15;btn.style.transform='translate('+cx.toFixed(2)+'px,'+cy.toFixed(2)+'px)';requestAnimationFrame(m)})()})}
+
+  /* waitlist */
+  var wl=document.getElementById('wl'),stages=Array.prototype.slice.call(document.querySelectorAll('.wl .stage'));
+  var step=1,total=5,REQUIRED=4,role='';
+  var fill=document.getElementById('wlFill'),num=document.getElementById('wlNum');
+  var back=document.getElementById('wlBack'),next=document.getElementById('wlNext'),skip=document.getElementById('wlSkip');
+  var wbody=document.getElementById('wlBody'),wnav=document.getElementById('wlNav'),done=document.getElementById('wlDone');
+  var Q={gamer:{games:'Which games do you play?',reason:'What are you hoping to improve?'},coach:{games:'Which games do you coach or want to coach?',reason:"What's your biggest challenge as a coach right now?"}};
+  function openWl(){wl.hidden=false;document.body.style.overflow='hidden';step=1;render();setTimeout(focusStage,60)}
+  function closeWl(){wl.hidden=true;document.body.style.overflow=''}
+  function render(){stages.forEach(function(s){s.classList.toggle('active',+s.dataset.step===step)});
+    fill.style.width=(step/total*100)+'%';num.textContent=step;back.hidden=(step===1);skip.hidden=(step!==total);
+    next.innerHTML=(step===total)?'Complete signup&nbsp;→':'Continue&nbsp;→'}
+  function focusStage(){var a=stages[step-1].querySelector('input,textarea');if(a)a.focus()}
+  function clearErr(){for(var i=1;i<=REQUIRED;i++){var e=document.getElementById('err'+i);if(e)e.textContent=''}}
+
+  /* role selection + branching */
+  document.querySelectorAll('.role').forEach(function(card){card.addEventListener('click',function(){
+    document.querySelectorAll('.role').forEach(function(c){c.classList.remove('sel')});card.classList.add('sel');role=card.dataset.role;
+    document.getElementById('gamesQ').textContent=Q[role].games;document.getElementById('reasonQ').textContent=Q[role].reason;
+    document.getElementById('err1').textContent='';
+  })});
+
+  var reason=document.getElementById('q_reason'),rc=document.getElementById('reasonCount');
+  reason.addEventListener('input',function(){rc.textContent=reason.value.length});
+  var MAX=5,gameRows=document.getElementById('gameRows'),addBtn=document.getElementById('addGame'),gh=document.getElementById('gameHint');
+  function gcount(){return gameRows.querySelectorAll('input').length}
+  function refAdd(){var full=gcount()>=MAX;addBtn.hidden=full;gh.hidden=!full}
+  addBtn.addEventListener('click',function(){if(gcount()>=MAX)return;var row=document.createElement('div');row.className='grow';
+    row.innerHTML='<input list="gameSuggest" placeholder="Add another game" /><button class="rm" aria-label="Remove">×</button>';
+    row.querySelector('.rm').addEventListener('click',function(){row.remove();refAdd()});gameRows.appendChild(row);row.querySelector('input').focus();refAdd()});
+  function games(){return Array.prototype.slice.call(gameRows.querySelectorAll('input')).map(function(i){return i.value.trim()}).filter(Boolean)}
+  var COUNTRIES=["Afghanistan","Albania","Algeria","Argentina","Armenia","Australia","Austria","Bahrain","Bangladesh","Belgium","Bhutan","Brazil","Brunei","Bulgaria","Cambodia","Canada","Chile","China","Colombia","Croatia","Cyprus","Czechia","Denmark","Ecuador","Egypt","Estonia","Finland","France","Georgia","Germany","Ghana","Greece","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Japan","Jordan","Kazakhstan","Kenya","Kuwait","Laos","Latvia","Lebanon","Lithuania","Luxembourg","Macau","Malaysia","Maldives","Malta","Mexico","Mongolia","Morocco","Myanmar","Nepal","Netherlands","New Zealand","Nigeria","Norway","Oman","Pakistan","Palestine","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Saudi Arabia","Serbia","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","Sweden","Switzerland","Taiwan","Tajikistan","Thailand","Timor-Leste","Tunisia","Turkey","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Venezuela","Vietnam","Yemen"];
+  var cSearch=document.getElementById('countrySearch'),cList=document.getElementById('countryList');
+  function rlist(q){q=(q||'').toLowerCase();var m=COUNTRIES.filter(function(c){return c.toLowerCase().indexOf(q)>-1}).slice(0,60);
+    if(!m.length){cList.innerHTML='<div class="combo-empty">No match. Type it in full.</div>';cList.hidden=false;return}
+    cList.innerHTML=m.map(function(c){return '<div class="combo-opt">'+c+'</div>'}).join('');
+    Array.prototype.slice.call(cList.children).forEach(function(o){o.addEventListener('mousedown',function(e){e.preventDefault();cSearch.value=o.textContent;cList.hidden=true})});cList.hidden=false}
+  cSearch.addEventListener('focus',function(){rlist(cSearch.value)});
+  cSearch.addEventListener('input',function(){rlist(cSearch.value)});
+  cSearch.addEventListener('blur',function(){setTimeout(function(){cList.hidden=true},120)});
+  function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
+  function validate(){clearErr();
+    if(step===1&&!role){document.getElementById('err1').textContent='Pick one to continue.';return false}
+    if(step===2&&!games().length){document.getElementById('err2').textContent='Add at least one game.';return false}
+    if(step===3&&!cSearch.value.trim()){document.getElementById('err3').textContent='Pick your country.';return false}
+    if(step===4){if(!document.getElementById('q_name').value.trim()){document.getElementById('err4').textContent='Your name, please.';return false}
+      if(!validEmail(document.getElementById('q_email').value.trim())){document.getElementById('err4').textContent='Enter a valid email.';return false}}
+    return true}
+  function advance(){if(step<=REQUIRED&&!validate())return;if(step<total){step++;render();setTimeout(focusStage,60)}else finish()}
+  var WAITLIST_ENDPOINT='https://script.google.com/macros/s/AKfycbxRoLnaDnnZzEXdGoEudTFH8LYNSiMs5U5E9Thvbk08rYz-iJBhgZB5T-snwzo7YaNw/exec';
+  function submitWaitlist(){
+    var body=new URLSearchParams({
+      role:role,
+      games:games().join(', '),
+      country:cSearch.value.trim(),
+      name:document.getElementById('q_name').value.trim(),
+      email:document.getElementById('q_email').value.trim(),
+      reason:reason.value.trim()
+    });
+    fetch(WAITLIST_ENDPOINT,{method:'POST',mode:'no-cors',body:body}).catch(function(){});
+  }
+  function finish(){submitWaitlist();document.getElementById('doneEmail').textContent=document.getElementById('q_email').value.trim()||'you';wbody.style.display='none';wnav.style.display='none';fill.style.width='100%';done.hidden=false}
+  next.addEventListener('click',advance);skip.addEventListener('click',finish);
+  back.addEventListener('click',function(){if(step>1){step--;render();setTimeout(focusStage,60)}});
+  document.getElementById('backHome').addEventListener('click',function(e){e.preventDefault();closeWl();window.scrollTo({top:0,behavior:'smooth'})});
+  document.querySelectorAll('[data-openwl]').forEach(function(b){b.addEventListener('click',openWl)});
+  document.getElementById('wlClose').addEventListener('click',closeWl);
+  document.addEventListener('keydown',function(e){if(wl.hidden)return;if(e.key==='Escape')closeWl();if(e.key==='Enter'&&document.activeElement&&document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();advance()}});
+
+  window.addEventListener('scroll',spy,{passive:true});
+  window.addEventListener('resize',spy);
+  window.addEventListener('load',spy);
+  spy();
+})();
+</script>
+</body>
+</html>

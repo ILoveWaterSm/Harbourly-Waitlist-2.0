@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Verification standard, Harbourly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#030b17;--bg-mid:#061024;--bg-deep:#01060f;--surface:#0b1628;
+    --green:#22d66f;--green-ink:#04160b;--amber:#fbbf24;--muted:#94a3b8;--ink:#e8eef7;
+    --pad:clamp(28px,6vw,120px);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;overflow-x:hidden}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--green);color:var(--green-ink)}
+  a{color:inherit}
+  h1,h2,h3{font-family:"Sora"}
+  .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.08;background-image:var(--grain);background-size:140px 140px}
+
+  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes breathe{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.07)}}
+  @keyframes ctaGlow{0%,100%{opacity:.5}50%{opacity:.72}}
+
+  .page{position:relative;z-index:2}
+  .section{position:relative;padding-left:var(--pad);padding-right:var(--pad)}
+  .eyebrow{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:18px;display:inline-flex;align-items:center;gap:12px}
+  .eyebrow::before{content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--green));box-shadow:0 0 8px rgba(34,214,111,.5)}
+  .gdiv{height:1px;max-width:1180px;margin:0 auto;background:radial-gradient(closest-side,rgba(34,214,111,.45),transparent);box-shadow:0 0 12px rgba(34,214,111,.25)}
+  .reveal>*{opacity:0;transform:translateY(24px)}
+  .reveal.in>*{opacity:1;transform:none;transition:opacity .6s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+  .reveal.in>*:nth-child(2){transition-delay:.08s}
+  .reveal.in>*:nth-child(3){transition-delay:.16s}
+  .reveal.in>*:nth-child(4){transition-delay:.24s}
+
+  .cta{position:relative;appearance:none;border:0;cursor:pointer;white-space:nowrap;padding:15px 30px;border-radius:999px;background:var(--green);color:var(--green-ink);font-family:"Geist";font-weight:700;font-size:15px;text-decoration:none;display:inline-block;box-shadow:0 8px 26px rgba(34,214,111,.35);transition:transform .12s ease,box-shadow .25s}
+  .cta::before{content:"";position:absolute;inset:-5px;border-radius:999px;background:var(--green);filter:blur(18px);opacity:.35;z-index:-1;transition:opacity .3s}
+  .cta:hover{box-shadow:0 12px 40px rgba(34,214,111,.6)}
+  .cta:hover::before{opacity:.6}
+  .cta:active{transform:scale(.97)}
+  .cta-xl{padding:21px 46px;font-size:19px;border-radius:999px;box-shadow:0 14px 44px rgba(34,214,111,.5)}
+  .cta-xl::before{inset:-8px;filter:blur(26px);opacity:.5;animation:ctaGlow 4.5s ease-in-out infinite}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:1fr auto;align-items:center;padding:20px var(--pad);backdrop-filter:blur(12px);background:rgba(3,11,23,.72)}
+  nav::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.4),transparent)}
+  .brand{display:flex;align-items:center;text-decoration:none}
+  .brand img{height:40px;width:auto;display:block}
+  .backhome{justify-self:end;display:inline-flex;align-items:center;gap:9px;font-family:"Geist Mono",monospace;font-size:12.5px;letter-spacing:.08em;color:var(--muted);text-decoration:none;padding:8px 16px;border-radius:999px;transition:color .2s,background .2s,box-shadow .3s}
+  .backhome:hover{color:var(--green);background:rgba(34,214,111,.08);box-shadow:0 0 18px rgba(34,214,111,.2)}
+  .backhome svg{width:15px;height:15px;transition:transform .25s}
+  .backhome:hover svg{transform:translateX(-3px)}
+
+  /* hero */
+  .vs-hero{position:relative;text-align:center;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px var(--pad)}
+  .vs-hero::before{content:"";position:absolute;left:50%;top:52%;width:min(900px,100vw);height:520px;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(34,214,111,.13),transparent 70%);filter:blur(30px);pointer-events:none;z-index:0;animation:breathe 9s ease-in-out infinite}
+  .vs-hero .inner{position:relative;z-index:1;max-width:820px;margin:0 auto}
+  .vs-hero .eyebrow{margin-left:auto;margin-right:auto}
+  .vs-hero h1{font-weight:800;font-size:clamp(42px,6.4vw,90px);line-height:.95;letter-spacing:-.04em;margin:0 0 24px}
+  .vs-hero p{color:#b6c2d4;font-size:clamp(16px,1.35vw,20px);line-height:1.6;max-width:34em;margin:0 auto}
+
+  /* layer intro (centred) */
+  .layer{position:relative;text-align:center;max-width:760px;margin:0 auto;padding-top:clamp(80px,11vh,150px)}
+  .layer .layernum{font-family:"Sora";font-weight:800;font-size:clamp(70px,10vw,140px);line-height:.8;color:rgba(34,214,111,.08);letter-spacing:-.04em;margin-bottom:4px}
+  .layer .eyebrow{margin-left:auto;margin-right:auto}
+  .layer h2{font-weight:700;font-size:clamp(30px,4.2vw,56px);line-height:1.02;letter-spacing:-.03em;margin:0 0 18px}
+  .layer p{color:var(--muted);font-size:17px;line-height:1.6;max-width:38em;margin:0 auto}
+
+  /* readable document column */
+  .doc{max-width:860px;margin:0 auto}
+
+  /* checklist */
+  .clist{list-style:none;margin:24px 0 4px;padding:0;border-top:1px solid rgba(148,163,184,.12)}
+  .clist li{display:flex;align-items:flex-start;gap:14px;padding:15px 2px;border-bottom:1px solid rgba(148,163,184,.12);color:var(--ink);font-size:15.5px;line-height:1.5}
+  .clist li .tk{flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:rgba(34,214,111,.14);border:1px solid rgba(34,214,111,.4);display:grid;place-items:center;margin-top:1px}
+  .clist li .tk svg{width:13px;height:13px}
+
+  /* chapter body copy (matches the muted/16.5px/1.65 rhythm used site-wide) */
+  .cr-intro{color:var(--muted);font-size:16.5px;line-height:1.65;max-width:62ch;margin:0}
+  .cr .note{color:var(--muted);font-size:15px;line-height:1.65;border-left:2px solid rgba(34,214,111,.4);padding-left:18px;margin-top:24px}
+  .cr .note b{color:var(--ink);font-weight:600}
+
+  /* mcard: borderless card, matches the landing page's mockup system */
+  .mcard{position:relative;background:linear-gradient(180deg,rgba(11,22,40,.92),rgba(6,16,36,.95));border-radius:20px;padding:30px 28px;margin-top:30px;box-shadow:0 30px 70px rgba(0,0,0,.4),0 0 40px rgba(34,214,111,.05);max-width:440px;overflow:hidden}
+  .mcard::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.55),transparent)}
+  .mc-eyebrow{font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+  .mc-sub{font-family:"Geist Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:5px}
+  .mc-dash{height:1px;margin:20px 0;background-image:linear-gradient(90deg,rgba(148,163,184,.28) 0 6px,transparent 6px 12px);background-size:12px 1px;background-repeat:repeat-x}
+  .mc-line{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:15px;color:var(--ink)}
+  .mc-val{font-family:"Geist Mono",monospace;color:var(--muted);font-size:13.5px;white-space:nowrap}
+  .mc-check{display:inline-flex;align-items:center;gap:9px}
+  .mc-check svg{width:13px;height:13px;stroke:var(--green);flex:0 0 auto}
+  .mc-foot{display:flex;align-items:center;gap:9px;color:var(--green);font-size:13.5px;font-weight:500}
+  .mc-foot svg{width:15px;height:15px;flex:0 0 auto;stroke:var(--green)}
+
+  /* second-layer three blocks */
+  .watchgrid{display:grid;grid-template-columns:1fr;gap:0;margin-top:8px}
+  .watch{padding:26px 0;border-top:1px solid rgba(148,163,184,.12)}
+  .watch h4{font-family:"Sora";font-weight:700;font-size:19px;letter-spacing:-.01em;margin:0 0 10px;display:flex;align-items:center;gap:11px}
+  .watch h4 .d{width:8px;height:8px;border-radius:2px;background:var(--green);transform:rotate(45deg);box-shadow:0 0 12px rgba(34,214,111,.6)}
+  .watch p{color:var(--muted);font-size:16px;line-height:1.68;margin:0;max-width:64ch}
+
+  /* ===== pinned verification scrollytelling (sticky left labels, scrolling right content) ===== */
+  .scrolly{position:relative}
+  .scrolly-grid{display:grid;grid-template-columns:.82fr 1fr;gap:clamp(40px,6vw,90px);max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+  .sc-left{position:relative}
+  .sc-sticky{position:sticky;top:0;height:100vh;display:grid;align-items:center}
+  .sc-stack{position:relative;min-height:360px}
+  .cl{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s cubic-bezier(.16,1,.3,1);pointer-events:none}
+  .cl.on{opacity:1;transform:none;pointer-events:auto}
+  .sc-num{font-family:"Sora";font-weight:800;font-size:clamp(54px,7vw,110px);line-height:.8;color:rgba(34,214,111,.12);letter-spacing:-.04em;margin-bottom:14px}
+  .cl .eyebrow{margin-bottom:16px}
+  .cl h2{font-weight:700;font-size:clamp(28px,3.2vw,46px);line-height:1.04;letter-spacing:-.03em;margin:0 0 16px}
+  .cl p{color:var(--muted);font-size:16.5px;line-height:1.62;margin:0;max-width:34em}
+  .sc-right{position:relative}
+  .cr{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:9vh 0}
+  .cr-head{display:none}
+
+  @media (max-width:900px){
+    .scrolly-grid{grid-template-columns:1fr;gap:0;max-width:760px;padding-top:clamp(64px,10vh,100px)}
+    .sc-left{display:none}
+    .cr{min-height:0;padding:0;display:block}
+    .cr + .cr{margin-top:clamp(48px,7vh,90px)}
+    .cr-head{display:block;margin-bottom:22px}
+    .cr-head .sc-num{font-size:clamp(46px,14vw,72px)}
+    .cr-head .eyebrow{margin-bottom:14px}
+    .cr-head h2{font-weight:700;font-size:clamp(26px,7vw,36px);line-height:1.05;letter-spacing:-.025em;margin:0 0 14px}
+    .cr-head p{color:var(--muted);font-size:16px;line-height:1.6;margin:0;max-width:38em}
+  }
+  @media (prefers-reduced-motion:reduce){.cl{transition:none}}
+
+  /* payment steps */
+  .psteps{margin-top:12px;counter-reset:ps}
+  .pstep{position:relative;display:grid;grid-template-columns:auto 1fr;gap:22px;padding:26px 0;border-top:1px solid rgba(148,163,184,.12)}
+  .pstep .pn{font-family:"Sora";font-weight:800;font-size:clamp(30px,4vw,48px);line-height:1;color:rgba(34,214,111,.85);text-shadow:0 0 22px rgba(34,214,111,.35)}
+  .pstep h4{font-family:"Sora";font-weight:700;font-size:19px;letter-spacing:-.01em;margin:0 0 8px}
+  .pstep p{color:var(--muted);font-size:16px;line-height:1.68;margin:0;max-width:60ch}
+
+  /* faq */
+  .faqlist{margin:36px auto 0;max-width:860px;border-top:1px solid rgba(148,163,184,.1)}
+  .faqitem{border-bottom:1px solid rgba(148,163,184,.1)}
+  .faqq{width:100%;appearance:none;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 2px;text-align:left;color:var(--ink);font-family:"Sora";font-weight:600;font-size:clamp(16px,1.5vw,19px)}
+  .faqq .pm{width:30px;height:30px;border-radius:50%;border:1px solid rgba(148,163,184,.25);display:grid;place-items:center;flex:0 0 auto;transition:.3s;color:var(--muted)}
+  .faqq .pm svg{width:14px;height:14px;transition:transform .3s}
+  .faqitem.open .pm{border-color:var(--green);color:var(--green);box-shadow:0 0 16px rgba(34,214,111,.3)}
+  .faqitem.open .pm svg{transform:rotate(45deg)}
+  .faqa{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .faqa p{margin:0;padding:0 2px 24px;color:var(--muted);font-size:15.5px;line-height:1.68;max-width:64ch}
+
+  /* closing cta */
+  .closing{position:relative;text-align:center;padding:clamp(100px,15vh,180px) var(--pad);background:radial-gradient(60% 70% at 50% 50%,rgba(34,214,111,.09),transparent 70%)}
+  .closing h2{font-weight:800;font-size:clamp(34px,5vw,72px);line-height:.98;letter-spacing:-.03em;margin:0 0 18px}
+  .closing .word{color:var(--green);text-shadow:0 0 40px rgba(34,214,111,.55)}
+  .closing p{color:var(--muted);font-size:18px;line-height:1.55;margin:0 auto 36px;max-width:34em}
+
+  /* footer */
+  footer{position:relative;padding:56px var(--pad) 48px;background:rgba(1,6,15,.5)}
+  footer::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.4),transparent)}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;max-width:1180px;margin:0 auto}
+  .foot-brand .brand{margin-bottom:14px}
+  .foot-tag{color:var(--muted);font-size:14px;line-height:1.55;max-width:26em}
+  .foot-col h4{font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin:0 0 16px;font-weight:500}
+  .foot-col a{display:block;color:var(--muted);text-decoration:none;font-size:14px;margin-bottom:11px;transition:color .2s}
+  .foot-col a:hover{color:var(--ink)}
+  .foot-bottom{max-width:1180px;margin:44px auto 0;padding-top:22px;border-top:1px solid rgba(148,163,184,.07);font-family:"Geist Mono",monospace;font-size:11px;color:#4b5a72;letter-spacing:.04em}
+
+  @media (max-width:1000px){
+    .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
+  }
+  @media (max-width:820px){
+    .pstep{grid-template-columns:auto 1fr;gap:16px}
+  }
+  @media (max-width:600px){
+    .vs-hero h1{font-size:clamp(32px,10vw,48px)}
+    .vs-hero p{font-size:15.5px}
+    .closing h2{font-size:clamp(30px,10vw,46px)}
+    .foot-grid{grid-template-columns:1fr;text-align:center}
+    .foot-brand .brand{justify-content:center}
+    .foot-tag{margin-left:auto;margin-right:auto}
+    .foot-bottom{text-align:center}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}.reveal>*{opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="page">
+
+  <nav>
+    <a class="brand" href="landing.html"><img src="Images/logo&amp;word-mark.png" alt="Harbourly"></a>
+    <a class="backhome" href="landing.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back to home</a>
+  </nav>
+
+  <!-- HERO -->
+  <header class="section vs-hero">
+    <div class="inner reveal">
+      <div class="eyebrow">Verification standard</div>
+      <h1>How we verify.</h1>
+      <p>Anyone can call themselves a coach. We are the ones who check. Every coach on Harbourly goes through identity verification before they can take a booking, no exceptions.</p>
+    </div>
+  </header>
+
+  <div class="gdiv"></div>
+
+  <!-- PINNED VERIFICATION SCROLLYTELLING: sticky left labels swap as the right content scrolls; stacks on mobile -->
+  <section class="scrolly" id="scrolly">
+    <div class="scrolly-grid">
+      <div class="sc-left" aria-hidden="true">
+        <div class="sc-sticky"><div class="sc-stack">
+          <div class="cl on" data-cl="0">
+            <div class="sc-num">01</div>
+            <div class="eyebrow">First layer of verification</div>
+            <h2>Your identity. Your credentials.</h2>
+            <p>Completed once, before a coach can go live. This is how we confirm you are who you say you are.</p>
+          </div>
+          <div class="cl" data-cl="1">
+            <div class="sc-num">02</div>
+            <div class="eyebrow">First layer of verification</div>
+            <h2>Optional. Your track record</h2>
+            <p>Not required to earn your badge, but it's what turns a verified profile into a proven one.</p>
+          </div>
+          <div class="cl" data-cl="2">
+            <div class="sc-num">03</div>
+            <div class="eyebrow">Second layer of verification</div>
+            <h2>We watch. Continuously.</h2>
+            <p>Earning the badge is not the end of the process. Every coach's standing on Harbourly is reviewed on an ongoing basis, not just at signup.</p>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="sc-right">
+        <!-- Chapter 01: Identity -->
+        <div class="cr reveal" data-cr="0">
+          <div class="cr-head"><div class="sc-num">01</div><div class="eyebrow">First layer of verification</div><h2>Your identity. Your credentials.</h2><p>Completed once, before a coach can go live. This is how we confirm you are who you say you are.</p></div>
+          <p class="cr-intro">Your identity is confirmed through Stripe or Xendit, the same payment providers that handle your payouts. When you set up how you get paid, they run a real identity check backed by a government issued ID, the same standard used by regulated financial platforms. Harbourly never sees or stores your ID or banking details directly.</p>
+          <ul class="clist">
+            <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#22d66f" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>Identity confirmed through Stripe or Xendit as part of payout setup</li>
+            <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#22d66f" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>Real government ID backed check, run by a regulated payment provider, not by Harbourly</li>
+            <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#22d66f" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>Coaches must be 18 or over</li>
+            <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#22d66f" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>A coach cannot appear as bookable until this check is complete</li>
+          </ul>
+          <p class="note">Clear this check and your profile earns the <b>Verified</b> badge — the same one shown on every coach's profile.</p>
+        </div>
+
+        <!-- Chapter 02: Track record -->
+        <div class="cr reveal" data-cr="1">
+          <div class="cr-head"><div class="sc-num">02</div><div class="eyebrow">First layer of verification</div><h2>Optional. Your track record</h2><p>Not required to earn your badge, but it's what turns a verified profile into a proven one.</p></div>
+          <p class="cr-intro">Have tournament results or a marketplace track record? Submit it for our team to review by hand. It's optional and won't block your <b>Verified</b> badge — confirmed evidence just gets added to your profile under a separate <b>Credentials reviewed</b> label.</p>
+          <div class="mcard">
+            <div class="mc-eyebrow">Coach profile preview</div>
+            <div class="mc-sub">Verified · Credentials reviewed</div>
+            <div class="mc-dash"></div>
+            <div class="mc-line"><span class="mc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 9V3h12v6a6 6 0 0 1-12 0zM4 5h2M18 5h2M8 21h8M12 15v6"/></svg>SEA Championship 2024</span><span class="mc-val">Top 8 finish</span></div>
+            <div class="mc-dash"></div>
+            <div class="mc-line"><span class="mc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>Metafy</span><span class="mc-val">4.9 · 47 sessions</span></div>
+            <div class="mc-dash"></div>
+            <div class="mc-line"><span class="mc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Fiverr</span><span class="mc-val">5★ · 82 orders</span></div>
+            <div class="mc-dash"></div>
+            <div class="mc-foot"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>Added to your public coach profile</div>
+          </div>
+        </div>
+
+        <!-- Chapter 03: We watch -->
+        <div class="cr reveal" data-cr="2">
+          <div class="cr-head"><div class="sc-num">03</div><div class="eyebrow">Second layer of verification</div><h2>We watch. Continuously.</h2><p>Earning the badge is not the end of the process. Every coach's standing on Harbourly is reviewed on an ongoing basis, not just at signup.</p></div>
+          <div class="watch">
+            <h4><span class="d"></span>Reviews and ratings</h4>
+            <p>Every session ends with a rating from the student. Our team monitors reviews for authenticity and looks at patterns over time, not just individual scores, so what you see on a coach's profile reflects real sessions.</p>
+          </div>
+          <div class="watch">
+            <h4><span class="d"></span>Dispute history</h4>
+            <p>If a session doesn't go as expected, either party can raise it with us directly. Every dispute is reviewed by our team by hand. A coach's dispute history is taken into account when we assess their ongoing standing on the platform. This protects students while making sure coaches are not judged unfairly on a single report.</p>
+          </div>
+          <div class="watch">
+            <h4><span class="d"></span>Delivery</h4>
+            <p>Students rate their sessions honestly, and that feedback shapes how we view a coach's reliability over time. A coach whose sessions consistently fall short of what their profile promises will be reviewed by our team.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gdiv"></div>
+
+  <!-- PAYMENT PROTECTION -->
+  <section class="section layer reveal">
+    <div class="eyebrow">Payment protection</div>
+    <h2>Your money never leaves without your permission.</h2>
+    <p>Every session on Harbourly is protected by escrow, held securely by our payment provider, for players and coaches alike.</p>
+  </section>
+
+  <section class="section">
+    <div class="doc psteps reveal">
+      <div class="pstep">
+        <div class="pn">01</div>
+        <div><h4>Player books and pays</h4><p>When you pay at checkout, your payment is captured and held securely, not sent to the coach yet.</p></div>
+      </div>
+      <div class="pstep">
+        <div class="pn">02</div>
+        <div><h4>Session is completed</h4><p>After your session, you have 72 hours to confirm it went well. If you don't take any action, it confirms automatically after 72 hours, so a coach is never left waiting indefinitely. If something went wrong, you can report it instead, which pauses everything while we review.</p></div>
+      </div>
+      <div class="pstep">
+        <div class="pn">03</div>
+        <div><h4>Funds released to coach</h4><p>Once you confirm, or once the 72 hour window passes with no issue raised, payment is released to your coach. If a dispute is raised, funds stay held until we've reviewed it and reached a fair outcome.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gdiv"></div>
+
+  <!-- FAQ -->
+  <section class="section layer reveal" style="padding-bottom:0">
+    <div class="eyebrow">Answers</div>
+    <h2>Verification FAQ</h2>
+  </section>
+  <section class="section">
+    <div class="faqlist" id="faqlist">
+      <div class="faqitem"><button class="faqq">How long does the verification process take?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Applications are reviewed by our team by hand. We'll notify you as soon as your review is complete.</p></div></div>
+      <div class="faqitem"><button class="faqq">What if I don't have tournament history or a Fiverr profile?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>That's completely fine. Track record evidence is optional. Identity verification alone is enough to earn your Verified badge and go live.</p></div></div>
+      <div class="faqitem"><button class="faqq">Is my personal ID data safe?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Your ID is submitted directly to Stripe or Xendit as part of their own regulated verification process. Harbourly never sees or stores your ID document.</p></div></div>
+      <div class="faqitem"><button class="faqq">What happens if a verified coach breaks the rules?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Every account is subject to ongoing review. A pattern of disputes or under delivery can affect a coach's standing on the platform, including removal in serious cases.</p></div></div>
+      <div class="faqitem"><button class="faqq">Does verification cover all games on the platform?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Yes. Identity verification applies to every coach regardless of which games they coach.</p></div></div>
+      <div class="faqitem"><button class="faqq">Can I reapply if my application is rejected?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Yes. You're welcome to reapply once you're able to address the reason your application wasn't approved.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing reveal">
+    <h2>Your <span class="word">harbour</span> is waiting.</h2>
+    <p>Join the waitlist and be first to access the only coaching platform built on verified trust.</p>
+    <a class="cta cta-xl" href="landing.html">Join the waitlist&nbsp;→</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-grid">
+      <div class="foot-brand"><a class="brand" href="landing.html"><img src="Images/logo&amp;word-mark.png" alt="Harbourly"></a><p class="foot-tag">A place for gamers who want to grow and coaches who want to teach.</p></div>
+      <div class="foot-col"><h4>Platform</h4><a href="verification-standard.html">Process</a><a href="landing.html#features">Features</a><a href="landing.html#coaches">Community</a><a href="landing.html#faq">FAQ</a></div>
+      <div class="foot-col"><h4>Legal</h4><a href="terms-of-service.html">Terms of service</a><a href="privacy-policy.html">Privacy policy</a></div>
+      <div class="foot-col"><h4>Contact</h4><a href="mailto:hello@harbourly.gg">hello@harbourly.gg</a><a href="mailto:support@harbourly.gg">support@harbourly.gg</a></div>
+    </div>
+    <div class="foot-bottom">© 2026 Harbourly. Built for Southeast Asia.</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.2});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+  /* pinned scrollytelling: activate the left label whose right chapter crosses the viewport centre */
+  var cls=[].slice.call(document.querySelectorAll('.scrolly .cl'));
+  var crs=[].slice.call(document.querySelectorAll('.scrolly .cr'));
+  function setChap(i){cls.forEach(function(c){c.classList.toggle('on',c.dataset.cl===String(i))})}
+  if(crs.length){var io3=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setChap(e.target.dataset.cr)})},{rootMargin:'-50% 0px -50% 0px',threshold:0});crs.forEach(function(c){io3.observe(c)})}
+
+  document.querySelectorAll('.faqitem').forEach(function(it){var q=it.querySelector('.faqq'),a=it.querySelector('.faqa');
+    q.addEventListener('click',function(){var open=it.classList.contains('open');
+      document.querySelectorAll('.faqitem').forEach(function(o){o.classList.remove('open');o.querySelector('.faqa').style.maxHeight=null});
+      if(!open){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}})});
+})();
+</script>
+</body>
+</html>
