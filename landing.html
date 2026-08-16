@@ -672,6 +672,7 @@
       <div class="qnum">05 / 05</div><h2 class="qh" id="reasonQ">What are you hoping to improve?</h2>
       <p class="qhelp">Optional. A sentence helps us build the right thing for you.</p>
       <div class="qfield"><textarea id="q_reason" maxlength="200" placeholder="Tell us in a sentence..."></textarea><span class="counter"><span id="reasonCount">0</span> / 200</span></div>
+      <p class="qerr" id="err5"></p>
     </div>
   </div></div>
   <div class="wl-nav" id="wlNav">
@@ -792,19 +793,36 @@
       if(!validEmail(document.getElementById('q_email').value.trim())){document.getElementById('err4').textContent='Enter a valid email.';return false}}
     return true}
   function advance(){if(step<=REQUIRED&&!validate())return;if(step<total){step++;render();setTimeout(focusStage,60)}else finish()}
-  var WAITLIST_ENDPOINT='https://script.google.com/macros/s/AKfycbxRoLnaDnnZzEXdGoEudTFH8LYNSiMs5U5E9Thvbk08rYz-iJBhgZB5T-snwzo7YaNw/exec';
+  var WAITLIST_ENDPOINT='/api/waitlist';
   function submitWaitlist(){
-    var body=new URLSearchParams({
-      role:role,
-      games:games().join(', '),
-      country:cSearch.value.trim(),
-      name:document.getElementById('q_name').value.trim(),
-      email:document.getElementById('q_email').value.trim(),
-      reason:reason.value.trim()
-    });
-    fetch(WAITLIST_ENDPOINT,{method:'POST',mode:'no-cors',body:body}).catch(function(){});
+    return fetch(WAITLIST_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        role:role,
+        games:games().join(', '),
+        country:cSearch.value.trim(),
+        name:document.getElementById('q_name').value.trim(),
+        email:document.getElementById('q_email').value.trim(),
+        reason:reason.value.trim()
+      })
+    }).then(function(r){return r.json()})}
+  function showDone(){document.getElementById('doneEmail').textContent=document.getElementById('q_email').value.trim()||'you';wbody.style.display='none';wnav.style.display='none';fill.style.width='100%';done.hidden=false}
+  function finish(){
+    document.getElementById('err5').textContent='';
+    next.disabled=true;skip.disabled=true;var prevLabel=next.innerHTML;next.innerHTML='Submitting&hellip;';
+    submitWaitlist().then(function(result){
+      next.disabled=false;skip.disabled=false;next.innerHTML=prevLabel;
+      if(result&&result.result==='duplicate'){
+        step=4;render();setTimeout(focusStage,60);
+        document.getElementById('err4').textContent="That email's already on the waitlist.";
+        return}
+      showDone()
+    }).catch(function(){
+      next.disabled=false;skip.disabled=false;next.innerHTML=prevLabel;
+      document.getElementById('err5').textContent='Something went wrong. Please try again.'
+    })
   }
-  function finish(){submitWaitlist();document.getElementById('doneEmail').textContent=document.getElementById('q_email').value.trim()||'you';wbody.style.display='none';wnav.style.display='none';fill.style.width='100%';done.hidden=false}
   next.addEventListener('click',advance);skip.addEventListener('click',finish);
   back.addEventListener('click',function(){if(step>1){step--;render();setTimeout(focusStage,60)}});
   document.getElementById('backHome').addEventListener('click',function(e){e.preventDefault();closeWl();window.scrollTo({top:0,behavior:'smooth'})});
