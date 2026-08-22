@@ -99,9 +99,10 @@
   /* games strip */
   .games{padding-top:52px;padding-bottom:52px;text-align:center}
   .games .lbl{font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
-  .games .row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:clamp(24px,4vw,60px)}
-  .games .g{font-family:"Sora";font-weight:700;font-size:clamp(18px,2vw,26px);letter-spacing:-.02em;color:#67788f;transition:color .3s,text-shadow .3s}
-  .games .g:hover{color:var(--ink);text-shadow:0 0 20px rgba(34,214,111,.3)}
+  .games .row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(24px,4vw,52px)}
+  .games .glogo{display:flex;align-items:center;justify-content:center;width:clamp(130px,15vw,190px);height:clamp(48px,6.5vw,72px);transition:transform .3s,filter .3s}
+  .games .glogo:hover{transform:translateY(-3px);filter:drop-shadow(0 0 16px rgba(34,214,111,.35))}
+  .games .glogo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
   .games .cap{margin-top:24px;color:var(--muted);font-size:14px}
 
   /* section header (centred) */
@@ -410,8 +411,8 @@
   <!-- GAMES -->
   <section class="section games reveal">
     <div class="lbl">Available at launch</div>
-    <div class="row"><span class="g">Mobile Legends</span><span class="g">Free Fire</span><span class="g">Valorant</span><span class="g">Counter-Strike 2</span></div>
-    <div class="cap">Mobile and PC. More titles as our coach roster grows.</div>
+    <div class="row"><span class="glogo"><img src="Images/1.png" alt="Mobile Legends" loading="lazy"></span><span class="glogo"><img src="Images/2.png" alt="Free Fire" loading="lazy"></span><span class="glogo"><img src="Images/3.png" alt="Valorant" loading="lazy"></span><span class="glogo"><img src="Images/4.png" alt="Counter-Strike 2" loading="lazy"></span><span class="glogo"><img src="Images/5.png" alt="Riftbound" loading="lazy"></span></div>
+    <div class="cap">Mobile, PC and tabletop. More titles as our coach roster grows.</div>
   </section>
 
   <div class="gdiv"></div>
@@ -594,7 +595,7 @@
       <div class="faqitem"><button class="faqq">How does verification work?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Three checks. The coach records a short voice clip reading a phrase we generate. They submit proof of their rank and history, which our team reviews by hand. And their legal identity is confirmed by our payment partner when they set up payouts. Clearing that identity check is what earns them the Verified badge.</p></div></div>
       <div class="faqitem"><button class="faqq">What if my coach ghosts or underdelivers?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>You have 72 hours after a session to raise a dispute. If nothing's raised in that window, payment releases automatically to the coach. Once a dispute is filed, our team reviews it within 72 hours.</p></div></div>
       <div class="faqitem"><button class="faqq">What does it cost?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Booking a coach is free. At checkout you pay the coach's listed rate plus a 5% platform fee, and you'll see the full total before you confirm, with nothing added after. Coaches pay a 7% commission on completed sessions, and nothing if they don't get booked.</p></div></div>
-      <div class="faqitem"><button class="faqq">Which games are supported?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>We're launching with Mobile Legends, Free Fire, Valorant and Counter-Strike 2: two mobile, two PC. We're adding titles as our coach roster grows, and the waitlist form lets you tell us which game you want next.</p></div></div>
+      <div class="faqitem"><button class="faqq">Which games are supported?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>We're launching with Mobile Legends, Free Fire, Valorant, Counter-Strike 2 and Riftbound: two mobile, two PC and one TCG. We're adding titles as our coach roster grows, and the waitlist form lets you tell us which game you want next.</p></div></div>
     </div>
   </section>
 
