@@ -22,6 +22,11 @@
   a{color:inherit}
   h1,h2,h3{font-family:"Sora"}
   .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.08;background-image:var(--grain);background-size:140px 140px}
+  .grid-bg{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.4;
+    background-image:linear-gradient(rgba(148,163,184,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.14) 1px,transparent 1px);
+    background-size:80px 80px;background-position:center -1px;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 
   /* keyframes */
   @keyframes rise{to{opacity:1;transform:none}}
@@ -68,10 +73,12 @@
   nav::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.4),transparent)}
   .brand{display:flex;align-items:center}
   .brand img{height:45px;width:auto;display:block}
-  .navlinks{display:flex;align-items:center;gap:8px;justify-self:center}
-  .navlinks a{position:relative;text-decoration:none;color:var(--muted);font-size:16px;font-weight:600;padding:9px 16px;border-radius:999px;transition:color .2s,background .2s,box-shadow .3s}
-  .navlinks a:hover{color:var(--green);background:rgba(34,214,111,.08);box-shadow:0 0 18px rgba(34,214,111,.2)}
-  .navlinks a.on{color:var(--green);background:rgba(34,214,111,.1);box-shadow:0 0 20px rgba(34,214,111,.28),inset 0 0 0 1px rgba(34,214,111,.35)}
+  .navlinks{position:relative;display:flex;align-items:center;gap:8px;justify-self:center}
+  .navlinks a{position:relative;text-decoration:none;color:var(--muted);font-size:16px;font-weight:600;padding:9px 16px;border-radius:999px;transition:color .2s,background .2s}
+  .navlinks a:hover{color:var(--green);background:rgba(34,214,111,.08)}
+  .navlinks a.on{color:var(--green)}
+  .nav-indicator{position:absolute;left:0;bottom:-2px;height:2px;width:0;border-radius:2px;background:var(--green);box-shadow:0 0 10px rgba(34,214,111,.7);opacity:0;transform:translateX(0);transition:transform .4s cubic-bezier(.65,0,.35,1),width .4s cubic-bezier(.65,0,.35,1),opacity .25s ease;pointer-events:none}
+  .nav-indicator.show{opacity:1}
   .navcta{position:relative;appearance:none;border:0;cursor:pointer;padding:12px 24px;border-radius:999px;background:var(--green);color:var(--green-ink);font-family:"Geist";font-weight:700;font-size:14.5px;justify-self:end;box-shadow:0 6px 22px rgba(34,214,111,.45);transition:transform .1s,box-shadow .25s}
   .navcta::before{content:"";position:absolute;inset:-4px;border-radius:999px;background:var(--green);filter:blur(14px);opacity:.4;z-index:-1;transition:opacity .3s}
   .navcta:hover{box-shadow:0 10px 30px rgba(34,214,111,.7)}
@@ -209,7 +216,10 @@
   .qcard .quote{color:#c4cedb;font-size:14.5px;line-height:1.6;margin:0 0 20px;flex:1;text-align:left}
   .qmark{font-family:"Sora";font-weight:800;font-size:34px;color:var(--green);line-height:.6;margin-bottom:14px;text-shadow:0 0 20px rgba(34,214,111,.4)}
   .qwho{display:flex;align-items:center;gap:11px}
-  .qav{width:34px;height:34px;border-radius:9px;background:rgba(34,214,111,.12);border:1px solid rgba(34,214,111,.3);display:grid;place-items:center;font-family:"Sora";font-weight:700;font-size:14px;color:var(--green)}
+  .qav{width:52px;height:52px;border-radius:50%;background:rgba(34,214,111,.12);border:1px solid rgba(34,214,111,.3);display:grid;place-items:center;font-family:"Sora";font-weight:700;font-size:14px;color:var(--green);overflow:hidden;flex:0 0 auto}
+  .qav img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+  .qav-blank{background:#525b6b;border-color:#525b6b}
+  .qav-blank svg{width:32px;height:32px}
   .qname{font-weight:600;font-size:13.5px}
   .qrole{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.04em;color:var(--muted);margin-top:2px}
   .qvia{margin-left:auto;font-family:"Geist Mono",monospace;font-size:9.5px;color:#5b6b82}
@@ -242,6 +252,10 @@
   .foot-col a{display:block;color:var(--muted);text-decoration:none;font-size:14px;margin-bottom:11px;transition:color .2s}
   .foot-col a:hover{color:var(--ink)}
   .foot-bottom{max-width:1180px;margin:44px auto 0;padding-top:22px;border-top:1px solid rgba(148,163,184,.07);font-family:"Geist Mono",monospace;font-size:11px;color:#4b5a72;letter-spacing:.04em}
+  .foot-socials{display:flex;gap:16px;margin-top:16px;margin-left:-3px}
+  .foot-socials a{display:grid;place-items:center;flex:0 0 auto;transition:transform .25s,filter .25s}
+  .foot-socials a:hover{transform:translateY(-2px);filter:drop-shadow(0 0 10px rgba(34,214,111,.5))}
+  .foot-socials svg{width:26px;height:26px;stroke:var(--green);fill:none}
 
   /* ---- waitlist overlay ---- */
   .wl{position:fixed;inset:0;z-index:60;background:radial-gradient(120% 80% at 50% 0%,rgba(34,214,111,.06),transparent 60%),linear-gradient(180deg,#050d1c,#020813);animation:wlIn .3s ease;display:flex;flex-direction:column}
@@ -382,6 +396,7 @@
 <div class="grain" aria-hidden="true"></div>
 
 <div class="page">
+  <div class="grid-bg" aria-hidden="true"></div>
   <div class="announce">Harbourly launches soon. <b>Join the waitlist for early access ↓</b></div>
 
   <nav>
@@ -391,6 +406,7 @@
       <a href="#features" data-sec="features">Features</a>
       <a href="#community" data-sec="community">Community</a>
       <a href="#faq" data-sec="faq">FAQ</a>
+      <span class="nav-indicator" id="navIndicator"></span>
     </div>
     <button class="navcta" data-openwl>Join waitlist</button>
     <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -579,9 +595,9 @@
       <h2>What players and coaches told us.</h2>
     </div>
     <div class="cards">
-      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">So basically this app is like grab food, whenever your team decides to get a coach and want your team to get to know the game better, this app is one tap away. very efficient since other people dont have the connections that others have.</p><div class="qwho"><span class="qav">W</span><div><div class="qname">Wardz</div><div class="qrole">Competitive gamer · Philippines</div></div><span class="qvia">Messenger</span></div></div>
-      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">this app can help players to find a coach and also the coach to find clients. so instead of learning without proper system or structure this app can help them improve more faster, especially in areas that is hard to learn without a proper coach.</p><div class="qwho"><span class="qav">J</span><div><div class="qname">Jhon Jocel</div><div class="qrole">Coach &amp; competitive player · Philippines</div></div><span class="qvia">Messenger</span></div></div>
-      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">i think its really cool that there's an app that makes it convenient for esports player and coaches as well to get matched. i think its a win win as well.</p><div class="qwho"><span class="qav">A</span><div><div class="qname">Alexis Marie</div><div class="qrole">Competitive gamer · Indonesia</div></div><span class="qvia">Instagram</span></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">So basically this app is like grab food, whenever your team decides to get a coach and want your team to get to know the game better, this app is one tap away. very efficient since other people dont have the connections that others have.</p><div class="qwho"><span class="qav"><img src="Images/wardz.jpg" alt="Wardz"></span><div><div class="qname">Wardz</div><div class="qrole">Competitive gamer · Philippines</div></div><span class="qvia">Messenger</span></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">this app can help players to find a coach and also the coach to find clients. so instead of learning without proper system or structure this app can help them improve more faster, especially in areas that is hard to learn without a proper coach.</p><div class="qwho"><span class="qav"><img src="Images/jhon.jpg" alt="Jhon Jocel"></span><div><div class="qname">Jhon Jocel</div><div class="qrole">Coach &amp; competitive player · Philippines</div></div><span class="qvia">Messenger</span></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">i think its really cool that there's an app that makes it convenient for esports player and coaches as well to get matched. i think its a win win as well.</p><div class="qwho"><span class="qav qav-blank" role="img" aria-label="Alexis Marie"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="3.6" fill="#c6cbd4"/><path d="M4.6 20.4c0-4.3 3.3-7.6 7.4-7.6s7.4 3.3 7.4 7.6" fill="#c6cbd4"/></svg></span><div><div class="qname">Alexis Marie</div><div class="qrole">Competitive gamer · Indonesia</div></div><span class="qvia">Instagram</span></div></div>
     </div>
   </section>
 
@@ -612,7 +628,14 @@
       <div class="foot-brand"><div class="brand"><img src="Images/logo&amp;word-mark.png" alt="Harbourly"></div><p class="foot-tag">A place for gamers who want to grow and coaches who want to teach.</p></div>
       <div class="foot-col"><h4>Platform</h4><a href="#verification">Process</a><a href="#features">Features</a><a href="#coaches">Community</a><a href="#faq">FAQ</a></div>
       <div class="foot-col"><h4>Legal</h4><a href="terms-of-service.html">Terms of service</a><a href="privacy-policy.html">Privacy policy</a></div>
-      <div class="foot-col"><h4>Contact</h4><a href="mailto:hello@harbourly.gg">hello@harbourly.gg</a><a href="mailto:support@harbourly.gg">support@harbourly.gg</a></div>
+      <div class="foot-col"><h4>Contact</h4><a href="mailto:hello@harbourly.gg">hello@harbourly.gg</a><a href="mailto:support@harbourly.gg">support@harbourly.gg</a>
+        <div class="foot-socials">
+          <a href="https://www.instagram.com/harbour.ly?igsi=MzUwOWxxZ3FzNmll" target="_blank" rel="noopener noreferrer" aria-label="Harbourly on Instagram"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a>
+          <a href="https://www.facebook.com/harbourly/?locale=sw_KE" target="_blank" rel="noopener noreferrer" aria-label="Harbourly on Facebook"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21V13H18L18.5 9.5H15V7.5A1.5 1.5 0 0 1 16.5 6H18.5V3H16A4.5 4.5 0 0 0 11.5 7.5V9.5H9V13H11.5V21"/></svg></a>
+          <a href="https://www.tiktok.com/@harbourly?_r=1&_t=ZS-99GCRIM8NL3" target="_blank" rel="noopener noreferrer" aria-label="Harbourly on TikTok"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4c.3 2.5 2.1 4.3 4.6 4.6"/><path d="M20.6 8.9v3.4c-1.8 0-3.5-.6-4.9-1.6v6.1a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v3.5a2.3 2.3 0 1 0 1.6 2.2V4h3.5c.1 1.6.7 3 1.6 4"/></svg></a>
+          <a href="https://www.youtube.com/@harbourly/videos" target="_blank" rel="noopener noreferrer" aria-label="Harbourly on YouTube"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 7.6a3 3 0 0 0-2.1-2.1C17.6 5 12 5 12 5s-5.6 0-7.4.5A3 3 0 0 0 2.5 7.6 31 31 0 0 0 2 12a31 31 0 0 0 .5 4.4 3 3 0 0 0 2.1 2.1C6.4 19 12 19 12 19s5.6 0 7.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.5-4.4z"/><path d="M10 9.5v5l4.5-2.5z"/></svg></a>
+        </div>
+      </div>
     </div>
     <div class="foot-bottom">© 2026 Harbourly. Built for Southeast Asia.</div>
   </footer>
@@ -730,7 +753,12 @@
 
   /* nav scroll-spy + mobile */
   var secs=['how','features','community','faq'].map(function(id){return document.getElementById(id)}).filter(Boolean);  var navA=Array.prototype.slice.call(document.querySelectorAll('.navlinks a[data-sec]'));
-  function spy(){var y=window.scrollY+Math.round(window.innerHeight*0.35),cur='';secs.forEach(function(s){if(s.offsetTop<=y)cur=s.id});navA.forEach(function(a){a.classList.toggle('on',a.dataset.sec===cur)})}  var burger=document.getElementById('burger'),mm=document.getElementById('mobilemenu');
+  var navIndicator=document.getElementById('navIndicator'),navLinksEl=document.getElementById('navlinks');
+  function moveNavIndicator(link){if(!link){navIndicator.classList.remove('show');return}
+    navIndicator.classList.add('show');
+    navIndicator.style.width=link.offsetWidth+'px';
+    navIndicator.style.transform='translateX('+link.offsetLeft+'px)'}
+  function spy(){var y=window.scrollY+Math.round(window.innerHeight*0.35),cur='';secs.forEach(function(s){if(s.offsetTop<=y)cur=s.id});var active=null;navA.forEach(function(a){var on=a.dataset.sec===cur;a.classList.toggle('on',on);if(on)active=a});moveNavIndicator(active)}  var burger=document.getElementById('burger'),mm=document.getElementById('mobilemenu');
   burger.addEventListener('click',function(){mm.classList.toggle('open')});
   mm.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mm.classList.remove('open')})});
 
@@ -835,6 +863,7 @@
   window.addEventListener('scroll',spy,{passive:true});
   window.addEventListener('resize',spy);
   window.addEventListener('load',spy);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(spy);
   spy();
 })();
 </script>
