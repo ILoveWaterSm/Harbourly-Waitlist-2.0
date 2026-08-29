@@ -211,8 +211,9 @@
   /* community */
   .community{padding-top:clamp(80px,10vh,140px);padding-bottom:clamp(80px,10vh,140px)}
   .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;max-width:1440px;margin-left:auto;margin-right:auto}
-  .qcard{position:relative;background:linear-gradient(180deg,rgba(11,22,40,.7),rgba(6,16,36,.75));border:1px solid rgba(148,163,184,.12);border-radius:16px;padding:24px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s,border-color .3s}
-  .qcard:hover{transform:translateY(-4px);border-color:rgba(34,214,111,.3);box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 30px rgba(34,214,111,.1)}
+  .qcard{position:relative;background:linear-gradient(180deg,rgba(11,22,40,.7),rgba(6,16,36,.75));border-radius:16px;padding:24px;display:flex;flex-direction:column;box-shadow:0 20px 44px rgba(0,0,0,.28);transition:transform .3s,box-shadow .3s;overflow:hidden}
+  .qcard::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.4),transparent)}
+  .qcard:hover{transform:translateY(-4px);box-shadow:0 26px 56px rgba(0,0,0,.4),0 0 30px rgba(34,214,111,.1)}
   .qcard .quote{color:#c4cedb;font-size:14.5px;line-height:1.6;margin:0 0 20px;flex:1;text-align:left}
   .qmark{font-family:"Sora";font-weight:800;font-size:34px;color:var(--green);line-height:.6;margin-bottom:14px;text-shadow:0 0 20px rgba(34,214,111,.4)}
   .qwho{display:flex;align-items:center;gap:11px}
@@ -287,16 +288,17 @@
   .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   /* role cards */
   .roles{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .role{position:relative;text-align:left;appearance:none;cursor:pointer;background:linear-gradient(180deg,rgba(11,22,40,.7),rgba(6,16,36,.78));border:1px solid rgba(148,163,184,.16);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px;transition:.25s;overflow:hidden;color:var(--ink)}
+  .role{position:relative;text-align:left;appearance:none;cursor:pointer;background:linear-gradient(180deg,rgba(11,22,40,.7),rgba(6,16,36,.78));border:1px solid rgba(148,163,184,.16);border-radius:16px;padding:28px 26px;display:flex;flex-direction:column;gap:10px;transition:.25s;overflow:hidden;color:var(--ink)}
+  .role::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(148,163,184,.3),transparent);transition:background .3s}
   .role:hover{border-color:rgba(34,214,111,.45);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.35)}
   .role-tag{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-  .role-ic{width:46px;height:46px;border-radius:12px;background:rgba(34,214,111,.1);border:1px solid rgba(34,214,111,.3);display:grid;place-items:center;margin-bottom:4px;transition:.25s}
-  .role-ic svg{width:23px;height:23px;stroke:var(--green);transition:.25s}
-  .role-t{font-family:"Sora";font-weight:700;font-size:18px}
+  .role-ic{width:60px;height:60px;border-radius:16px;background:rgba(34,214,111,.1);border:1px solid rgba(34,214,111,.3);display:grid;place-items:center;margin-bottom:4px;transition:.25s}
+  .role-ic svg{width:29px;height:29px;stroke:var(--green);transition:.25s}
+  .role-t{font-family:"Sora";font-weight:700;font-size:19px}
   .role-d{font-size:13.5px;color:var(--muted);line-height:1.45}
-  .role-wm{position:absolute;right:-6px;bottom:-16px;font-family:"Sora";font-weight:800;font-size:86px;color:rgba(148,163,184,.05);pointer-events:none;line-height:1}
   .role-chk{position:absolute;top:18px;right:18px;width:24px;height:24px;border-radius:50%;background:var(--green);color:var(--green-ink);display:grid;place-items:center;font-size:13px;font-weight:700;opacity:0;transform:scale(.5);transition:.25s}
   .role.sel{border-color:var(--green);box-shadow:0 0 0 1px var(--green),0 18px 44px rgba(34,214,111,.2),0 0 34px rgba(34,214,111,.16)}
+  .role.sel::before{background:linear-gradient(90deg,transparent,rgba(34,214,111,.7),transparent)}
   .role.sel .role-ic{background:var(--green)}
   .role.sel .role-ic svg{stroke:var(--green-ink)}
   .role.sel .role-chk{opacity:1;transform:scale(1)}
@@ -410,7 +412,7 @@
     <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
   <div class="mobilemenu" id="mobilemenu">
-    <a href="#how">Process</a><a href="#features">Features</a><a href="#community">Community</a><a href="#faq">FAQ</a><a href="#coaches">For coaches</a><a class="mcta" data-openwl href="javascript:void(0)">Join waitlist →</a>
+    <a href="#how">Process</a><a href="#features">Features</a><a href="#community">Community</a><a href="#faq">FAQ</a><a class="mcta" data-openwl href="javascript:void(0)">Join waitlist →</a>
   </div>
 
   <!-- HERO -->
@@ -596,6 +598,9 @@
       <div class="qcard reveal"><div class="qmark">"</div><p class="quote">So basically this app is like grab food, whenever your team decides to get a coach and want your team to get to know the game better, this app is one tap away. very efficient since other people dont have the connections that others have.</p><div class="qwho"><span class="qav"><img src="Images/wardz.jpg" alt="Wardz"></span><div><div class="qname">Wardz</div><div class="qrole">Competitive gamer · Philippines</div></div><span class="qvia">Messenger</span></div></div>
       <div class="qcard reveal"><div class="qmark">"</div><p class="quote">this app can help players to find a coach and also the coach to find clients. so instead of learning without proper system or structure this app can help them improve more faster, especially in areas that is hard to learn without a proper coach.</p><div class="qwho"><span class="qav"><img src="Images/jhon.jpg" alt="Jhon Jocel"></span><div><div class="qname">Jhon Jocel</div><div class="qrole">Coach &amp; competitive player · Philippines</div></div><span class="qvia">Messenger</span></div></div>
       <div class="qcard reveal"><div class="qmark">"</div><p class="quote">i think its really cool that there's an app that makes it convenient for esports player and coaches as well to get matched. i think its a win win as well.</p><div class="qwho"><span class="qav qav-blank" role="img" aria-label="Alexis Marie"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="3.6" fill="#c6cbd4"/><path d="M4.6 20.4c0-4.3 3.3-7.6 7.4-7.6s7.4 3.3 7.4 7.6" fill="#c6cbd4"/></svg></span><div><div class="qname">Alexis Marie</div><div class="qrole">Competitive gamer · Indonesia</div></div><span class="qvia">Instagram</span></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">We struggle to find a coach back then, but now with the help of this website, it's easier for us to find coaches.</p><div class="qwho"><span class="qav"><img src="Images/jeo.jpg" alt="Jeo Sebial"></span><div><div class="qname">Jeo Sebial</div><div class="qrole">Competitive gamer · Philippines</div></div><span class="qvia">Messenger</span></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">It aligns with one of my dreams of becoming an esports coach — not just as a casual coach, but someone who can actually teach.</p><div class="qwho"><span class="qav"><img src="Images/wiles.jpg" alt="Wiles Indaya"></span><div><div class="qname">Wiles Indaya</div><div class="qrole">Aspiring coach · Philippines</div></div><span class="qvia">Messenger</span></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">The app really helps us coaches book properly, and makes it really flexible for both players and coaches.</p><div class="qwho"><span class="qav"><img src="Images/tim.jpg" alt="Tim Calayca"></span><div><div class="qname">Tim Calayca</div><div class="qrole">Coach · Philippines</div></div><span class="qvia">Messenger</span></div></div>
     </div>
   </section>
 
@@ -653,17 +658,17 @@
       <div class="roles">
         <button class="role" data-role="gamer">
           <span class="role-tag">For players</span>
-          <span class="role-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1"/><circle cx="18.5" cy="13.5" r="1"/></svg></span>
+          <span class="role-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8h11a4 4 0 0 1 3.95 4.6l-.6 4A3 3 0 0 1 17.9 19c-1 0-1.9-.55-2.4-1.4L14.5 16h-5l-1 1.6a2.9 2.9 0 0 1-2.5 1.4 3 3 0 0 1-2.95-2.4l-.6-4A4 4 0 0 1 6.5 8Z"/><path d="M7.3 11v3.2M5.7 12.6h3.2"/><circle cx="16" cy="11.3" r=".75"/><circle cx="17.7" cy="13" r=".75"/></svg></span>
           <span class="role-t">Competitive gamer</span>
           <span class="role-d">I want to find a coach and improve.</span>
-          <span class="role-chk">✓</span><span class="role-wm">01</span>
+          <span class="role-chk">✓</span>
         </button>
         <button class="role" data-role="coach">
           <span class="role-tag">For coaches</span>
-          <span class="role-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 20a8 8 0 0 1 16 0"/><circle cx="12" cy="7" r="4"/><path d="M18 8l3-1M6 8L3 7"/></svg></span>
+          <span class="role-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 6l9 5-9 5-9-5Z"/><path d="M7 13.2V17c0 1.1 2.2 2 5 2s5-.9 5-2v-3.8"/><path d="M20 11v4.5"/></svg></span>
           <span class="role-t">Professional coach</span>
           <span class="role-d">I want to coach and grow my business.</span>
-          <span class="role-chk">✓</span><span class="role-wm">02</span>
+          <span class="role-chk">✓</span>
         </button>
       </div>
       <p class="qerr" id="err1"></p>
