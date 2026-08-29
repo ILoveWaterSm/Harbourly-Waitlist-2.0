@@ -354,6 +354,9 @@
   }
   @media (max-width:600px){
     .brand img{height:34px}
+    .cards{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;gap:0;margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);padding:0 var(--pad) 6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .cards::-webkit-scrollbar{display:none}
+    .cards .qcard{flex:0 0 100%;width:100%;scroll-snap-align:center;scroll-snap-stop:always}
     .hero{min-height:auto;padding-top:14vh;padding-bottom:12vh}
     .hero h1{font-size:clamp(33px,10.5vw,50px);line-height:.95}
     .hero .sub{font-size:15.5px}
