@@ -110,7 +110,10 @@
   .games .glogo{display:flex;align-items:center;justify-content:center;width:clamp(130px,15vw,190px);height:clamp(48px,6.5vw,72px);transition:transform .3s,filter .3s}
   .games .glogo:hover{transform:translateY(-3px);filter:drop-shadow(0 0 16px rgba(34,214,111,.35))}
   .games .glogo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
-  .games .cap{margin-top:24px;color:var(--muted);font-size:14px}
+  .games .cap{margin-top:34px;color:var(--muted);font-size:14px}
+  .games .cap-strong{font-size:clamp(15px,1.8vw,18px);font-weight:600;color:var(--ink);display:flex;flex-wrap:wrap;gap:.4em;justify-content:center}
+  .games .cap-cta{appearance:none;border:0;background:transparent;cursor:pointer;padding:0;color:var(--green);font:inherit;font-weight:700;border-bottom:1px solid rgba(34,214,111,.4);transition:border-color .2s,text-shadow .2s}
+  .games .cap-cta:hover{border-color:var(--green);text-shadow:0 0 14px rgba(34,214,111,.5)}
 
   /* section header (centred) */
   .head{text-align:center;max-width:720px;margin:0 auto;padding-top:clamp(80px,10vh,140px)}
@@ -223,7 +226,6 @@
   .qav-blank svg{width:32px;height:32px}
   .qname{font-weight:600;font-size:13.5px}
   .qrole{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.04em;color:var(--muted);margin-top:2px}
-  .qvia{margin-left:auto;font-family:"Geist Mono",monospace;font-size:9.5px;color:#5b6b82}
 
   /* faq */
   .faq{padding-top:clamp(80px,10vh,140px);padding-bottom:clamp(80px,10vh,140px)}
@@ -238,13 +240,8 @@
   .faqa p{margin:0;padding:0 2px 24px;color:var(--muted);font-size:15.5px;line-height:1.65;max-width:60em}
 
   /* final cta */
-  .final{position:relative;text-align:center;padding:clamp(110px,16vh,200px) var(--pad);background:radial-gradient(60% 70% at 50% 50%,rgba(34,214,111,.09),transparent 70%)}
-  .final h2{font-weight:800;font-size:clamp(36px,5.4vw,80px);line-height:.98;letter-spacing:-.03em;margin:0 0 18px}
-  .final .word{color:var(--green);text-shadow:0 0 40px rgba(34,214,111,.55)}
-  .final p{color:var(--muted);font-size:18px;margin:0 0 40px}
-
   /* footer */
-  footer{position:relative;padding:56px var(--pad) 48px;background:rgba(1,6,15,.5)}
+  footer{position:relative;padding:72px var(--pad) 48px;background:rgba(1,6,15,.5)}
   footer::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.4),transparent)}
   .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;max-width:1180px;margin:0 auto}
   .foot-brand .brand{margin-bottom:14px}
@@ -252,11 +249,13 @@
   .foot-col h4{font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin:0 0 16px;font-weight:500}
   .foot-col a{display:block;color:var(--muted);text-decoration:none;font-size:14px;margin-bottom:11px;transition:color .2s}
   .foot-col a:hover{color:var(--ink)}
-  .foot-bottom{max-width:1180px;margin:44px auto 0;padding-top:22px;border-top:1px solid rgba(148,163,184,.07);font-family:"Geist Mono",monospace;font-size:11px;color:#4b5a72;letter-spacing:.04em}
-  .foot-socials{display:flex;gap:16px;margin-top:16px;margin-left:-3px}
-  .foot-socials a{display:grid;place-items:center;flex:0 0 auto;transition:transform .25s,filter .25s}
-  .foot-socials a:hover{transform:translateY(-2px);filter:drop-shadow(0 0 10px rgba(34,214,111,.5))}
-  .foot-socials svg{width:26px;height:26px;stroke:var(--green);fill:none}
+  .foot-social-row{display:flex;max-width:1180px;margin:56px auto 0;border:1px solid rgba(148,163,184,.14);border-radius:16px;overflow:hidden;background:rgba(11,22,40,.35)}
+  .foot-social-card{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;padding:22px 16px;color:var(--muted);text-decoration:none;font-weight:600;font-size:14.5px;border-right:1px solid rgba(148,163,184,.14);transition:background .2s,color .2s}
+  .foot-social-card:last-child{border-right:none}
+  .foot-social-card:hover{background:rgba(34,214,111,.07);color:var(--ink)}
+  .foot-social-card svg{width:22px;height:22px;stroke:var(--green);fill:none;flex:0 0 auto;transition:filter .2s}
+  .foot-social-card:hover svg{filter:drop-shadow(0 0 8px rgba(34,214,111,.6))}
+  .foot-bottom{max-width:1180px;margin:40px auto 0;padding-top:22px;border-top:1px solid rgba(148,163,184,.07);font-family:"Geist Mono",monospace;font-size:11px;color:#4b5a72;letter-spacing:.04em}
 
   /* ---- waitlist overlay ---- */
   .wl{position:fixed;inset:0;z-index:60;background:radial-gradient(120% 80% at 50% 0%,rgba(34,214,111,.06),transparent 60%),linear-gradient(180deg,#050d1c,#020813);animation:wlIn .3s ease;display:flex;flex-direction:column}
@@ -374,6 +373,9 @@
     .split .col-text{display:flex;flex-direction:column;align-items:center}
     .mcard{margin-left:auto;margin-right:auto}
     .foot-grid{grid-template-columns:1fr}
+    .foot-social-row{flex-direction:column;margin-top:40px}
+    .foot-social-card{border-right:none;border-bottom:1px solid rgba(148,163,184,.14);justify-content:flex-start;padding:18px 20px}
+    .foot-social-card:last-child{border-bottom:none}
     .faqq{font-size:16px}
     /* how-it-works steps: number and title on one row, description below */
     .steps{gap:26px}
@@ -411,11 +413,11 @@
       <a href="#faq" data-sec="faq">FAQ</a>
       <span class="nav-indicator" id="navIndicator"></span>
     </div>
-    <button class="navcta" data-openwl>Join waitlist</button>
+    <button class="navcta" data-openwl>Join Harbourly</button>
     <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
   <div class="mobilemenu" id="mobilemenu">
-    <a href="#how">Process</a><a href="#features">Features</a><a href="#community">Community</a><a href="#faq">FAQ</a><a class="mcta" data-openwl href="javascript:void(0)">Join waitlist →</a>
+    <a href="#how">Process</a><a href="#features">Features</a><a href="#community">Community</a><a href="#faq">FAQ</a><a class="mcta" data-openwl href="javascript:void(0)">Join Harbourly →</a>
   </div>
 
   <!-- HERO -->
@@ -430,8 +432,8 @@
   <!-- GAMES -->
   <section class="section games reveal">
     <div class="lbl">Available at launch</div>
-    <div class="row"><span class="glogo"><img src="Images/1.png" alt="Mobile Legends" loading="lazy"></span><span class="glogo"><img src="Images/2.png" alt="Free Fire" loading="lazy"></span><span class="glogo"><img src="Images/3.png" alt="Valorant" loading="lazy"></span><span class="glogo"><img src="Images/4.png" alt="Counter-Strike 2" loading="lazy"></span><span class="glogo"><img src="Images/5.png" alt="Riftbound" loading="lazy"></span></div>
-    <div class="cap">Mobile, PC and tabletop. More titles as our coach roster grows.</div>
+    <div class="row"><span class="glogo"><img src="Images/1.png" alt="Mobile Legends" loading="lazy"></span><span class="glogo"><img src="Images/6.png" alt="Call of Duty: Mobile" loading="lazy"></span><span class="glogo"><img src="Images/3.png" alt="Valorant" loading="lazy"></span><span class="glogo"><img src="Images/4.png" alt="Counter-Strike 2" loading="lazy"></span><span class="glogo"><img src="Images/5.png" alt="Riftbound" loading="lazy"></span></div>
+    <div class="cap cap-strong">Don't see your game? <button type="button" class="cap-cta" data-openwl>Join the waitlist and help us bring it to Harbourly&nbsp;→</button></div>
   </section>
 
   <div class="gdiv"></div>
@@ -598,12 +600,12 @@
       <h2>What players and coaches told us.</h2>
     </div>
     <div class="cards">
-      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">So basically this app is like grab food, whenever your team decides to get a coach and want your team to get to know the game better, this app is one tap away. very efficient since other people dont have the connections that others have.</p><div class="qwho"><span class="qav"><img src="Images/wardz.jpg" alt="Wardz"></span><div><div class="qname">Wardz</div><div class="qrole">Competitive gamer · Philippines</div></div><span class="qvia">Messenger</span></div></div>
-      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">this app can help players to find a coach and also the coach to find clients. so instead of learning without proper system or structure this app can help them improve more faster, especially in areas that is hard to learn without a proper coach.</p><div class="qwho"><span class="qav"><img src="Images/jhon.jpg" alt="Jhon Jocel"></span><div><div class="qname">Jhon Jocel</div><div class="qrole">Coach &amp; competitive player · Philippines</div></div><span class="qvia">Messenger</span></div></div>
-      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">i think its really cool that there's an app that makes it convenient for esports player and coaches as well to get matched. i think its a win win as well.</p><div class="qwho"><span class="qav qav-blank" role="img" aria-label="Alexis Marie"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="3.6" fill="#c6cbd4"/><path d="M4.6 20.4c0-4.3 3.3-7.6 7.4-7.6s7.4 3.3 7.4 7.6" fill="#c6cbd4"/></svg></span><div><div class="qname">Alexis Marie</div><div class="qrole">Competitive gamer · Indonesia</div></div><span class="qvia">Instagram</span></div></div>
-      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">We struggle to find a coach back then, but now with the help of this website, it's easier for us to find coaches.</p><div class="qwho"><span class="qav"><img src="Images/jeo.jpg" alt="Jeo Sebial"></span><div><div class="qname">Jeo Sebial</div><div class="qrole">Competitive gamer · Philippines</div></div><span class="qvia">Messenger</span></div></div>
-      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">It aligns with one of my dreams of becoming an esports coach — not just as a casual coach, but someone who can actually teach.</p><div class="qwho"><span class="qav"><img src="Images/wiles.jpg" alt="Wiles Indaya"></span><div><div class="qname">Wiles Indaya</div><div class="qrole">Aspiring coach · Philippines</div></div><span class="qvia">Messenger</span></div></div>
-      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">The app really helps us coaches book properly, and makes it really flexible for both players and coaches.</p><div class="qwho"><span class="qav"><img src="Images/tim.jpg" alt="Tim Calayca"></span><div><div class="qname">Tim Calayca</div><div class="qrole">Coach · Philippines</div></div><span class="qvia">Messenger</span></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">So basically this app is like grab food, whenever your team decides to get a coach and want your team to get to know the game better, this app is one tap away. very efficient since other people dont have the connections that others have.</p><div class="qwho"><span class="qav"><img src="Images/wardz.jpg" alt="Wardz"></span><div><div class="qname">Wardz</div><div class="qrole">Competitive gamer</div></div></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">this app can help players to find a coach and also the coach to find clients. so instead of learning without proper system or structure this app can help them improve more faster, especially in areas that is hard to learn without a proper coach.</p><div class="qwho"><span class="qav"><img src="Images/jhon.jpg" alt="Jhon Jocel"></span><div><div class="qname">Jhon Jocel</div><div class="qrole">Coach &amp; competitive gamer</div></div></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">i think its really cool that there's an app that makes it convenient for esports player and coaches as well to get matched. i think its a win win as well.</p><div class="qwho"><span class="qav qav-blank" role="img" aria-label="Alexis Marie"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="3.6" fill="#c6cbd4"/><path d="M4.6 20.4c0-4.3 3.3-7.6 7.4-7.6s7.4 3.3 7.4 7.6" fill="#c6cbd4"/></svg></span><div><div class="qname">Alexis Marie</div><div class="qrole">Competitive gamer</div></div></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">We struggle to find a coach back then, but now with the help of this website, it's easier for us to find coaches.</p><div class="qwho"><span class="qav"><img src="Images/jeo.jpg" alt="Jeo Sebial"></span><div><div class="qname">Jeo Sebial</div><div class="qrole">Competitive gamer</div></div></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">It aligns with one of my dreams of becoming an esports coach — not just as a casual coach, but someone who can actually teach.</p><div class="qwho"><span class="qav"><img src="Images/wiles.jpg" alt="Wiles Indaya"></span><div><div class="qname">Wiles Indaya</div><div class="qrole">Aspiring coach</div></div></div></div>
+      <div class="qcard reveal"><div class="qmark">"</div><p class="quote">The app really helps us coaches book properly, and makes it really flexible for both players and coaches.</p><div class="qwho"><span class="qav"><img src="Images/tim.jpg" alt="Tim Calayca"></span><div><div class="qname">Tim Calayca</div><div class="qrole">Coach</div></div></div></div>
     </div>
   </section>
 
@@ -617,15 +619,8 @@
       <div class="faqitem"><button class="faqq">How does verification work?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Three checks. The coach records a short voice clip reading a phrase we generate. They submit proof of their rank and history, which our team reviews by hand. And their legal identity is confirmed by our payment partner when they set up payouts. Clearing that identity check is what earns them the Verified badge.</p></div></div>
       <div class="faqitem"><button class="faqq">What if my coach ghosts or underdelivers?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>You have 72 hours after a session to raise a dispute. If nothing's raised in that window, payment releases automatically to the coach. Once a dispute is filed, our team reviews it within 72 hours.</p></div></div>
       <div class="faqitem"><button class="faqq">What does it cost?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Booking a coach is free. At checkout you pay the coach's listed rate plus a 5% platform fee, and you'll see the full total before you confirm, with nothing added after. Coaches pay a 7% commission on completed sessions, and nothing if they don't get booked.</p></div></div>
-      <div class="faqitem"><button class="faqq">Which games are supported?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>We're launching with Mobile Legends, Free Fire, Valorant, Counter-Strike 2 and Riftbound: two mobile, two PC and one TCG. We're adding titles as our coach roster grows, and the waitlist form lets you tell us which game you want next.</p></div></div>
+      <div class="faqitem"><button class="faqq">Which games are supported?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>We're launching with Mobile Legends, Call of Duty: Mobile, Valorant, Counter-Strike 2 and Riftbound: two mobile, two PC and one TCG. We're adding titles as our coach roster grows, and the waitlist form lets you tell us which game you want next.</p></div></div>
     </div>
-  </section>
-
-  <!-- FINAL CTA -->
-  <section class="final reveal">
-    <h2>Your <span class="word">harbour</span> is waiting.</h2>
-    <p>We're launching soon. Join the waitlist to be the first in.</p>
-    <button class="cta cta-xl" data-openwl data-magnetic>Join the waitlist&nbsp;↑</button>
   </section>
 
   <!-- FOOTER -->
@@ -634,16 +629,16 @@
       <div class="foot-brand"><div class="brand"><img src="Images/logo&amp;word-mark.png" alt="Harbourly"></div><p class="foot-tag">A place for gamers who want to grow and coaches who want to teach.</p></div>
       <div class="foot-col"><h4>Platform</h4><a href="#verification">Process</a><a href="#features">Features</a><a href="#coaches">Community</a><a href="#faq">FAQ</a></div>
       <div class="foot-col"><h4>Legal</h4><a href="terms-of-service.html">Terms of service</a><a href="privacy-policy.html">Privacy policy</a></div>
-      <div class="foot-col"><h4>Contact</h4><a href="mailto:hello@harbourly.gg">hello@harbourly.gg</a><a href="mailto:support@harbourly.gg">support@harbourly.gg</a>
-        <div class="foot-socials">
-          <a href="https://www.instagram.com/harbour.ly?igsi=MzUwOWxxZ3FzNmll" target="_blank" rel="noopener noreferrer" aria-label="Harbourly on Instagram"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a>
-          <a href="https://www.facebook.com/harbourly/?locale=sw_KE" target="_blank" rel="noopener noreferrer" aria-label="Harbourly on Facebook"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21V13H18L18.5 9.5H15V7.5A1.5 1.5 0 0 1 16.5 6H18.5V3H16A4.5 4.5 0 0 0 11.5 7.5V9.5H9V13H11.5V21"/></svg></a>
-          <a href="https://www.tiktok.com/@harbourly?_r=1&_t=ZS-99GCRIM8NL3" target="_blank" rel="noopener noreferrer" aria-label="Harbourly on TikTok"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4c.3 2.5 2.1 4.3 4.6 4.6"/><path d="M20.6 8.9v3.4c-1.8 0-3.5-.6-4.9-1.6v6.1a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v3.5a2.3 2.3 0 1 0 1.6 2.2V4h3.5c.1 1.6.7 3 1.6 4"/></svg></a>
-          <a href="https://www.youtube.com/@harbourly/videos" target="_blank" rel="noopener noreferrer" aria-label="Harbourly on YouTube"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 7.6a3 3 0 0 0-2.1-2.1C17.6 5 12 5 12 5s-5.6 0-7.4.5A3 3 0 0 0 2.5 7.6 31 31 0 0 0 2 12a31 31 0 0 0 .5 4.4 3 3 0 0 0 2.1 2.1C6.4 19 12 19 12 19s5.6 0 7.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.5-4.4z"/><path d="M10 9.5v5l4.5-2.5z"/></svg></a>
-        </div>
-      </div>
+      <div class="foot-col"><h4>Contact</h4><a href="mailto:hello@harbourly.gg">hello@harbourly.gg</a><a href="mailto:support@harbourly.gg">support@harbourly.gg</a></div>
     </div>
-    <div class="foot-bottom">© 2026 Harbourly. Built for Southeast Asia.</div>
+    <div class="foot-social-row">
+      <a class="foot-social-card" href="https://www.instagram.com/harbour.ly?igsi=MzUwOWxxZ3FzNmll" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg><span>Instagram</span></a>
+      <a class="foot-social-card" href="https://www.facebook.com/harbourly/?locale=sw_KE" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21V13H18L18.5 9.5H15V7.5A1.5 1.5 0 0 1 16.5 6H18.5V3H16A4.5 4.5 0 0 0 11.5 7.5V9.5H9V13H11.5V21"/></svg><span>Facebook</span></a>
+      <a class="foot-social-card" href="https://www.tiktok.com/@harbourly?_r=1&_t=ZS-99GCRIM8NL3" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4c.3 2.5 2.1 4.3 4.6 4.6"/><path d="M20.6 8.9v3.4c-1.8 0-3.5-.6-4.9-1.6v6.1a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v3.5a2.3 2.3 0 1 0 1.6 2.2V4h3.5c.1 1.6.7 3 1.6 4"/></svg><span>TikTok</span></a>
+      <a class="foot-social-card" href="https://www.youtube.com/@harbourly/videos" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 7.6a3 3 0 0 0-2.1-2.1C17.6 5 12 5 12 5s-5.6 0-7.4.5A3 3 0 0 0 2.5 7.6 31 31 0 0 0 2 12a31 31 0 0 0 .5 4.4 3 3 0 0 0 2.1 2.1C6.4 19 12 19 12 19s5.6 0 7.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.5-4.4z"/><path d="M10 9.5v5l4.5-2.5z"/></svg><span>YouTube</span></a>
+      <a class="foot-social-card" href="javascript:void(0)" title="Coming soon"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 6.5c-1.2-.6-2.4-1-3.8-1.2l-.3.6c1.3.3 2.5.7 3.6 1.3M6.5 6.5c1.2-.6 2.4-1 3.8-1.2l.3.6c-1.3.3-2.5.7-3.6 1.3"/><path d="M6.5 6.5C4.3 8 3.2 11 3 15.2c1.6 1.2 3.6 2.1 5.7 2.5l.7-1.3M17.5 6.5c2.2 1.5 3.3 4.5 3.5 8.7-1.6 1.2-3.6 2.1-5.7 2.5l-.7-1.3"/><path d="M8.7 16.4c2.1.5 4.5.5 6.6 0"/><ellipse cx="9.2" cy="13" rx="1.1" ry="1.3"/><ellipse cx="14.8" cy="13" rx="1.1" ry="1.3"/></svg><span>Discord</span></a>
+    </div>
+    <div class="foot-bottom">© 2026 Harbourly. All Rights Reserved.</div>
   </footer>
 </div>
 
@@ -683,7 +678,7 @@
       <div class="qfield" id="gameRows"><div class="grow"><input list="gameSuggest" placeholder="Search or type a game" /></div></div>
       <button class="addgame" id="addGame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>Add another game</button>
       <p class="gamehint" id="gameHint" hidden>That's the maximum of 5 games.</p>
-      <datalist id="gameSuggest"><option>Mobile Legends</option><option>Free Fire</option><option>Valorant</option><option>Counter-Strike 2</option><option>League of Legends</option><option>Wild Rift</option><option>Honor of Kings</option><option>PUBG Mobile</option><option>Call of Duty Mobile</option><option>Rainbow Six Siege</option><option>Dota 2</option><option>Overwatch 2</option><option>Apex Legends</option><option>Fortnite</option><option>Brawl Stars</option><option>Clash Royale</option><option>Marvel Rivals</option><option>Teamfight Tactics</option></datalist>
+      <datalist id="gameSuggest"><option>Mobile Legends</option><option>Free Fire</option><option>Valorant</option><option>Counter-Strike 2</option><option>League of Legends</option><option>Wild Rift</option><option>Honor of Kings</option><option>PUBG Mobile</option><option>Rainbow Six Siege</option><option>Dota 2</option><option>Overwatch 2</option><option>Apex Legends</option><option>Fortnite</option><option>Brawl Stars</option><option>Clash Royale</option><option>Marvel Rivals</option><option>Teamfight Tactics</option></datalist>
       <p class="qerr" id="err2"></p>
     </div>
     <!-- STAGE 3: country -->
