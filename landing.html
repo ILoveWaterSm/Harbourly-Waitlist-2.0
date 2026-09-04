@@ -480,7 +480,7 @@
         <div class="eyebrow">Trust, built in</div>
         <h2>Every coach is checked before they can list</h2>
         <p>Anyone can call themselves a coach, so we don't take their word for it. Coaches record a short voice check, submit proof of rank and history for our team to review by hand, and their legal identity is verified by our payment partner when they set up payouts. That check is what earns the badge.</p>
-        <a class="link" href="verification-standard.html">Read the full verification standard →</a>
+        <!-- <a class="link" href="verification-standard.html">Read the full verification standard →</a> -->
       </div>
     </div>
   </section>
@@ -740,17 +740,19 @@
     if(reduce){items.forEach(function(i){i.classList.add('in')});return}
     items.forEach(function(i,ix){setTimeout(function(){i.classList.add('in')},250+ix*260)})}
   var stepsDone=false;
-  function litSteps(){if(stepsDone)return;stepsDone=true;document.querySelectorAll('#steps [data-step]').forEach(function(s,ix){setTimeout(function(){s.classList.add('lit')},reduce?0:ix*200)})}
+  function litSteps(){if(stepsDone)return;stepsDone=true;document.querySelectorAll('#steps [data-step]').forEach(function(s,ix){setTimeout(function(){s.classList.add('lit')},reduce?0:ix*350)})}
 
-  /* origin word-reveal: plays once, on a deliberate timer, when the section enters view (not scroll-linked, so fast scrollers still catch it) */
+  /* origin word-reveal: on a deliberate timer, when the section enters view (not scroll-linked, so fast scrollers still catch it); loops, resetting after a pause so it never just sits "done" */
   var owords=[];
   (function(){var beats=document.querySelectorAll('.origin .beat');beats.forEach(function(b){var t=b.textContent;b.textContent='';t.split(' ').forEach(function(word){var sp=document.createElement('span');sp.className='w';sp.textContent=word+' ';if(b.classList.contains('c'))sp.dataset.hot='1';b.appendChild(sp);owords.push(sp)})})})();
-  var originSection=document.querySelector('.origin'),originPlayed=false;
-  function playOrigin(){if(originPlayed)return;originPlayed=true;
+  var originSection=document.querySelector('.origin'),originStarted=false;
+  var originPer=105,originHold=4000;
+  function playOrigin(){
+    owords.forEach(function(w){w.classList.remove('lit','hot')});
     if(reduce){owords.forEach(function(w){w.classList.add('lit');if(w.dataset.hot)w.classList.add('hot')});return}
-    var per=105;
-    owords.forEach(function(w,i){setTimeout(function(){w.classList.add('lit');if(w.dataset.hot)w.classList.add('hot')},i*per)})}
-  if(originSection){var oio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)playOrigin()})},{threshold:.4});oio.observe(originSection)}
+    owords.forEach(function(w,i){setTimeout(function(){w.classList.add('lit');if(w.dataset.hot)w.classList.add('hot')},i*originPer)})}
+  function originLoop(){playOrigin();if(reduce)return;setTimeout(originLoop,owords.length*originPer+350+originHold)}
+  if(originSection){var oio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!originStarted){originStarted=true;originLoop()}})},{threshold:.4});oio.observe(originSection)}
 
   /* nav scroll-spy + mobile */
   var secs=['how','features','community','faq'].map(function(id){return document.getElementById(id)}).filter(Boolean);  var navA=Array.prototype.slice.call(document.querySelectorAll('.navlinks a[data-sec]'));

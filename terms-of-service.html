@@ -21,6 +21,11 @@
   a{color:inherit}
   h1,h2,h3{font-family:"Sora"}
   .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.08;background-image:var(--grain);background-size:140px 140px}
+  .grid-bg{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.4;
+    background-image:linear-gradient(rgba(148,163,184,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.14) 1px,transparent 1px);
+    background-size:80px 80px;background-position:center -1px;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 
   .page{position:relative;z-index:2}
   .section{position:relative;padding-left:var(--pad);padding-right:var(--pad)}
@@ -105,6 +110,7 @@
 <body>
 <div class="grain" aria-hidden="true"></div>
 <div class="page">
+  <div class="grid-bg" aria-hidden="true"></div>
 
   <nav>
     <a class="brand" href="landing.html"><img src="Images/logo&amp;word-mark.png" alt="Harbourly"></a>
