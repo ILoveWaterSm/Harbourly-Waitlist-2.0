@@ -55,7 +55,7 @@
   nav::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,214,111,.4),transparent)}
   .brand{display:flex;align-items:center;text-decoration:none}
   .brand img{height:40px;width:auto;display:block}
-  .backhome{justify-self:center;display:inline-flex;align-items:center;gap:9px;font-family:"Geist Mono",monospace;font-size:12.5px;letter-spacing:.08em;color:var(--muted);text-decoration:none;padding:8px 16px;border-radius:999px;transition:color .2s,background .2s,box-shadow .3s}
+  .backhome{justify-self:center;display:inline-flex;align-items:center;gap:9px;font-family:"Sora";font-weight:600;font-size:13.5px;word-spacing:.08em;letter-spacing:.02em;color:var(--muted);text-decoration:none;padding:8px 16px;border-radius:999px;transition:color .2s,background .2s,box-shadow .3s}
   .backhome:hover{color:var(--green);background:rgba(34,214,111,.08);box-shadow:0 0 18px rgba(34,214,111,.2)}
   .backhome svg{width:15px;height:15px;transition:transform .25s}
   .backhome:hover svg{transform:translateX(-3px)}
@@ -151,8 +151,8 @@
   .pstep p{color:var(--muted);font-size:16px;line-height:1.68;margin:0;max-width:60ch}
 
   /* faq */
-  .faqlist{margin:36px auto 0;max-width:860px;border-top:1px solid rgba(148,163,184,.1)}
-  .faqitem{border-bottom:1px solid rgba(148,163,184,.1)}
+  .faqlist{margin:36px auto 0;max-width:860px;border-top:2px solid rgba(148,163,184,.28)}
+  .faqitem{border-bottom:2px solid rgba(148,163,184,.28)}
   .faqq{width:100%;appearance:none;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 2px;text-align:left;color:var(--ink);font-family:"Sora";font-weight:600;font-size:clamp(16px,1.5vw,19px)}
   .faqq .pm{width:30px;height:30px;border-radius:50%;border:1px solid rgba(148,163,184,.25);display:grid;place-items:center;flex:0 0 auto;transition:.3s;color:var(--muted)}
   .faqq .pm svg{width:14px;height:14px;transition:transform .3s}
@@ -160,7 +160,6 @@
   .faqitem.open .pm svg{transform:rotate(45deg)}
   .faqa{max-height:0;overflow:hidden;transition:max-height .4s ease}
   .faqa p{margin:0;padding:0 2px 24px;color:var(--muted);font-size:15.5px;line-height:1.68;max-width:64ch}
-
 
   /* footer */
   footer{position:relative;padding:72px var(--pad) 48px;background:rgba(1,6,15,.5)}
@@ -214,7 +213,7 @@
     <div class="inner reveal">
       <div class="eyebrow">Verification standard</div>
       <h1>How we verify.</h1>
-      <p>Anyone can call themselves a coach. We are the ones who check. Every coach on Harbourly goes through identity verification before they can take a booking, no exceptions.</p>
+      <p>Anyone can call themselves a coach. We check. Every coach on Harbourly is checked before they can take a booking. No exceptions.</p>
     </div>
   </header>
 
@@ -227,43 +226,79 @@
         <div class="sc-sticky"><div class="sc-stack">
           <div class="cl on" data-cl="0">
             <div class="sc-num">01</div>
-            <div class="eyebrow">First layer of verification</div>
-            <h2>Your identity. Your credentials.</h2>
-            <p>Completed once, before a coach can go live. This is how we confirm you are who you say you are.</p>
+            <div class="eyebrow">Part of getting approved</div>
+            <h2>Already covered before you're live.</h2>
+            <p>This isn't an extra step. It's part of what gets reviewed before we approve a coach in the first place.</p>
           </div>
           <div class="cl" data-cl="1">
             <div class="sc-num">02</div>
-            <div class="eyebrow">First layer of verification</div>
-            <h2>Optional. Your track record</h2>
-            <p>Not required to earn your badge, but it's what turns a verified profile into a proven one.</p>
+            <div class="eyebrow">Beyond the basics</div>
+            <h2>Two ways to earn Verification.</h2>
+            <p>Once identity is confirmed, there are two ways to reach the Verified badge — and both lead to the same place.</p>
           </div>
           <div class="cl" data-cl="2">
             <div class="sc-num">03</div>
-            <div class="eyebrow">Second layer of verification</div>
-            <h2>We watch. Continuously.</h2>
-            <p>Earning the badge is not the end of the process. Every coach's standing on Harbourly is reviewed on an ongoing basis, not just at signup.</p>
+            <div class="eyebrow">Optional, for coaches with something to show</div>
+            <h2>Show your portfolio.</h2>
+            <p>Competitive experience or ratings from another platform can earn the badge immediately, no waiting on sessions.</p>
+          </div>
+          <div class="cl" data-cl="3">
+            <div class="sc-num">04</div>
+            <div class="eyebrow">No portfolio, or it didn't hold up</div>
+            <h2>No portfolio? Start as a New Coach.</h2>
+            <p>Identity verification is already done, so a coach can start taking bookings right away.</p>
+          </div>
+          <div class="cl" data-cl="4">
+            <div class="sc-num">05</div>
+            <div class="eyebrow">Optional, once you're set up</div>
+            <h2>Want gamers to hear you first?</h2>
+            <p>A short voice introduction on your profile — entirely optional, and separate from earning your badge.</p>
+          </div>
+          <div class="cl" data-cl="5">
+            <div class="sc-num">06</div>
+            <div class="eyebrow">Beyond the badge</div>
+            <h2>Formal background checks are rolling out.</h2>
+            <p>An additional trust layer on top of the badge — not required, and not holding anyone up today.</p>
+          </div>
+          <div class="cl" data-cl="6">
+            <div class="sc-num">07</div>
+            <div class="eyebrow">After the badge</div>
+            <h2>We keep watching.</h2>
+            <p>Earning the badge isn't the end of the review — every coach's standing is reviewed on an ongoing basis.</p>
           </div>
         </div></div>
       </div>
 
       <div class="sc-right">
-        <!-- Chapter 01: Identity -->
+        <!-- Chapter 01: Legal identity -->
         <div class="cr reveal" data-cr="0">
-          <div class="cr-head"><div class="sc-num">01</div><div class="eyebrow">First layer of verification</div><h2>Your identity. Your credentials.</h2><p>Completed once, before a coach can go live. This is how we confirm you are who you say you are.</p></div>
-          <p class="cr-intro">Your identity is confirmed through Stripe or Xendit, the same payment providers that handle your payouts. When you set up how you get paid, they run a real identity check backed by a government issued ID, the same standard used by regulated financial platforms. Harbourly never sees or stores your ID or banking details directly.</p>
-          <ul class="clist">
-            <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#22d66f" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>Identity confirmed through Stripe or Xendit as part of payout setup</li>
-            <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#22d66f" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>Real government ID backed check, run by a regulated payment provider, not by Harbourly</li>
-            <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#22d66f" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>Coaches must be 18 or over</li>
-            <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#22d66f" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>A coach cannot appear as bookable until this check is complete</li>
-          </ul>
-          <p class="note">Clear this check and your profile earns the <b>Verified</b> badge — the same one shown on every coach's profile.</p>
+          <div class="cr-head"><div class="sc-num">01</div><div class="eyebrow">Part of getting approved</div><h2>Already covered before you're live.</h2><p>This isn't an extra step. It's part of what gets reviewed before we approve a coach in the first place.</p></div>
+          <div class="watch" style="border-top:none;padding-top:0">
+            <h4><span class="d"></span>Legal identity</h4>
+            <p>Identity is confirmed through Stripe or Xendit, the same payment providers that handle payouts. When a coach sets up how they get paid, the provider runs a real identity check backed by a government-issued ID, the same standard used by regulated financial platforms. Harbourly never sees or stores the ID or banking details directly.</p>
+          </div>
         </div>
 
-        <!-- Chapter 02: Track record -->
+        <!-- Chapter 02: Two ways to earn -->
         <div class="cr reveal" data-cr="1">
-          <div class="cr-head"><div class="sc-num">02</div><div class="eyebrow">First layer of verification</div><h2>Optional. Your track record</h2><p>Not required to earn your badge, but it's what turns a verified profile into a proven one.</p></div>
-          <p class="cr-intro">Have tournament results or a marketplace track record? Submit it for our team to review by hand. It's optional and won't block your <b>Verified</b> badge — confirmed evidence just gets added to your profile under a separate <b>Credentials reviewed</b> label.</p>
+          <div class="cr-head"><div class="sc-num">02</div><div class="eyebrow">Beyond the basics</div><h2>Two ways to earn Verification.</h2><p>Once identity is confirmed, there are two ways to reach the Verified badge — and both lead to the same place.</p></div>
+          <p class="cr-intro">Once a coach clears the check above, there are two ways to reach the Verified badge: show a portfolio our team can confirm, or build a clean track record over the first 5 sessions as a New Coach. Both lead to the same badge.</p>
+          <div class="watchgrid">
+            <div class="watch">
+              <h4><span class="d"></span>Path A — Portfolio check</h4>
+              <p>Show us proof from your history — tournament results, ratings, past coaching — and if it holds up, the badge is earned immediately.</p>
+            </div>
+            <div class="watch">
+              <h4><span class="d"></span>Path B — New Coach</h4>
+              <p>No portfolio needed. Start taking bookings right away and earn the badge after 5 clean sessions.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chapter 03: Portfolio check -->
+        <div class="cr reveal" data-cr="2">
+          <div class="cr-head"><div class="sc-num">03</div><div class="eyebrow">Optional, for coaches with something to show</div><h2>Show your portfolio.</h2><p>Competitive experience or ratings from another platform can earn the badge immediately, no waiting on sessions.</p></div>
+          <p class="cr-intro">Have competitive experience, tournament results, or ratings from coaching on another platform? Submit it as your portfolio for our team to review by hand. It's optional. If it holds up, the Verified badge is earned immediately, no waiting on sessions.</p>
           <div class="mcard">
             <div class="mc-eyebrow">Coach profile preview</div>
             <div class="mc-sub">Verified · Credentials reviewed</div>
@@ -276,22 +311,44 @@
             <div class="mc-dash"></div>
             <div class="mc-foot"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>Added to your public coach profile</div>
           </div>
+          <p class="note">Portfolio submissions are reviewed for authenticity using a mix of automated tools and manual review before anything is credited.</p>
         </div>
 
-        <!-- Chapter 03: We watch -->
-        <div class="cr reveal" data-cr="2">
-          <div class="cr-head"><div class="sc-num">03</div><div class="eyebrow">Second layer of verification</div><h2>We watch. Continuously.</h2><p>Earning the badge is not the end of the process. Every coach's standing on Harbourly is reviewed on an ongoing basis, not just at signup.</p></div>
+        <!-- Chapter 04: New Coach -->
+        <div class="cr reveal" data-cr="3">
+          <div class="cr-head"><div class="sc-num">04</div><div class="eyebrow">No portfolio, or it didn't hold up</div><h2>No portfolio? Start as a New Coach.</h2><p>Identity verification is already done, so a coach can start taking bookings right away.</p></div>
+          <p class="cr-intro">If there's no portfolio to submit, or it doesn't hold up in review, a coach can still start taking bookings right away as a New Coach, since identity verification is already complete. They'll show as a New Coach, visible on their profile, until they complete 5 sessions with no serious disputes. Clear that, and the same Verified badge is earned, no different from the portfolio path.</p>
+          <p class="note">If a serious dispute comes up during this period, our team reviews it directly. Depending on what happened, the coach may continue toward their 5 sessions, have their progress reset, or be suspended. Nothing here is automatic. Every case gets looked at.</p>
+        </div>
+
+        <!-- Chapter 05: Voice introductions -->
+        <div class="cr reveal" data-cr="4">
+          <div class="cr-head"><div class="sc-num">05</div><div class="eyebrow">Optional, once you're set up</div><h2>Want gamers to hear you first?</h2><p>A short voice introduction on your profile — entirely optional, and separate from earning your badge.</p></div>
+          <p class="cr-intro">Coaches can add a short voice introduction to their profile — a chance for gamers to hear you before they book. It's entirely optional and has nothing to do with earning your badge or being able to take bookings.</p>
+          <p class="cr-intro" style="margin-top:16px">Before any recording goes live, our team listens to it. We're checking for anything vulgar, inappropriate, or otherwise not okay for a public profile, nothing more. Once it clears, it's added to your profile for gamers to hear.</p>
+        </div>
+
+        <!-- Chapter 06: Background checks -->
+        <div class="cr reveal" data-cr="5">
+          <div class="cr-head"><div class="sc-num">06</div><div class="eyebrow">Beyond the badge</div><h2>Formal background checks are rolling out.</h2><p>An additional trust layer on top of the badge — not required, and not holding anyone up today.</p></div>
+          <p class="cr-intro">The checks above confirm who a coach is. We're also rolling out formal background checks as an additional trust layer on top of that, not required to earn the badge. This doesn't hold up any coach from listing today.</p>
+        </div>
+
+        <!-- Chapter 07: We keep watching -->
+        <div class="cr reveal" data-cr="6">
+          <div class="cr-head"><div class="sc-num">07</div><div class="eyebrow">After the badge</div><h2>We keep watching.</h2><p>Earning the badge isn't the end of the review — every coach's standing is reviewed on an ongoing basis.</p></div>
+          <p class="cr-intro">Earning the badge isn't the end of the review. Every coach's standing gets reviewed on an ongoing basis, not just once at signup, whether they're a New Coach or already Verified.</p>
           <div class="watch">
             <h4><span class="d"></span>Reviews and ratings</h4>
-            <p>Every session ends with a rating from the student. Our team monitors reviews for authenticity and looks at patterns over time, not just individual scores, so what you see on a coach's profile reflects real sessions.</p>
+            <p>Every session ends with a rating from the student. We monitor reviews for authenticity and watch for patterns over time, not just single scores, so what's on a coach's profile reflects real sessions.</p>
           </div>
           <div class="watch">
             <h4><span class="d"></span>Dispute history</h4>
-            <p>If a session doesn't go as expected, either party can raise it with us directly. Every dispute is reviewed by our team by hand. A coach's dispute history is taken into account when we assess their ongoing standing on the platform. This protects students while making sure coaches are not judged unfairly on a single report.</p>
+            <p>If a session doesn't go as expected, either side can raise it with us directly. Every dispute gets reviewed by our team by hand within 72 hours. A coach's dispute history factors into how we assess their ongoing standing. This protects students without punishing a coach for one bad report.</p>
           </div>
           <div class="watch">
             <h4><span class="d"></span>Delivery</h4>
-            <p>Students rate their sessions honestly, and that feedback shapes how we view a coach's reliability over time. A coach whose sessions consistently fall short of what their profile promises will be reviewed by our team.</p>
+            <p>Student feedback shapes how we view a coach's reliability over time. A coach whose sessions consistently fall short of what their profile promises gets reviewed by our team.</p>
           </div>
         </div>
       </div>
@@ -303,23 +360,23 @@
   <!-- PAYMENT PROTECTION -->
   <section class="section layer reveal">
     <div class="eyebrow">Payment protection</div>
-    <h2>Your money never leaves without your permission.</h2>
-    <p>Every session on Harbourly is protected by escrow, held securely by our payment provider, for players and coaches alike.</p>
+    <h2>Your money doesn't move without your permission.</h2>
+    <p>Every session on Harbourly is protected by escrow, held by our payment provider, for players and coaches alike.</p>
   </section>
 
   <section class="section">
     <div class="doc psteps reveal">
       <div class="pstep">
         <div class="pn">01</div>
-        <div><h4>Player books and pays</h4><p>When you pay at checkout, your payment is captured and held securely, not sent to the coach yet.</p></div>
+        <div><h4>Book and pay</h4><p>Payment is captured and held at checkout. It isn't sent to the coach yet.</p></div>
       </div>
       <div class="pstep">
         <div class="pn">02</div>
-        <div><h4>Session is completed</h4><p>After your session, you have 72 hours to confirm it went well. If you don't take any action, it confirms automatically after 72 hours, so a coach is never left waiting indefinitely. If something went wrong, you can report it instead, which pauses everything while we review.</p></div>
+        <div><h4>Session happens</h4><p>After the session, you have 72 hours to confirm it went well. No action needed, it confirms automatically once the window closes, so a coach is never left waiting indefinitely. If something went wrong, report it instead, and everything pauses while we review.</p></div>
       </div>
       <div class="pstep">
         <div class="pn">03</div>
-        <div><h4>Funds released to coach</h4><p>Once you confirm, or once the 72 hour window passes with no issue raised, payment is released to your coach. If a dispute is raised, funds stay held until we've reviewed it and reached a fair outcome.</p></div>
+        <div><h4>Funds release</h4><p>Once you confirm, or the 72-hour window passes with nothing raised, payment releases to the coach. If a dispute is raised, funds stay held until we've reviewed it, within 72 hours, and reached a fair outcome.</p></div>
       </div>
     </div>
   </section>
@@ -331,14 +388,13 @@
     <div class="eyebrow">Answers</div>
     <h2>Verification FAQ</h2>
   </section>
-  <section class="section">
+  <section class="section" style="padding-bottom:clamp(80px,10vh,140px)">
     <div class="faqlist" id="faqlist">
-      <div class="faqitem"><button class="faqq">How long does the verification process take?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Applications are reviewed by our team by hand. We'll notify you as soon as your review is complete.</p></div></div>
-      <div class="faqitem"><button class="faqq">What if I don't have tournament history or a Fiverr profile?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>That's completely fine. Track record evidence is optional. Identity verification alone is enough to earn your Verified badge and go live.</p></div></div>
-      <div class="faqitem"><button class="faqq">Is my personal ID data safe?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Your ID is submitted directly to Stripe or Xendit as part of their own regulated verification process. Harbourly never sees or stores your ID document.</p></div></div>
-      <div class="faqitem"><button class="faqq">What happens if a verified coach breaks the rules?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Every account is subject to ongoing review. A pattern of disputes or under delivery can affect a coach's standing on the platform, including removal in serious cases.</p></div></div>
-      <div class="faqitem"><button class="faqq">Does verification cover all games on the platform?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Yes. Identity verification applies to every coach regardless of which games they coach.</p></div></div>
-      <div class="faqitem"><button class="faqq">Can I reapply if my application is rejected?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Yes. You're welcome to reapply once you're able to address the reason your application wasn't approved.</p></div></div>
+      <div class="faqitem"><button class="faqq">What if I don't have a portfolio to show?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>That's fine. A portfolio isn't required. Start coaching as a New Coach and earn the Verified badge by completing 5 sessions with no serious disputes.</p></div></div>
+      <div class="faqitem"><button class="faqq">What does "New Coach" mean?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>It means a coach hasn't yet earned the Verified badge through a portfolio or a session track record. New Coaches can take bookings like anyone else. The label is there so students know where a coach stands.</p></div></div>
+      <div class="faqitem"><button class="faqq">Is my personal ID data safe?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Your ID goes directly to Stripe or Xendit as part of their own regulated verification process. Harbourly never sees or stores your ID document.</p></div></div>
+      <div class="faqitem"><button class="faqq">What happens if a verified coach breaks the rules?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Every account stays under ongoing review. A pattern of disputes or under delivery can affect a coach's standing, including removal in serious cases.</p></div></div>
+      <div class="faqitem"><button class="faqq">Can I reapply if my application is rejected?<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faqa"><p>Yes. You're welcome to reapply once you've addressed the reason it wasn't approved.</p></div></div>
     </div>
   </section>
 

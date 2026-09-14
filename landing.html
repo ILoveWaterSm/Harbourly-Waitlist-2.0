@@ -74,8 +74,8 @@
   .brand{display:flex;align-items:center}
   .brand img{height:45px;width:auto;display:block}
   .navlinks{position:relative;display:flex;align-items:center;gap:8px;justify-self:center}
-  .navlinks a{position:relative;text-decoration:none;color:var(--muted);font-size:16px;font-weight:600;padding:9px 16px;border-radius:999px;transition:color .2s,background .2s}
-  .navlinks a:hover{color:var(--green);background:rgba(34,214,111,.08)}
+  .navlinks a{position:relative;text-decoration:none;color:var(--muted);font-size:16px;font-weight:600;padding:9px 16px;border-radius:999px;transition:color .2s,background .2s,box-shadow .3s}
+  .navlinks a:hover{color:var(--green);background:rgba(34,214,111,.08);box-shadow:0 0 18px rgba(34,214,111,.2)}
   .navlinks a.on{color:var(--green)}
   .nav-indicator{position:absolute;left:0;bottom:-2px;height:2px;width:0;border-radius:2px;background:var(--green);box-shadow:0 0 10px rgba(34,214,111,.7);opacity:0;transform:translateX(0);transition:transform .4s cubic-bezier(.65,0,.35,1),width .4s cubic-bezier(.65,0,.35,1),opacity .25s ease;pointer-events:none}
   .nav-indicator.show{opacity:1}
@@ -480,7 +480,7 @@
         <div class="eyebrow">Trust, built in</div>
         <h2>Every coach is checked before they can list</h2>
         <p>Anyone can call themselves a coach, so we don't take their word for it. Coaches record a short voice check, submit proof of rank and history for our team to review by hand, and their legal identity is verified by our payment partner when they set up payouts. That check is what earns the badge.</p>
-        <!-- <a class="link" href="verification-standard.html">Read the full verification standard →</a> -->
+        <a class="link" href="verification-standard.html">Read the full verification standard →</a>
       </div>
     </div>
   </section>
