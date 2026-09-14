@@ -90,16 +90,16 @@ function buildEmailHtml() {
 <!-- panel, sitting on top of the grid background -->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:680px;">
 <tr>
-<td bgcolor="#0b1628" style="background-color:#0b1628;border-radius:16px;overflow:hidden;">
+<td bgcolor="#0b1628" style="background-color:#0b1628;border:1px solid rgba(255,255,255,0.06);border-radius:16px;overflow:hidden;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
 
-<!-- glowing gradient line, doubles as the panel's top border -->
+<!-- glowing top border: built from a radial gradient (not box-shadow) so the glow itself actually renders in clients like Gmail that strip box-shadow -->
 <tr>
-<td height="3" style="height:3px;line-height:3px;font-size:0;background:linear-gradient(90deg,transparent,#22d66f,transparent);box-shadow:0 0 16px rgba(34,214,111,0.55);">&nbsp;</td>
+<td height="18" style="height:18px;line-height:18px;font-size:0;background:radial-gradient(ellipse 60% 100% at center top,rgba(34,214,111,0.55) 0%,rgba(34,214,111,0.18) 45%,transparent 75%);">&nbsp;</td>
 </tr>
 
 <tr>
-<td align="center" style="padding:48px 40px 8px 40px;">
+<td align="center" style="padding:36px 40px 8px 40px;">
 <img src="https://www.harbourly.gg/Images/logo&amp;word-mark.png" width="220" height="57" alt="Harbourly" border="0" style="display:block;width:220px;height:57px;" />
 </td>
 </tr>
@@ -119,7 +119,11 @@ function buildEmailHtml() {
 </tr>
 
 <tr>
-<td align="center" style="padding:32px 40px 44px 40px;">
+<td align="center" style="padding:16px 40px 26px 40px;">
+<!-- aura ring built from a radial gradient, so the glow shows up in clients (Gmail included) that strip box-shadow -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td align="center" style="padding:26px;background:radial-gradient(ellipse at center,rgba(34,214,111,0.32) 0%,rgba(34,214,111,0.12) 45%,transparent 72%);">
 <table role="presentation" cellpadding="0" cellspacing="0" border="0">
 <tr>
 <td align="center" bgcolor="#22d66f" style="background-color:#22d66f;border-radius:999px;box-shadow:0 0 40px 4px rgba(34,214,111,0.4),0 12px 30px rgba(34,214,111,0.45);">
@@ -132,9 +136,17 @@ function buildEmailHtml() {
 </table>
 </td>
 </tr>
+</table>
+</td>
+</tr>
 
 </table>
 </td>
+</tr>
+
+<!-- soft drop shadow cast beneath the panel, gradient-based (not box-shadow) so it actually renders -->
+<tr>
+<td height="22" style="height:22px;line-height:22px;font-size:0;background:radial-gradient(ellipse 55% 100% at center top,rgba(0,0,0,0.4) 0%,transparent 75%);">&nbsp;</td>
 </tr>
 </table>
 
