@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
           from: FROM_ADDRESS,
           to: email,
           subject: `You're on the Harbourly waitlist, ${name}!`,
-          html: buildEmailHtml(name, role, country)
+          html: buildEmailHtml()
         })
       });
     } catch (err) {
@@ -72,83 +72,87 @@ module.exports = async (req, res) => {
   res.status(200).json({ result: 'success' });
 };
 
-function buildEmailHtml(name, role, country) {
-  const roleLabel = role === 'coach' ? 'Coach' : 'Gamer';
-  const countryLine =
-    country && country !== 'Not specified'
-      ? ` from <strong style="color:#22d66f;">${escapeHtml(country)}</strong>`
-      : '';
-
+function buildEmailHtml() {
   return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>You're on the Harbourly waitlist</title>
+  <title>Welcome to Harbourly</title>
 </head>
-<body style="margin:0;padding:0;background:#030b17;font-family:'Inter',Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#030b17;padding:40px 0;">
-    <tr>
-      <td align="center">
-        <table width="560" cellpadding="0" cellspacing="0" style="width:560px;max-width:100%;">
-          <tr>
-            <td style="background:rgba(15,29,55,0.9);border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;">
-              <div style="height:3px;background:linear-gradient(90deg,transparent,#22d66f,transparent);"></div>
-              <table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 40px 36px;">
-                <tr>
-                  <td align="center" style="padding-bottom:32px;">
-                    <img src="https://www.harbourly.gg/Images/logo&word-mark.png" alt="Harbourly" width="200" style="display:block;height:auto;" />
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="padding-bottom:32px;">
-                    <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:rgba(148,163,184,0.9);text-align:center;">
-                      Thanks for joining the Harbourly waitlist as a <strong style="color:#22d66f;">${escapeHtml(roleLabel)}</strong>${countryLine}. We're building Southeast Asia's first verified esports coaching marketplace, and you're one of the first to know.
-                    </p>
-                    <p style="margin:0;font-size:15px;line-height:1.7;color:rgba(148,163,184,0.9);text-align:center;">
-                      We'll send you an exclusive early access invite the moment we launch. Keep an eye on your inbox.
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding-bottom:28px;">
-                    <div style="height:1px;background:rgba(255,255,255,0.07);"></div>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="padding-bottom:8px;">
-                    <a href="https://harbourly.gg/#how" style="display:inline-block;background:#22d66f;color:#030b17;font-size:15px;font-weight:700;text-decoration:none;padding:14px 32px;border-radius:12px;">
-                      Learn More About Harbourly
-                    </a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td align="center" style="padding-top:28px;">
-              <p style="margin:0 0 6px;font-size:12px;color:rgba(148,163,184,0.4);">
-                © 2026 Harbourly &middot; A safe harbour for gamers who want to grow and coaches who want to teach.
-              </p>
-              <p style="margin:0;font-size:12px;color:rgba(148,163,184,0.3);">
-                You received this because you signed up at harbourly.gg
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+<body style="margin:0;padding:0;background-color:#030b17;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#030b17" style="background-color:#030b17;background-image:linear-gradient(rgba(148,163,184,0.056) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,0.056) 1px,transparent 1px);background-size:32px 32px;background-position:center -1px;">
+
+<tr>
+<td align="center" style="padding:48px 20px 60px 20px;">
+
+<!-- panel, sitting on top of the grid background -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:680px;">
+<tr>
+<td bgcolor="#0b1628" style="background-color:#0b1628;border-radius:16px;overflow:hidden;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+
+<!-- glowing gradient line, doubles as the panel's top border -->
+<tr>
+<td height="3" style="height:3px;line-height:3px;font-size:0;background:linear-gradient(90deg,transparent,#22d66f,transparent);box-shadow:0 0 16px rgba(34,214,111,0.55);">&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" style="padding:48px 40px 8px 40px;">
+<img src="https://www.harbourly.gg/Images/logo&amp;word-mark.png" width="220" height="57" alt="Harbourly" border="0" style="display:block;width:220px;height:57px;" />
+</td>
+</tr>
+
+<tr>
+<td style="padding:28px 48px 0 48px;">
+<p style="margin:0 0 18px 0;font-family:Arial,Helvetica,sans-serif;font-size:18px;line-height:1.65;color:#b6c2d4;text-align:center;">Thank you for signing up with us on Harbourly.gg! We're building Southeast Asia's first esports coaching marketplace, and we're thrilled to have you on board &#10084;&#65039;</p>
+<p style="margin:0 0 18px 0;font-family:Arial,Helvetica,sans-serif;font-size:18px;line-height:1.65;color:#b6c2d4;text-align:center;">You'll be the first to be notified of any new updates, features or even offers, so stick around with us until then.</p>
+<p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:18px;line-height:1.65;color:#b6c2d4;text-align:center;">In the meantime, join our Discord to be part of our community of gamers and coaches, and to help us build something truly worthwhile &#129305;&#128584;</p>
+</td>
+</tr>
+
+<tr>
+<td style="padding:32px 48px 0 48px;">
+<div style="height:1px;line-height:1px;font-size:0;background-color:rgba(255,255,255,0.07);">&nbsp;</div>
+</td>
+</tr>
+
+<tr>
+<td align="center" style="padding:32px 40px 44px 40px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td align="center" bgcolor="#22d66f" style="background-color:#22d66f;border-radius:999px;box-shadow:0 0 40px 4px rgba(34,214,111,0.4),0 12px 30px rgba(34,214,111,0.45);">
+<a href="https://discord.gg/bKnBZY4sfV" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:20px 44px;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:bold;color:#04160b;text-decoration:none;border-radius:999px;white-space:nowrap;">
+<img src="https://www.harbourly.gg/Images/Waitlist/Discord_CTA_cropped.png" width="26" height="20" alt="Discord" border="0" style="display:inline-block;vertical-align:middle;margin-right:12px;width:26px;height:20px;" />
+<span style="vertical-align:middle;">Join our Discord</span>
+</a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+</table>
+</td>
+</tr>
+</table>
+
+<!-- legal / extra text, outside and below the panel -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;">
+<tr>
+<td align="center" style="padding:28px 12px 0 12px;">
+<p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.6;letter-spacing:0.5px;color:#4b5a72;">Harbourly &middot; A place for gamers who want to grow and coaches who want to teach.</p>
+<p style="margin:8px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.6;letter-spacing:0.5px;color:#4b5a72;">You received this because you signed up at harbourly.gg</p>
+<p style="margin:8px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.6;letter-spacing:0.5px;color:#4b5a72;">&copy; 2026 Harbourly. All Rights Reserved.</p>
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</table>
 </body>
 </html>
   `.trim();
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
