@@ -1,0 +1,6 @@
+{"v":3,"layout":"files","createdOnFiles":{"v":1,"at":"2026-10-01T00:00:00Z"},"title":"Harbourly","namespace":"Harbourly","libraries":[],"sections":{},"groups":["Brand"],
+"assetGroups":{"Brand":{"name":"Brand","tile":"l","order":["harbourly-logo.png","harbourly-mark.png"],"files":{
+"harbourly-logo.png":{"name":"harbourly-logo.png","blob":"6e595468d358286d4c499f3f817d4e16","size":197129,"type":"image/png"},
+"harbourly-mark.png":{"name":"harbourly-mark.png","blob":"15da3adcabe1e91013b8872fe713e141","size":45895,"type":"image/png"}}}},
+"blobs":{},"docs":{"readme":"project/README.md","sections":[]},
+"lastChange":{"by":"Claude","at":"2026-10-01T00:00:00Z","via":"Claude Code","note":"Extracted from the Harbourly waitlist site"}}
