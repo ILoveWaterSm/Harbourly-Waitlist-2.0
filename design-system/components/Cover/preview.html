@@ -1,0 +1,43 @@
+<!-- @dsCard height=288 -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@800&family=Geist:wght@400&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:var(--bg)}
+.cv{position:relative;width:960px;height:288px;overflow:hidden;background:var(--bg)}
+.cv svg{position:absolute;left:0;top:0;width:960px;height:288px}
+.slab{fill:var(--green);rx:var(--radius-xl)}
+.relief{fill:var(--ink);rx:var(--radius-xl)}
+.flag{fill:var(--amber)}
+.pill{fill:var(--green)}
+.dim{fill:var(--green-tint)}
+.name{position:absolute;left:32px;bottom:60px;margin:0;font-family:var(--font-display);font-weight:800;font-size:80px;line-height:.95;letter-spacing:-.045em;color:var(--ink);white-space:nowrap}
+.tag{position:absolute;left:32px;bottom:32px;margin:0;width:400px;font-family:var(--font-body);font-size:13px;line-height:1.4;color:var(--muted)}
+</style>
+<div class="cv">
+<svg viewBox="0 0 960 288" aria-hidden="true">
+<!--
+blocks: green slab 240x144 (radius-xl), ink relief 176x96 (radius-xl), amber pill 96x32 (radius-pill); the rest is green and green-tint pills.
+arrangement: one slab and a lighter satellite staggered over two rows of pills and discs, all right of x=480 on a 16px gap.
+pattern: pills and discs. The brand's signature shape is the pill (every button, tab and progress bar), so the pattern repeats it at 32px height.
+scales: gap space-4 (16px), pill radius half the 32px height, block radius radius-xl (20px).
+-->
+<rect class="slab" x="504" y="24" width="240" height="144"/>
+<rect class="relief" x="760" y="24" width="176" height="96"/>
+<rect class="flag" x="760" y="136" width="96" height="32" rx="16"/>
+<rect class="pill" x="504" y="184" width="96" height="32" rx="16"/>
+<rect class="dim" x="616" y="184" width="96" height="32" rx="16"/>
+<rect class="pill" x="728" y="184" width="96" height="32" rx="16"/>
+<rect class="dim" x="840" y="184" width="96" height="32" rx="16"/>
+<circle class="dim" cx="520" cy="248" r="16"/>
+<circle class="pill" cx="568" cy="248" r="16"/>
+<circle class="dim" cx="616" cy="248" r="16"/>
+<circle class="dim" cx="664" cy="248" r="16"/>
+<circle class="pill" cx="712" cy="248" r="16"/>
+<circle class="dim" cx="760" cy="248" r="16"/>
+<circle class="dim" cx="808" cy="248" r="16"/>
+<circle class="dim" cx="856" cy="248" r="16"/>
+<circle class="pill" cx="904" cy="248" r="16"/>
+</svg>
+<h1 class="name">Harbourly</h1>
+<p class="tag">Find the coach you can actually trust.</p>
+</div>
