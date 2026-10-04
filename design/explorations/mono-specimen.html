@@ -1,0 +1,422 @@
+<title>Geist Mono specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Sora:wght@600;700&display=swap">
+<style>
+/* Layout: specimen sheet. Real product fragments in a two-column board, each captioned with the mono category it shows. */
+:root {
+  color-scheme: dark;
+  /* design-system tokens, names exactly as tokens.json */
+  --bg: #030b17;
+  --bg-mid: #061024;
+  --surface: #0b1628;
+  --green: #22d66f;
+  --green-ink: #04160b;
+  --amber: #fbbf24;
+  --ink: #e8eef7;
+  --ink-soft: #c4cedb;
+  --muted: #94a3b8;
+  --faint: #7d8ca1;
+  --subtle: #5b6b82;
+  --line: #94a3b829;
+  --fill-subtle: #94a3b814;
+  --green-tint: #22d66f1a;
+  --green-line: #22d66f4d;
+  --green-glow: #22d66f59;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --radius-md: 12px; --radius-lg: 16px; --radius-pill: 999px; --radius-round: 50%;
+  --font-display: "Sora", system-ui, sans-serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --shadow-cta-hover: 0 12px 40px #22d66f99;
+  --shadow-focus: 0 0 0 3px #22d66f29;
+  /* proposed new tokens (not yet in tokens.json) */
+  --shadow-flat: 0 1px 2px #00000059;
+  --shadow-cta-rest: 0 4px 14px #22d66f33;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 15px/1.55 var(--font-body);
+  padding-inline: var(--space-4);
+  padding-block: var(--space-10) 64px;
+}
+.wrap { max-width: 1180px; margin: 0 auto; }
+
+/* mono roles */
+.m { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.m-value { font-size: 13.5px; letter-spacing: 0.02em; }
+.m-label { font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.m-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); }
+.m-handle { font-size: 12.5px; color: var(--faint); }
+
+/* highlight toggle */
+body.hl .m { outline: 1px dashed var(--green); outline-offset: 3px; border-radius: 2px; }
+body.hl .card :not(.m):not(.m *) { }
+
+/* header */
+.head { display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: flex-end; justify-content: space-between; margin-bottom: var(--space-8); }
+.head h1 { font: 700 32px/1.1 var(--font-display); letter-spacing: -0.01em; margin: 0 0 var(--space-2); text-wrap: balance; }
+.head p { margin: 0; color: var(--muted); max-width: 60ch; }
+.toggle { display: inline-flex; align-items: center; gap: var(--space-3); background: none; border: 1px solid var(--line); color: var(--ink); border-radius: var(--radius-pill); padding: 10px 16px; font: 600 14px/1 var(--font-body); cursor: pointer; }
+.toggle:hover { border-color: var(--green-line); }
+.toggle:focus-visible { outline: none; box-shadow: var(--shadow-focus); border-color: var(--green); }
+.sw { width: 30px; height: 18px; border-radius: var(--radius-pill); background: var(--fill-subtle); border: 1px solid var(--line); position: relative; transition: background .15s; }
+.sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: var(--radius-round); background: var(--muted); transition: transform .15s, background .15s; }
+body.hl .sw { background: var(--green-tint); border-color: var(--green-line); }
+body.hl .sw::after { transform: translateX(12px); background: var(--green); }
+
+/* board */
+.board { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: var(--space-8) var(--space-6); align-items: start; }
+.col { display: grid; gap: var(--space-8); min-width: 0; }
+.spec { display: grid; gap: var(--space-3); min-width: 0; }
+.cap { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: baseline; font-size: 13px; color: var(--faint); }
+.cap b { color: var(--ink-soft); font-weight: 600; }
+.card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-flat); padding: var(--space-6); min-width: 0; position: relative; }
+.card.accent::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--green-glow), transparent); }
+
+/* coach card */
+.coach { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: var(--space-4); align-items: start; }
+.av { width: 56px; height: 56px; border-radius: var(--radius-round); background: var(--bg-mid); border: 1px solid var(--green-line); display: grid; place-items: center; font: 700 18px/1 var(--font-display); color: var(--ink-soft); }
+.name { display: flex; align-items: center; gap: var(--space-2); font-weight: 600; font-size: 16px; }
+.ver { width: 16px; height: 16px; color: var(--green); flex: none; }
+.game { color: var(--muted); font-size: 14px; margin-top: var(--space-2); }
+.rank { color: var(--ink); margin-top: 2px; }
+.meta { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-3); align-items: center; }
+.rating { display: inline-flex; gap: 6px; align-items: center; }
+.rating svg { width: 14px; height: 14px; color: var(--green); }
+.price { text-align: right; white-space: nowrap; }
+.price .from { color: var(--muted); font-size: 12px; display: block; }
+.price .amt { font-size: 18px; font-weight: 500; color: var(--ink); }
+.price .per { color: var(--muted); font-size: 12px; }
+
+/* status */
+.st { display: inline-flex; align-items: center; gap: 7px; font: 500 11px/1 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; }
+.st::before { content: ""; width: 6px; height: 6px; border-radius: var(--radius-round); background: currentColor; }
+.st.ok { color: var(--green); }
+.st.warn { color: var(--amber); }
+.st.off { color: var(--muted); }
+
+/* table */
+.tbl-wrap { overflow-x: auto; margin: 0 calc(var(--space-6) * -1); padding: 0 var(--space-6); }
+table { width: 100%; border-collapse: collapse; min-width: 520px; }
+th { text-align: left; padding: 0 var(--space-3) var(--space-3) 0; font-weight: 400; border-bottom: 1px solid var(--line); }
+td { padding: var(--space-4) var(--space-3) var(--space-4) 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tr:last-child td { border-bottom: 0; }
+td .sub { display: block; color: var(--muted); font-size: 13px; }
+
+/* checkout */
+.lines { display: grid; gap: var(--space-3); margin: var(--space-4) 0; }
+.line { display: flex; justify-content: space-between; gap: var(--space-4); color: var(--muted); }
+.line .m { color: var(--ink-soft); }
+.line.total { border-top: 1px solid var(--line); padding-top: var(--space-4); color: var(--ink); font-weight: 600; }
+.line.total .m { color: var(--ink); font-size: 16px; font-weight: 600; }
+.hold { display: flex; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; align-items: center; background: var(--bg-mid); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); font-size: 13.5px; color: var(--muted); }
+.ref { margin-top: var(--space-4); color: var(--faint); font-size: 13px; }
+
+/* next session */
+.when { font: 700 24px/1.2 var(--font-display); letter-spacing: -0.01em; margin: var(--space-3) 0 var(--space-1); }
+.when-sub { color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; justify-content: space-between; margin-top: var(--space-5); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); border: 0; border-radius: var(--radius-pill); padding: 13px 22px; font: 700 15px/1 var(--font-body); cursor: pointer; background: var(--green); color: var(--green-ink); box-shadow: var(--shadow-cta-rest); transition: box-shadow .2s, transform .1s; }
+.btn:hover { box-shadow: var(--shadow-cta-hover); }
+.btn:active { transform: scale(.97); }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.btn[disabled] { background: var(--fill-subtle); color: var(--muted); box-shadow: none; cursor: not-allowed; }
+.btn.sec { background: none; color: var(--ink); border: 1px solid var(--line); box-shadow: none; }
+.btn.sec:hover { border-color: var(--green-line); }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: var(--space-2) var(--space-5); margin-top: var(--space-4); align-items: baseline; }
+.kv dt { margin: 0; }
+.kv dd { margin: 0; }
+
+/* banner */
+.banner { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; background: var(--bg-mid); border: 1px solid var(--line); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); }
+.banner svg { width: 18px; height: 18px; color: var(--amber); flex: none; }
+.banner .t { font-size: 14px; }
+.banner .clock { margin-left: auto; font-size: 15px; font-weight: 500; }
+
+/* earnings */
+.earn { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-top: var(--space-4); }
+.earn .fig { font: 500 22px/1.2 var(--font-mono); font-variant-numeric: tabular-nums; margin-top: var(--space-2); }
+.earn p { margin: var(--space-1) 0 0; color: var(--muted); font-size: 13px; }
+
+/* form */
+.field { display: grid; gap: var(--space-2); margin-top: var(--space-4); }
+.field label { font-weight: 600; font-size: 14px; }
+textarea { width: 100%; min-height: 104px; resize: vertical; background: var(--fill-subtle); border: 1px solid var(--line); border-radius: var(--radius-md); color: var(--ink); font: 400 15px/1.55 var(--font-body); padding: var(--space-3) var(--space-4); }
+textarea:focus { outline: none; border-color: var(--green); box-shadow: var(--shadow-focus); }
+.count { justify-self: end; color: var(--subtle); font-size: 12px; }
+
+/* review */
+.rev { display: grid; gap: var(--space-2); }
+.rev-top { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: baseline; justify-content: space-between; }
+.rev p { margin: 0; color: var(--ink-soft); }
+
+/* key */
+.key { margin-top: var(--space-10); display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-6); border-top: 1px solid var(--line); padding-top: var(--space-6); color: var(--muted); font-size: 14px; }
+.key h2 { font: 700 19px/1.3 var(--font-display); color: var(--ink); margin: 0 0 var(--space-2); }
+.key ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+
+@media (max-width: 900px) {
+  .board { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 480px) {
+  .coach { grid-template-columns: 48px minmax(0, 1fr); }
+  .av { width: 48px; height: 48px; }
+  .price { grid-column: 2; text-align: left; }
+  .earn { grid-template-columns: 1fr; }
+  .card { padding: var(--space-5); }
+  .tbl-wrap { margin: 0 calc(var(--space-5) * -1); padding: 0 var(--space-5); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <div>
+      <h1>Geist Mono in context</h1>
+      <p>Real Harbourly fragments with every data and label item set in Geist Mono. Turn on the outline to see exactly which text is mono and which stays in Geist or Sora.</p>
+    </div>
+    <button class="toggle" id="hl-toggle" type="button" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Outline mono text</button>
+  </header>
+
+  <div class="board">
+    <div class="col">
+
+      <section class="spec">
+        <div class="cap"><b>Ranks, ratings, prices</b> Browse coach card</div>
+        <article class="card">
+          <div class="coach">
+            <div class="av" aria-hidden="true">K</div>
+            <div style="min-width:0">
+              <div class="name">Kairo
+                <svg class="ver" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Verified"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+              </div>
+              <span class="m m-handle">@kairo.gg</span>
+              <div class="game">Mobile Legends</div>
+              <div class="m m-value rank">Mythical Glory · 85★</div>
+              <div class="meta">
+                <span class="rating">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>
+                  <span class="m m-value">4.8</span><span class="m m-value" style="color:var(--muted)">(32)</span>
+                </span>
+              </div>
+            </div>
+            <div class="price">
+              <span class="m from">from</span>
+              <span class="m amt">S$38</span><span class="m per"> / session</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="spec">
+        <div class="cap"><b>Column headers, dates, statuses</b> My sessions</div>
+        <article class="card">
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="m m-label">Coach</th>
+                  <th class="m m-label">Date and time</th>
+                  <th class="m m-label">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Kairo<span class="sub">Mobile Legends</span></td>
+                  <td class="m m-value">Tue 6 Oct · 20:00 SGT</td>
+                  <td><span class="st ok">Confirmed</span></td>
+                </tr>
+                <tr>
+                  <td>Vexa<span class="sub">Valorant</span></td>
+                  <td class="m m-value">Sat 3 Oct · 21:00 SGT</td>
+                  <td><span class="st warn">Pending confirmation</span></td>
+                </tr>
+                <tr>
+                  <td>nullpoint<span class="sub">Counter-Strike 2</span></td>
+                  <td class="m m-value">Thu 1 Oct · 19:00 SGT</td>
+                  <td><span class="st warn">Disputed</span></td>
+                </tr>
+                <tr>
+                  <td>Riven Okafor<span class="sub">Riftbound</span></td>
+                  <td class="m m-value">Mon 28 Sep · 18:00 SGT</td>
+                  <td><span class="st off">Completed</span></td>
+                </tr>
+                <tr>
+                  <td>Ghostline<span class="sub">Call of Duty: Mobile</span></td>
+                  <td class="m m-value">Sun 27 Sep · 15:00 SGT</td>
+                  <td><span class="st off">Expired</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="spec">
+        <div class="cap"><b>Money, countdown, reference</b> Checkout summary</div>
+        <article class="card">
+          <span class="m m-label">Booking summary</span>
+          <div class="lines">
+            <div class="line"><span>Session with Vexa · Valorant</span><span class="m m-value">S$45.00</span></div>
+            <div class="line"><span>Platform fee <span class="m" style="font-size:12.5px">(6%)</span></span><span class="m m-value">S$2.70</span></div>
+            <div class="line total"><span>Total</span><span class="m">S$47.70</span></div>
+          </div>
+          <div class="hold">
+            <span>Your slot is held while you pay</span>
+            <span class="m m-value" style="color:var(--ink)">24:12</span>
+          </div>
+          <div class="row" style="margin-top:var(--space-5)">
+            <span style="color:var(--muted);font-size:13.5px;max-width:34ch">We hold your payment until you confirm the session went ahead.</span>
+            <button class="btn" type="button">Continue to payment</button>
+          </div>
+          <div class="ref">Booking reference <span class="m">HB-7Q4K-2281</span></div>
+        </article>
+      </section>
+
+      <section class="spec">
+        <div class="cap"><b>Rating figure and date</b> Review</div>
+        <article class="card rev">
+          <div class="rev-top">
+            <span style="font-weight:600">snapking <span class="m m-handle" style="font-weight:400">@snapking</span></span>
+            <span class="m m-value" style="color:var(--muted)">5.0 · 29 Sep 2026</span>
+          </div>
+          <p>Went through two of my ranked games and found the rotation mistake I kept making mid-game. Clear and patient.</p>
+        </article>
+      </section>
+
+    </div>
+
+    <div class="col">
+
+      <section class="spec">
+        <div class="cap"><b>Eyebrow, date, duration, status</b> Gamer dashboard</div>
+        <article class="card accent">
+          <span class="m m-eyebrow">Next session</span>
+          <div class="when">Tuesday with Kairo</div>
+          <div class="when-sub">Mobile Legends · <span class="m m-value">Mythical Glory · 85★</span></div>
+          <dl class="kv">
+            <dt class="m m-label">When</dt><dd class="m m-value">Tue 6 Oct · 20:00–21:00 SGT</dd>
+            <dt class="m m-label">Length</dt><dd class="m m-value">60 min</dd>
+            <dt class="m m-label">Status</dt><dd><span class="st ok">Confirmed</span></dd>
+          </dl>
+          <div class="row">
+            <span style="color:var(--muted);font-size:13.5px">Join opens <span class="m" style="color:var(--ink-soft)">19:50 SGT</span></span>
+            <button class="btn" type="button" disabled>Join session</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="spec">
+        <div class="cap"><b>Auto-release countdown</b> Awaiting your confirmation</div>
+        <article class="card">
+          <div style="display:flex;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;align-items:center">
+            <span style="font-weight:600">Vexa · Valorant</span>
+            <span class="st warn">Pending confirmation</span>
+          </div>
+          <p style="margin:var(--space-2) 0 0;color:var(--muted)">Session on <span class="m" style="color:var(--ink-soft)">Sat 3 Oct · 21:00 SGT</span>. Payment releases automatically in <span class="m" style="color:var(--ink)">41h 12m</span>.</p>
+          <div class="row" style="justify-content:flex-start">
+            <button class="btn" type="button">Confirm session</button>
+            <button class="btn sec" type="button">Report a problem</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="spec">
+        <div class="cap"><b>In-call timer</b> Session reminder banner</div>
+        <div class="banner" role="status">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span class="t">Session ends in <span class="m">10 min</span>, at <span class="m">21:00 SGT</span></span>
+          <span class="m clock">50:02</span>
+        </div>
+      </section>
+
+      <section class="spec">
+        <div class="cap"><b>Earnings figures</b> Coach dashboard</div>
+        <article class="card">
+          <span class="m m-label">Earnings</span>
+          <div class="earn">
+            <div>
+              <div class="m m-label" style="letter-spacing:.12em">Released</div>
+              <div class="fig">S$1,240.80</div>
+              <p>Paid out to your account</p>
+            </div>
+            <div>
+              <div class="m m-label" style="letter-spacing:.12em">Held</div>
+              <div class="fig" style="color:var(--ink-soft)">S$158.40</div>
+              <p>Releases after confirmation</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="spec">
+        <div class="cap"><b>Step and character counters</b> Coach profile setup</div>
+        <article class="card">
+          <span class="m m-label">Step 02 / 05</span>
+          <div class="field">
+            <label for="bio">Bio</label>
+            <textarea id="bio">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</textarea>
+            <span class="m count" id="bio-count">138 / 500</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="spec">
+        <div class="cap"><b>Dispute status</b> Session detail</div>
+        <article class="card">
+          <div style="display:flex;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;align-items:center">
+            <span style="font-weight:600">Coach didn't show up</span>
+            <span class="st warn">Under review</span>
+          </div>
+          <p style="margin:var(--space-2) 0 0;color:var(--muted)">Filed <span class="m" style="color:var(--ink-soft)">1 Oct · 19:22 SGT</span>. Your payment stays held until we decide.</p>
+        </article>
+      </section>
+
+    </div>
+  </div>
+
+  <section class="key" aria-label="What stays out of mono">
+    <div>
+      <h2>Set in Geist Mono</h2>
+      <ul>
+        <li>Prices, fees, totals, earnings</li>
+        <li>Dates, times, durations, countdowns</li>
+        <li>Statuses, ranks, ratings, review counts</li>
+        <li>Eyebrows, small labels, column headers</li>
+        <li>Step and character counters, references, @handles</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Stays in Geist</h2>
+      <ul>
+        <li>Display names and game names</li>
+        <li>Body text, reviews, bios, helper copy</li>
+        <li>Buttons, links, field labels</li>
+        <li>Chat messages and credential lines</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Stays in Sora</h2>
+      <ul>
+        <li>Page and section headings</li>
+        <li>Card headlines such as "Tuesday with Kairo"</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+  var t = document.getElementById('hl-toggle');
+  t.addEventListener('click', function () {
+    var on = document.body.classList.toggle('hl');
+    t.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  var bio = document.getElementById('bio'), c = document.getElementById('bio-count');
+  bio.addEventListener('input', function () { c.textContent = bio.value.length + ' / 500'; });
+  c.textContent = bio.value.length + ' / 500';
+</script>
