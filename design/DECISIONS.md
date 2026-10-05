@@ -58,7 +58,7 @@ Rescheduling and cancellation
 - Booking cancelled, with refund amount (both)
 
 Disputes
-- Dispute filed (both; depends on the response feature decision)
+- Dispute filed (both: filer gets a receipt, the other party is told and invited to respond)
 - Dispute outcome (both)
 
 Coach journey
@@ -74,3 +74,31 @@ Account
 - Password changed
 - Email changed (sent to the old address)
 - Terms updated
+
+## In-session timing (feature list section 10)
+
+- "Join session" activates 10 minutes before the start. Whoever joins first sees a waiting state naming the other person.
+- Non-blocking reminder banners inside the call at 10 minutes and 5 minutes before the scheduled end, plus a "Session ends in 1 minute" note. Banners, not modals, so they never cover gameplay or a shared screen.
+- The session ends at the scheduled end time, or early by mutual agreement: person A presses "End session", then confirms; person B sees "<name> wants to end the session" with "End now" and "Keep going"; it ends only when both agree.
+- If someone disconnects, the session continues until the scheduled end and they can rejoin.
+- "Pending confirmation" starts whenever the session ends, early or on time.
+
+## Disputes (feature list section 12)
+
+Two filing windows, with different reason lists per role.
+
+Window: after the session ends, before confirmation or auto-release (funds held). Filing pauses the 72-hour auto-release.
+- Gamer: coach didn't show up (available from 15 minutes after the start time, without waiting for the scheduled end); session ended early; coach was present but didn't coach; coach behaved inappropriately; session didn't match the listing; technical problems stopped the session; other.
+- Coach: gamer didn't show up; gamer behaved inappropriately; gamer left early but the session should still be paid; other.
+- "Gamer refusing to confirm without reason" is removed: the 72-hour auto-release already covers it.
+
+After completion: payment problems only, up to 30 days after release.
+- Gamer: charged the wrong amount; charged twice; refund hasn't arrived; other payment issue.
+- Coach: payout not received; payout amount is wrong; other payment issue.
+
+Status and outcome
+- Shown as a dispute section on the session detail page, not a separate page.
+- Statuses: Open, Under review, Resolved (refunded to gamer), Resolved (paid to coach). The team sets them in Supabase.
+- Outcomes are always a full refund or a full release. No partial refunds in the MVP.
+- The other party is emailed when a dispute is filed against them and can add one written response with optional evidence.
+- Both parties are emailed the outcome.
