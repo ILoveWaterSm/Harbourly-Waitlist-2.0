@@ -123,3 +123,29 @@ Status and outcome
 - Checkout charges in the coach's currency and says so plainly: "You'll be charged ₱1,850.00 + ₱111.00 platform fee = ₱1,961.00. Your bank converts this to SGD."
 - Harbourly pays no extra conversion fee. The gamer's bank does the conversion.
 - Revisit charging in the gamer's own currency (option A, about +2% on Stripe) once volume justifies it or Xendit multi-currency is confirmed.
+
+## Supported countries
+
+Coaches (limited by where payouts work)
+- Launch list: Singapore and Malaysia (Stripe), Philippines (Xendit). Thailand only if Stripe confirms support for the platform's setup.
+- Indonesia and Vietnam left out until Xendit or Stripe cross-border payout coverage is confirmed.
+- To confirm directly with Stripe and Xendit before launch.
+
+Gamers
+- Southeast Asia only at launch: Singapore, Malaysia, Philippines, Indonesia, Thailand, Vietnam, Brunei, Cambodia, Laos, Myanmar.
+- Reasons: brand and coach time zones, lower fraud and chargeback risk, simpler tax on the platform fee, fewer display currencies for option B.
+
+In the design
+- The sign-up country dropdown lists supported countries only.
+- If "coach" is chosen with a country outside the coach list, say so before the application starts: "Coaching isn't available in Indonesia yet. You can still book sessions as a gamer."
+- A coach's country locks once their payout account is set up. Changes go through support.
+- Unsupported countries see "Harbourly isn't available in your country yet." instead of the sign-up form.
+
+## Coach location and identity
+
+- Harbourly doesn't verify location itself. Stripe or Xendit KYC during payout setup checks a government ID (with selfie or liveness check) and requires a bank account or e-wallet in the chosen country. A coach who fakes their country fails payout setup and can never go live.
+- Southeast Asians living abroad with a home-country bank account are allowed.
+- Borrowed or rented identities are an accepted risk, handled through disputes and complaints.
+- The application intro (step 1) lists "What you'll need": a government ID, a bank account in your country, and proof of your rank.
+- The team treats a non-Southeast Asian phone number on an application as a reason to look closer, not a hard block.
+- The coach dashboard has a "Your payout account couldn't be verified" state with a way to retry or contact support.
