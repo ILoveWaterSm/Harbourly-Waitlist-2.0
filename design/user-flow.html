@@ -1,0 +1,411 @@
+<title>Harbourly user flow</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400;500&family=Sora:wght@700&display=swap">
+<style>
+/* Layout: a long reference document. Sticky contents rail on wide screens, diagrams full width in scroll boxes. */
+:root {
+  --bg: #f6f8fb; --surface: #ffffff; --ink: #0d1726; --muted: #4f5d72; --line: #d9e0ea; --accent: #12904a;
+  --font-display: "Sora", system-ui, sans-serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #030b17; --surface: #0b1628; --ink: #e8eef7; --muted: #94a3b8; --line: #94a3b829; --accent: #22d66f; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #030b17; --surface: #0b1628; --ink: #e8eef7; --muted: #94a3b8; --line: #94a3b829; --accent: #22d66f; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.6 var(--font-body); padding-inline: 16px; padding-block: 40px 80px; }
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 240px minmax(0,1fr); gap: 48px; align-items: start; }
+header { grid-column: 1 / -1; max-width: 70ch; }
+h1 { font: 700 32px/1.15 var(--font-display); letter-spacing: -0.01em; margin: 0 0 12px; text-wrap: balance; }
+header p { margin: 0 0 8px; color: var(--muted); }
+code { font-family: var(--font-mono); font-size: 0.92em; }
+nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); }
+nav .label { font: 400 10.5px/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+nav ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+nav a { display: flex; gap: 10px; padding: 6px 8px; border-radius: 8px; color: var(--ink); text-decoration: none; font-size: 14px; line-height: 1.35; }
+nav a:hover { background: var(--surface); color: var(--accent); }
+nav a:focus-visible, .flow a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.n { font-family: var(--font-mono); color: var(--muted); min-width: 1.6em; font-variant-numeric: tabular-nums; }
+main { display: grid; gap: 56px; min-width: 0; }
+.flow { display: grid; gap: 12px; min-width: 0; scroll-margin-top: 24px; }
+.flow h2 { font: 700 22px/1.25 var(--font-display); letter-spacing: -0.01em; margin: 0; display: flex; gap: 12px; align-items: baseline; }
+.flow h2 .n { font-size: 14px; font-weight: 500; }
+.note { margin: 0; color: var(--muted); max-width: 70ch; }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 24px; overflow-x: auto; }
+.diagram pre { margin: 0; }
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: minmax(0,1fr); gap: 32px; }
+  nav { position: static; }
+  .diagram { padding: 16px; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Harbourly user flow</h1>
+    <p>The MVP webapp flow, drawn from the feature list and every decision agreed since. Each page we design maps to a step here; anything not shown needs agreeing first.</p>
+    <p>Source of truth in the repo: <code>design/USER-FLOW.md</code>, with decisions in <code>design/DECISIONS.md</code>.</p>
+  </header>
+  <nav aria-label="Contents">
+    <div class="label">Contents</div>
+    <ol>
+<li><a href="#f1"><span class="n">1</span>Map of the whole product</a></li>
+<li><a href="#f2"><span class="n">2</span>Sign up and log in</a></li>
+<li><a href="#f3"><span class="n">3</span>Browse, profile and booking</a></li>
+<li><a href="#f4"><span class="n">4</span>Before the session: reminders, rescheduling, cancelling</a></li>
+<li><a href="#f5"><span class="n">5</span>The session</a></li>
+<li><a href="#f6"><span class="n">6</span>After the session: confirm, review</a></li>
+<li><a href="#f7"><span class="n">7</span>Disputes</a></li>
+<li><a href="#f8"><span class="n">8</span>Coach journey: application to live</a></li>
+<li><a href="#f9"><span class="n">9</span>Live coach: managing the profile</a></li>
+<li><a href="#f10"><span class="n">10</span>Account</a></li>
+<li><a href="#f11"><span class="n">11</span>Booking status lifecycle</a></li>
+<li><a href="#f12"><span class="n">12</span>Coach status lifecycle</a></li>
+<li><a href="#f13"><span class="n">13</span>Navigation and dual-role routing</a></li>
+    </ol>
+  </nav>
+  <main>
+<section id="f1" class="flow">
+  <h2><span class="n">1</span>Map of the whole product</h2>
+  
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  Visitor([&quot;Visitor, logged out&quot;]) --&gt; Browse[&quot;Browse coaches&quot;]
+  Browse --&gt; Profile[&quot;Coach profile&quot;]
+  Visitor --&gt; Auth[&quot;Sign up or log in&quot;]
+  Profile --&gt;|&quot;Book, needs login&quot;| Auth
+  Auth --&gt; GDash[&quot;Gamer dashboard&quot;]
+
+  GDash --&gt; Browse
+  GDash --&gt; GSessions[&quot;My sessions&quot;]
+  GSessions --&gt; Detail[&quot;Session detail&quot;]
+  Profile --&gt; Booking[&quot;Pick a slot and check out&quot;]
+  Booking --&gt; Detail
+  Detail --&gt; Session[&quot;Live session&quot;]
+  Session --&gt; After[&quot;Confirm, report a problem, review&quot;]
+  After --&gt; Detail
+  Detail --&gt; Dispute[&quot;Dispute&quot;]
+
+  GDash --&gt; Become[&quot;Become a coach&quot;]
+  Become --&gt; Apply[&quot;Coach application&quot;]
+  Apply --&gt; Setup[&quot;Payout, phone, profile setup&quot;]
+  Setup --&gt; CDash[&quot;Coach dashboard&quot;]
+  CDash --&gt; CSessions[&quot;Coach sessions&quot;]
+  CSessions --&gt; Detail
+  CDash --&gt; Manage[&quot;Coach profile settings&quot;]
+
+  GDash --&gt; Account[&quot;Account settings&quot;]
+  CDash --&gt; Account
+</pre></div>
+</section>
+<section id="f2" class="flow">
+  <h2><span class="n">2</span>Sign up and log in</h2>
+  <p class="note">The gamer or coach choice is a routing hint only. Every account can book as a gamer.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  Start([&quot;Sign up&quot;]) --&gt; Method{&quot;Method&quot;}
+  Method --&gt;|&quot;Email and password&quot;| Email[&quot;Enter email and password&quot;]
+  Email --&gt; Verify[&quot;Verify your email&quot;]
+  Verify --&gt; Details
+  Method --&gt;|&quot;Google&quot;| Details[&quot;Finish setting up your account&quot;]
+
+  Details --&gt; Fields[&quot;First name, last name, username, date of birth, phone with OTP, country, gamer or coach, accept terms&quot;]
+  Fields --&gt; Age{&quot;18 or older?&quot;}
+  Age --&gt;|&quot;No&quot;| Under18([&quot;You need to be 18 or older to use Harbourly&quot;])
+  Age --&gt;|&quot;Yes&quot;| Country{&quot;Country supported?&quot;}
+  Country --&gt;|&quot;No&quot;| NotAvail([&quot;Harbourly isn&#x27;t available in your country yet&quot;])
+  Country --&gt;|&quot;Yes&quot;| Role{&quot;Chose coach?&quot;}
+  Role --&gt;|&quot;No&quot;| GDash([&quot;Gamer dashboard&quot;])
+  Role --&gt;|&quot;Yes&quot;| CoachCountry{&quot;Coach country supported?&quot;}
+  CoachCountry --&gt;|&quot;No&quot;| NoCoach[&quot;Coaching isn&#x27;t available in your country yet. You can still book as a gamer&quot;]
+  NoCoach --&gt; GDash
+  CoachCountry --&gt;|&quot;Yes&quot;| AppIntro([&quot;Coach application, step 1&quot;])
+
+  Login([&quot;Log in&quot;]) --&gt; LMethod{&quot;Method&quot;}
+  LMethod --&gt;|&quot;Email and password&quot;| Creds[&quot;Email and password&quot;]
+  LMethod --&gt;|&quot;Google&quot;| Google[&quot;Google&quot;]
+  Creds --&gt;|&quot;Forgot password&quot;| Forgot[&quot;Forgot password&quot;]
+  Forgot --&gt; ResetEmail[&quot;Reset email sent&quot;]
+  ResetEmail --&gt; Reset[&quot;Set a new password&quot;]
+  Reset --&gt; Login
+  Creds --&gt; Checks
+  Google --&gt; Checks{&quot;Setup finished?&quot;}
+  Checks --&gt;|&quot;No&quot;| Details
+  Checks --&gt;|&quot;Yes&quot;| Terms{&quot;Latest terms accepted?&quot;}
+  Terms --&gt;|&quot;No&quot;| AcceptTerms[&quot;Accept the updated terms&quot;]
+  AcceptTerms --&gt; Return
+  Terms --&gt;|&quot;Yes&quot;| Return{&quot;Came from a booking?&quot;}
+  Return --&gt;|&quot;Yes&quot;| BackToSlot([&quot;Back to the same booking step&quot;])
+  Return --&gt;|&quot;No&quot;| GDash
+</pre></div>
+</section>
+<section id="f3" class="flow">
+  <h2><span class="n">3</span>Browse, profile and booking</h2>
+  
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  Browse[&quot;Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency&quot;] --&gt; Card[&quot;Coach card&quot;]
+  Browse --&gt;|&quot;Load more&quot;| Browse
+  Card --&gt; Profile[&quot;Coach profile: bio, per-game rank and credentials, per-game price, availability preview, voice intro, reviews&quot;]
+  Profile --&gt; Own{&quot;Is this your own coach profile?&quot;}
+  Own --&gt;|&quot;Yes&quot;| NoBook([&quot;No Book button. This is your profile&quot;])
+  Own --&gt;|&quot;No&quot;| Game[&quot;Choose a game&quot;]
+  Game --&gt; Slot[&quot;Pick a one-hour slot, in your local time&quot;]
+  Slot --&gt; LoggedIn{&quot;Logged in?&quot;}
+  LoggedIn --&gt;|&quot;No&quot;| Auth[&quot;Log in or sign up&quot;]
+  Auth --&gt; Slot
+  LoggedIn --&gt;|&quot;Yes&quot;| Phone{&quot;Phone verified?&quot;}
+  Phone --&gt;|&quot;No&quot;| VerifyPhone[&quot;Verify your phone&quot;]
+  VerifyPhone --&gt; Hold
+  Phone --&gt;|&quot;Yes&quot;| Hold[&quot;Slot held for 30 minutes. Booking is pending payment&quot;]
+  Hold --&gt; Summary[&quot;Checkout summary: price, platform fee, total in the coach&#x27;s currency, cancellation rule, how the escrow hold works&quot;]
+  Summary --&gt; Hosted[&quot;Stripe or Xendit hosted payment page&quot;]
+  Hosted --&gt; Back[&quot;Back on Harbourly: confirming your payment&quot;]
+  Back --&gt; Result{&quot;Payment provider result&quot;}
+  Result --&gt;|&quot;Paid&quot;| Confirmed([&quot;Booking confirmed. Emails to both&quot;])
+  Result --&gt;|&quot;Not paid, hold still active&quot;| Failed[&quot;Payment didn&#x27;t go through&quot;]
+  Failed --&gt; Summary
+  Result --&gt;|&quot;Hold expired&quot;| Expired[&quot;This slot is no longer held. Email to gamer&quot;]
+  Expired --&gt; Slot
+</pre></div>
+</section>
+<section id="f4" class="flow">
+  <h2><span class="n">4</span>Before the session: reminders, rescheduling, cancelling</h2>
+  <p class="note">Only one open request per booking, and at most one accepted reschedule per booking. A coach cancelling inside 24 hours counts as a serious incident.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  Confirmed([&quot;Booking confirmed&quot;]) --&gt; Window{&quot;More than 24 hours to go?&quot;}
+
+  Window --&gt;|&quot;Yes&quot;| Options[&quot;Session detail offers: Request a new time, Cancel booking&quot;]
+  Window --&gt;|&quot;No&quot;| Locked[&quot;Time locked. No reschedule. Gamer can&#x27;t cancel&quot;]
+
+  Options --&gt; Req[&quot;Requester offers up to 3 slots from the coach&#x27;s availability. Slots held&quot;]
+  Req --&gt; Other{&quot;Other person responds&quot;}
+  Other --&gt;|&quot;Picks a slot&quot;| Moved([&quot;Booking moved. Emails to both&quot;])
+  Other --&gt;|&quot;Declines&quot;| WhoAsked{&quot;Who asked?&quot;}
+  WhoAsked --&gt;|&quot;Gamer&quot;| Stands([&quot;Original time stands&quot;])
+  WhoAsked --&gt;|&quot;Coach&quot;| GamerChoice{&quot;Gamer chooses&quot;}
+  GamerChoice --&gt;|&quot;Keep original time&quot;| Stands
+  GamerChoice --&gt;|&quot;Cancel&quot;| FullRefund([&quot;Cancelled. Full refund including platform fee&quot;])
+  Other --&gt;|&quot;No reply in 48h, or 12h before start&quot;| Stands
+
+  Options --&gt; CancelWho{&quot;Who cancels?&quot;}
+  CancelWho --&gt;|&quot;Gamer, within 1 hour of booking&quot;| FullRefund
+  CancelWho --&gt;|&quot;Gamer, otherwise&quot;| PartRefund([&quot;Cancelled. Coach price refunded, platform fee kept&quot;])
+  CancelWho --&gt;|&quot;Coach&quot;| CoachCancel([&quot;Cancelled. Full refund to gamer. Recorded against coach&quot;])
+  Locked --&gt;|&quot;Coach can still cancel&quot;| CoachCancel
+
+  Confirmed --&gt; Remind[&quot;Reminder emails 24h and 1h before&quot;]
+  Remind --&gt; Join([&quot;Join session opens 10 minutes before start&quot;])
+  Locked --&gt; Join
+</pre></div>
+</section>
+<section id="f5" class="flow">
+  <h2><span class="n">5</span>The session</h2>
+  
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  Join([&quot;Join session, from 10 minutes before&quot;]) --&gt; Waiting{&quot;Other person here?&quot;}
+  Waiting --&gt;|&quot;No&quot;| Room[&quot;Waiting for the other person&quot;]
+  Room --&gt; Waiting
+  Room --&gt;|&quot;Gamer, 15 minutes after start, coach absent&quot;| NoShow([&quot;Report a no-show: opens a dispute&quot;])
+  Waiting --&gt;|&quot;Yes&quot;| Live[&quot;Live: call, chat saved, screen share on computers only&quot;]
+  Live --&gt; Banners[&quot;Banners at 10, 5 and 1 minutes before the end&quot;]
+  Live --&gt;|&quot;Disconnected&quot;| Rejoin[&quot;Rejoin until the scheduled end&quot;]
+  Rejoin --&gt; Live
+  Live --&gt; EndHow{&quot;How it ends&quot;}
+  EndHow --&gt;|&quot;Scheduled end time&quot;| Ended
+  EndHow --&gt;|&quot;Person A: End session, then Confirm&quot;| Ask[&quot;Person B sees: A wants to end the session&quot;]
+  Ask --&gt;|&quot;Keep going&quot;| Live
+  Ask --&gt;|&quot;End now&quot;| Ended([&quot;Session ended. Pending confirmation&quot;])
+</pre></div>
+</section>
+<section id="f6" class="flow">
+  <h2><span class="n">6</span>After the session: confirm, review</h2>
+  
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  Ended([&quot;Pending confirmation, 72 hours&quot;]) --&gt; Emails[&quot;Email to gamer: please confirm. Reminder with 24 hours left&quot;]
+  Ended --&gt; GamerAct{&quot;What happens&quot;}
+  GamerAct --&gt;|&quot;Gamer confirms&quot;| Done
+  GamerAct --&gt;|&quot;No action for 72 hours&quot;| Done([&quot;Completed. Payment released to coach. Emails&quot;])
+  GamerAct --&gt;|&quot;Gamer reports a problem&quot;| Dispute([&quot;Dispute. Auto-release paused&quot;])
+  GamerAct --&gt;|&quot;Coach reports a problem&quot;| Dispute
+  Done --&gt; Review[&quot;Leave a review: 5 stars, optional text. One per booking&quot;]
+  Review --&gt; Shown([&quot;Shown on the coach profile. Average updated&quot;])
+  Done --&gt; Later([&quot;Payment problem within 30 days: dispute&quot;])
+</pre></div>
+</section>
+<section id="f7" class="flow">
+  <h2><span class="n">7</span>Disputes</h2>
+  <p class="note">Always a full refund or a full release. Resolution happens in the Stripe or Xendit dashboard.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  Start([&quot;Report a problem on session detail&quot;]) --&gt; When{&quot;When?&quot;}
+  When --&gt;|&quot;Before confirmation&quot;| WindowReasons[&quot;Reasons for your role: conduct, no-show, ended early, didn&#x27;t coach, didn&#x27;t match listing, technical, other&quot;]
+  When --&gt;|&quot;Within 30 days after completion&quot;| PayReasons[&quot;Payment reasons only: wrong amount, charged twice, refund missing, payout missing or wrong, other&quot;]
+  WindowReasons --&gt; Form
+  PayReasons --&gt; Form[&quot;Description and optional evidence&quot;]
+  Form --&gt; Open[&quot;Status: Open. Auto-release paused if still in the window&quot;]
+  Open --&gt; Notify[&quot;Email to both. The other person can add one response with evidence&quot;]
+  Notify --&gt; Review[&quot;Status: Under review. Team reviews in Supabase&quot;]
+  Review --&gt; Outcome{&quot;Outcome&quot;}
+  Outcome --&gt;|&quot;Refund&quot;| Refunded([&quot;Resolved: refunded to gamer&quot;])
+  Outcome --&gt;|&quot;Release&quot;| Paid([&quot;Resolved: paid to coach&quot;])
+  Refunded --&gt; Email([&quot;Outcome emailed to both&quot;])
+  Paid --&gt; Email
+</pre></div>
+</section>
+<section id="f8" class="flow">
+  <h2><span class="n">8</span>Coach journey: application to live</h2>
+  <p class="note">The four conditions to go live: application approved, payout setup complete, phone verified, profile complete.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  Become([&quot;Become a coach&quot;]) --&gt; Row[&quot;Coach record created. Coach dashboard appears in the sidebar&quot;]
+  Row --&gt; Step1[&quot;Step 1: what coaching on Harbourly involves, and what you&#x27;ll need&quot;]
+  Step1 --&gt; Step2[&quot;Step 2: games and rank per game, proof images up to 5, marketplace profile link optional, what made you start coaching&quot;]
+  Step2 --&gt;|&quot;Leave and come back&quot;| Draft[&quot;Draft saved. Dashboard: continue your application&quot;]
+  Draft --&gt; Step2
+  Step2 --&gt; Submitted[&quot;Submitted. Dashboard: under review&quot;]
+  Submitted --&gt; Decision{&quot;Team decision&quot;}
+
+  Decision --&gt;|&quot;Rejected&quot;| Rejected[&quot;Rejected: reason shown, flagged section highlighted, inputs kept&quot;]
+  Rejected --&gt; Attempts{&quot;Which rejection?&quot;}
+  Attempts --&gt;|&quot;First or second&quot;| Fix[&quot;Change the flagged section, resubmit now&quot;]
+  Attempts --&gt;|&quot;Third&quot;| Wait[&quot;Wait 14 days, then resubmit&quot;]
+  Fix --&gt; Submitted
+  Wait --&gt; Submitted
+  Decision --&gt;|&quot;Not eligible&quot;| Closed([&quot;Not eligible. No reapply&quot;])
+
+  Decision --&gt;|&quot;Approved&quot;| Gates[&quot;Dashboard: what&#x27;s left before you go live&quot;]
+  Gates --&gt; Payout[&quot;Payout setup with Stripe or Xendit, including identity check&quot;]
+  Payout --&gt;|&quot;Couldn&#x27;t verify&quot;| PayoutFail[&quot;Your payout account couldn&#x27;t be verified. Try again or contact support&quot;]
+  PayoutFail --&gt; Payout
+  Gates --&gt; PhoneGate[&quot;Phone verified&quot;]
+  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, availability, price and credentials per game&quot;]
+  Setup --&gt;|&quot;Leave and come back&quot;| Setup
+  Payout --&gt; AllDone{&quot;All four done?&quot;}
+  PhoneGate --&gt; AllDone
+  Setup --&gt; AllDone
+  AllDone --&gt;|&quot;Yes&quot;| Live([&quot;Live and bookable as a New Coach. Email&quot;])
+
+  Live --&gt; Path{&quot;Path to Verified&quot;}
+  Path --&gt;|&quot;Submit portfolio, passes review&quot;| Verified([&quot;Verified&quot;])
+  Path --&gt;|&quot;5 sessions with no serious incidents&quot;| Verified
+</pre></div>
+</section>
+<section id="f9" class="flow">
+  <h2><span class="n">9</span>Live coach: managing the profile</h2>
+  
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  CDash([&quot;Coach dashboard&quot;]) --&gt; Settings[&quot;Coach profile settings&quot;]
+  Settings --&gt; Bio[&quot;Edit bio, avatar, banner&quot;]
+  Settings --&gt; Avail[&quot;Edit weekly availability, in your own time zone&quot;]
+  Settings --&gt; Rates[&quot;Edit price per game&quot;]
+  Settings --&gt; Rank[&quot;Update rank: new screenshot, old rank shown until approved&quot;]
+  Settings --&gt; AddGame[&quot;Add a game: proof, listing under review until approved&quot;]
+  Settings --&gt; Voice[&quot;Record a voice intro: pending, then approved or declined&quot;]
+  Settings --&gt; Portfolio[&quot;Submit portfolio for Verified&quot;]
+  Settings --&gt; Preview[&quot;Preview my public profile&quot;]
+  CDash --&gt; PayoutSet[&quot;Payout settings: status and link to Stripe or Xendit&quot;]
+  CDash --&gt; CSessions[&quot;Coach sessions list&quot;]
+  CSessions --&gt; Detail[&quot;Session detail, coach view&quot;]
+  CDash --&gt; Disputes[&quot;Open disputes involving you&quot;]
+  Disputes --&gt; Detail
+</pre></div>
+</section>
+<section id="f10" class="flow">
+  <h2><span class="n">10</span>Account</h2>
+  <p class="note">A coach&#x27;s country can&#x27;t be changed here once payout setup is done.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+  Account([&quot;Account settings&quot;]) --&gt; Profile[&quot;Name, username, avatar&quot;]
+  Account --&gt; EmailChange[&quot;Change email: verify the new one, notice to the old one&quot;]
+  Account --&gt; Password[&quot;Change password&quot;]
+  Account --&gt; PhoneChange[&quot;Change phone: OTP&quot;]
+  Account --&gt; Locale[&quot;Country, time zone, currency&quot;]
+  Account --&gt; Delete{&quot;Delete account&quot;}
+  Delete --&gt;|&quot;Upcoming sessions or open disputes&quot;| Blocked([&quot;Not yet: finish or resolve them first&quot;])
+  Delete --&gt;|&quot;Nothing open&quot;| Confirm[&quot;Confirm with a clear warning&quot;]
+  Confirm --&gt; Gone([&quot;Deletion requested&quot;])
+
+  System([&quot;System pages&quot;]) --&gt; NotFound[&quot;404&quot;]
+  System --&gt; Error[&quot;Something went wrong&quot;]
+  System --&gt; SessionExp[&quot;Session expired: sign in again&quot;]
+  System --&gt; Protected[&quot;Sign in to continue, on protected pages&quot;]
+</pre></div>
+</section>
+<section id="f11" class="flow">
+  <h2><span class="n">11</span>Booking status lifecycle</h2>
+  <p class="note">A reschedule request is shown as a second line on a confirmed booking, not a separate status. A payment dispute after completion is tracked on the dispute record, not as a new booking status.</p>
+  <div class="diagram"><pre class="mermaid">
+stateDiagram-v2
+  [*] --&gt; pending_payment: slot picked
+  pending_payment --&gt; confirmed: payment provider confirms
+  pending_payment --&gt; expired: 30 minutes, not paid
+
+  confirmed --&gt; confirmed: reschedule accepted
+  confirmed --&gt; cancelled: gamer 24h or more ahead, or coach any time
+  confirmed --&gt; in_session: someone joins
+  confirmed --&gt; disputed: coach no-show reported
+
+  in_session --&gt; pending_confirmation: session ends
+  pending_confirmation --&gt; completed: gamer confirms, or 72 hours pass
+  pending_confirmation --&gt; disputed: either party reports a problem
+
+  disputed --&gt; refunded: resolved for gamer
+  disputed --&gt; completed: resolved for coach
+
+  cancelled --&gt; [*]
+  expired --&gt; [*]
+  refunded --&gt; [*]
+  completed --&gt; [*]
+</pre></div>
+</section>
+<section id="f12" class="flow">
+  <h2><span class="n">12</span>Coach status lifecycle</h2>
+  
+  <div class="diagram"><pre class="mermaid">
+stateDiagram-v2
+  [*] --&gt; draft: Become a coach
+  draft --&gt; submitted: submit application
+  submitted --&gt; rejected: team rejects
+  rejected --&gt; submitted: resubmit after changes
+  submitted --&gt; not_eligible: team marks not eligible
+  submitted --&gt; approved: team approves
+  approved --&gt; live: payout, phone and profile all complete
+
+  state live {
+    [*] --&gt; new_coach
+    new_coach --&gt; verified: portfolio passes, or 5 clean sessions
+  }
+
+  not_eligible --&gt; [*]
+</pre></div>
+</section>
+<section id="f13" class="flow">
+  <h2><span class="n">13</span>Navigation and dual-role routing</h2>
+  <p class="note">Gamer and coach data never mix. Each dashboard and each sessions list is its own route with its own data.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart LR
+  Top[&quot;Top bar, always: logo, name and sign out, or log in and sign up&quot;]
+  Top --&gt;|&quot;Logo, logged in&quot;| GDash
+  Top --&gt;|&quot;Logo, logged out&quot;| Home[&quot;Marketing home&quot;]
+
+  subgraph Gamer[&quot;Gamer block in the sidebar&quot;]
+    GDash[&quot;Dashboard /dashboard&quot;]
+    GBrowse[&quot;Browse coaches /coaches&quot;]
+    GSess[&quot;My sessions /sessions&quot;]
+    GBecome[&quot;Become a coach, until a coach record exists&quot;]
+  end
+
+  subgraph Coach[&quot;Coach block, once a coach record exists&quot;]
+    CDash[&quot;Coach dashboard /coach/dashboard&quot;]
+    CSess[&quot;Coach sessions /coach/sessions&quot;]
+  end
+
+  GDash &lt;--&gt;|&quot;Switcher&quot;| CDash
+</pre></div>
+</section>
+  </main>
+</div>

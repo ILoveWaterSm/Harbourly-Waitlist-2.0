@@ -2,6 +2,30 @@
 
 Decisions agreed during design that change or clarify the MVP feature list. Newest at the bottom.
 
+## Output and code structure
+
+- Mockups are standalone HTML, one per page, in `/design`, dark theme only.
+- Stack they map to: Next.js 16, React 19, TypeScript, CSS Modules (one `.module.css` per component) plus one global token stylesheet. No Tailwind.
+- Fictional gamer handles only; no real people.
+- Geist Mono specimen: `explorations/mono-specimen.html`.
+
+## Core product decisions
+
+- **Games (5):** Mobile Legends, Call of Duty: Mobile, Valorant, Counter-Strike 2, Riftbound.
+- **Coach games and rates:** games and rank per game are added in application phase A (step 2). Per-game price and up to 3 credential lines are set in profile setup phase B. Profile complete requires at least one game with a rate. Adding a game later goes through review.
+- **Sign-in:** email and password, plus Google. No Discord or other social login.
+- **KYC:** happens during payout setup, after approval, before going live.
+- **Phone verification:** OTP at sign-up for everyone; needed by both gamers and coaches.
+- **Sessions:** fixed 60 minutes, one slot per booking. Price is per session, shown as "S$45 / session"; cards show "from S$X".
+- **Time:** all times in the viewer's local time zone with a zone label. Coaches set availability in their own time zone.
+- **Payment hold:** a `pending_payment` booking holds the slot for 30 minutes, matching the Stripe Checkout minimum expiry; Xendit invoice expiry set the same. Shown as a quiet countdown.
+- **Checkout:** hosted Stripe or Xendit page, then return to Harbourly. States: confirming your payment, payment didn't go through, slot no longer held.
+- **Session detail page:** added for gamers and coaches.
+- **Coach profile settings page:** added (bio, availability, games and rates, rank updates, voice intro, portfolio).
+- **New Coach label:** shown publicly, in the same position as the Verified badge.
+- **Logo:** goes to the dashboard when logged in, the marketing home when logged out.
+- **Mobile sessions:** phones can watch a shared screen but not share their own; the share button is replaced by "To share your screen, join from a computer", also noted on session detail and the confirmation email.
+
 ## Ranks (feature list sections 6, 7 and 17)
 
 - No official rank ladders are stored. Harbourly does not maintain tier lists for any game.
