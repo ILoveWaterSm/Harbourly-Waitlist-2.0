@@ -62,7 +62,7 @@ Disputes
 - Dispute outcome (both)
 
 Coach journey
-- Application submitted, approved, rejected (rejection includes reason and reapply date)
+- Application submitted, approved, rejected (rejection includes the reason, and the reapply date when a wait applies)
 - Still to finish before you go live (nudge after a few days stuck)
 - You're live and bookable
 - Rank update, new game listing, voice intro: approved or declined
@@ -102,3 +102,14 @@ Status and outcome
 - Outcomes are always a full refund or a full release. No partial refunds in the MVP.
 - The other party is emailed when a dispute is filed against them and can add one written response with optional evidence.
 - Both parties are emailed the outcome.
+
+## Rejected coach applications (feature list section 4)
+
+- A rejected application keeps all the coach's previous inputs and uploads. Nothing is wiped.
+- On rejection the team records a reason category in Supabase (e.g. proof doesn't show the rank claimed, proof images unclear, rank below our minimum) plus an optional short note. No admin UI.
+- The reapply screen shows the reason at the top and highlights the affected section.
+- Resubmit only enables once something in the flagged section has changed.
+- First and second rejection: resubmit immediately.
+- Third rejection: 14-day wait before the next attempt. The screen shows the date ("You can reapply from 19 Oct") and why.
+- "Not eligible" rejection (fraud, fake proof): plain message, no reapply option.
+- The coach dashboard gains a `rejected` state alongside draft, submitted, approved and live.
