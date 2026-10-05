@@ -46,6 +46,8 @@ Decisions agreed during design that change or clarify the MVP feature list. Newe
 - Payment stays held. Price and fee rates snapshotted at booking are unchanged.
 - If a gamer declines a coach's request, the gamer chooses: keep the original time, or cancel for a full refund including the platform fee.
 - In the sessions list the status stays `Confirmed`, with a `Reschedule requested` second line while a request is open.
+- Both dashboards show a "Reschedule request" card with the offered slots and the time left to reply, whenever a request is waiting on that person.
+- Session detail offers "Request a new time" and "Cancel booking" only when allowed, with the reason when not (e.g. "Changes close 24 hours before the session").
 
 ## Cancellation (new, not in the feature list)
 
@@ -212,3 +214,11 @@ In the design
 - Prices use `S$` for SGD; other currencies per the currency display decision.
 - Geist Mono for data and labels: money, dates, times, durations, countdowns, statuses, ranks, ratings and counts, eyebrows, small labels, column headers, step and character counters, references, @handles. Geist for names, body, buttons, links, field labels, chat, game names, credential lines. Sora for headings.
 - Dark theme only.
+
+## Design deliverables and canvas
+
+- The HTML pages are the single source of truth: one file per page in `design/pages/`, shared tokens in `design/foundations/tokens.css`, each with a state switcher and a desktop/mobile toggle, published as a private artifact link.
+- One Claude Design canvas holds the overview. Its frames are exact renders of each HTML page's states (desktop and phone), grouped by phase in build order, labelled "NN Page · State · Width", with a note linking each page's interactive version. Frames are images, so they can't drift from the HTML.
+- Changes go through the HTML pages (asked for in chat or as a canvas comment), then the frames are re-rendered.
+- Only one canvas: create it once, in Phase 0, and add each phase's frames to it. Don't create a new canvas per phase.
+- Figma only if hand-editable frames are needed later; it can be generated from the finished HTML pages.
