@@ -171,3 +171,20 @@ In the design
 - MVP: 18+ only. Date of birth at sign-up is checked; anyone under 18 sees "You need to be 18 or older to use Harbourly." and can't continue.
 - Coaches are 18+ in any case through Stripe and Xendit KYC.
 - Future: consider ages 13–17 with parental consent (parent approves by email, possibly per booking), after legal advice and once the core product is running.
+
+## Visual rules for the webapp (design system adaptations)
+
+- Tokens are used by their exact design-system names (`--bg`, `--surface`, `--space-*`, `--radius-*`, `--text-*`, `--font-*`). No `--pad`.
+- Flat surfaces: page `--bg`, cards solid `--surface`, inset areas (chat panel, list rows) `--bg-mid`. No gradients on cards.
+- One new shadow token for all cards: `--shadow-flat` (about `0 1px 2px #00000059`).
+- Primary buttons keep a softer resting glow via a new token `--shadow-cta-rest` (about half of `--shadow-cta`); on hover they move to `--shadow-cta-hover` and the blurred halo fades in.
+- Secondary button: outline pill, `--line` border, `--ink` text.
+- Green glow only as a deliberate accent: a thin glowing top line on the one card that matters most in view.
+- The top nav keeps its blur and transparency. Nothing else is frosted.
+- No background grid, film grain or breathing glow in the webapp; those stay on marketing pages.
+- Type scale reuses existing tokens: page title `--text-kpi` (32px), section title `--text-card-title` (24px), card title `--text-h3` (19px).
+- Status colours: green for confirmed, completed, verified; amber for anything needing action (awaiting payment, pending confirmation, disputed, reschedule requested); muted for ended or neutral (expired, refunded, past). Shown as a mono label with a coloured dot, not filled pills. No red.
+- Brief overrides the design system on three points: no 60px icon chips heading cards, no centring by default, hover lift only on clickable elements.
+- Prices use `S$` for SGD; other currencies per the currency display decision.
+- Geist Mono for data and labels: money, dates, times, durations, countdowns, statuses, ranks, ratings and counts, eyebrows, small labels, column headers, step and character counters, references, @handles. Geist for names, body, buttons, links, field labels, chat, game names, credential lines. Sora for headings.
+- Dark theme only.
