@@ -113,3 +113,13 @@ Status and outcome
 - Third rejection: 14-day wait before the next attempt. The screen shows the date ("You can reapply from 19 Oct") and why.
 - "Not eligible" rejection (fraud, fake proof): plain message, no reapply option.
 - The coach dashboard gains a `rejected` state alongside draft, submitted, approved and live.
+
+## Currency display (option B)
+
+- Coaches set their per-game price in their own currency (e.g. ₱1,850, RM 150, S$45).
+- Gamers see every price converted to their own currency on browse cards, profiles and dashboards, so prices compare and the price filter and sort work.
+- Converted prices carry "≈" (e.g. "≈ S$43 / session"). Prices already in the viewer's currency show without it.
+- The coach profile adds one line under the price: "Kairo's price is ₱1,850. Your bank converts at checkout."
+- Checkout charges in the coach's currency and says so plainly: "You'll be charged ₱1,850.00 + ₱111.00 platform fee = ₱1,961.00. Your bank converts this to SGD."
+- Harbourly pays no extra conversion fee. The gamer's bank does the conversion.
+- Revisit charging in the gamer's own currency (option A, about +2% on Stripe) once volume justifies it or Xendit multi-currency is confirmed.
