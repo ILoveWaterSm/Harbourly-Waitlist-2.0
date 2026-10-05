@@ -165,3 +165,9 @@ In the design
 ## Verification Standard page
 
 - Kept exactly as it is, design and copy. Not redesigned as part of the webapp.
+
+## Age (feature list section 2, replaces "no age gate, to be confirmed")
+
+- MVP: 18+ only. Date of birth at sign-up is checked; anyone under 18 sees "You need to be 18 or older to use Harbourly." and can't continue.
+- Coaches are 18+ in any case through Stripe and Xendit KYC.
+- Future: consider ages 13–17 with parental consent (parent approves by email, possibly per booking), after legal advice and once the core product is running.
