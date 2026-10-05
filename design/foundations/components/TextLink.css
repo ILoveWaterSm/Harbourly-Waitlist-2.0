@@ -1,0 +1,17 @@
+/* TextLink → TextLink.module.css */
+.textLink {
+  display: inline;
+  padding: 0 0 1px;
+  border: 0;
+  border-bottom: 1px solid var(--green-line);
+  background: none;
+  color: var(--green);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color .2s;
+}
+.textLink:hover, .textLink.isHover { border-bottom-color: var(--green); }
+.textLink.quiet { color: var(--muted); border-bottom-color: transparent; }
+.textLink.quiet:hover, .textLink.quiet.isHover { color: var(--ink); border-bottom-color: var(--line-strong); }

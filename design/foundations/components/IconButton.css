@@ -1,0 +1,21 @@
+/* IconButton → IconButton.module.css. 40px hit area; always carries an aria-label. */
+.iconButton {
+  display: inline-grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  flex: none;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-round);
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background-color .2s;
+}
+.iconButton svg { width: 18px; height: 18px; }
+.iconButton:hover:not(:disabled), .iconButton.isHover { color: var(--ink); border-color: var(--muted); }
+.iconButton.quiet { border-color: transparent; }
+.iconButton.quiet:hover:not(:disabled), .iconButton.quiet.isHover { background: var(--fill-subtle); border-color: transparent; }
+.iconButton.sm { width: 32px; height: 32px; }
+.iconButton.sm svg { width: 16px; height: 16px; }
+.iconButton:disabled { color: var(--subtle); border-color: var(--line); cursor: not-allowed; }

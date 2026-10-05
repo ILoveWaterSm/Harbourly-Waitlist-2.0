@@ -1,0 +1,11 @@
+/* Skeleton → Skeleton.module.css. Matches the shape of what's loading; a slow sweep, off for reduced motion. */
+.skeleton {
+  display: block;
+  height: 12px;
+  border-radius: var(--radius-xs);
+  background: linear-gradient(90deg, var(--fill-subtle) 0 40%, color-mix(in srgb, var(--muted) 14%, transparent) 50%, var(--fill-subtle) 60% 100%) 0 0 / 300% 100%;
+  animation: skeletonSweep 1.6s ease-in-out infinite;
+}
+.skeleton.circle { border-radius: var(--radius-round); }
+.skeleton.pill { border-radius: var(--radius-pill); }
+@keyframes skeletonSweep { from { background-position: 100% 0; } to { background-position: 0 0; } }

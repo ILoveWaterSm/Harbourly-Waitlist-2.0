@@ -1,0 +1,9 @@
+/* Price → Price.module.css. Exact, converted (≈) and "from" prices. */
+.price { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--ink); }
+.priceFrom { display: block; margin-bottom: 2px; font-size: 12px; color: var(--muted); }
+.priceAmount { font-size: 18px; font-weight: 500; }
+.priceApprox { margin-right: 3px; color: var(--muted); font-weight: 400; }
+.pricePer { font-size: 12px; color: var(--muted); }
+.price.inline .priceAmount { font-size: 13.5px; }
+.priceNote { font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.priceNote .price { color: var(--ink-soft); }

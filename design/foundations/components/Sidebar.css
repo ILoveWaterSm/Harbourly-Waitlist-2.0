@@ -1,0 +1,33 @@
+/* Sidebar → Sidebar.module.css. Gamer block always; coach block once a coach record exists.
+   The block you're in has a green label; "Become a coach" is a dashed invitation, not a section. */
+.sidebar { position: sticky; top: 64px; display: grid; gap: var(--space-8); align-content: start; padding: var(--space-6) var(--space-4); border-right: 1px solid var(--line); min-height: calc(100% - 64px); }
+.sidebarBlock { display: grid; gap: var(--space-1); }
+.sidebarBlockLabel { padding: 0 var(--space-3) var(--space-2); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+.sidebarBlock.active .sidebarBlockLabel { color: var(--green); }
+.sidebarLink {
+  display: flex; align-items: center; gap: var(--space-3);
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  color: var(--muted);
+  font: var(--text-nav-link);
+  font-size: 15px;
+  text-decoration: none;
+  transition: color .2s, background-color .2s;
+}
+.sidebarLink svg { width: 18px; height: 18px; flex: none; }
+.sidebarLink:hover, .sidebarLink.isHover { color: var(--ink); background: var(--fill-subtle); }
+.sidebarLink[aria-current="page"] { color: var(--green); background: var(--green-tint); }
+.sidebarBecome {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px dashed var(--green-line);
+  border-radius: var(--radius-md);
+  color: var(--green);
+  font: 600 14.5px/1.3 var(--font-body);
+  text-decoration: none;
+  transition: border-color .2s;
+}
+.sidebarBecome svg { width: 18px; height: 18px; flex: none; }
+.sidebarBecome:hover { border-color: var(--green); }

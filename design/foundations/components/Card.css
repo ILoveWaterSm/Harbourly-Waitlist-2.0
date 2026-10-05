@@ -1,0 +1,29 @@
+/* Card → Card.module.css. Flat by default. The accent card (one per view, the thing that
+   matters most) gets a thin glowing top line that strengthens on hover. */
+.card {
+  position: relative;
+  min-width: 0;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-flat);
+}
+.card.accent::before, .card.accent::after {
+  content: "";
+  position: absolute;
+  left: var(--space-4); right: var(--space-4); top: 0;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+.card.accent::before { height: 1px; background: linear-gradient(90deg, transparent, var(--green), transparent); opacity: .6; }
+.card.accent::after { height: 8px; top: -4px; background: linear-gradient(90deg, transparent, var(--green-glow), transparent); filter: blur(6px); opacity: 0; }
+.card.accent:hover::before, .card.accent.isHover::before { opacity: 1; }
+.card.accent:hover::after, .card.accent.isHover::after { opacity: 1; }
+.cardHead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.cardBody { margin-top: var(--space-3); color: var(--muted); }
+.cardActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-top: var(--space-5); }
+.cardInset { padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); }
+.cardFacts { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-2) var(--space-5); align-items: baseline; margin: var(--space-4) 0 0; }
+.cardFacts dt { margin: 0; font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.cardFacts dd { margin: 0; font: var(--text-value); color: var(--ink-soft); }
+@container app (max-width: 640px) { .card { padding: var(--space-5); } }

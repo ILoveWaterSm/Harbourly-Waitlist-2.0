@@ -1,0 +1,34 @@
+/* SessionList → SessionList.module.css. Plain rows on --bg-mid; the whole row opens session detail. */
+.sessionList { display: grid; gap: var(--space-2); }
+.sessionListHead, .sessionRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.3fr) minmax(0, 1.1fr) 20px;
+  gap: var(--space-4);
+  align-items: center;
+}
+.sessionListHead { padding: 0 var(--space-4) var(--space-1); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.sessionRow {
+  padding: 14px var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--bg-mid);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color .2s;
+}
+.sessionRow:hover, .sessionRow.isHover { background: var(--surface); }
+.sessionRow:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.sessionRowWho { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.sessionRowName { display: block; font-weight: 600; font-size: 15px; color: var(--ink); }
+.sessionRowGame { display: block; font-size: 13.5px; color: var(--muted); }
+.sessionRowWhen { font: var(--text-value); color: var(--ink-soft); }
+.sessionRowGo { color: var(--subtle); transition: color .2s; }
+.sessionRowGo svg { width: 18px; height: 18px; display: block; }
+.sessionRow:hover .sessionRowGo, .sessionRow.isHover .sessionRowGo { color: var(--ink); }
+@container app (max-width: 640px) {
+  .sessionListHead { display: none; }
+  .sessionRow { grid-template-columns: minmax(0, 1fr) 20px; grid-template-areas: "who go" "when go" "status go"; gap: var(--space-2); }
+  .sessionRowWho { grid-area: who; }
+  .sessionRowWhen { grid-area: when; padding-left: 52px; }
+  .sessionRowStatus { grid-area: status; padding-left: 52px; }
+  .sessionRowGo { grid-area: go; }
+}

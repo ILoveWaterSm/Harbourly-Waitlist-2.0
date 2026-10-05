@@ -1,0 +1,58 @@
+/* ImageUpload → ImageUpload.module.css. Single image and up to 5 images. */
+.imageUpload { display: grid; gap: var(--space-3); }
+.uploadDrop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-5);
+  border: 1px dashed var(--green-line);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--green) 4%, transparent);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s, background-color .2s;
+}
+.uploadDrop svg { width: 22px; height: 22px; flex: none; color: var(--green); }
+.uploadDrop:hover, .uploadDrop.isHover { border-color: var(--green); }
+.uploadDrop.isDragging { border-style: solid; border-color: var(--green); background: var(--green-tint); }
+.uploadDropTitle { display: block; font-weight: 600; font-size: 15px; }
+.uploadDropMeta { display: block; margin-top: 2px; font: 400 12px/1.4 var(--font-mono); color: var(--muted); }
+
+.uploadThumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: var(--space-3); }
+.uploadThumb {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  aspect-ratio: 4 / 3;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-mid);
+  overflow: hidden;
+}
+.uploadThumbPreview { display: grid; place-items: center; color: var(--subtle); }
+.uploadThumbPreview svg { width: 26px; height: 26px; }
+.uploadThumbName { padding: 8px 10px; border-top: 1px solid var(--line); font: 400 11.5px/1.2 var(--font-mono); color: var(--faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.uploadThumbRemove { position: absolute; top: 6px; right: 6px; }
+.uploadThumb.failed { border-color: color-mix(in srgb, var(--amber) 55%, transparent); }
+.uploadThumb.failed .uploadThumbPreview { color: var(--amber); }
+.uploadProgress { position: absolute; left: 10px; right: 10px; bottom: 40px; height: 4px; border-radius: var(--radius-pill); background: var(--fill-subtle); overflow: hidden; }
+.uploadProgress > span { display: block; height: 100%; border-radius: inherit; background: var(--green); }
+.uploadAdd {
+  display: grid; place-items: center; align-content: center; gap: 6px;
+  aspect-ratio: 4 / 3;
+  border: 1px dashed var(--green-line);
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--green);
+  font: 600 13.5px/1 var(--font-body);
+  cursor: pointer;
+}
+.uploadAdd svg { width: 20px; height: 20px; }
+.uploadAdd:hover { border-color: var(--green); }
+.uploadCount { font: 400 12px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+
+.uploadSingle { display: flex; align-items: center; gap: var(--space-4); }
+.uploadSingleActions { display: flex; gap: var(--space-4); font-size: 14px; }

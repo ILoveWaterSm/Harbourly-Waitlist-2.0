@@ -17,6 +17,8 @@ Routes marked *proposed* are not in the feature list and can be renamed at build
 
 ## Phase 0: Foundations
 
+Pages: [Tokens](https://claude.ai/artifact/BSQtCHx4vyrXbfw75WN6Ti) (`design/pages/0.1-tokens.html`) · [Components](https://claude.ai/artifact/H74MmqqDTxjtC5hv7zo5uu) (`design/pages/0.2-components.html`) · [Canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ)
+
 ### 0.1 Tokens and base styles · S
 - `design/foundations/tokens.css`: every design-system token by its exact name, plus the two new ones, `--shadow-flat` and `--shadow-cta-rest`.
 - Base page styles: `--bg` ground, fonts, type scale (page title `--text-kpi`, section title `--text-card-title`, card title `--text-h3`).

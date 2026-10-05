@@ -1,0 +1,22 @@
+/* OtpInput → OtpInput.module.css. Six cells; the code is set in mono. */
+.otpInput { display: flex; gap: var(--space-2); }
+.otpCell {
+  width: 48px; height: 56px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--fill-subtle);
+  color: var(--ink);
+  font: 500 22px/1 var(--font-mono);
+  text-align: center;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.otpCell:focus, .otpCell.isFocus { border-color: var(--green); box-shadow: var(--shadow-focus); }
+.otpInput.invalid .otpCell { border-color: var(--amber); }
+.otpInput.verified .otpCell { border-color: var(--green-line); background: transparent; color: var(--ink-soft); }
+.otpMeta { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); align-items: center; font-size: 13.5px; color: var(--muted); }
+.otpTimer { font: 400 13px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+@container app (max-width: 400px) {
+  .otpCell { width: 44px; height: 52px; }
+}

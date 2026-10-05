@@ -222,3 +222,17 @@ In the design
 - Changes go through the HTML pages (asked for in chat or as a canvas comment), then the frames are re-rendered.
 - Only one canvas: create it once, in Phase 0, and add each phase's frames to it. Don't create a new canvas per phase.
 - Figma only if hand-editable frames are needed later; it can be generated from the finished HTML pages.
+- The canvas is **Harbourly webapp**: https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ. Add every phase's frames to it.
+- File layout: component styles in `design/foundations/components/<Name>.css`, one per component, each becoming `<Name>.module.css`; every selector starts with the component's root class so nothing leaks between modules. The mockup harness (state switcher, width toggle) is `design/foundations/mockup.css` and `mockup.js` and is not product code. Icons are a sprite in `design/foundations/icons.js`.
+- Publishing and frames: `node design/tools/build.mjs <page> <outDir>` inlines the shared CSS and JS into one publishable file; `node design/tools/render.mjs <built page> <outDir> <prefix>` renders every state at 1440 and 390 wide for the canvas.
+- Responsive rules use container queries on a container named `app` (the app shell), so components follow the space they're given. In the app the root layout element carries `container: app / inline-size`.
+
+## Navigation and identity (agreed at Phase 0)
+
+- Account settings: the avatar and name in the top bar link to `/account`; "Sign out" sits beside them. On phones the menu sheet starts with the same account row.
+- Avatars: photos use fictional avatar images you supply. Until they arrive, mockups show the default avatar (first letter of the display name in Sora on `--bg-mid`) and the component library shows the photo state as a marked slot.
+
+## Browse coach card (agreed at Phase 0)
+
+- With no game filter, the card shows the coach's cheapest game: that game's name and rank, and "from" its price, plus "+1 game" (or "+2 games") when there are more.
+- With a game filter set, the card shows that game's rank and its exact price.

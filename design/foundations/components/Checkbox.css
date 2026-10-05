@@ -1,0 +1,21 @@
+/* Checkbox → Checkbox.module.css */
+.checkbox { display: flex; gap: var(--space-3); align-items: flex-start; font: var(--text-body-sm); color: var(--ink-soft); cursor: pointer; }
+.checkboxInput {
+  appearance: none;
+  width: 20px; height: 20px;
+  flex: none;
+  margin: 1px 0 0;
+  border: 1px solid var(--muted);
+  border-radius: var(--radius-xs);
+  background: var(--fill-subtle);
+  cursor: pointer;
+  transition: background-color .15s, border-color .15s, box-shadow .15s;
+}
+.checkboxInput:checked {
+  border-color: var(--green);
+  background: var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2304160b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat;
+}
+.checkboxInput:focus-visible { outline: none; border-color: var(--green); box-shadow: var(--shadow-focus); }
+.checkboxInput[aria-invalid="true"] { border-color: var(--amber); }
+.checkboxInput:disabled { border-color: var(--line-strong); cursor: not-allowed; }
+.checkbox a { color: var(--green); text-decoration: none; border-bottom: 1px solid var(--green-line); }

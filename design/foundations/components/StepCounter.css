@@ -1,0 +1,8 @@
+/* StepCounter → StepCounter.module.css. Mono count plus one segment per step. */
+.stepCounter { display: grid; gap: 10px; max-width: 360px; }
+.stepCounterText { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.stepCounterText b { font-weight: 500; color: var(--ink); }
+.stepCounterBar { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; }
+.stepCounterBar > span { height: 4px; border-radius: var(--radius-pill); background: var(--fill-subtle); }
+.stepCounterBar > span.done { background: var(--green-line); }
+.stepCounterBar > span.current { background: var(--green); }

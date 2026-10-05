@@ -1,0 +1,38 @@
+/* Mockup harness only: the bar with the state switcher and width toggle, and the frame.
+   Not part of the product; nothing here lifts into the app. */
+.mk-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-6);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-deep);
+  font: 500 13px/1.2 var(--font-body);
+  color: var(--muted);
+}
+.mk-name { display: flex; align-items: baseline; gap: var(--space-3); margin-right: auto; color: var(--ink); font-weight: 600; font-size: 14px; }
+.mk-name span { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+.mk-group { display: flex; align-items: center; gap: var(--space-2); }
+.mk-group > span { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+.mk-select {
+  appearance: none; min-height: 34px; padding: 0 34px 0 14px;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-pill);
+  background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 10px center / 16px no-repeat;
+  color: var(--ink); font: 600 13px/1 var(--font-body); cursor: pointer;
+}
+.mk-select option { background: var(--surface); }
+.mk-seg { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); }
+.mk-seg button { min-height: 28px; padding: 0 12px; border: 0; border-radius: var(--radius-pill); background: none; color: var(--muted); font: 600 13px/1 var(--font-body); cursor: pointer; }
+.mk-seg button[aria-pressed="true"] { background: var(--fill-subtle); color: var(--ink); }
+.mk-select:focus-visible, .mk-seg button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.mk-stage { padding-block: var(--space-6) var(--space-20); }
+.mk-frame { container: app / inline-size; margin: 0 auto; max-width: 1440px; background: var(--bg); }
+.mk-frame[data-width="phone"] { max-width: 390px; min-height: 780px; border: 1px solid var(--line-strong); border-radius: var(--radius-xl); overflow: hidden; }
+[data-state][hidden] { display: none !important; }
+
+/* forced interaction states for specimens */
+.mk-focus { outline: 2px solid var(--ink) !important; outline-offset: 3px; }
+
+/* capture mode, used to render canvas frames */
+body.mk-capture .mk-bar { display: none; }
+body.mk-capture .mk-stage { padding: 0; }
+body.mk-capture .mk-frame[data-width="phone"] { max-width: none; border: 0; border-radius: 0; min-height: 0; }
