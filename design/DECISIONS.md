@@ -149,3 +149,19 @@ In the design
 - The application intro (step 1) lists "What you'll need": a government ID, a bank account in your country, and proof of your rank.
 - The team treats a non-Southeast Asian phone number on an application as a reason to look closer, not a hard block.
 - The coach dashboard has a "Your payout account couldn't be verified" state with a way to retry or contact support.
+
+## Account and system pages (new, not in the feature list)
+
+- Forgot password and reset password.
+- Verify your email (email sign-ups), with resend.
+- Finish setting up your account: the second sign-up layer shown after Google sign-in.
+- Updated terms: a blocking screen to accept a new Terms of Service version before continuing.
+- Account settings: name, username, avatar; email change (re-verify); password change; phone change (OTP); country, time zone, currency.
+- Coach payout settings: status, plus a link out to the Stripe or Xendit dashboard.
+- Delete account: a request with a clear warning, blocked while there are upcoming sessions or open disputes.
+- System pages: 404, something went wrong, session expired (sign in again), and a sign-in prompt on protected pages.
+- Coaches get a "Preview my public profile" link showing exactly what gamers see.
+
+## Verification Standard page
+
+- Kept exactly as it is, design and copy. Not redesigned as part of the webapp.
