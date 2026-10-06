@@ -1,0 +1,38 @@
+/* OptionCard → OptionCard.module.css. A choice shown as a card with a radio: the whole card is the
+   label, so the hit area is large. Used to choose a game when booking; later for any one-of-few choice. */
+.optionGroup { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); margin: 0; padding: 0; border: 0; min-width: 0; }
+.optionCard {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-3);
+  align-items: center;
+  min-height: 64px;
+  padding: var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-mid);
+  cursor: pointer;
+  transition: border-color .2s, background-color .2s;
+}
+.optionCard:hover, .optionCard.isHover { border-color: color-mix(in srgb, var(--muted) 45%, transparent); }
+.optionCard:has(.optionCardInput:checked) { border-color: var(--green); background: color-mix(in srgb, var(--green) 6%, var(--bg-mid)); }
+.optionCard:has(.optionCardInput:focus-visible) { outline: 2px solid var(--ink); outline-offset: 2px; }
+.optionCardInput {
+  appearance: none;
+  width: 20px; height: 20px;
+  margin: 0;
+  border: 1px solid var(--muted);
+  border-radius: var(--radius-round);
+  background: var(--fill-subtle);
+  cursor: pointer;
+}
+.optionCardInput:checked { border-color: var(--green); background: radial-gradient(circle, var(--green) 0 4.5px, transparent 5px); }
+.optionCardInput:focus-visible { outline: none; }
+.optionCardBody { display: grid; gap: 2px; min-width: 0; }
+.optionCardTitle { font-weight: 600; font-size: 15px; line-height: 1.35; color: var(--ink); }
+.optionCardMeta { font: var(--text-value); letter-spacing: .02em; color: var(--muted); overflow-wrap: anywhere; }
+.optionCardAside { justify-self: end; text-align: right; }
+@container app (max-width: 400px) {
+  .optionCard { grid-template-columns: 20px minmax(0, 1fr); }
+  .optionCardAside { grid-column: 2; justify-self: start; text-align: left; }
+}

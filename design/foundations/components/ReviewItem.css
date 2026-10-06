@@ -1,0 +1,15 @@
+/* ReviewItem → ReviewItem.module.css. One gamer review: who, stars, which game, when, what they said.
+   Stacked with hairlines between, inside the reviews section of a coach profile. */
+.reviewList { display: grid; margin: 0; padding: 0; list-style: none; }
+.reviewItem { display: grid; gap: var(--space-2); padding: var(--space-5) 0; border-top: 1px solid var(--line); }
+.reviewItem:first-child { border-top: 0; padding-top: 0; }
+.reviewItemHead { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+.reviewItemName { font-weight: 600; font-size: 14.5px; color: var(--ink); }
+.reviewItemStars { display: inline-flex; gap: 2px; color: var(--green); }
+.reviewItemStars svg { width: 14px; height: 14px; fill: currentColor; }
+.reviewItemStars svg.off { color: var(--subtle); fill: none; }
+.reviewItemMeta { margin-left: auto; font: 400 12px/1.3 var(--font-mono); color: var(--faint); white-space: nowrap; }
+.reviewItemText { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); max-width: 68ch; }
+@container app (max-width: 520px) {
+  .reviewItemMeta { flex-basis: 100%; margin-left: 0; }
+}

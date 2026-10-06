@@ -38,11 +38,11 @@
   transition: color .2s, background-color .2s;
 }
 .topNavSignOut:hover { color: var(--ink); background: var(--fill-subtle); }
-.topNavMenu { display: none; }
+.topNav .topNavMenu { display: none; }
 @container app (max-width: 999px) {
   .topNav { height: 60px; padding: 0 var(--space-2) 0 var(--space-4); }
   .topNavUser, .topNavSignOut { display: none; }
-  .topNavMenu { display: inline-grid; }
+  .topNav .topNavMenu { display: inline-grid; }
 }
 @container app (max-width: 400px) {
   .topNavLogo img { height: 30px; }

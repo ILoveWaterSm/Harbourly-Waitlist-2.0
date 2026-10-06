@@ -25,3 +25,6 @@
   .coachCardPrice { grid-column: 2; text-align: left; }
   .coachCardPrice .priceFrom { display: inline; margin: 0 4px 0 0; }
 }
+/* Loading placeholder in the same shape; not a link, so no hover. */
+.coachCard.loading, .coachCard.loading:hover { transform: none; background: var(--surface); pointer-events: none; }
+.coachCard.loading .coachCardMain { gap: var(--space-2); }

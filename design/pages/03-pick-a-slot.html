@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Pick a slot</title>
+<meta name="description" content="Phase 1, page 3: choose a game and a one-hour time with a coach, with every state.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Price.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/OptionCard.css">
+<link rel="stylesheet" href="../foundations/components/SlotPicker.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/OtpInput.css">
+<style>
+/* Page: Pick a slot (/coaches/[username]/book) → app/coaches/[username]/book/page.module.css. Layout only. */
+.backLink { display: inline-block; margin-bottom: var(--space-5); font-size: 14px; }
+.pageHead { display: grid; gap: var(--space-3); max-width: 62ch; }
+.pageLead { font: var(--text-body); color: var(--muted); }
+.bookBody { display: grid; grid-template-columns: minmax(0, 1fr) 368px; gap: var(--space-8); align-items: start; margin-top: var(--space-8); }
+.bookSteps { display: grid; gap: var(--space-6); min-width: 0; }
+.bookStep { display: grid; gap: var(--space-5); }
+.bookStepHead { display: grid; gap: var(--space-1); }
+.bookStepHint { font-size: 14px; color: var(--muted); }
+.bookNotice { margin-top: var(--space-6); }
+.bookSummary { position: sticky; top: 88px; display: grid; gap: var(--space-5); }
+.bookWho { display: flex; align-items: center; gap: var(--space-3); }
+.bookWhoName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-weight: 600; font-size: 15px; }
+.bookSummary .cardFacts { margin: 0; padding-top: var(--space-4); border-top: 1px solid var(--line); }
+.bookSummary .cardFacts dd.text { font: 400 14.5px/1.4 var(--font-body); color: var(--ink); }
+.bookSummary .cardFacts dd.unset { font: 400 14px/1.4 var(--font-body); color: var(--subtle); }
+.bookFee { font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.bookAct { display: grid; gap: var(--space-3); }
+.bookHoldNote { display: flex; gap: var(--space-2); font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.bookHoldNote svg { width: 16px; height: 16px; flex: none; margin-top: 2px; color: var(--muted); }
+.bookAlt { font-size: 14px; color: var(--muted); }
+.bookVerify { display: grid; gap: var(--space-3); padding-top: var(--space-5); border-top: 1px solid var(--line); }
+.bookVerifyTitle { display: flex; gap: var(--space-2); align-items: center; font-weight: 600; font-size: 15px; color: var(--ink); }
+.bookVerifyTitle svg { width: 18px; height: 18px; color: var(--amber); }
+.bookVerifyText { font-size: 14px; line-height: 1.55; color: var(--muted); }
+.bookVerify .otpInput { margin-top: var(--space-1); }
+.bookVerify .button { margin-top: var(--space-2); }
+@container app (max-width: 1099px) {
+  .bookBody { grid-template-columns: minmax(0, 1fr); }
+  .bookSummary { position: static; }
+}
+@container app (max-width: 640px) {
+  .bookBody { margin-top: var(--space-6); gap: var(--space-6); }
+}
+</style>
+</head>
+<body>
+<template id="shell-gamer">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar xs">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody">
+          <nav class="sidebar" aria-label="Main">
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          </nav>
+          <main class="appShellMain"><div class="appShellContent" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-guest">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="button secondary sm" href="#">Log in</a>
+            <a class="button primary sm" href="#">Sign up</a>
+          </div>
+        </header>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="03 Pick a slot">
+
+  <section data-state="available" data-label="Slots available" data-shell="gamer" data-nav="browse">
+      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Kairo's profile</a>
+      <div class="pageHead"><h1>Book a session with Kairo</h1><p class="pageLead">Choose a game and a one-hour time. You'll check everything before you pay.</p></div>
+      
+      <div class="bookBody">
+        <div class="bookSteps">
+          <section class="card bookStep" aria-labelledby="g-a">
+            <div class="bookStepHead"><h2 class="cardTitle" id="g-a">Choose a game</h2><p class="bookStepHint">Kairo coaches two games. The price depends on the game.</p></div>
+            <fieldset class="optionGroup"><legend class="visuallyHidden">Game</legend>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-a" value="ml" checked data-game="Mobile Legends" data-price="≈ S$43 (₱1,850)"><span class="optionCardBody"><span class="optionCardTitle">Mobile Legends</span><span class="optionCardMeta">Mythical Glory · 85★</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span></span></label>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-a" value="cod" data-game="Call of Duty: Mobile" data-price="≈ S$49 (₱2,100)"><span class="optionCardBody"><span class="optionCardTitle">Call of Duty: Mobile</span><span class="optionCardMeta">Legendary · Top 500</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$49</span> <span class="pricePer">/ session</span></span></span></label>
+            </fieldset>
+          </section>
+          <section class="card bookStep" aria-labelledby="t-a">
+            <div class="bookStepHead"><h2 class="cardTitle" id="t-a">Choose a time</h2><p class="bookStepHint">Every session is one hour. You can book up to 4 weeks ahead.</p></div>
+            <div class="slotPicker"><div class="slotPickerHead">
+              <div class="slotPickerWeek"><button class="iconButton sm" type="button" aria-label="Previous week" disabled><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><span class="slotPickerRange">5–11 Oct</span><button class="iconButton sm" type="button" aria-label="Next week"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div>
+              <span class="slotPickerZone">Times in SGT</span>
+            </div>
+            <ul class="slotDays"><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Mon<span class="slotDayToday"> · Today</span></span><span class="slotDayDate">5 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 19:00 to 20:00" data-when="Mon 5 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 21:00 to 22:00" data-when="Mon 5 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 22:00 to 23:00" data-when="Mon 5 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Tue</span><span class="slotDayDate">6 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 19:00 to 20:00" data-when="Tue 6 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 21:00 to 22:00" data-when="Tue 6 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 22:00 to 23:00" data-when="Tue 6 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Wed</span><span class="slotDayDate">7 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 19:00 to 20:00" data-when="Wed 7 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="true" aria-label="Wednesday 7 Oct, 20:00 to 21:00" data-when="Wed 7 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 21:00 to 22:00" data-when="Wed 7 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 22:00 to 23:00" data-when="Wed 7 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Thu</span><span class="slotDayDate">8 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 20:00 to 21:00" data-when="Thu 8 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 21:00 to 22:00" data-when="Thu 8 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Fri</span><span class="slotDayDate">9 Oct</span></div><p class="slotDayNone">No free times</p></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sat</span><span class="slotDayDate">10 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 14:00 to 15:00" data-when="Sat 10 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 15:00 to 16:00" data-when="Sat 10 Oct · 15:00–16:00 SGT">15:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 16:00 to 17:00" data-when="Sat 10 Oct · 16:00–17:00 SGT">16:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 20:00 to 21:00" data-when="Sat 10 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 21:00 to 22:00" data-when="Sat 10 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sun</span><span class="slotDayDate">11 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 14:00 to 15:00" data-when="Sun 11 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 15:00 to 16:00" data-when="Sun 11 Oct · 15:00–16:00 SGT">15:00</button></div></li></ul></div>
+          </section>
+        </div>
+        <aside class="card accent bookSummary" aria-labelledby="sum-a">
+            <h2 class="cardTitle" id="sum-a">Your session</h2>
+            <div class="bookWho"><span class="avatar sm">K</span><span class="bookWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Mobile Legends</dd>
+              <dt>Time</dt><dd data-sum-time>Wed 7 Oct · 20:00–21:00 SGT</dd>
+              <dt>Length</dt><dd>60 min</dd>
+              <dt>Price</dt><dd data-sum-price>≈ S$43 <span style="color:var(--muted)">(₱1,850)</span></dd>
+            </dl>
+            <p class="bookFee">Plus a 6% platform fee, shown at checkout.</p>
+            <div class="bookAct"><button class="button primary block" type="button">Continue to checkout</button><p class="bookHoldNote"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>We'll hold this time for 30 minutes while you pay. Nothing is charged yet.</span></p></div>
+          </aside>
+      </div>
+  </section>
+  <section data-state="guest" data-label="Logged out" data-shell="guest">
+      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Kairo's profile</a>
+      <div class="pageHead"><h1>Book a session with Kairo</h1><p class="pageLead">Choose a game and a one-hour time. You'll check everything before you pay.</p></div>
+      
+      <div class="bookBody">
+        <div class="bookSteps">
+          <section class="card bookStep" aria-labelledby="g-g">
+            <div class="bookStepHead"><h2 class="cardTitle" id="g-g">Choose a game</h2><p class="bookStepHint">Kairo coaches two games. The price depends on the game.</p></div>
+            <fieldset class="optionGroup"><legend class="visuallyHidden">Game</legend>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-g" value="ml" checked data-game="Mobile Legends" data-price="≈ S$43 (₱1,850)"><span class="optionCardBody"><span class="optionCardTitle">Mobile Legends</span><span class="optionCardMeta">Mythical Glory · 85★</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span></span></label>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-g" value="cod" data-game="Call of Duty: Mobile" data-price="≈ S$49 (₱2,100)"><span class="optionCardBody"><span class="optionCardTitle">Call of Duty: Mobile</span><span class="optionCardMeta">Legendary · Top 500</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$49</span> <span class="pricePer">/ session</span></span></span></label>
+            </fieldset>
+          </section>
+          <section class="card bookStep" aria-labelledby="t-g">
+            <div class="bookStepHead"><h2 class="cardTitle" id="t-g">Choose a time</h2><p class="bookStepHint">Every session is one hour. You can book up to 4 weeks ahead.</p></div>
+            <div class="slotPicker"><div class="slotPickerHead">
+              <div class="slotPickerWeek"><button class="iconButton sm" type="button" aria-label="Previous week" disabled><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><span class="slotPickerRange">5–11 Oct</span><button class="iconButton sm" type="button" aria-label="Next week"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div>
+              <span class="slotPickerZone">Times in SGT</span>
+            </div>
+            <ul class="slotDays"><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Mon<span class="slotDayToday"> · Today</span></span><span class="slotDayDate">5 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 19:00 to 20:00" data-when="Mon 5 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 21:00 to 22:00" data-when="Mon 5 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 22:00 to 23:00" data-when="Mon 5 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Tue</span><span class="slotDayDate">6 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 19:00 to 20:00" data-when="Tue 6 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 21:00 to 22:00" data-when="Tue 6 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 22:00 to 23:00" data-when="Tue 6 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Wed</span><span class="slotDayDate">7 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 19:00 to 20:00" data-when="Wed 7 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="true" aria-label="Wednesday 7 Oct, 20:00 to 21:00" data-when="Wed 7 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 21:00 to 22:00" data-when="Wed 7 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 22:00 to 23:00" data-when="Wed 7 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Thu</span><span class="slotDayDate">8 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 20:00 to 21:00" data-when="Thu 8 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 21:00 to 22:00" data-when="Thu 8 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Fri</span><span class="slotDayDate">9 Oct</span></div><p class="slotDayNone">No free times</p></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sat</span><span class="slotDayDate">10 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 14:00 to 15:00" data-when="Sat 10 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 15:00 to 16:00" data-when="Sat 10 Oct · 15:00–16:00 SGT">15:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 16:00 to 17:00" data-when="Sat 10 Oct · 16:00–17:00 SGT">16:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 20:00 to 21:00" data-when="Sat 10 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 21:00 to 22:00" data-when="Sat 10 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sun</span><span class="slotDayDate">11 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 14:00 to 15:00" data-when="Sun 11 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 15:00 to 16:00" data-when="Sun 11 Oct · 15:00–16:00 SGT">15:00</button></div></li></ul></div>
+          </section>
+        </div>
+        <aside class="card accent bookSummary" aria-labelledby="sum-g">
+            <h2 class="cardTitle" id="sum-g">Your session</h2>
+            <div class="bookWho"><span class="avatar sm">K</span><span class="bookWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Mobile Legends</dd>
+              <dt>Time</dt><dd data-sum-time>Wed 7 Oct · 20:00–21:00 SGT</dd>
+              <dt>Length</dt><dd>60 min</dd>
+              <dt>Price</dt><dd data-sum-price>≈ S$43 <span style="color:var(--muted)">(₱1,850)</span></dd>
+            </dl>
+            <p class="bookFee">Plus a 6% platform fee, shown at checkout.</p>
+            <div class="bookAct"><button class="button primary block" type="button">Log in to continue</button>
+              <p class="bookAlt">New to Harbourly? <a class="textLink" href="#">Sign up</a></p>
+              <p class="bookHoldNote"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>We'll bring you back to this time after you log in. It's held once you continue to checkout.</span></p></div>
+          </aside>
+      </div>
+  </section>
+  <section data-state="none" data-label="Nothing free this week" data-shell="gamer" data-nav="browse">
+      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Vexa's profile</a>
+      <div class="pageHead"><h1>Book a session with Vexa</h1><p class="pageLead">Choose a one-hour time. You'll check everything before you pay.</p></div>
+      <div class="bookBody">
+        <div class="bookSteps">
+          <section class="card bookStep" aria-labelledby="t-n">
+            <div class="bookStepHead"><h2 class="cardTitle" id="t-n">Choose a time</h2><p class="bookStepHint">Every session is one hour. You can book up to 4 weeks ahead.</p></div>
+            <div class="slotPicker"><div class="slotPickerHead">
+              <div class="slotPickerWeek"><button class="iconButton sm" type="button" aria-label="Previous week" disabled><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><span class="slotPickerRange">5–11 Oct</span><button class="iconButton sm" type="button" aria-label="Next week"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div>
+              <span class="slotPickerZone">Times in SGT</span>
+            </div>
+            <div class="slotPickerEmpty"><p class="slotPickerEmptyTitle">Vexa has no free times this week</p><p class="slotPickerEmptyText">The next free time is <span class="mono" style="color:var(--ink-soft)">Tue 13 Oct · 20:00 SGT</span>.</p><button class="button secondary sm" type="button">Go to next week<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button></div></div>
+          </section>
+        </div>
+        <aside class="card accent bookSummary" aria-labelledby="sum-n">
+            <h2 class="cardTitle" id="sum-n">Your session</h2>
+            <div class="bookWho"><span class="avatar sm">V</span><span class="bookWhoName">Vexa <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Valorant</dd>
+              <dt>Time</dt><dd data-sum-time class="unset">Not chosen yet</dd>
+              <dt>Length</dt><dd>60 min</dd>
+              <dt>Price</dt><dd data-sum-price>S$45</dd>
+            </dl>
+            <p class="bookFee">Plus a 6% platform fee, shown at checkout.</p>
+            <div class="bookAct"><button class="button primary block" type="button" disabled>Continue to checkout</button><p class="bookHoldNote"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>Choose a time to continue.</span></p></div>
+          </aside>
+      </div>
+  </section>
+  <section data-state="taken" data-label="Slot just taken" data-shell="gamer" data-nav="browse">
+      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Kairo's profile</a>
+      <div class="pageHead"><h1>Book a session with Kairo</h1><p class="pageLead">Choose a game and a one-hour time. You'll check everything before you pay.</p></div>
+      
+      <div class="bookBody">
+        <div class="bookSteps">
+          <section class="card bookStep" aria-labelledby="g-t">
+            <div class="bookStepHead"><h2 class="cardTitle" id="g-t">Choose a game</h2><p class="bookStepHint">Kairo coaches two games. The price depends on the game.</p></div>
+            <fieldset class="optionGroup"><legend class="visuallyHidden">Game</legend>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-t" value="ml" checked data-game="Mobile Legends" data-price="≈ S$43 (₱1,850)"><span class="optionCardBody"><span class="optionCardTitle">Mobile Legends</span><span class="optionCardMeta">Mythical Glory · 85★</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span></span></label>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-t" value="cod" data-game="Call of Duty: Mobile" data-price="≈ S$49 (₱2,100)"><span class="optionCardBody"><span class="optionCardTitle">Call of Duty: Mobile</span><span class="optionCardMeta">Legendary · Top 500</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$49</span> <span class="pricePer">/ session</span></span></span></label>
+            </fieldset>
+          </section>
+          <section class="card bookStep" aria-labelledby="t-t">
+            <div class="bookStepHead"><h2 class="cardTitle" id="t-t">Choose a time</h2><p class="bookStepHint">Every session is one hour. You can book up to 4 weeks ahead.</p></div>
+            <div class="slotPicker"><div class="slotPickerHead">
+              <div class="slotPickerWeek"><button class="iconButton sm" type="button" aria-label="Previous week" disabled><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><span class="slotPickerRange">5–11 Oct</span><button class="iconButton sm" type="button" aria-label="Next week"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div>
+              <span class="slotPickerZone">Times in SGT</span>
+            </div><div class="notice warning" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><p class="noticeTitle">That time was just booked</p><p class="noticeText">Someone booked <span class="mono" style="color:var(--ink-soft)">Wed 7 Oct · 20:00 SGT</span> just before you. Choose another time.</p></div></div>
+            <ul class="slotDays"><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Mon<span class="slotDayToday"> · Today</span></span><span class="slotDayDate">5 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 19:00 to 20:00" data-when="Mon 5 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 21:00 to 22:00" data-when="Mon 5 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 22:00 to 23:00" data-when="Mon 5 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Tue</span><span class="slotDayDate">6 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 19:00 to 20:00" data-when="Tue 6 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 21:00 to 22:00" data-when="Tue 6 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 22:00 to 23:00" data-when="Tue 6 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Wed</span><span class="slotDayDate">7 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 19:00 to 20:00" data-when="Wed 7 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 21:00 to 22:00" data-when="Wed 7 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 22:00 to 23:00" data-when="Wed 7 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Thu</span><span class="slotDayDate">8 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 20:00 to 21:00" data-when="Thu 8 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 21:00 to 22:00" data-when="Thu 8 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Fri</span><span class="slotDayDate">9 Oct</span></div><p class="slotDayNone">No free times</p></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sat</span><span class="slotDayDate">10 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 14:00 to 15:00" data-when="Sat 10 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 15:00 to 16:00" data-when="Sat 10 Oct · 15:00–16:00 SGT">15:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 16:00 to 17:00" data-when="Sat 10 Oct · 16:00–17:00 SGT">16:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 20:00 to 21:00" data-when="Sat 10 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 21:00 to 22:00" data-when="Sat 10 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sun</span><span class="slotDayDate">11 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 14:00 to 15:00" data-when="Sun 11 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 15:00 to 16:00" data-when="Sun 11 Oct · 15:00–16:00 SGT">15:00</button></div></li></ul></div>
+          </section>
+        </div>
+        <aside class="card accent bookSummary" aria-labelledby="sum-t">
+            <h2 class="cardTitle" id="sum-t">Your session</h2>
+            <div class="bookWho"><span class="avatar sm">K</span><span class="bookWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Mobile Legends</dd>
+              <dt>Time</dt><dd data-sum-time class="unset">Not chosen yet</dd>
+              <dt>Length</dt><dd>60 min</dd>
+              <dt>Price</dt><dd data-sum-price>≈ S$43 <span style="color:var(--muted)">(₱1,850)</span></dd>
+            </dl>
+            <p class="bookFee">Plus a 6% platform fee, shown at checkout.</p>
+            <div class="bookAct"><button class="button primary block" type="button" disabled>Continue to checkout</button><p class="bookHoldNote"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>Choose a time to continue.</span></p></div>
+          </aside>
+      </div>
+  </section>
+  <section data-state="returning" data-label="Returning after log in" data-shell="gamer" data-nav="browse">
+      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Kairo's profile</a>
+      <div class="pageHead"><h1>Book a session with Kairo</h1><p class="pageLead">Choose a game and a one-hour time. You'll check everything before you pay.</p></div>
+      <div class="notice bookNotice" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><div><p class="noticeTitle">You're logged in, and your choice is still here</p><p class="noticeText">Mobile Legends, <span class="mono" style="color:var(--ink-soft)">Wed 7 Oct · 20:00 SGT</span>. Continue to checkout to hold it.</p></div></div>
+      <div class="bookBody">
+        <div class="bookSteps">
+          <section class="card bookStep" aria-labelledby="g-r">
+            <div class="bookStepHead"><h2 class="cardTitle" id="g-r">Choose a game</h2><p class="bookStepHint">Kairo coaches two games. The price depends on the game.</p></div>
+            <fieldset class="optionGroup"><legend class="visuallyHidden">Game</legend>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-r" value="ml" checked data-game="Mobile Legends" data-price="≈ S$43 (₱1,850)"><span class="optionCardBody"><span class="optionCardTitle">Mobile Legends</span><span class="optionCardMeta">Mythical Glory · 85★</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span></span></label>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-r" value="cod" data-game="Call of Duty: Mobile" data-price="≈ S$49 (₱2,100)"><span class="optionCardBody"><span class="optionCardTitle">Call of Duty: Mobile</span><span class="optionCardMeta">Legendary · Top 500</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$49</span> <span class="pricePer">/ session</span></span></span></label>
+            </fieldset>
+          </section>
+          <section class="card bookStep" aria-labelledby="t-r">
+            <div class="bookStepHead"><h2 class="cardTitle" id="t-r">Choose a time</h2><p class="bookStepHint">Every session is one hour. You can book up to 4 weeks ahead.</p></div>
+            <div class="slotPicker"><div class="slotPickerHead">
+              <div class="slotPickerWeek"><button class="iconButton sm" type="button" aria-label="Previous week" disabled><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><span class="slotPickerRange">5–11 Oct</span><button class="iconButton sm" type="button" aria-label="Next week"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div>
+              <span class="slotPickerZone">Times in SGT</span>
+            </div>
+            <ul class="slotDays"><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Mon<span class="slotDayToday"> · Today</span></span><span class="slotDayDate">5 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 19:00 to 20:00" data-when="Mon 5 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 21:00 to 22:00" data-when="Mon 5 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 22:00 to 23:00" data-when="Mon 5 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Tue</span><span class="slotDayDate">6 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 19:00 to 20:00" data-when="Tue 6 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 21:00 to 22:00" data-when="Tue 6 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 22:00 to 23:00" data-when="Tue 6 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Wed</span><span class="slotDayDate">7 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 19:00 to 20:00" data-when="Wed 7 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="true" aria-label="Wednesday 7 Oct, 20:00 to 21:00" data-when="Wed 7 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 21:00 to 22:00" data-when="Wed 7 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 22:00 to 23:00" data-when="Wed 7 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Thu</span><span class="slotDayDate">8 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 20:00 to 21:00" data-when="Thu 8 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 21:00 to 22:00" data-when="Thu 8 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Fri</span><span class="slotDayDate">9 Oct</span></div><p class="slotDayNone">No free times</p></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sat</span><span class="slotDayDate">10 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 14:00 to 15:00" data-when="Sat 10 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 15:00 to 16:00" data-when="Sat 10 Oct · 15:00–16:00 SGT">15:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 16:00 to 17:00" data-when="Sat 10 Oct · 16:00–17:00 SGT">16:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 20:00 to 21:00" data-when="Sat 10 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 21:00 to 22:00" data-when="Sat 10 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sun</span><span class="slotDayDate">11 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 14:00 to 15:00" data-when="Sun 11 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 15:00 to 16:00" data-when="Sun 11 Oct · 15:00–16:00 SGT">15:00</button></div></li></ul></div>
+          </section>
+        </div>
+        <aside class="card accent bookSummary" aria-labelledby="sum-r">
+            <h2 class="cardTitle" id="sum-r">Your session</h2>
+            <div class="bookWho"><span class="avatar sm">K</span><span class="bookWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Mobile Legends</dd>
+              <dt>Time</dt><dd data-sum-time>Wed 7 Oct · 20:00–21:00 SGT</dd>
+              <dt>Length</dt><dd>60 min</dd>
+              <dt>Price</dt><dd data-sum-price>≈ S$43 <span style="color:var(--muted)">(₱1,850)</span></dd>
+            </dl>
+            <p class="bookFee">Plus a 6% platform fee, shown at checkout.</p>
+            <div class="bookAct"><button class="button primary block" type="button">Continue to checkout</button><p class="bookHoldNote"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>We'll hold this time for 30 minutes while you pay. Nothing is charged yet.</span></p></div>
+          </aside>
+      </div>
+  </section>
+  <section data-state="phone" data-label="Phone not verified" data-shell="gamer" data-nav="browse">
+      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Kairo's profile</a>
+      <div class="pageHead"><h1>Book a session with Kairo</h1><p class="pageLead">Choose a game and a one-hour time. You'll check everything before you pay.</p></div>
+      
+      <div class="bookBody">
+        <div class="bookSteps">
+          <section class="card bookStep" aria-labelledby="g-p">
+            <div class="bookStepHead"><h2 class="cardTitle" id="g-p">Choose a game</h2><p class="bookStepHint">Kairo coaches two games. The price depends on the game.</p></div>
+            <fieldset class="optionGroup"><legend class="visuallyHidden">Game</legend>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-p" value="ml" checked data-game="Mobile Legends" data-price="≈ S$43 (₱1,850)"><span class="optionCardBody"><span class="optionCardTitle">Mobile Legends</span><span class="optionCardMeta">Mythical Glory · 85★</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span></span></label>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="game-p" value="cod" data-game="Call of Duty: Mobile" data-price="≈ S$49 (₱2,100)"><span class="optionCardBody"><span class="optionCardTitle">Call of Duty: Mobile</span><span class="optionCardMeta">Legendary · Top 500</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$49</span> <span class="pricePer">/ session</span></span></span></label>
+            </fieldset>
+          </section>
+          <section class="card bookStep" aria-labelledby="t-p">
+            <div class="bookStepHead"><h2 class="cardTitle" id="t-p">Choose a time</h2><p class="bookStepHint">Every session is one hour. You can book up to 4 weeks ahead.</p></div>
+            <div class="slotPicker"><div class="slotPickerHead">
+              <div class="slotPickerWeek"><button class="iconButton sm" type="button" aria-label="Previous week" disabled><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><span class="slotPickerRange">5–11 Oct</span><button class="iconButton sm" type="button" aria-label="Next week"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div>
+              <span class="slotPickerZone">Times in SGT</span>
+            </div>
+            <ul class="slotDays"><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Mon<span class="slotDayToday"> · Today</span></span><span class="slotDayDate">5 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 19:00 to 20:00" data-when="Mon 5 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 21:00 to 22:00" data-when="Mon 5 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Monday 5 Oct, 22:00 to 23:00" data-when="Mon 5 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Tue</span><span class="slotDayDate">6 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 19:00 to 20:00" data-when="Tue 6 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 21:00 to 22:00" data-when="Tue 6 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Tuesday 6 Oct, 22:00 to 23:00" data-when="Tue 6 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Wed</span><span class="slotDayDate">7 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 19:00 to 20:00" data-when="Wed 7 Oct · 19:00–20:00 SGT">19:00</button><button class="slot" type="button" aria-pressed="true" aria-label="Wednesday 7 Oct, 20:00 to 21:00" data-when="Wed 7 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 21:00 to 22:00" data-when="Wed 7 Oct · 21:00–22:00 SGT">21:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Wednesday 7 Oct, 22:00 to 23:00" data-when="Wed 7 Oct · 22:00–23:00 SGT">22:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Thu</span><span class="slotDayDate">8 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 20:00 to 21:00" data-when="Thu 8 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Thursday 8 Oct, 21:00 to 22:00" data-when="Thu 8 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Fri</span><span class="slotDayDate">9 Oct</span></div><p class="slotDayNone">No free times</p></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sat</span><span class="slotDayDate">10 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 14:00 to 15:00" data-when="Sat 10 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 15:00 to 16:00" data-when="Sat 10 Oct · 15:00–16:00 SGT">15:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 16:00 to 17:00" data-when="Sat 10 Oct · 16:00–17:00 SGT">16:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 20:00 to 21:00" data-when="Sat 10 Oct · 20:00–21:00 SGT">20:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Saturday 10 Oct, 21:00 to 22:00" data-when="Sat 10 Oct · 21:00–22:00 SGT">21:00</button></div></li><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sun</span><span class="slotDayDate">11 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 14:00 to 15:00" data-when="Sun 11 Oct · 14:00–15:00 SGT">14:00</button><button class="slot" type="button" aria-pressed="false" aria-label="Sunday 11 Oct, 15:00 to 16:00" data-when="Sun 11 Oct · 15:00–16:00 SGT">15:00</button></div></li></ul></div>
+          </section>
+        </div>
+        <aside class="card accent bookSummary" aria-labelledby="sum-p">
+            <h2 class="cardTitle" id="sum-p">Your session</h2>
+            <div class="bookWho"><span class="avatar sm">K</span><span class="bookWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Mobile Legends</dd>
+              <dt>Time</dt><dd data-sum-time>Wed 7 Oct · 20:00–21:00 SGT</dd>
+              <dt>Length</dt><dd>60 min</dd>
+              <dt>Price</dt><dd data-sum-price>≈ S$43 <span style="color:var(--muted)">(₱1,850)</span></dd>
+            </dl>
+            <p class="bookFee">Plus a 6% platform fee, shown at checkout.</p>
+            <div class="bookVerify" role="group" aria-labelledby="pv-p">
+              <p class="bookVerifyTitle" id="pv-p"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>Verify your phone to book</p>
+              <p class="bookVerifyText">Every booking needs a verified phone. We've texted a 6-digit code to <span class="mono" style="color:var(--ink-soft)">+65 •••• 4567</span>.</p>
+              <div class="otpInput fill" role="group" aria-label="6-digit code"><input class="otpCell isFocus" inputmode="numeric" maxlength="1" aria-label="Digit 1"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 2"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 3"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 4"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 5"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 6"></div>
+              <p class="otpMeta">Didn't get it? Resend in <span class="otpTimer">0:42</span></p>
+              <button class="button primary block" type="button">Verify and continue</button>
+              <p class="bookHoldNote"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>We'll hold this time for 30 minutes while you pay. Nothing is charged yet.</span></p>
+            </div>
+          </aside>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/icons.js"></script>
+<script>// Choosing a time or a game updates the summary in the same state.
+document.addEventListener('click', function (e) {
+  var s = e.target.closest('.slot'); if (!s) return;
+  var root = s.closest('[data-state]');
+  root.querySelectorAll('.slot').forEach(function (b) { b.setAttribute('aria-pressed', String(b === s)); });
+  var t = root.querySelector('[data-sum-time]'); if (t) { t.textContent = s.dataset.when; t.className = ''; }
+  var go = root.querySelector('.bookAct .button.primary'); if (go) go.disabled = false;
+});
+document.addEventListener('change', function (e) {
+  var r = e.target.closest('.optionCardInput'); if (!r) return;
+  var root = r.closest('[data-state]'), p = root.querySelector('[data-sum-price]');
+  var g = root.querySelector('.bookSummary .cardFacts dd'); if (g) g.textContent = r.dataset.game;
+  if (p) p.innerHTML = r.dataset.price.replace(/ \((.*)\)/, ' <span style="color:var(--muted)">($1)</span>');
+});
+</script>
+<script src="../foundations/mockup.js"></script>
+</body>
+</html>

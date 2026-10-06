@@ -1,0 +1,13 @@
+/* Spinner → Spinner.module.css. For waits with nothing to show yet (confirming a payment).
+   Content that has a shape uses Skeleton instead. Stops for reduced motion. */
+.spinner {
+  display: inline-block;
+  width: 24px; height: 24px;
+  flex: none;
+  border: 2px solid var(--green-line);
+  border-top-color: var(--green);
+  border-radius: var(--radius-round);
+  animation: spinnerTurn .9s linear infinite;
+}
+.spinner.lg { width: 40px; height: 40px; border-width: 3px; }
+@keyframes spinnerTurn { to { transform: rotate(360deg); } }

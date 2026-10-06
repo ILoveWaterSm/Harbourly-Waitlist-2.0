@@ -30,6 +30,12 @@
 <link rel="stylesheet" href="../foundations/components/EmptyState.css">
 <link rel="stylesheet" href="../foundations/components/Skeleton.css">
 <link rel="stylesheet" href="../foundations/components/ErrorState.css">
+<link rel="stylesheet" href="../foundations/components/OptionCard.css">
+<link rel="stylesheet" href="../foundations/components/SlotPicker.css">
+<link rel="stylesheet" href="../foundations/components/AudioPlayer.css">
+<link rel="stylesheet" href="../foundations/components/ReviewItem.css">
+<link rel="stylesheet" href="../foundations/components/PriceBreakdown.css">
+<link rel="stylesheet" href="../foundations/components/Spinner.css">
 <style>
 /* Layout: a working library. Each section is one component family; each specimen is
    captioned with its state in mono, on the ground it really sits on (page or card). */
@@ -43,7 +49,7 @@
 .lib-sub { display: grid; gap: var(--space-4); }
 .lib-sub > h3 { font: 600 16px/1.3 var(--font-body); letter-spacing: 0; }
 .lib-sub > p { margin-top: calc(var(--space-2) * -1); font-size: 13.5px; color: var(--muted); max-width: 70ch; }
-.lib-specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--lib-min, 300px), 1fr)); gap: var(--space-6) var(--space-8); align-items: start; }
+.lib-specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--lib-min, 300px)), 1fr)); gap: var(--space-6) var(--space-8); align-items: start; }
 .lib-spec { display: grid; gap: var(--space-3); min-width: 0; align-content: start; }
 .lib-spec.wide { grid-column: 1 / -1; }
 .lib-cap { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
@@ -639,7 +645,7 @@
       <div class="lib-spec"><span class="lib-cap">Warning · needs action</span>
         <div class="notice warning"><svg class="icon"><use href="#i-phone"/></svg><div><p class="noticeTitle">Verify your phone to book</p><p class="noticeText">We'll text a code to the number on your account. It takes a minute.</p><div class="noticeActions"><button class="button secondary sm" type="button">Verify phone</button></div></div></div></div>
       <div class="lib-spec"><span class="lib-cap">Error · with a way out</span>
-        <div class="notice error" role="alert"><svg class="icon"><use href="#i-alert"/></svg><div><p class="noticeTitle">Payment didn't go through</p><p class="noticeText">Your slot is still held until <span class="mono" style="color:var(--ink-soft)">20:41 SGT</span>, so you can try again.</p><div class="noticeActions"><button class="button primary sm" type="button">Try payment again</button></div></div></div></div>
+        <div class="notice error" role="alert"><svg class="icon"><use href="#i-alert"/></svg><div><p class="noticeTitle">Payment didn't go through</p><p class="noticeText">You haven't been charged. Your time is still held until <span class="mono" style="color:var(--ink-soft)">20:41 SGT</span>, so you can try again.</p><div class="noticeActions"><button class="button primary sm" type="button">Try again</button></div></div></div></div>
       <div class="lib-spec"><span class="lib-cap">In-call banners · 10, 5 and 1 minutes</span>
         <div style="display:grid;gap:var(--space-3)">
           <div class="callBanner" role="status"><svg class="icon"><use href="#i-clock"/></svg><span class="callBannerText">Session ends in <span class="mono">10 min</span>, at <span class="mono">21:00 SGT</span></span><span class="callBannerClock">50:00</span></div>
@@ -648,9 +654,9 @@
         </div></div>
       <div class="lib-spec"><span class="lib-cap">Payment hold · 30 minutes</span>
         <div style="display:grid;gap:var(--space-3)">
-          <div class="holdTimer"><span>Your slot is held while you pay</span><span class="countdown" data-countdown="1452" aria-live="off">24:12</span></div>
-          <div class="holdTimer soon"><span>Your hold ends soon</span><span class="countdown soon">03:41</span></div>
-          <div class="holdTimer"><span>This slot is no longer held. <a class="textLink" href="#">Pick another time</a></span><span class="countdown over">00:00</span></div>
+          <div class="holdTimer"><span>Your time is held while you pay</span><span class="countdown" data-countdown="1452" aria-live="off">24:12</span></div>
+          <div class="holdTimer soon"><span>Less than 5 minutes left to pay</span><span class="countdown soon">03:41</span></div>
+          <div class="holdTimer"><span>This time is no longer held. <a class="textLink" href="#">Choose another time</a></span><span class="countdown over">00:00</span></div>
         </div></div>
       <div class="lib-spec"><span class="lib-cap">Auto-release · 72 hours</span>
         <div class="lib-stage">
@@ -749,6 +755,53 @@
     </div>
   </section>
 
+  <!-- ===================== BOOKING PARTS (added in Phase 1) ===================== -->
+  <section class="lib-sec" data-state="booking" data-label="Booking parts">
+    <div class="lib-sec-head">
+      <h2>Booking parts</h2>
+      <p>Added in Phase 1 for browsing, profiles and checkout. Choices are whole-card radios, times are chips in day rows that read the same at every width, and the total is always the largest figure in a price breakdown.</p>
+      <span class="lib-files">OptionCard · SlotPicker · AudioPlayer · ReviewItem · PriceBreakdown · Spinner</span>
+    </div>
+    <div class="lib-specs" style="--lib-min:420px">
+      <div class="lib-spec"><span class="lib-cap">Option card · selected, rest, hover</span>
+        <div class="lib-stage"><fieldset class="optionGroup"><legend class="visuallyHidden">Game</legend>
+          <label class="optionCard"><input class="optionCardInput" type="radio" name="lib-g" checked><span class="optionCardBody"><span class="optionCardTitle">Mobile Legends</span><span class="optionCardMeta">Mythical Glory · 85★</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span></span></label>
+          <label class="optionCard"><input class="optionCardInput" type="radio" name="lib-g"><span class="optionCardBody"><span class="optionCardTitle">Call of Duty: Mobile</span><span class="optionCardMeta">Legendary · Top 500</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$49</span> <span class="pricePer">/ session</span></span></span></label>
+          <label class="optionCard isHover"><input class="optionCardInput" type="radio" name="lib-g"><span class="optionCardBody"><span class="optionCardTitle">Valorant</span><span class="optionCardMeta">Immortal 2</span></span><span class="optionCardAside"><span class="price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></span></span></label>
+        </fieldset></div></div>
+      <div class="lib-spec"><span class="lib-cap">Slot picker · one time chosen</span>
+        <div class="lib-stage"><div class="slotPicker">
+          <div class="slotPickerHead"><div class="slotPickerWeek"><button class="iconButton sm" type="button" aria-label="Previous week" disabled><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><span class="slotPickerRange">5–11 Oct</span><button class="iconButton sm" type="button" aria-label="Next week"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div><span class="slotPickerZone">Times in SGT</span></div>
+          <ul class="slotDays">
+            <li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Wed</span><span class="slotDayDate">7 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" aria-pressed="false">19:00</button><button class="slot" type="button" aria-pressed="true">20:00</button><button class="slot isHover" type="button" aria-pressed="false">21:00</button></div></li>
+            <li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Fri</span><span class="slotDayDate">9 Oct</span></div><p class="slotDayNone">No free times</p></li>
+          </ul></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Slot picker · nothing free this week</span>
+        <div class="lib-stage"><div class="slotPicker">
+          <div class="slotPickerHead"><div class="slotPickerWeek"><button class="iconButton sm" type="button" aria-label="Previous week" disabled><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><span class="slotPickerRange">5–11 Oct</span><button class="iconButton sm" type="button" aria-label="Next week"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div><span class="slotPickerZone">Times in SGT</span></div>
+          <div class="slotPickerEmpty"><p class="slotPickerEmptyTitle">Vexa has no free times this week</p><p class="slotPickerEmptyText">The next free time is <span class="mono" style="color:var(--ink-soft)">Tue 13 Oct · 20:00 SGT</span>.</p><button class="button secondary sm" type="button">Go to next week<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button></div></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Audio player · ready, playing</span>
+        <div class="lib-stage">
+          <div class="audioPlayer"><button class="audioPlayerButton" type="button" aria-label="Play voice intro"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg></button><div class="audioPlayerBody"><div class="audioPlayerTop"><span class="audioPlayerTitle">Voice intro</span><span class="audioPlayerTime">0:00 / 0:45</span></div><div class="audioPlayerTrack"><span style="width:0%"></span></div></div></div>
+          <div class="audioPlayer"><button class="audioPlayerButton" type="button" aria-label="Pause voice intro"><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg></button><div class="audioPlayerBody"><div class="audioPlayerTop"><span class="audioPlayerTitle">Voice intro</span><span class="audioPlayerTime">0:18 / 0:45</span></div><div class="audioPlayerTrack"><span style="width:40%"></span></div></div></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Review item</span>
+        <div class="lib-stage"><ul class="reviewList">
+          <li class="reviewItem"><div class="reviewItemHead"><span class="avatar xs">R</span><span class="reviewItemName">ricebowl</span><span class="reviewItemStars" role="img" aria-label="5 out of 5"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></span><span class="reviewItemMeta">Mobile Legends · Oct 2026</span></div><p class="reviewItemText">Kairo watched two of my ranked games live and stopped me after every late rotation.</p></li>
+          <li class="reviewItem"><div class="reviewItemHead"><span class="avatar xs">N</span><span class="reviewItemName">nightjar</span><span class="reviewItemStars" role="img" aria-label="4 out of 5"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon off" aria-hidden="true"><use href="#i-star"/></svg></span><span class="reviewItemMeta">Call of Duty: Mobile · Sep 2026</span></div><p class="reviewItemText">Good session on Hardpoint rotations. The first ten minutes went on fixing my audio.</p></li>
+        </ul></div></div>
+      <div class="lib-spec"><span class="lib-cap">Price breakdown · charged in the coach's currency</span>
+        <article class="card" style="display:grid;gap:var(--space-3)">
+          <dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>₱111.00</dd></div><div class="priceBreakdownLine total"><dt>Total</dt><dd>₱1,961.00</dd></div></dl>
+          <p class="priceBreakdownNote">Charged in Philippine pesos. Your bank converts <span class="mono">₱1,961.00</span> to SGD.</p>
+        </article></div>
+      <div class="lib-spec"><span class="lib-cap">Spinner · and the other Phase 1 additions</span>
+        <div class="lib-stage">
+          <div class="lib-inline"><span class="spinner" aria-hidden="true"></span><span class="spinner lg" aria-hidden="true"></span></div>
+          <p style="font-size:13.5px;color:var(--muted)">For waits with nothing to show yet, like confirming a payment. Also added: a loading variant of the coach card, a fill variant of the code input for narrow cards, a centred narrow content width for focused pages (checkout), and four icons: arrow-left, chevron-left, play, pause.</p>
+        </div></div>
+    </div>
+  </section>
 </main>
 </div>
 </div>
@@ -796,19 +849,11 @@
   function mmss(s) { return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
   var hold = document.querySelector('[data-countdown]'), left = +(hold && hold.dataset.countdown);
   var resend = document.querySelector('[data-resend]'), rleft = +(resend && resend.dataset.resend);
-  if (!document.body.classList.contains('mk-capture')) setInterval(function () {
+  setInterval(function () {
+    if (document.body.classList.contains('mk-capture')) return;
     if (hold && left > 0) { left--; hold.textContent = mmss(left); }
     if (resend && rleft > 0) { rleft--; resend.textContent = Math.floor(rleft / 60) + ':' + String(rleft % 60).padStart(2, '0'); }
   }, 1000);
 
-  document.querySelectorAll('[data-menu-toggle]').forEach(function (btn) {
-    var shell = btn.closest('.appShell'), menu = shell.querySelector('.mobileMenu');
-    btn.addEventListener('click', function () {
-      var open = menu.hidden; menu.hidden = !open;
-      btn.setAttribute('aria-expanded', String(open));
-      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      btn.querySelector('use').setAttribute('href', open ? '#i-close' : '#i-menu');
-    });
-  });
 })();
 </script>

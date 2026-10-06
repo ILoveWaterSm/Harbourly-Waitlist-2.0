@@ -5,6 +5,9 @@
 .appShellBody.noSidebar { grid-template-columns: minmax(0, 1fr); }
 .appShellMain { min-width: 0; padding: var(--space-8) var(--space-10) var(--space-20); }
 .appShellContent { max-width: 1080px; }
+/* No sidebar (logged out, checkout): content sits centred under the nav; focused flows use the narrow width. */
+.appShellBody.noSidebar .appShellContent { margin-inline: auto; }
+.appShellContent.narrow { max-width: 920px; }
 @container app (max-width: 999px) {
   .appShellBody { grid-template-columns: minmax(0, 1fr); }
   .appShellBody > .sidebar { display: none; }

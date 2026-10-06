@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 Payment return</title>
+<meta name="description" content="Phase 1, page 5: back from the payment page, with every outcome.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/Countdown.css">
+<link rel="stylesheet" href="../foundations/components/Spinner.css">
+<style>
+/* Page: Payment return (/checkout/[bookingId]/return) → app/checkout/[bookingId]/return/page.module.css. Layout only. */
+.result { display: grid; gap: var(--space-4); justify-items: start; max-width: 58ch; padding-top: var(--space-8); }
+.result > svg { width: 28px; height: 28px; color: var(--muted); margin-bottom: var(--space-2); }
+.result > svg.warn { color: var(--amber); }
+.result > .spinner { margin-bottom: var(--space-2); }
+.result p { font: var(--text-body); color: var(--muted); }
+.result .mono { color: var(--ink-soft); font-size: 15px; }
+.result .holdTimer { justify-self: stretch; margin-top: var(--space-2); }
+.resultRef { font: 400 13px/1.4 var(--font-mono) !important; color: var(--faint) !important; }
+.resultActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); margin-top: var(--space-3); }
+.resultNote { font-size: 14px !important; }
+
+.doneHead { display: grid; gap: var(--space-3); max-width: 62ch; }
+.doneHead p { font: var(--text-body); color: var(--muted); }
+.doneBody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6); align-items: start; margin-top: var(--space-8); }
+.doneWho { display: flex; align-items: center; gap: var(--space-4); }
+.doneWhoName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-weight: 600; font-size: 16px; }
+.doneWho .handle { display: block; margin-top: 2px; }
+.doneCard .cardFacts { margin-top: var(--space-5); padding-top: var(--space-5); border-top: 1px solid var(--line); }
+.doneCard .cardFacts dd.text { font: 400 14.5px/1.4 var(--font-body); color: var(--ink); }
+.doneCard .cardFacts .sub { display: block; margin-top: 2px; font: 400 13px/1.45 var(--font-body); color: var(--muted); }
+.doneSteps { display: grid; gap: var(--space-4); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
+.doneSteps li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--space-3); font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+.doneSteps svg { width: 18px; height: 18px; margin-top: 2px; color: var(--muted); }
+.doneSteps .mono { color: var(--ink); }
+@container app (max-width: 760px) {
+  .doneBody { grid-template-columns: minmax(0, 1fr); }
+  .doneCard .cardActions .button { flex: 1 1 100%; }
+}
+</style>
+</head>
+<body>
+<template id="shell-focused">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar xs">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="05 Payment return">
+
+  <section data-state="confirming" data-label="Confirming your payment" data-shell="focused">
+      <div class="result" role="status" aria-live="polite">
+        <span class="spinner lg" aria-hidden="true"></span>
+        <h1>Confirming your payment</h1>
+        <p>Xendit is confirming your payment. This usually takes a few seconds, so keep this page open.</p>
+        <p class="resultRef">Kairo · Mobile Legends · Wed 7 Oct · 20:00 SGT</p>
+      </div>
+  </section>
+  <section data-state="confirmed" data-label="Booking confirmed" data-shell="focused">
+      <div class="doneHead">
+        <span class="statusLabel positive">Confirmed</span>
+        <h1>You're booked with Kairo</h1>
+        <p>We've emailed the details to you and to Kairo.</p>
+      </div>
+      <div class="doneBody">
+        <section class="card accent doneCard" aria-label="Your session">
+          <div class="doneWho"><span class="avatar md">K</span><div><span class="doneWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+          <dl class="cardFacts">
+            <dt>Game</dt><dd class="text">Mobile Legends</dd>
+            <dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd>
+            <dt>Length</dt><dd>60 min, 1-on-1</dd>
+            <dt>Paid</dt><dd>₱1,961.00<span class="sub">Held until you confirm the session went ahead.</span></dd>
+          </dl>
+          <div class="cardActions"><a class="button primary" href="#">View session</a><a class="button secondary" href="#">Back to dashboard</a></div>
+        </section>
+        <section class="card" aria-labelledby="next-c">
+          <h2 class="cardTitle" id="next-c">What happens next</h2>
+          <ul class="doneSteps">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>We'll email you a reminder 24 hours and 1 hour before the session.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg><span>Join session opens at <span class="mono">19:50 SGT</span> on Wed 7 Oct, 10 minutes before the start.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg><span>After the session, confirm it went ahead and Kairo is paid. If something went wrong, report a problem instead.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Need to change it? Request a new time or cancel from the session page, up to 24 hours before.</span></li>
+          </ul>
+        </section>
+      </div>
+  </section>
+  <section data-state="failed" data-label="Payment didn't go through" data-shell="focused">
+      <div class="result" role="alert">
+        <svg class="icon warn" aria-hidden="true"><use href="#i-alert"/></svg>
+        <h1>Your payment didn't go through</h1>
+        <p>You haven't been charged. Your time with Kairo, <span class="mono">Wed 7 Oct · 20:00 SGT</span>, is still held, so you can try again.</p>
+        <div class="holdTimer" role="timer" aria-label="Time left to pay"><span>Your time is held while you pay</span><span class="countdown" data-count="21:37">21:37</span></div>
+        <div class="resultActions"><a class="button primary" href="#">Try again</a><a class="textLink quiet" href="#">Choose another time</a></div>
+      </div>
+  </section>
+  <section data-state="released" data-label="Slot no longer held" data-shell="focused">
+      <div class="result">
+        <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+        <h1>This time is no longer held</h1>
+        <p>The 30 minutes to pay ran out before your payment went through, so <span class="mono">Wed 7 Oct · 20:00 SGT</span> with Kairo has been released. You haven't been charged, and we've emailed you about it.</p>
+        <div class="resultActions"><a class="button primary" href="#">Choose another time</a></div>
+        <p class="resultNote">If it's still free, you can choose the same time again.</p>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/icons.js"></script>
+<script>setInterval(function () {
+  if (document.body.classList.contains('mk-capture')) return;
+  document.querySelectorAll('[data-count]').forEach(function (el) {
+    var p = el.textContent.split(':'), s = +p[0] * 60 + +p[1];
+    if (s > 0) { s--; el.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+  });
+}, 1000);
+</script>
+<script src="../foundations/mockup.js"></script>
+</body>
+</html>

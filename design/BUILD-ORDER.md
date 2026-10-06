@@ -62,12 +62,12 @@ One page showing every shared component in every state. Introduces:
 ### 3. Pick a slot · M
 `/coaches/[username]/book` *proposed*.
 - Choose game, then a one-hour slot from weekly availability in your local time.
-- States: slots available, nothing free this week, slot just taken, returning after log in, phone not verified (verify before continuing).
+- States: slots available, logged out (log in to continue), nothing free this week, slot just taken, returning after log in, phone not verified (verify before continuing).
 
 ### 4. Checkout summary · M
 `/checkout/[bookingId]` *proposed*.
 - Coach price, platform fee, total in the coach's currency, the "your bank converts this" line, cancellation rule, how payment is held, hold countdown (30 minutes).
-- States: same currency, different currency, hold nearly expired, hold expired, back after a failed payment.
+- States: same currency, different currency, session in under 24 hours (can't be cancelled or moved), hold nearly expired, hold expired, back after a failed payment.
 
 ### 5. Payment return · S
 `/checkout/[bookingId]/return` *proposed*.

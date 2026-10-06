@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 Checkout summary</title>
+<meta name="description" content="Phase 1, page 4: review the booking and pay, with every state.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/PriceBreakdown.css">
+<link rel="stylesheet" href="../foundations/components/Countdown.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<style>
+/* Page: Checkout summary (/checkout/[bookingId]) → app/checkout/[bookingId]/page.module.css. Layout only.
+   Focused layout: top nav, no sidebar, so attention stays on the amounts and the hold. */
+.pageHead { display: grid; gap: var(--space-3); max-width: 62ch; }
+.pageLead { font: var(--text-body); color: var(--muted); }
+.checkTop { display: grid; gap: var(--space-4); margin-top: var(--space-6); }
+.checkTop .holdTimer { font-size: 14.5px; }
+.checkBody { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--space-6); align-items: start; margin-top: var(--space-6); }
+.checkMain { display: grid; gap: var(--space-6); min-width: 0; }
+.checkWho { display: flex; align-items: center; gap: var(--space-4); }
+.checkWhoName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-weight: 600; font-size: 16px; }
+.checkWho .handle { display: block; margin-top: 2px; }
+.checkBooking .cardFacts { margin-top: var(--space-5); padding-top: var(--space-5); border-top: 1px solid var(--line); }
+.checkBooking .cardFacts dd.text { font: 400 14.5px/1.4 var(--font-body); color: var(--ink); }
+.checkBooking .cardFacts dd .rank { display: block; margin-top: 2px; font: var(--text-value); color: var(--muted); }
+.checkSteps { display: grid; gap: var(--space-4); margin: var(--space-5) 0 0; padding: 0; list-style: none; counter-reset: step; }
+.checkSteps li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: var(--space-3); font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); counter-increment: step; }
+.checkSteps li::before { content: counter(step, decimal-leading-zero); padding-top: 2px; font: 500 12.5px/1.4 var(--font-mono); color: var(--green); }
+.checkSteps b { color: var(--ink); font-weight: 600; }
+.checkPay { position: sticky; top: 88px; display: grid; gap: var(--space-5); }
+.checkRule { display: grid; gap: var(--space-2); }
+.checkRule p { display: flex; gap: var(--space-2); font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.checkRule svg { width: 16px; height: 16px; flex: none; margin-top: 2px; color: var(--muted); }
+.checkRule .mono { color: var(--ink-soft); }
+.checkAct { display: grid; gap: var(--space-3); justify-items: center; }
+.checkSecure { display: flex; align-items: center; gap: var(--space-2); font-size: 13.5px; color: var(--muted); }
+.checkSecure svg { width: 16px; height: 16px; color: var(--muted); }
+.checkAct .textLink { margin-top: var(--space-1); font-size: 14px; }
+.expired { display: grid; gap: var(--space-4); justify-items: start; max-width: 56ch; padding-top: var(--space-6); }
+.expired > svg { width: 28px; height: 28px; color: var(--muted); margin-bottom: var(--space-2); }
+.expired p { font: var(--text-body); color: var(--muted); }
+.expired .mono { color: var(--ink-soft); font-size: 15px; }
+.expired .button { margin-top: var(--space-3); }
+.expiredNote { font-size: 14px !important; }
+@container app (max-width: 999px) {
+  .checkBody { grid-template-columns: minmax(0, 1fr); }
+  .checkPay { position: static; }
+  .checkMain { display: contents; }
+  .checkBooking { order: 1; } .checkPay { order: 2; } .checkHow { order: 3; }
+}
+</style>
+</head>
+<body>
+<template id="shell-focused">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar xs">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="04 Checkout summary">
+
+  <section data-state="different-currency" data-label="Different currency" data-shell="focused">
+      <div class="pageHead"><h1>Review and pay</h1><p class="pageLead">Check your booking, then pay on a secure page. You'll come straight back here.</p></div>
+      <div class="checkTop"><div class="holdTimer" role="timer" aria-label="Time left to pay"><span>Your time is held while you pay</span><span class="countdown" data-count="28:41">28:41</span></div></div>
+      <div class="checkBody">
+        <div class="checkMain">
+          <section class="card checkBooking" aria-label="Booking">
+            <div class="checkWho"><span class="avatar md">K</span><div><span class="checkWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd>
+              <dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd>
+              <dt>Length</dt><dd>60 min, 1-on-1</dd>
+            </dl>
+          </section>
+          <section class="card checkHow" aria-labelledby="how-d">
+            <h2 class="cardTitle" id="how-d">How your payment is held</h2>
+            <ol class="checkSteps">
+              <li><span><b>You pay now.</b> Harbourly holds the payment. Kairo isn't paid yet.</span></li>
+              <li><span><b>You have the session</b> in Harbourly: call, chat and screen share.</span></li>
+              <li><span><b>You confirm it went ahead</b>, and Kairo is paid. If you do nothing for 72 hours, it's confirmed automatically. If something went wrong, report a problem instead.</span></li>
+            </ol>
+          </section>
+        </div>
+        <section class="card accent checkPay" aria-labelledby="pay-d">
+            <h2 class="cardTitle" id="pay-d">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)">
+              <dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>₱111.00</dd></div><div class="priceBreakdownLine total"><dt>Total</dt><dd>₱1,961.00</dd></div></dl>
+              <p class="priceBreakdownNote">Charged in Philippine pesos. Your bank converts <span class="mono">₱1,961.00</span> to SGD.</p>
+            </div>
+            <div class="checkRule cardInset"><p><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>Cancel up to 24 hours before for a refund of <span class="mono">₱1,850.00</span>. The <span class="mono">₱111.00</span> platform fee isn't refundable.</span></p>
+              <p><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>Cancel within 1 hour of booking for a full refund, including the platform fee.</span></p></div>
+            <div class="checkAct">
+              <button class="button primary block" type="button">Continue to payment</button>
+              <p class="checkSecure"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>You'll pay on Xendit's secure page.</p>
+              <a class="textLink quiet" href="#">Choose another time</a>
+            </div>
+          </section>
+      </div>
+  </section>
+  <section data-state="same-currency" data-label="Same currency" data-shell="focused">
+      <div class="pageHead"><h1>Review and pay</h1><p class="pageLead">Check your booking, then pay on a secure page. You'll come straight back here.</p></div>
+      <div class="checkTop"><div class="holdTimer" role="timer" aria-label="Time left to pay"><span>Your time is held while you pay</span><span class="countdown" data-count="28:41">28:41</span></div></div>
+      <div class="checkBody">
+        <div class="checkMain">
+          <section class="card checkBooking" aria-label="Booking">
+            <div class="checkWho"><span class="avatar md">V</span><div><span class="checkWhoName">Vexa <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@vexa</span></div></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Valorant<span class="rank">Immortal 2</span></dd>
+              <dt>Time</dt><dd>Tue 13 Oct · 20:00–21:00 SGT</dd>
+              <dt>Length</dt><dd>60 min, 1-on-1</dd>
+            </dl>
+          </section>
+          <section class="card checkHow" aria-labelledby="how-s">
+            <h2 class="cardTitle" id="how-s">How your payment is held</h2>
+            <ol class="checkSteps">
+              <li><span><b>You pay now.</b> Harbourly holds the payment. Vexa isn't paid yet.</span></li>
+              <li><span><b>You have the session</b> in Harbourly: call, chat and screen share.</span></li>
+              <li><span><b>You confirm it went ahead</b>, and Vexa is paid. If you do nothing for 72 hours, it's confirmed automatically. If something went wrong, report a problem instead.</span></li>
+            </ol>
+          </section>
+        </div>
+        <section class="card accent checkPay" aria-labelledby="pay-s">
+            <h2 class="cardTitle" id="pay-s">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)">
+              <dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Vexa's price</dt><dd>S$45.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>S$2.70</dd></div><div class="priceBreakdownLine total"><dt>Total</dt><dd>S$47.70</dd></div></dl>
+              
+            </div>
+            <div class="checkRule cardInset"><p><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>Cancel up to 24 hours before for a refund of <span class="mono">S$45.00</span>. The <span class="mono">S$2.70</span> platform fee isn't refundable.</span></p>
+              <p><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>Cancel within 1 hour of booking for a full refund, including the platform fee.</span></p></div>
+            <div class="checkAct">
+              <button class="button primary block" type="button">Continue to payment</button>
+              <p class="checkSecure"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>You'll pay on Stripe's secure page.</p>
+              <a class="textLink quiet" href="#">Choose another time</a>
+            </div>
+          </section>
+      </div>
+  </section>
+  <section data-state="under-24h" data-label="Session in under 24 hours" data-shell="focused">
+      <div class="pageHead"><h1>Review and pay</h1><p class="pageLead">Check your booking, then pay on a secure page. You'll come straight back here.</p></div>
+      <div class="checkTop"><div class="holdTimer" role="timer" aria-label="Time left to pay"><span>Your time is held while you pay</span><span class="countdown" data-count="28:41">28:41</span></div></div>
+      <div class="checkBody">
+        <div class="checkMain">
+          <section class="card checkBooking" aria-label="Booking">
+            <div class="checkWho"><span class="avatar md">K</span><div><span class="checkWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd>
+              <dt>Time</dt><dd>Mon 5 Oct · 21:00–22:00 SGT</dd>
+              <dt>Length</dt><dd>60 min, 1-on-1</dd>
+            </dl>
+          </section>
+          <section class="card checkHow" aria-labelledby="how-u">
+            <h2 class="cardTitle" id="how-u">How your payment is held</h2>
+            <ol class="checkSteps">
+              <li><span><b>You pay now.</b> Harbourly holds the payment. Kairo isn't paid yet.</span></li>
+              <li><span><b>You have the session</b> in Harbourly: call, chat and screen share.</span></li>
+              <li><span><b>You confirm it went ahead</b>, and Kairo is paid. If you do nothing for 72 hours, it's confirmed automatically. If something went wrong, report a problem instead.</span></li>
+            </ol>
+          </section>
+        </div>
+        <section class="card accent checkPay" aria-labelledby="pay-u">
+            <h2 class="cardTitle" id="pay-u">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)">
+              <dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>₱111.00</dd></div><div class="priceBreakdownLine total"><dt>Total</dt><dd>₱1,961.00</dd></div></dl>
+              <p class="priceBreakdownNote">Charged in Philippine pesos. Your bank converts <span class="mono">₱1,961.00</span> to SGD.</p>
+            </div>
+            <div class="checkRule cardInset"><p><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>This session starts in under 24 hours, so it can't be cancelled or moved.</span></p></div>
+            <div class="checkAct">
+              <button class="button primary block" type="button">Continue to payment</button>
+              <p class="checkSecure"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>You'll pay on Xendit's secure page.</p>
+              <a class="textLink quiet" href="#">Choose another time</a>
+            </div>
+          </section>
+      </div>
+  </section>
+  <section data-state="nearly-expired" data-label="Hold nearly expired" data-shell="focused">
+      <div class="pageHead"><h1>Review and pay</h1><p class="pageLead">Check your booking, then pay on a secure page. You'll come straight back here.</p></div>
+      <div class="checkTop"><div class="holdTimer soon" role="timer" aria-label="Time left to pay"><span>Less than 5 minutes left to pay. After that, the time is released.</span><span class="countdown soon" data-count="03:12">03:12</span></div></div>
+      <div class="checkBody">
+        <div class="checkMain">
+          <section class="card checkBooking" aria-label="Booking">
+            <div class="checkWho"><span class="avatar md">K</span><div><span class="checkWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd>
+              <dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd>
+              <dt>Length</dt><dd>60 min, 1-on-1</dd>
+            </dl>
+          </section>
+          <section class="card checkHow" aria-labelledby="how-n">
+            <h2 class="cardTitle" id="how-n">How your payment is held</h2>
+            <ol class="checkSteps">
+              <li><span><b>You pay now.</b> Harbourly holds the payment. Kairo isn't paid yet.</span></li>
+              <li><span><b>You have the session</b> in Harbourly: call, chat and screen share.</span></li>
+              <li><span><b>You confirm it went ahead</b>, and Kairo is paid. If you do nothing for 72 hours, it's confirmed automatically. If something went wrong, report a problem instead.</span></li>
+            </ol>
+          </section>
+        </div>
+        <section class="card accent checkPay" aria-labelledby="pay-n">
+            <h2 class="cardTitle" id="pay-n">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)">
+              <dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>₱111.00</dd></div><div class="priceBreakdownLine total"><dt>Total</dt><dd>₱1,961.00</dd></div></dl>
+              <p class="priceBreakdownNote">Charged in Philippine pesos. Your bank converts <span class="mono">₱1,961.00</span> to SGD.</p>
+            </div>
+            <div class="checkRule cardInset"><p><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>Cancel up to 24 hours before for a refund of <span class="mono">₱1,850.00</span>. The <span class="mono">₱111.00</span> platform fee isn't refundable.</span></p>
+              <p><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>Cancel within 1 hour of booking for a full refund, including the platform fee.</span></p></div>
+            <div class="checkAct">
+              <button class="button primary block" type="button">Continue to payment</button>
+              <p class="checkSecure"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>You'll pay on Xendit's secure page.</p>
+              <a class="textLink quiet" href="#">Choose another time</a>
+            </div>
+          </section>
+      </div>
+  </section>
+  <section data-state="expired" data-label="Hold expired" data-shell="focused">
+      <div class="expired"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+        <h1>This time is no longer held</h1>
+        <p>We held <span class="mono">Wed 7 Oct · 20:00 SGT</span> with Kairo for 30 minutes, and the time ran out before payment. It's been released, and you haven't been charged.</p>
+        <a class="button primary" href="#">Choose another time</a>
+        <p class="expiredNote">If it's still free, you can choose the same time again.</p>
+      </div>
+  </section>
+  <section data-state="failed" data-label="Back after a failed payment" data-shell="focused">
+      <div class="pageHead"><h1>Review and pay</h1><p class="pageLead">Check your booking, then pay on a secure page. You'll come straight back here.</p></div>
+      <div class="checkTop"><div class="notice error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><p class="noticeTitle">Your payment didn't go through</p><p class="noticeText">You haven't been charged. Try again with the same or a different payment method.</p></div></div><div class="holdTimer" role="timer" aria-label="Time left to pay"><span>Still held, so you can try again</span><span class="countdown" data-count="21:37">21:37</span></div></div>
+      <div class="checkBody">
+        <div class="checkMain">
+          <section class="card checkBooking" aria-label="Booking">
+            <div class="checkWho"><span class="avatar md">K</span><div><span class="checkWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+            <dl class="cardFacts">
+              <dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd>
+              <dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd>
+              <dt>Length</dt><dd>60 min, 1-on-1</dd>
+            </dl>
+          </section>
+          <section class="card checkHow" aria-labelledby="how-f">
+            <h2 class="cardTitle" id="how-f">How your payment is held</h2>
+            <ol class="checkSteps">
+              <li><span><b>You pay now.</b> Harbourly holds the payment. Kairo isn't paid yet.</span></li>
+              <li><span><b>You have the session</b> in Harbourly: call, chat and screen share.</span></li>
+              <li><span><b>You confirm it went ahead</b>, and Kairo is paid. If you do nothing for 72 hours, it's confirmed automatically. If something went wrong, report a problem instead.</span></li>
+            </ol>
+          </section>
+        </div>
+        <section class="card accent checkPay" aria-labelledby="pay-f">
+            <h2 class="cardTitle" id="pay-f">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)">
+              <dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>₱111.00</dd></div><div class="priceBreakdownLine total"><dt>Total</dt><dd>₱1,961.00</dd></div></dl>
+              <p class="priceBreakdownNote">Charged in Philippine pesos. Your bank converts <span class="mono">₱1,961.00</span> to SGD.</p>
+            </div>
+            <div class="checkRule cardInset"><p><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>Cancel up to 24 hours before for a refund of <span class="mono">₱1,850.00</span>. The <span class="mono">₱111.00</span> platform fee isn't refundable.</span></p>
+              <p><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>Cancel within 1 hour of booking for a full refund, including the platform fee.</span></p></div>
+            <div class="checkAct">
+              <button class="button primary block" type="button">Continue to payment</button>
+              <p class="checkSecure"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>You'll pay on Xendit's secure page.</p>
+              <a class="textLink quiet" href="#">Choose another time</a>
+            </div>
+          </section>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/icons.js"></script>
+<script>// Hold countdowns tick in the interactive page (not in captured frames).
+setInterval(function () {
+  if (document.body.classList.contains('mk-capture')) return;
+  document.querySelectorAll('[data-count]').forEach(function (el) {
+    var p = el.textContent.split(':'), s = +p[0] * 60 + +p[1];
+    if (s > 0) { s--; el.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+  });
+}, 1000);
+</script>
+<script src="../foundations/mockup.js"></script>
+</body>
+</html>

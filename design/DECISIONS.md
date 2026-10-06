@@ -270,3 +270,38 @@ In the design
 - Short labels that say what happens next and who it's with, e.g. "Book a session", "Choose a time", "Continue to payment", "View session".
 - Never phrase a label as if the gamer books or buys a game.
 - The same action keeps the same label on every page and in every email.
+
+## Phase 1 decisions (agreed before Phase 1)
+
+Browse
+- Price filter: a "Max price" select in the viewer's currency: Any price, Up to S$30, Up to S$40, Up to S$50, Up to S$60. Converted prices are compared at their converted value.
+- Sort labels: "Lowest price" (default), "Highest rating", "Most reviewed".
+- 12 coaches per page, then "Load more".
+- A line under the filters explains "≈": prices are in your currency, ≈ means converted from the coach's.
+
+Cast additions (fictional, used across all pages)
+- **Mirae** `@mirae`, Singapore, Verified, 4.7 (19). Riftbound `Regional Qualifier · Top 8` at S$38; Valorant `Ascendant 3` at S$40.
+- **Ghostline** `@ghostline`, Malaysia, Verified, 4.6 (24). Call of Duty: Mobile `Legendary · Top 2,000` at RM 120 (≈ S$34, at the same rate as RM 150 ≈ S$43).
+- Browse filler: **Lumen** `@lumen` (Philippines, New Coach, Riftbound `Regional Qualifier · Top 16`, ₱1,250 ≈ S$29); **Pallas** `@pallas` (Singapore, Verified, 4.6 (8), Mobile Legends `Mythical Glory · 64★`, S$30); **Marlowe** `@marlowe` (Malaysia, New Coach, Valorant `Immortal 1`, RM 110 ≈ S$32); **Kestrel** `@kestrel.cod` (Singapore, Verified, 4.5 (11), Call of Duty: Mobile `Legendary · Top 1,000`, S$33); **Tidewalker** `@tidewalker` (Philippines, Verified, 4.8 (41), Mobile Legends `Mythical Immortal · 112★`, ₱1,500 ≈ S$35); **Rook** `@rookcs` (Malaysia, Verified, 4.7 (15), Counter-Strike 2 `Premier 24,800`, RM 180 ≈ S$52); **Hanabi** `@hanabi.vlr` (Singapore, Verified, 4.9 (26), Valorant `Radiant · #312 APAC`, S$60).
+- 19 coaches are listed in total; the first page shows 12.
+
+Coach profile
+- Availability preview: the next 7 days, each with its number of free one-hour slots, the next free time, and "See all times" (opens Pick a slot). No clickable times on the profile.
+- Banner: until real images exist, and for any coach without one, a plain `--bg-mid` band.
+- Reviews: the 5 newest, then "Show more reviews" (5 more each time). Each shows the reviewer's username, stars, game, month and text. No rating breakdown, no coach replies.
+- Voice intro: a shared audio player (play or pause, duration in mono, a thin progress line). Mocked at 0:45 until the length is decided in Phase 6.
+- Logged out: "Book a session" still opens Pick a slot; log in or sign up comes after a time is chosen, and returns to the same choice.
+
+Pick a slot
+- Bookable up to 4 weeks ahead. Slots start on the hour. The earliest slot starts at least 2 hours from now.
+- Picking a time and pressing "Continue to checkout" creates the 30-minute hold.
+
+Checkout and payment return
+- Both pages drop the sidebar and keep the top nav, so attention stays on the amounts and the hold.
+- The page names the payment provider: Xendit for coaches in the Philippines, Stripe for Singapore and Malaysia ("You'll pay on Xendit's secure page.").
+- "Choose another time" on checkout releases the hold at once and returns to Pick a slot. The same label is used wherever a hold has ended.
+- Booking less than 24 hours ahead: checkout replaces the cancellation rule with "This session starts in under 24 hours, so it can't be cancelled or moved."
+- Otherwise checkout also says: "Cancel within 1 hour of booking for a full refund, including the platform fee."
+- Booking confirmed: a session summary, "View session" and "Back to dashboard". No calendar export.
+
+New shared components for Phase 1: OptionCard (choice card with a radio), SlotPicker, AudioPlayer, ReviewItem, PriceBreakdown, Spinner.

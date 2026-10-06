@@ -119,6 +119,7 @@ flowchart TD
   Phone -->|"Yes"| Hold["Slot held for 30 minutes. Booking is pending payment"]
   Hold --> Summary["Checkout summary: price, platform fee, total in the coach's currency, cancellation rule, how the escrow hold works"]
   Summary --> Hosted["Stripe or Xendit hosted payment page"]
+  Summary -->|"Choose another time: hold released"| Slot
   Hosted --> Back["Back on Harbourly: confirming your payment"]
   Back --> Result{"Payment provider result"}
   Result -->|"Paid"| Confirmed(["Booking confirmed. Emails to both"])
