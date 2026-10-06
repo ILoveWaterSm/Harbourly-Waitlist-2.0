@@ -48,6 +48,8 @@ One page showing every shared component in every state. Introduces:
 
 ## Phase 1: Find and book a coach
 
+Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`design/pages/01-browse-coaches.html`) · [02 Coach profile](https://claude.ai/artifact/GUw5NpQEWds2tvVRkCVH2Y) (`design/pages/02-coach-profile.html`) · [03 Pick a slot](https://claude.ai/artifact/DoTXw1NFPY7nMf64rrNVV9) (`design/pages/03-pick-a-slot.html`) · [04 Checkout summary](https://claude.ai/artifact/EFj1Br4ak4Xnd7935vocsw) (`design/pages/04-checkout-summary.html`) · [05 Payment return](https://claude.ai/artifact/HSpMwJ9o7dDJAEYaDy6wUa) (`design/pages/05-payment-return.html`) · frames on the [canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ)
+
 ### 1. Browse coaches · M
 `/coaches` *proposed*. Logged in and logged out.
 - Filters: game, price. Sort: price (default, low to high), rating, most reviewed.
@@ -73,7 +75,7 @@ One page showing every shared component in every state. Introduces:
 `/checkout/[bookingId]/return` *proposed*.
 - States: confirming your payment, booking confirmed, payment didn't go through (try again while held), slot no longer held (pick another).
 
-**Checkpoint 2:** the booking flow end to end.
+**Checkpoint 2:** the booking flow end to end. Built and published 6 Oct 2026; waiting for review.
 
 ---
 

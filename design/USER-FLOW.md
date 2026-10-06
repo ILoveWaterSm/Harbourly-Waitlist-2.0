@@ -109,7 +109,7 @@ flowchart TD
   Own -->|"Yes"| NoBook(["No Book button. This is your profile"])
   Own -->|"No"| Game["Choose a game"]
   Game --> Slot["Pick a one-hour slot, in your local time"]
-  Own -->|"No, Choose a time on a game section"| Slot
+  Own -->|"No, Choose a time on a game section: game already chosen"| Slot
   Slot --> LoggedIn{"Logged in?"}
   LoggedIn -->|"No"| Auth["Log in or sign up"]
   Auth --> Slot
@@ -125,7 +125,7 @@ flowchart TD
   Result -->|"Paid"| Confirmed(["Booking confirmed. Emails to both"])
   Result -->|"Not paid, hold still active"| Failed["Payment didn't go through"]
   Failed --> Summary
-  Result -->|"Hold expired"| Expired["This slot is no longer held. Email to gamer"]
+  Result -->|"Hold expired"| Expired["This time is no longer held. Email to gamer"]
   Expired --> Slot
 ```
 
