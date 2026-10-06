@@ -204,7 +204,7 @@ In the design
 - Flat surfaces: page `--bg`, cards solid `--surface`, inset areas (chat panel, list rows) `--bg-mid`. No gradients on cards.
 - One new shadow token for all cards: `--shadow-flat` (about `0 1px 2px #00000059`).
 - Primary buttons keep a softer resting glow via a new token `--shadow-cta-rest` (about half of `--shadow-cta`); on hover they move to `--shadow-cta-hover` and the blurred halo fades in.
-- Secondary button: outline pill, `--line` border, `--ink` text.
+- Secondary button: outline pill, `--line-strong` border, `--ink` text. Inputs use the same `--line-strong` border. (Changed at checkpoint 1 from `--line`, which almost disappears on the dark ground.)
 - Green glow only as a deliberate accent: a thin glowing top line on the one card that matters most in view.
 - The top nav keeps its blur and transparency. Nothing else is frosted.
 - No background grid, film grain or breathing glow in the webapp; those stay on marketing pages.
@@ -236,3 +236,9 @@ In the design
 
 - With no game filter, the card shows the coach's cheapest game: that game's name and rank, and "from" its price, plus "+1 game" (or "+2 games") when there are more.
 - With a game filter set, the card shows that game's rank and its exact price.
+- "from" appears only when the coach lists more than one game. A single-game card shows the exact price, e.g. "S$45 / session".
+
+## Checkpoint 1 outcomes
+
+- Status colours follow this file, not the Geist Mono specimen: `Completed` is green. `In session` is green; resolved dispute statuses are muted; "Reschedule requested" is an amber mono second line.
+- Phone verification codes are 6 digits.
