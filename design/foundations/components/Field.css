@@ -44,11 +44,11 @@ textarea.fieldControl { min-height: 128px; resize: vertical; line-height: 1.55; 
 
 .fieldPair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
 .fieldDob { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr) minmax(0, 1.3fr); gap: var(--space-3); }
-.fieldPhone { display: grid; grid-template-columns: 128px minmax(0, 1fr) auto; gap: var(--space-3); align-items: center; }
+.fieldPhone { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: var(--space-3); align-items: center; }
+.fieldPhone > :nth-child(3) { grid-column: 1 / -1; justify-self: start; }
 .fieldSublabel { display: block; margin-bottom: 6px; font: var(--text-label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 
 @container app (max-width: 640px) {
   .fieldPair { grid-template-columns: minmax(0, 1fr); }
   .fieldPhone { grid-template-columns: 112px minmax(0, 1fr); }
-  .fieldPhone > :last-child { grid-column: 1 / -1; }
 }

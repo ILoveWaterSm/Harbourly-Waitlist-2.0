@@ -242,3 +242,18 @@ In the design
 
 - Status colours follow this file, not the Geist Mono specimen: `Completed` is green. `In session` is green; resolved dispute statuses are muted; "Reschedule requested" is an amber mono second line.
 - Phone verification codes are 6 digits.
+
+## Uploads (agreed after checkpoint 1)
+
+| Upload | File types | Max size | Other limits |
+|---|---|---|---|
+| Profile photo | JPG, PNG, WebP | 5 MB | At least 256 × 256 px, cropped to a circle |
+| Banner | JPG, PNG, WebP | 10 MB | At least 1200 px wide |
+| Rank proof (application, rank update, new game) | JPG, PNG, WebP | 10 MB each | Up to 5 |
+| Dispute evidence | JPG, PNG, WebP, PDF | 10 MB each | Up to 5 |
+
+- No GIF (animated avatars pull attention) and no video evidence in the MVP; a clip can be linked in the dispute description.
+- No HEIC. iPhone screenshots are PNG already; iPhone Safari is expected to convert camera photos to JPEG on upload when HEIC isn't accepted. Confirm on a real iPhone when building.
+- Build note: strip location and other metadata from uploaded images before storing them.
+- Upload hint line, e.g. "JPG, PNG or WebP · up to 10 MB". Errors: "season-stats.png is 14.2 MB. Images can be up to 10 MB." and "rank-proof.heic isn't a JPG, PNG or WebP. Save it as one of those and try again."
+- Still to decide in Phase 6: voice intro length, portfolio format.

@@ -358,11 +358,11 @@
       <div class="lib-specs">
         <div class="lib-spec"><span class="lib-cap">Checkbox · unchecked, checked</span>
           <div style="display:grid;gap:var(--space-4)">
-            <label class="checkbox"><input class="checkboxInput" type="checkbox" id="f-cb1">I agree to the&nbsp;<a href="#">Terms of Service</a>&nbsp;and&nbsp;<a href="#">Privacy Policy</a>.</label>
-            <label class="checkbox"><input class="checkboxInput" type="checkbox" id="f-cb2" checked>I agree to the&nbsp;<a href="#">Terms of Service</a>&nbsp;and&nbsp;<a href="#">Privacy Policy</a>.</label>
+            <label class="checkbox"><input class="checkboxInput" type="checkbox" id="f-cb1"><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label>
+            <label class="checkbox"><input class="checkboxInput" type="checkbox" id="f-cb2" checked><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label>
           </div></div>
         <div class="lib-spec"><span class="lib-cap">Checkbox · error</span>
-          <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox" id="f-cb3" aria-invalid="true" aria-describedby="f-cb3-e">I agree to the&nbsp;<a href="#">Terms of Service</a>&nbsp;and&nbsp;<a href="#">Privacy Policy</a>.</label><span class="fieldError" id="f-cb3-e"><svg class="icon"><use href="#i-alert-circle"/></svg>Accept the terms to continue.</span></div></div>
+          <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox" id="f-cb3" aria-invalid="true" aria-describedby="f-cb3-e"><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label><span class="fieldError" id="f-cb3-e"><svg class="icon"><use href="#i-alert-circle"/></svg>Accept the terms to continue.</span></div></div>
         <div class="lib-spec"><span class="lib-cap">Date of birth</span>
           <fieldset class="field" style="border:0;margin:0;padding:0"><legend class="fieldLabel" style="padding:0;margin-bottom:var(--space-2)">Date of birth</legend>
             <div class="fieldDob">
@@ -407,13 +407,13 @@
       <h3>Image upload</h3>
       <div class="lib-specs" style="--lib-min:340px">
         <div class="lib-spec"><span class="lib-cap">Single · empty</span>
-          <div class="field"><span class="fieldLabel">Profile photo</span><button class="uploadDrop" type="button"><svg class="icon"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Upload a photo</span><span class="uploadDropMeta">Or drag it here</span></span></button></div></div>
+          <div class="field"><span class="fieldLabel">Profile photo</span><button class="uploadDrop" type="button"><svg class="icon"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Upload a photo</span><span class="uploadDropMeta">JPG, PNG or WebP · up to 5 MB</span></span></button></div></div>
         <div class="lib-spec"><span class="lib-cap">Single · dragging over</span>
           <div class="field"><span class="fieldLabel">Profile photo</span><div class="uploadDrop isDragging"><svg class="icon"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Drop to upload</span><span class="uploadDropMeta">One image</span></span></div></div></div>
         <div class="lib-spec"><span class="lib-cap">Single · uploaded</span>
           <div class="field"><span class="fieldLabel">Profile photo</span><div class="uploadSingle"><span class="avatar md">K</span><span style="display:grid;gap:6px;min-width:0"><span class="mono" style="font-size:13px;color:var(--ink-soft)">kairo-avatar.jpg</span><span class="uploadSingleActions"><button class="textLink" type="button">Replace</button><button class="textLink quiet" type="button">Remove</button></span></span></div></div></div>
         <div class="lib-spec wide"><span class="lib-cap">Up to 5 · uploading, uploaded, failed</span>
-          <div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Proof of your rank</span><span class="uploadCount">4 / 5</span></div><span class="fieldHint">Screenshots that show the rank you entered, with your in-game name visible.</span>
+          <div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Proof of your rank</span><span class="uploadCount">4 / 5</span></div><span class="fieldHint">Screenshots that show the rank you entered, with your in-game name visible. <span class="mono" style="font-size:12px;color:var(--muted)">JPG, PNG or WebP · up to 10 MB each</span></span>
             <div class="uploadThumbs">
               <div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-image"/></svg></div><div class="uploadThumbName">rank-proof-1.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove rank-proof-1.png"><svg class="icon"><use href="#i-close"/></svg></button></div>
               <div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-image"/></svg></div><div class="uploadThumbName">rank-proof-2.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove rank-proof-2.png"><svg class="icon"><use href="#i-close"/></svg></button></div>
@@ -422,6 +422,19 @@
               <button class="uploadAdd" type="button"><svg class="icon"><use href="#i-plus"/></svg>Add image</button>
             </div>
             <span class="fieldError"><svg class="icon"><use href="#i-alert-circle"/></svg><span>match-history.png didn't upload. Check your connection, then remove it and add it again.</span></span>
+          </div></div>
+        <div class="lib-spec"><span class="lib-cap">Rejected · too large</span>
+          <div class="field"><span class="fieldLabel">Proof of your rank</span><button class="uploadDrop" type="button" aria-describedby="up-big"><svg class="icon"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Add screenshots</span><span class="uploadDropMeta">JPG, PNG or WebP · up to 10 MB each</span></span></button><span class="fieldError" id="up-big"><svg class="icon"><use href="#i-alert-circle"/></svg><span>season-stats.png is <span class="mono">14.2 MB</span>. Images can be up to <span class="mono">10 MB</span>.</span></span></div></div>
+        <div class="lib-spec"><span class="lib-cap">Rejected · wrong type</span>
+          <div class="field"><span class="fieldLabel">Proof of your rank</span><button class="uploadDrop" type="button" aria-describedby="up-type"><svg class="icon"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Add screenshots</span><span class="uploadDropMeta">JPG, PNG or WebP · up to 10 MB each</span></span></button><span class="fieldError" id="up-type"><svg class="icon"><use href="#i-alert-circle"/></svg><span>rank-proof.heic isn't a JPG, PNG or WebP. Save it as one of those and try again.</span></span></div></div>
+        <div class="lib-spec"><span class="lib-cap">Dispute evidence · images or PDF</span>
+          <div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">2 / 5</span></div>
+            <div class="uploadThumbs">
+              <div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-image"/></svg></div><div class="uploadThumbName">payment-screen.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove payment-screen.png"><svg class="icon"><use href="#i-close"/></svg></button></div>
+              <div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-file"/></svg></div><div class="uploadThumbName">bank-statement-sep.pdf</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove bank-statement-sep.pdf"><svg class="icon"><use href="#i-close"/></svg></button></div>
+              <button class="uploadAdd" type="button"><svg class="icon"><use href="#i-plus"/></svg>Add file</button>
+            </div>
+            <span class="uploadDropMeta">JPG, PNG, WebP or PDF · up to 10 MB each</span>
           </div></div>
       </div>
     </div>
