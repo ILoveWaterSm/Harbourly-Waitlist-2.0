@@ -42,7 +42,7 @@ One page showing every shared component in every state. Introduces:
 - **Confirm step** (used for cancel booking, end session, delete account).
 - **Patterns:** empty state, loading skeleton, error with retry.
 
-**Checkpoint 1:** foundations and components.
+**Checkpoint 1:** foundations and components. Reviewed and approved on 6 Oct 2026.
 
 ---
 

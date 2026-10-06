@@ -1,46 +1,67 @@
 # Handoff prompt
 
-Paste everything below the line into a new chat.
+Paste everything below the line into a new chat. Last updated 6 Oct 2026, after checkpoint 1.
 
 ---
 
 You're joining as the product designer for **Harbourly**, a Southeast Asia-focused esports coaching marketplace. Gamers browse verified coaches, book and pay for one-hour 1-on-1 sessions, hold the session in-app (call, chat, screen share), then confirm and leave a review. Payment is held until the session is confirmed. The brand is built on trust, so every screen should feel calm, precise and dependable, not flashy.
 
-We are designing the actual webapp pages one at a time. Design only, not production code. All the planning is finished and recorded in the repo. We are about to start **Phase 0** of the build order.
+We are designing the actual webapp pages one at a time. Design only, not production code. All planning is recorded in the repo. **Phase 0 (foundations) is finished and approved at checkpoint 1. Next is Phase 1. Don't start it until I say go.**
 
-## Repo and files
+## Repo and branch
 
-Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. Design work lives in `design/`. Read these before doing anything, in this order:
+Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. Everything up to checkpoint 1 should be on `main`. If `design/foundations/` or `design/pages/` is missing from your branch, the merge hasn't happened yet: merge `origin/claude/sleepy-galileo-sj5mge` into your branch first (a merge commit, no rebase), then work from there.
 
-1. `design/DECISIONS.md`: every agreed decision: product rules, visual rules, tokens, copy rules. **Source of truth.** Anything not covered here or in the flow needs my approval before it's designed.
-2. `design/USER-FLOW.md`: the full MVP user flow in 13 Mermaid diagrams. Every page maps to a node here. (Also published as a page: https://claude.ai/artifact/8QiSx8pFYigdVWvUsqqXBm)
-3. `design/BUILD-ORDER.md`: 25 pages in 8 phases plus 2 foundation items, with every state each page must show, routes, sizes and review checkpoints.
-4. `design-system/README.md` and `design-system/tokens.json`: the brand design system (also at https://claude.ai/artifact/4HHoqwJVacXMMDzG9XLp4n). Token names must be used exactly.
-5. `design/explorations/mono-specimen.html`: agreed sample of what is set in Geist Mono (published at https://claude.ai/artifact/BMAM1vF2rEsWyRNHFcugUJ).
-6. `landing.html`: the current landing page, for brand feel only, not a template.
+## Read these first, in this order
 
-Main already contains everything up to the user flow (merged in pull request #2). Branch `claude/pensive-johnson-xr4o54` has one more commit on top (`BUILD-ORDER.md`, the reschedule dashboard card, the canvas decision and this handoff). Merge it into main if it isn't merged yet, then work from there.
+1. `design/DECISIONS.md`: every agreed decision. **Source of truth.** Anything not covered here or in the flow needs my approval before it's designed.
+2. `design/USER-FLOW.md`: the full MVP user flow in 13 Mermaid diagrams. Every page maps to a node here. (Also at https://claude.ai/artifact/8QiSx8pFYigdVWvUsqqXBm)
+3. `design/BUILD-ORDER.md`: 25 pages in 8 phases plus the 2 foundation items, with every state each page must show, routes, sizes and review checkpoints.
+4. `design/foundations/`: what Phase 0 built (details below). Read `tokens.css` and the component files before designing anything.
+5. `design-system/README.md` and `design-system/tokens.json`: the brand design system (also at https://claude.ai/artifact/4HHoqwJVacXMMDzG9XLp4n).
+6. `design/explorations/mono-specimen.html`: what is set in Geist Mono. Where it differs from DECISIONS.md (it shows "Completed" muted), DECISIONS.md wins.
+7. `landing.html`: brand feel only, not a template.
 
-## The stack the designs map to
+## What exists (Phase 0)
 
-Next.js 16, React 19, TypeScript, vanilla CSS with CSS Modules (one `.module.css` per component) plus one global stylesheet holding the design tokens as CSS custom properties. No Tailwind. Mockups use plain CSS variables with the exact token names, and each component's styles are written so they lift straight into its own `.module.css`.
+| | Interactive page | Source |
+|---|---|---|
+| 0.1 Tokens | https://claude.ai/artifact/BSQtCHx4vyrXbfw75WN6Ti | `design/pages/0.1-tokens.html` |
+| 0.2 Components | https://claude.ai/artifact/H74MmqqDTxjtC5hv7zo5uu | `design/pages/0.2-components.html` |
+| Canvas, "Harbourly webapp" | https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ | 24 frames: every section of both pages at desktop and phone |
 
-## How pages are built (agreed)
+- `design/foundations/tokens.css`: the global stylesheet. Every design-system token by its exact name, plus `--shadow-flat` and `--shadow-cta-rest`, base styles and the webapp type scale.
+- `design/foundations/components/<Name>.css`: one file per shared component, each lifting straight into `<Name>.module.css`. Every selector starts with the component's root class. Components: AppShell, TopNav, Sidebar, MobileMenu, Button, TextLink, IconButton, Field, Checkbox, OtpInput, ImageUpload, StepCounter, StatusLabel, Badge, Avatar, Price, GameRank, Rating, Card, CoachCard, SessionList, Notice (with CallBanner), Countdown (with HoldTimer), ConfirmStep, EmptyState, Skeleton, ErrorState, Icon.
+- `design/foundations/icons.js`: the line icon sprite (24px grid, 1.8 stroke). Use `<svg class="icon"><use href="#i-name"/></svg>`. Add new icons here in the same style.
+- `design/foundations/mockup.css` and `mockup.js`: the mockup harness, not product code. Pages put each state in `<section data-state="id" data-label="Label">` inside `<div class="mk-frame" data-page="NN Page">`; the harness builds the state switcher and the desktop/phone toggle. `window.mk.set(stateId, "desktop" | "phone")` switches from script.
+- Responsive rules are container queries on a container named `app` (the app shell; the mockup frame in the harness), not media queries. Breakpoints in use: 999px (sidebar folds into the burger menu), 640px, 560px, 520px, 400px.
 
-- **One standalone HTML file per page** in `design/pages/`, using shared `design/foundations/tokens.css`. Each has a **state switcher** (every state listed in BUILD-ORDER, including empty, loading and error) and a **desktop/mobile toggle**. Published as a private artifact link and committed to the repo.
-- **One Claude Design canvas** (created once, in Phase 0, via the Design artifact type, the same thing `/design` creates) shows the overview. Its frames are **exact renders** of each HTML page's states at desktop and phone widths, grouped by phase, labelled "NN Page · State · Width", with a note linking each interactive page. Frames are images, so they stay 1:1 with the HTML. Never create a second canvas; add each phase's frames to the same one.
-- Changes go through the HTML pages, then re-render the frames.
-- Each phase ends with a **review checkpoint**. Don't start the next phase until I've reviewed.
-- Reuse components from earlier pages. Consistency across pages matters more than novelty.
+**Reuse these components on every page.** If a page needs a new shared part, add it as a new component file and to the component library page, and tell me, rather than styling it inside the page.
+
+## How pages are built and published
+
+- One standalone HTML file per page in `design/pages/` (e.g. `design/pages/01-browse-coaches.html`), linking `../foundations/tokens.css`, `../foundations/mockup.css`, the component CSS files it uses, `../foundations/icons.js` and `../foundations/mockup.js`. Every state from BUILD-ORDER gets its own `data-state` section, including empty, loading and error.
+- Build a publishable copy: `node design/tools/build.mjs design/pages/<page>.html <outDir>`. It inlines the CSS and JS and copies the logo next to the page.
+- Publish the built file as a private artifact, passing the logo as a supporting file (`files: {"harbourly-logo.png": "<outDir>/harbourly-logo.png"}`). To update a page that already exists, publish to its existing link (`url`) so the link never changes.
+- Render the frames: `node design/tools/render.mjs <outDir>/<page>.html <framesDir> <prefix>`. It renders every state at 1440 and 390 wide, at 2x. It uses the globally installed Playwright and fetches Google Fonts through curl.
+
+## The canvas
+
+- **Never create a second canvas.** Add each phase's frames to https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ.
+- Each frame is one artboard: a `.dc.html` that only shows the uploaded PNG at its true CSS size (PNG pixels ÷ 2). Upload the PNGs to the canvas as assets first, then reference each one's `/_blob/…` url. Board titles follow "NN Page · State · Width", e.g. "01 Browse coaches · No results · Phone".
+- Layout so far: each state is a pair (desktop, then phone 80 px to its right), 200 px between pairs, three pairs per row, 200 px between rows. A `title1` note names the phase and each page, and a green sticky to the left of each page links its interactive version and source file. Phase 0 ends at about y = 15,600, so Phase 1 starts below that.
+- **Read `project/canvas.json` from the canvas right before every update.** The canvas editor re-saves it in its own format, and a publish based on an old copy is refused. Change only your keys and keep everything else.
+- Changes always go through the HTML page first, then the frames are re-rendered and replaced.
 
 ## Visual rules (summary; full list in DECISIONS.md)
 
-- **Dark theme only.** Flat surfaces: page `--bg`, cards solid `--surface`, insets `--bg-mid`, one slight shadow `--shadow-flat` (new token). Only the top nav keeps blur and transparency.
-- Green glow only as a deliberate accent: a thin glowing top line on the one card that matters most, stronger on hover. Primary buttons have a soft resting glow (new token `--shadow-cta-rest`) and the halo appears on hover. Secondary button: outline pill.
+- Dark theme only. Flat surfaces: page `--bg`, cards solid `--surface`, insets `--bg-mid`, one slight shadow `--shadow-flat`. Only the top nav keeps blur and transparency.
+- Green glow only as a deliberate accent: a thin glowing top line on the one card that matters most, stronger on hover. Primary buttons rest with `--shadow-cta-rest` and get the halo on hover. Secondary button: outline pill with a `--line-strong` border. Inputs also use `--line-strong`.
+- Amber outline button only for the final step of a cancel or delete. Confirm steps open in place, never as a pop-up.
 - No background grid, film grain or hero glow in the webapp.
-- Fonts: **Sora** headings, **Geist** body and UI, **Geist Mono** for data and labels (money, dates, times, countdowns, statuses, ranks, ratings, counts, small labels, counters, @handles). No other fonts.
-- Status: mono label with a coloured dot. Green = confirmed, completed, verified. Amber = needs action. Muted = ended. No red.
-- Icons: inline SVG line icons only, matching the design system's stroke weight.
+- Fonts: Sora headings, Geist body and UI, Geist Mono for data and labels. No other fonts.
+- Status: mono label with a coloured dot. Green = confirmed, in session, completed, verified. Amber = needs action. Muted = ended. No red.
+- Icons: inline SVG line icons only, from the sprite.
 
 ## Avoid ("not AI-looking")
 
@@ -48,28 +69,33 @@ Purple, indigo or blue-to-pink gradients, gradient text, colours outside the pal
 
 ## Content and copy
 
-Realistic content: fictional gamer handles only (no real people), the 5 games (Mobile Legends, Call of Duty: Mobile, Valorant, Counter-Strike 2, Riftbound), free-text ranks like `Mythical Glory · 85★`, prices like "S$45 / session", "from S$38", converted prices with "≈", times in the viewer's local zone (e.g. `20:00 SGT`), real session states. Sentence case, British English, short and direct, plain voice.
+Realistic content: fictional gamer handles only (no real people), the 5 games (Mobile Legends, Call of Duty: Mobile, Valorant, Counter-Strike 2, Riftbound), free-text ranks, prices like "S$45 / session" and "from ≈ S$43", times in the viewer's zone (e.g. `20:00 SGT`), real session states. Sentence case, British English, short and direct, plain voice.
+
+Keep using the same cast so pages stay consistent. Mockups are set around Mon 5 Oct 2026, viewer in Singapore (SGT, SGD).
+- **Kairo** `@kairo.gg`, Philippines, Verified, 4.9 (57). Mobile Legends `Mythical Glory · 85★` at ₱1,850 (≈ S$43); Call of Duty: Mobile `Legendary · Top 500` at ₱2,100 (≈ S$49). Bio: "Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch."
+- **Vexa** `@vexa`, Singapore, Verified, 4.8 (32). Valorant `Immortal 2` at S$45.
+- **nullpoint** `@nullpoint`, Malaysia, New Coach, no reviews. Counter-Strike 2 `Premier 21,450` at RM 150 (≈ S$43).
+- **Mirae**, Riftbound `Regional Qualifier · Top 8`, from S$38. **Ghostline**, Call of Duty: Mobile.
+- Logged-in gamer: **snapking**. Platform fee 6% (S$2.70 on S$45; ₱111.00 on ₱1,850).
 
 ## How I like to work
 
 - Explain any non-obvious design decision in one sentence.
 - If anything in the feature list, flow or decisions is ambiguous, **ask me before guessing**. Never add features, sections or data without asking.
-- Record every new decision I approve in `design/DECISIONS.md`; keep `USER-FLOW.md` and `BUILD-ORDER.md` in sync if anything changes.
+- Record every new decision I approve in `design/DECISIONS.md`; keep `USER-FLOW.md` and `BUILD-ORDER.md` in sync if anything changes. Add each page's artifact link to its phase in `BUILD-ORDER.md`.
 - Commit and push work to the designated branch as you go (the repo's stop hook requires it). Don't open pull requests unless I ask.
 - I'm not a design specialist on token and type-scale questions; recommend a choice and explain briefly.
-- I care about Pro usage: build each page once, well, rather than duplicating work.
+- I care about Pro usage: build each page once, well, rather than duplicating work. Look at each render once before publishing and fix what it shows.
+- Each phase ends with a review checkpoint. Don't start the next phase until I've reviewed.
 
 ## Open items
 
-- Assumed: email sign-ups enter email and password once (sign-up page) and the "finish setting up" step doesn't ask again; Google sign-ups never set a password. I haven't confirmed this yet; check with me when designing sign-up.
-- Before code is built (not before design): confirm coach launch countries with Stripe and Xendit (including Thailand), pick an exchange-rate source, finalise chat retention with the Terms of Service.
+- **Avatar images:** I'll supply fictional avatar images. Until then, avatars show the default (first letter in Sora). When they arrive, use them for the cast above.
+- **Sign-up password (assumed, not confirmed):** email sign-ups enter email and password once, on the sign-up page, and "Finish setting up" doesn't ask again; Google sign-ups never set a password. Check with me when designing sign-up (Phase 4).
+- **Phase 6:** voice intro length and portfolio format are still to decide.
+- **When building:** confirm on a real iPhone that camera photos convert to JPEG on upload.
+- **Before code is built (not before design):** confirm coach launch countries with Stripe and Xendit (including Thailand), pick an exchange-rate source, finalise chat retention with the Terms of Service.
 
 ## Next step
 
-Start **Phase 0** from `BUILD-ORDER.md`:
-
-1. `design/foundations/tokens.css` and a token sheet page.
-2. The component library page.
-3. Create the one Harbourly canvas and add their frames.
-
-Then stop for **checkpoint 1**.
+When I say go, start **Phase 1: Find and book a coach** from `BUILD-ORDER.md` (1 Browse coaches, 2 Coach profile, 3 Pick a slot, 4 Checkout summary, 5 Payment return). Build every listed state, publish each page, add its frames to the canvas under a "Phase 1 · Find and book a coach" title, then stop for **checkpoint 2**.
