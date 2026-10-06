@@ -1,0 +1,315 @@
+<title>Harbourly tokens</title>
+<meta name="description" content="Phase 0.1: every Harbourly design token by its exact name, with the two webapp additions.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<style>
+/* Layout: a reference sheet. Each section pairs a token's name and value (mono, left)
+   with the thing it styles (right), so the sheet reads as both spec and specimen. */
+.ts { display: grid; gap: var(--space-14); padding: var(--space-10) var(--space-10) var(--space-20); max-width: 1180px; margin: 0 auto; }
+.ts-head { display: grid; gap: var(--space-3); max-width: 68ch; }
+.ts-head p { font: var(--text-body-lg); color: var(--muted); }
+.ts-head code, .ts-note code { font: 400 0.92em/1 var(--font-mono); color: var(--ink-soft); }
+.ts-sec { display: grid; gap: var(--space-8); }
+.ts-sec-head { display: grid; gap: var(--space-2); max-width: 70ch; }
+.ts-sec-head p { color: var(--muted); }
+.ts-group { display: grid; gap: var(--space-4); }
+.ts-group-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3); }
+.ts-group-title h3 { font: 600 16px/1.3 var(--font-body); letter-spacing: 0; }
+.ts-group-title p { font-size: 13.5px; color: var(--muted); }
+
+/* colour */
+.ts-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-3); }
+.ts-sw { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: var(--space-4); align-items: center; padding: var(--space-3); border-radius: var(--radius-md); background: var(--bg-mid); }
+.ts-chip { width: 48px; height: 48px; border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--line); }
+.ts-sw-name { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); }
+.ts-sw-name b { font: 500 13.5px/1.3 var(--font-mono); color: var(--ink); }
+.ts-sw-name span { font: 400 12px/1.3 var(--font-mono); color: var(--faint); }
+.ts-sw p { margin-top: 3px; font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+.ts-sw.unused p { color: var(--faint); }
+
+.ts-layers { padding: var(--space-6); border-radius: var(--radius-lg); background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); display: grid; gap: var(--space-3); }
+.ts-layers .card { display: grid; gap: var(--space-3); max-width: 560px; }
+.ts-layer-tag { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+.ts-layers .cardInset { display: flex; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+
+.ts-text { display: grid; gap: var(--space-2); }
+.ts-trow { display: grid; grid-template-columns: 150px minmax(0, 1fr) 128px; gap: var(--space-4); align-items: center; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); }
+.ts-trow b { font: 500 13px/1.3 var(--font-mono); color: var(--ink-soft); }
+.ts-trow .ts-sample { font-size: 15px; min-width: 0; }
+.ts-trow .ts-sample small { display: block; font-size: 13px; color: var(--faint); margin-top: 2px; }
+.ts-ratio { justify-self: end; text-align: right; font: 400 12.5px/1.35 var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.ts-ratio.low { color: var(--amber); }
+
+/* type */
+.ts-families { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.ts-family { display: grid; gap: var(--space-3); align-content: start; }
+.ts-family-glyph { font-size: 44px; line-height: 1; color: var(--ink); }
+.ts-family p { font-size: 13.5px; color: var(--muted); }
+.ts-scale { display: grid; gap: var(--space-2); }
+.ts-srow { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--space-6); align-items: baseline; padding: var(--space-5) var(--space-4); border-bottom: 1px solid var(--line); }
+.ts-srow:last-child { border-bottom: 0; }
+.ts-smeta { display: grid; gap: 4px; }
+.ts-smeta b { font: 500 13px/1.3 var(--font-mono); color: var(--ink); }
+.ts-smeta span { font: 400 12px/1.3 var(--font-mono); color: var(--faint); }
+.ts-smeta em { font-style: normal; font-size: 13px; color: var(--muted); }
+.ts-ssample { min-width: 0; overflow-wrap: anywhere; }
+.ts-marketing { overflow-x: auto; }
+.ts-marketing table { width: 100%; min-width: 520px; border-collapse: collapse; }
+.ts-marketing th { text-align: left; padding: 0 var(--space-4) var(--space-3) 0; font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); font-weight: 400; border-bottom: 1px solid var(--line); }
+.ts-marketing td { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--line); font-size: 13.5px; color: var(--muted); }
+.ts-marketing td:first-child, .ts-marketing td:nth-child(2) { font: 400 12.5px/1.3 var(--font-mono); color: var(--ink-soft); white-space: nowrap; }
+
+/* space, radius, shadow */
+.ts-space { display: grid; gap: var(--space-2); }
+.ts-sprow { display: grid; grid-template-columns: 110px 52px minmax(0, 1fr); gap: var(--space-4); align-items: center; min-height: 32px; }
+.ts-sprow b { font: 500 13px/1 var(--font-mono); color: var(--ink-soft); }
+.ts-sprow span { font: 400 12px/1 var(--font-mono); color: var(--faint); }
+.ts-sprow .ts-bar { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
+.ts-sprow .ts-bar i { display: block; flex: none; height: 12px; border-radius: 2px; background: var(--green-line); box-shadow: inset 0 0 0 1px var(--green); }
+.ts-sprow .ts-bar em { font-style: normal; font-size: 13px; color: var(--muted); min-width: 0; }
+.ts-radii { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: var(--space-4); }
+.ts-radius { display: grid; gap: var(--space-2); }
+.ts-radius i { display: block; height: 72px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.ts-radius b { font: 500 13px/1.3 var(--font-mono); color: var(--ink-soft); }
+.ts-radius span { font-size: 13px; color: var(--muted); }
+.ts-shadows { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-6); }
+.ts-shadow { display: grid; gap: var(--space-3); align-content: start; }
+.ts-shadow-stage { display: grid; place-items: center; min-height: 128px; padding: var(--space-6); border-radius: var(--radius-lg); background: var(--bg-mid); }
+.ts-shadow-stage .card { width: 100%; padding: var(--space-5); }
+.ts-shadow-stage .card p { font-size: 13.5px; color: var(--muted); }
+.ts-shadow b { font: 500 13px/1.3 var(--font-mono); color: var(--ink-soft); }
+.ts-shadow span { font: 400 12px/1.4 var(--font-mono); color: var(--faint); }
+.ts-shadow p { font-size: 13.5px; color: var(--muted); }
+.ts-new { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--green); }
+.ts-note { font-size: 13.5px; color: var(--muted); max-width: 70ch; }
+
+@container app (max-width: 900px) {
+  .ts { padding: var(--space-8) var(--space-4) var(--space-14); gap: var(--space-10); }
+  .ts-families { grid-template-columns: minmax(0, 1fr); }
+  .ts-srow { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+}
+@container app (max-width: 560px) {
+  .ts-swatches { grid-template-columns: minmax(0, 1fr); }
+  .ts-trow { grid-template-columns: minmax(0, 1fr) auto; }
+  .ts-trow b { grid-column: 1 / -1; }
+  .ts-sprow { grid-template-columns: 96px 44px minmax(0, 1fr); gap: var(--space-3); }
+  .ts-sprow .ts-bar em { display: none; }
+}
+</style>
+
+<!-- page -->
+<div class="mk-stage">
+<div class="mk-frame" data-all-states data-page="0.1 Tokens">
+<main class="ts">
+
+  <header class="ts-head">
+    <span class="eyebrow">Phase 0 · Foundations</span>
+    <h1>Tokens</h1>
+    <p>Every design-system token by its exact name, plus the two added for the webapp. They live in <code>design/foundations/tokens.css</code>, which becomes the app's global stylesheet.</p>
+  </header>
+
+  <!-- COLOUR -->
+  <section class="ts-sec" data-state="colour" data-label="Colour">
+    <div class="ts-sec-head">
+      <h2>Colour</h2>
+      <p>Green is the only accent. Amber means something needs action. There is no red, and no colour outside this list.</p>
+    </div>
+
+    <div class="ts-group">
+      <div class="ts-group-title"><h3>Surfaces</h3><p>Flat, no gradients. Page, then card, then inset.</p></div>
+      <div class="ts-layers" aria-label="Surface layering example">
+        <span class="ts-layer-tag">--bg · page</span>
+        <div class="card">
+          <span class="ts-layer-tag">--surface · card, with --shadow-flat</span>
+          <h3>Tuesday with Kairo</h3>
+          <div class="cardInset">
+            <span class="ts-layer-tag">--bg-mid · inset</span>
+            <span class="value" style="color:var(--ink-soft)">Tue 6 Oct · 20:00–21:00 SGT</span>
+          </div>
+        </div>
+      </div>
+      <div class="ts-swatches">
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--bg)"></i><div><div class="ts-sw-name"><b>--bg</b><span>#030b17</span></div><p>Page ground. The top nav sits on it at 72% with blur.</p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--surface)"></i><div><div class="ts-sw-name"><b>--surface</b><span>#0b1628</span></div><p>Every card, solid. Hovered list rows.</p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--bg-mid)"></i><div><div class="ts-sw-name"><b>--bg-mid</b><span>#061024</span></div><p>Insets: list rows, chat panel, hold timer, avatar ground.</p></div></div>
+        <div class="ts-sw unused"><i class="ts-chip" style="background:var(--bg-deep)"></i><div><div class="ts-sw-name"><b>--bg-deep</b><span>#01060f</span></div><p>Marketing footer bands. Not used in the webapp.</p></div></div>
+      </div>
+    </div>
+
+    <div class="ts-group">
+      <div class="ts-group-title"><h3>Text</h3><p>Contrast is worked out live against <code class="mono">--bg</code> and <code class="mono">--surface</code>.</p></div>
+      <div class="ts-text" id="ts-text">
+        <div class="ts-trow" data-fg="--ink"><b>--ink</b><div class="ts-sample" style="color:var(--ink)">Session with Vexa<small>Headings, names, primary text</small></div><span class="ts-ratio"></span></div>
+        <div class="ts-trow" data-fg="--ink-soft"><b>--ink-soft</b><div class="ts-sample" style="color:var(--ink-soft)">Tue 6 Oct · 20:00 SGT<small>Data values and review text inside cards</small></div><span class="ts-ratio"></span></div>
+        <div class="ts-trow" data-fg="--ink-sub"><b>--ink-sub</b><div class="ts-sample" style="color:var(--ink-sub)">Find the coach you can actually trust<small>Marketing subtitle. Not used in the webapp</small></div><span class="ts-ratio"></span></div>
+        <div class="ts-trow" data-fg="--muted"><b>--muted</b><div class="ts-sample" style="color:var(--muted)">We hold your payment until you confirm.<small>Body copy, secondary labels, game names</small></div><span class="ts-ratio"></span></div>
+        <div class="ts-trow" data-fg="--faint"><b>--faint</b><div class="ts-sample" style="color:var(--faint)">@kairo.gg<small>Handles, tertiary copy, disabled labels</small></div><span class="ts-ratio"></span></div>
+        <div class="ts-trow" data-fg="--subtle"><b>--subtle</b><div class="ts-sample" style="color:var(--subtle)">138 / 500<small style="color:var(--faint)">Placeholders and counters only</small></div><span class="ts-ratio"></span></div>
+        <div class="ts-trow" data-fg="--footnote"><b>--footnote</b><div class="ts-sample" style="color:var(--footnote)">© 2026 Harbourly<small style="color:var(--faint)">Marketing footer only. Not used in the webapp</small></div><span class="ts-ratio"></span></div>
+      </div>
+    </div>
+
+    <div class="ts-group">
+      <div class="ts-group-title"><h3>Accent and status</h3><p>Status is a mono label with a coloured dot. Green done, amber needs action, muted ended.</p></div>
+      <div class="ts-swatches">
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--green)"></i><div><div class="ts-sw-name"><b>--green</b><span>#22d66f</span></div><p>Primary button, links, active nav, and <span class="statusLabel positive">Confirmed</span></p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--green-ink)"></i><div><div class="ts-sw-name"><b>--green-ink</b><span>#04160b</span></div><p>Text and checkmarks on green.</p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--amber)"></i><div><div class="ts-sw-name"><b>--amber</b><span>#fbbf24</span></div><p>Errors and anything waiting on someone: <span class="statusLabel action">Pending confirmation</span></p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--muted)"></i><div><div class="ts-sw-name"><b>--muted</b><span>#94a3b8</span></div><p>Ended or neutral states: <span class="statusLabel ended">Expired</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="ts-group">
+      <div class="ts-group-title"><h3>Lines and washes</h3><p>Translucent, so they sit on any surface.</p></div>
+      <div class="ts-swatches">
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--line)"></i><div><div class="ts-sw-name"><b>--line</b><span>#94a3b829</span></div><p>Hairlines, dividers, sidebar edge.</p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--line-strong)"></i><div><div class="ts-sw-name"><b>--line-strong</b><span>#94a3b847</span></div><p>Input and secondary button borders, so they read as controls.</p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--fill-subtle)"></i><div><div class="ts-sw-name"><b>--fill-subtle</b><span>#94a3b814</span></div><p>Input fill, hover wash, skeletons, disabled primary.</p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--green-tint)"></i><div><div class="ts-sw-name"><b>--green-tint</b><span>#22d66f1a</span></div><p>The current sidebar item.</p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--green-line)"></i><div><div class="ts-sw-name"><b>--green-line</b><span>#22d66f4d</span></div><p>Verified badge border, link underline, avatar ring, upload outline.</p></div></div>
+        <div class="ts-sw"><i class="ts-chip" style="background:var(--green-glow)"></i><div><div class="ts-sw-name"><b>--green-glow</b><span>#22d66f59</span></div><p>The accent card's top line glow on hover. Nowhere else.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section class="ts-sec" data-state="type" data-label="Type">
+    <div class="ts-sec-head">
+      <h2>Type</h2>
+      <p>Three families, each with one job. The webapp uses three heading sizes and keeps them on phones too, so titles never jump between breakpoints.</p>
+    </div>
+
+    <div class="ts-families">
+      <div class="card ts-family"><span class="ts-family-glyph" style="font-family:var(--font-display);font-weight:700">Aa</span><b class="mono" style="font-size:13px">--font-display · Sora</b><p>Page, section and card titles. 700, slightly tight.</p></div>
+      <div class="card ts-family"><span class="ts-family-glyph" style="font-family:var(--font-body)">Aa</span><b class="mono" style="font-size:13px">--font-body · Geist</b><p>Names, body, buttons, links, field labels, chat, game names, credential lines.</p></div>
+      <div class="card ts-family"><span class="ts-family-glyph" style="font-family:var(--font-mono)">00</span><b class="mono" style="font-size:13px">--font-mono · Geist Mono</b><p>Money, dates, times, countdowns, statuses, ranks, ratings, counts, labels, @handles.</p></div>
+    </div>
+
+    <div class="ts-group">
+      <div class="ts-group-title"><h3>Webapp scale</h3><p>Each token is a <code class="mono">font</code> shorthand: <code class="mono">font: var(--text-kpi)</code>.</p></div>
+      <div class="card ts-scale">
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-kpi</b><span>Sora 700 · 32 / 1 · −0.01em</span><em>Page title</em></div><div class="ts-ssample"><span style="font:var(--text-kpi);letter-spacing:-.01em">My sessions</span></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-card-title</b><span>Sora 700 · 24 / 1.2</span><em>Section title</em></div><div class="ts-ssample"><span style="font:var(--text-card-title);letter-spacing:-.01em">Upcoming</span></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-h3</b><span>Sora 700 · 19 / 1.3</span><em>Card title</em></div><div class="ts-ssample"><span style="font:var(--text-h3);letter-spacing:-.01em">Tuesday with Kairo</span></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-body-lg</b><span>Geist 400 · 17 / 1.6</span><em>Page intro</em></div><div class="ts-ssample"><p style="font:var(--text-body-lg);color:var(--muted);max-width:60ch">Book a one-hour session with a coach whose rank and identity we've checked.</p></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-body</b><span>Geist 400 · 16.5 / 1.65</span><em>Long text: bios, reviews</em></div><div class="ts-ssample"><p style="font:var(--text-body);color:var(--ink-soft);max-width:62ch">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</p></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-body-sm</b><span>Geist 400 · 14.5 / 1.55</span><em>Default UI text</em></div><div class="ts-ssample"><p style="font:var(--text-body-sm);color:var(--muted)">We hold your payment until you confirm the session went ahead.</p></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-button</b><span>Geist 700 · 15 / 1</span><em>Buttons</em></div><div class="ts-ssample"><span style="font:var(--text-button)">Continue to payment</span></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-nav-link</b><span>Geist 600 · 16 / 1</span><em>Sidebar links (set at 15px)</em></div><div class="ts-ssample"><span style="font:var(--text-nav-link);font-size:15px;color:var(--muted)">Browse coaches</span></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-eyebrow</b><span>Mono 400 · 11 · 0.2em · caps</span><em>Eyebrow on the one card that matters</em></div><div class="ts-ssample"><span class="eyebrow">Next session</span></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-label</b><span>Mono 400 · 10.5 · 0.2em · caps</span><em>Small labels, column headers</em></div><div class="ts-ssample"><span class="label">Date and time</span></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-value</b><span>Mono 400 · 13.5 / 1.3</span><em>Money, dates, ranks in cards</em></div><div class="ts-ssample"><span class="value">Tue 6 Oct · 20:00 SGT &nbsp;·&nbsp; Mythical Glory · 85★ &nbsp;·&nbsp; S$45 / session</span></div></div>
+        <div class="ts-srow"><div class="ts-smeta"><b>--text-stat</b><span>Mono 600 · 19 / 1</span><em>Standalone figures</em></div><div class="ts-ssample"><span style="font:var(--text-stat);font-variant-numeric:tabular-nums">S$1,240.80</span></div></div>
+      </div>
+    </div>
+
+    <div class="ts-group">
+      <div class="ts-group-title"><h3>Marketing only</h3><p>Kept in the stylesheet so names stay complete. Not used in the webapp.</p></div>
+      <div class="ts-marketing">
+        <table>
+          <thead><tr><th>Token</th><th>Value</th><th>Used on</th></tr></thead>
+          <tbody>
+            <tr><td>--text-hero</td><td>Sora 800 · 104 / 0.92</td><td>Landing hero headline</td></tr>
+            <tr><td>--text-statement</td><td>Sora 700 · 60 / 1.1</td><td>Origin statement</td></tr>
+            <tr><td>--text-h2</td><td>Sora 700 · 50 / 1.04</td><td>Landing section headings</td></tr>
+            <tr><td>--text-h2-split</td><td>Sora 700 · 44 / 1.06</td><td>Headings beside a feature card</td></tr>
+            <tr><td>--text-question</td><td>Sora 700 · 40 / 1.08</td><td>Waitlist form question</td></tr>
+            <tr><td>--text-lead</td><td>Geist 400 · 21 / 1.55</td><td>Hero subtitle</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPACE, SHAPE, SHADOW -->
+  <section class="ts-sec" data-state="space" data-label="Space, shape and shadow">
+    <div class="ts-sec-head">
+      <h2>Space, shape and shadow</h2>
+      <p>A 4px base. Pills for anything you press, 16px corners for cards, circles for people.</p>
+    </div>
+
+    <div class="ts-group">
+      <div class="ts-group-title"><h3>Spacing</h3></div>
+      <div class="ts-space">
+        <div class="ts-sprow"><b>--space-1</b><span>4px</span><div class="ts-bar"><i style="width:4px"></i><em>Icon to label nudges</em></div></div>
+        <div class="ts-sprow"><b>--space-2</b><span>8px</span><div class="ts-bar"><i style="width:8px"></i><em>Field label to input, list row gap</em></div></div>
+        <div class="ts-sprow"><b>--space-3</b><span>12px</span><div class="ts-bar"><i style="width:12px"></i><em>Rows inside a card, gap between buttons</em></div></div>
+        <div class="ts-sprow"><b>--space-4</b><span>16px</span><div class="ts-bar"><i style="width:16px"></i><em>Phone side gutter, gap between fields</em></div></div>
+        <div class="ts-sprow"><b>--space-5</b><span>20px</span><div class="ts-bar"><i style="width:20px"></i><em>Card padding on phones, card grid gap</em></div></div>
+        <div class="ts-sprow"><b>--space-6</b><span>24px</span><div class="ts-bar"><i style="width:24px"></i><em>Card padding</em></div></div>
+        <div class="ts-sprow"><b>--space-8</b><span>32px</span><div class="ts-bar"><i style="width:32px"></i><em>Space between card groups, between sidebar blocks</em></div></div>
+        <div class="ts-sprow"><b>--space-10</b><span>40px</span><div class="ts-bar"><i style="width:40px"></i><em>Desktop page gutter, between page sections</em></div></div>
+        <div class="ts-sprow"><b>--space-14</b><span>56px</span><div class="ts-bar"><i style="width:56px"></i><em>Space under the last section on phones</em></div></div>
+        <div class="ts-sprow"><b>--space-20</b><span>80px</span><div class="ts-bar"><i style="width:80px"></i><em>Space under the last section on desktop</em></div></div>
+      </div>
+    </div>
+
+    <div class="ts-group">
+      <div class="ts-group-title"><h3>Radius</h3></div>
+      <div class="ts-radii">
+        <div class="ts-radius"><i style="border-radius:var(--radius-xs)"></i><b>--radius-xs · 3px</b><span>Checkbox, skeleton lines</span></div>
+        <div class="ts-radius"><i style="border-radius:var(--radius-md)"></i><b>--radius-md · 12px</b><span>Inputs, insets, list rows, notices</span></div>
+        <div class="ts-radius"><i style="border-radius:var(--radius-lg)"></i><b>--radius-lg · 16px</b><span>Cards, confirm step</span></div>
+        <div class="ts-radius"><i style="border-radius:var(--radius-xl)"></i><b>--radius-xl · 20px</b><span>Not used in the webapp yet</span></div>
+        <div class="ts-radius"><i style="border-radius:var(--radius-pill)"></i><b>--radius-pill · 999px</b><span>Buttons, badges, sidebar items</span></div>
+        <div class="ts-radius"><i style="border-radius:var(--radius-round);width:72px"></i><b>--radius-round · 50%</b><span>Avatars, icon buttons</span></div>
+      </div>
+    </div>
+
+    <div class="ts-group">
+      <div class="ts-group-title"><h3>Shadow</h3><p>One slight shadow for every card. Green glow only on the primary button and the accent card.</p></div>
+      <div class="ts-shadows">
+        <div class="ts-shadow">
+          <div class="ts-shadow-stage"><div class="card"><p>Solid --surface card</p></div></div>
+          <span class="ts-new">Added for the webapp</span>
+          <b>--shadow-flat</b><span>0 1px 2px #00000059</span><p>Every card.</p>
+        </div>
+        <div class="ts-shadow">
+          <div class="ts-shadow-stage"><button class="button primary" type="button">Confirm session</button></div>
+          <span class="ts-new">Added for the webapp</span>
+          <b>--shadow-cta-rest</b><span>0 4px 14px #22d66f33</span><p>Primary button at rest. About half of --shadow-cta.</p>
+        </div>
+        <div class="ts-shadow">
+          <div class="ts-shadow-stage"><button class="button primary isHover" type="button">Confirm session</button></div>
+          <b>--shadow-cta-hover</b><span>0 12px 40px #22d66f99</span><p>Primary button on hover, with the blurred halo.</p>
+        </div>
+        <div class="ts-shadow">
+          <div class="ts-shadow-stage" style="place-items:stretch"><input class="fieldControl isFocus" id="ts-focus" value="snapking" aria-label="Focused input example"></div>
+          <b>--shadow-focus</b><span>0 0 0 3px #22d66f29</span><p>Focused inputs, with a green border.</p>
+        </div>
+        <div class="ts-shadow">
+          <div class="ts-shadow-stage"><div class="card" style="box-shadow:var(--shadow-popover)"><p>Mobile menu sheet</p></div></div>
+          <b>--shadow-popover</b><span>0 24px 60px #00000080</span><p>The mobile menu sheet and any popover.</p>
+        </div>
+      </div>
+      <p class="ts-note">Marketing only, not used in the webapp: <code>--shadow-cta</code>, <code>--shadow-cta-xl</code>, <code>--shadow-card</code>, <code>--shadow-card-sm</code>.</p>
+    </div>
+  </section>
+
+</main>
+</div>
+</div>
+
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* contrast ratios, worked out from the live token values */
+(function () {
+  var cs = getComputedStyle(document.documentElement);
+  function rgb(hex) { hex = hex.trim().replace('#', ''); return [0, 2, 4].map(function (i) { return parseInt(hex.substr(i, 2), 16) / 255; }); }
+  function lum(c) { c = c.map(function (v) { return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; }
+  function ratio(a, b) { var x = lum(rgb(a)), y = lum(rgb(b)); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); }
+  var bg = cs.getPropertyValue('--bg'), sf = cs.getPropertyValue('--surface');
+  document.querySelectorAll('#ts-text .ts-trow').forEach(function (row) {
+    var fg = cs.getPropertyValue(row.dataset.fg), r1 = ratio(fg, bg), r2 = ratio(fg, sf), out = row.querySelector('.ts-ratio');
+    out.innerHTML = r1.toFixed(1) + ':1 on bg<br>' + r2.toFixed(1) + ':1 on surface';
+    if (r2 < 4.5) out.classList.add('low');
+  });
+})();
+</script>
+

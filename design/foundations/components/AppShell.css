@@ -1,0 +1,12 @@
+/* AppShell → AppShell.module.css. The shell is the size container ("app") every
+   component's responsive rules query, so layouts follow the space they get. */
+.appShell { container: app / inline-size; position: relative; min-height: 100%; background: var(--bg); }
+.appShellBody { display: grid; grid-template-columns: 248px minmax(0, 1fr); align-items: start; }
+.appShellBody.noSidebar { grid-template-columns: minmax(0, 1fr); }
+.appShellMain { min-width: 0; padding: var(--space-8) var(--space-10) var(--space-20); }
+.appShellContent { max-width: 1080px; }
+@container app (max-width: 999px) {
+  .appShellBody { grid-template-columns: minmax(0, 1fr); }
+  .appShellBody > .sidebar { display: none; }
+  .appShellMain { padding: var(--space-6) var(--space-4) var(--space-14); }
+}

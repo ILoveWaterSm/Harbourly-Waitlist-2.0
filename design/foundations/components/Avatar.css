@@ -1,0 +1,22 @@
+/* Avatar → Avatar.module.css. Photo, or the default: first initial in Sora. */
+.avatar {
+  --avatar-size: 40px;
+  display: inline-grid;
+  place-items: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  flex: none;
+  border: 1px solid var(--green-line);
+  border-radius: var(--radius-round);
+  background: var(--bg-mid);
+  color: var(--ink-soft);
+  font: 700 calc(var(--avatar-size) * .38)/1 var(--font-display);
+  overflow: hidden;
+  user-select: none;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar.xs { --avatar-size: 32px; }
+.avatar.sm { --avatar-size: 40px; }
+.avatar.md { --avatar-size: 56px; }
+.avatar.lg { --avatar-size: 96px; }
+.avatar.photo { border-color: var(--line-strong); }

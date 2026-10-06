@@ -1,0 +1,37 @@
+/* Notice → Notice.module.css. Info, warning (needs action), error (something failed, with a way out).
+   CallBanner: the non-blocking reminder inside a live session. No red anywhere. */
+.notice {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  padding: 14px var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-mid);
+}
+.notice > svg { width: 20px; height: 20px; color: var(--muted); }
+.noticeTitle { font-weight: 600; font-size: 14.5px; line-height: 1.45; color: var(--ink); }
+.noticeText { font-size: 14px; line-height: 1.55; color: var(--muted); }
+.noticeTitle + .noticeText { margin-top: 2px; }
+.noticeActions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
+.notice.warning { border-color: color-mix(in srgb, var(--amber) 35%, transparent); }
+.notice.warning > svg { color: var(--amber); }
+.notice.error { border-color: color-mix(in srgb, var(--amber) 35%, transparent); background: color-mix(in srgb, var(--amber) 5%, var(--bg-mid)); }
+.notice.error > svg { color: var(--amber); }
+
+.callBanner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-mid);
+  box-shadow: var(--shadow-flat);
+}
+.callBanner > svg { width: 18px; height: 18px; flex: none; color: var(--amber); }
+.callBannerText { font-size: 14px; color: var(--ink); }
+.callBannerClock { margin-left: auto; font: 500 15px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.callBanner.final { border-color: color-mix(in srgb, var(--amber) 35%, transparent); }

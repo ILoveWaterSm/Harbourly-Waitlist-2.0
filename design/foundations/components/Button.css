@@ -1,0 +1,64 @@
+/* Button → Button.module.css
+   Primary: soft resting glow (--shadow-cta-rest); halo fades in on hover.
+   Secondary: outline pill. Warning: amber outline, only for the final step of a
+   destructive confirm (cancel booking, delete account), so it never wears "go" green. */
+.button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 13px 22px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: none;
+  font: var(--text-button);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: box-shadow .2s, border-color .2s, background-color .2s, color .2s, transform .1s;
+}
+.button svg { width: 18px; height: 18px; flex: none; }
+.button:active:not(:disabled):not([aria-busy="true"]) { transform: scale(.97); }
+.button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.button.primary { background: var(--green); color: var(--green-ink); box-shadow: var(--shadow-cta-rest); }
+.button.primary::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--green);
+  filter: blur(16px);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.button.primary:hover:not(:disabled), .button.primary.isHover { box-shadow: var(--shadow-cta-hover); }
+.button.primary:hover:not(:disabled)::before, .button.primary.isHover::before { opacity: .45; }
+
+.button.secondary { border-color: var(--line-strong); color: var(--ink); }
+.button.secondary:hover:not(:disabled), .button.secondary.isHover { border-color: var(--green-line); background: var(--fill-subtle); }
+
+.button.warning { border-color: color-mix(in srgb, var(--amber) 45%, transparent); color: var(--amber); }
+.button.warning:hover:not(:disabled), .button.warning.isHover { background: color-mix(in srgb, var(--amber) 10%, transparent); border-color: var(--amber); }
+
+.button.sm { min-height: 38px; padding: 10px 18px; font-size: 14.5px; }
+.button.block { width: 100%; }
+
+.button:disabled, .button[aria-disabled="true"] { cursor: not-allowed; }
+.button.primary:disabled, .button.primary[aria-disabled="true"] { background: var(--fill-subtle); color: var(--faint); box-shadow: none; }
+.button.primary:disabled::before { display: none; }
+.button.secondary:disabled, .button.warning:disabled { border-color: var(--line); color: var(--faint); }
+
+.button[aria-busy="true"] { cursor: progress; }
+.buttonSpinner {
+  width: 16px; height: 16px; flex: none;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-round);
+  animation: buttonSpin .8s linear infinite;
+}
+@keyframes buttonSpin { to { transform: rotate(360deg); } }

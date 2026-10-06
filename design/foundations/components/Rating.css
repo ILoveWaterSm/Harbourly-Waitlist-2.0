@@ -1,0 +1,23 @@
+/* Rating → Rating.module.css. Display (average and count) and the 5-star input. */
+.rating { display: inline-flex; align-items: center; gap: 6px; font: var(--text-value); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+.rating svg { width: 14px; height: 14px; flex: none; color: var(--green); }
+.ratingCount { color: var(--muted); }
+.rating.none { color: var(--muted); font-size: 12.5px; }
+
+.ratingInput { display: grid; gap: var(--space-2); margin: 0; padding: 0; border: 0; min-width: 0; }
+.ratingInputStars { display: flex; align-items: center; gap: 2px; }
+.ratingStar {
+  display: grid; place-items: center;
+  width: 40px; height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.ratingStar svg { width: 28px; height: 28px; fill: none; transition: color .15s, fill .15s; }
+.ratingStar.isOn svg { color: var(--green); fill: var(--green); }
+.ratingStar:focus-visible { outline: 2px solid var(--ink); outline-offset: 0; }
+.ratingInputValue { margin-left: var(--space-3); font: var(--text-value); color: var(--muted); }
+.ratingInput.invalid .ratingStar { color: var(--amber); }

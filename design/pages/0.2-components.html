@@ -1,0 +1,814 @@
+<title>Harbourly components</title>
+<meta name="description" content="Phase 0.2: every shared Harbourly webapp component in every state.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/Checkbox.css">
+<link rel="stylesheet" href="../foundations/components/OtpInput.css">
+<link rel="stylesheet" href="../foundations/components/ImageUpload.css">
+<link rel="stylesheet" href="../foundations/components/StepCounter.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Price.css">
+<link rel="stylesheet" href="../foundations/components/GameRank.css">
+<link rel="stylesheet" href="../foundations/components/Rating.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/CoachCard.css">
+<link rel="stylesheet" href="../foundations/components/SessionList.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/Countdown.css">
+<link rel="stylesheet" href="../foundations/components/ConfirmStep.css">
+<link rel="stylesheet" href="../foundations/components/EmptyState.css">
+<link rel="stylesheet" href="../foundations/components/Skeleton.css">
+<link rel="stylesheet" href="../foundations/components/ErrorState.css">
+<style>
+/* Layout: a working library. Each section is one component family; each specimen is
+   captioned with its state in mono, on the ground it really sits on (page or card). */
+.lib { display: grid; gap: var(--space-14); padding: var(--space-10) var(--space-10) var(--space-20); max-width: 1180px; margin: 0 auto; }
+.lib-head { display: grid; gap: var(--space-3); max-width: 68ch; }
+.lib-head p { font: var(--text-body-lg); color: var(--muted); }
+.lib-sec { display: grid; gap: var(--space-8); }
+.lib-sec-head { display: grid; gap: var(--space-2); max-width: 72ch; }
+.lib-sec-head p { color: var(--muted); }
+.lib-files { font: 400 12px/1.6 var(--font-mono); color: var(--faint); }
+.lib-sub { display: grid; gap: var(--space-4); }
+.lib-sub > h3 { font: 600 16px/1.3 var(--font-body); letter-spacing: 0; }
+.lib-sub > p { margin-top: calc(var(--space-2) * -1); font-size: 13.5px; color: var(--muted); max-width: 70ch; }
+.lib-specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--lib-min, 300px), 1fr)); gap: var(--space-6) var(--space-8); align-items: start; }
+.lib-spec { display: grid; gap: var(--space-3); min-width: 0; align-content: start; }
+.lib-spec.wide { grid-column: 1 / -1; }
+.lib-cap { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+.lib-stage { display: grid; gap: var(--space-4); padding: var(--space-6); border-radius: var(--radius-lg); background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); min-width: 0; }
+.lib-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: var(--space-4); align-items: center; padding: var(--space-5) 0; border-bottom: 1px solid var(--line); }
+.lib-row:last-child { border-bottom: 0; }
+.lib-row-name { display: grid; gap: 4px; }
+.lib-row-name b { font-weight: 600; font-size: 14.5px; }
+.lib-row-name span { font-size: 13px; color: var(--muted); }
+.lib-cells { display: flex; flex-wrap: wrap; gap: var(--space-5) var(--space-6); align-items: flex-end; }
+.lib-cell { display: grid; gap: var(--space-2); justify-items: start; }
+.lib-cell .lib-cap { font-size: 10px; }
+.lib-list { display: grid; gap: 0; }
+.lib-li { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: var(--space-4); align-items: center; padding: var(--space-3) 0; border-bottom: 1px solid var(--line); }
+.lib-li:last-child { border-bottom: 0; }
+.lib-li > span:last-child { font-size: 13.5px; color: var(--muted); }
+.lib-inline { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.lib-name { font-weight: 600; font-size: 16px; }
+.lib-placeholder { display: grid; place-items: center; min-height: 120px; border: 1px dashed var(--line-strong); border-radius: var(--radius-lg); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--subtle); }
+
+/* shell specimens */
+.lib-shell { position: relative; height: var(--shell-h, 440px); overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--radius-lg); }
+.lib-shell .appShell { height: 100%; }
+.lib-shell .appShellBody { height: calc(100% - 64px); }
+.lib-shell .sidebar { position: static; min-height: 100%; }
+.lib-shell .appShellMain { display: grid; gap: var(--space-6); align-content: start; }
+.lib-devices { display: flex; flex-wrap: wrap; gap: var(--space-8); align-items: start; }
+.lib-device { display: grid; gap: var(--space-3); width: 390px; max-width: 100%; }
+.lib-device .lib-shell { --shell-h: 620px; }
+.lib-device .appShell, .lib-device-box { container: app / inline-size; }
+
+.lib-photo-slot { display: grid; place-items: center; width: 96px; height: 96px; border: 1px dashed var(--line-strong); border-radius: var(--radius-round); color: var(--subtle); }
+.lib-photo-slot svg { width: 26px; height: 26px; }
+.lib-avatars { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-6); }
+.lib-avatars .lib-cell { justify-items: center; }
+
+.lib-skel-card { display: grid; grid-template-columns: 56px minmax(0, 1fr) 72px; gap: var(--space-4); padding: var(--space-5); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-flat); }
+.lib-skel-stack { display: grid; gap: 10px; align-content: start; }
+.lib-skel-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 90px; gap: var(--space-3); align-items: center; padding: 14px var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); }
+
+.lib-dob-labels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr) minmax(0, 1.3fr); gap: var(--space-3); }
+
+@container app (max-width: 900px) {
+  .lib { padding: var(--space-8) var(--space-4) var(--space-14); gap: var(--space-10); }
+  .lib-row { grid-template-columns: minmax(0, 1fr); }
+  .lib-li { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+}
+@container app (max-width: 560px) {
+  .lib-stage { padding: var(--space-4); }
+  .lib-specs { --lib-min: 240px; }
+  .lib-device { width: 100%; }
+}
+</style>
+
+<!-- page -->
+<div class="mk-stage">
+<div class="mk-frame" data-all-states data-page="0.2 Components">
+<main class="lib">
+
+  <header class="lib-head">
+    <span class="eyebrow">Phase 0 · Foundations</span>
+    <h1>Components</h1>
+    <p>Every shared part of the webapp, in every state it needs. Pages are built only from these. Each component's styles are one file in <span class="mono" style="font-size:.9em;color:var(--ink-soft)">design/foundations/components/</span>, ready to become its <span class="mono" style="font-size:.9em;color:var(--ink-soft)">.module.css</span>.</p>
+  </header>
+
+  <!-- ===================== APP SHELL ===================== -->
+  <section class="lib-sec" data-state="shell" data-label="App shell">
+    <div class="lib-sec-head">
+      <h2>App shell</h2>
+      <p>Top bar always; sidebar once you're logged in. The logo goes to your dashboard when logged in and to the marketing home when not. Your name opens account settings.</p>
+      <span class="lib-files">AppShell · TopNav · Sidebar · MobileMenu</span>
+    </div>
+
+    <div class="lib-spec">
+      <span class="lib-cap">Logged out · coach profile or browse</span>
+      <div class="lib-shell" style="--shell-h:236px">
+        <div class="appShell">
+          <header class="topNav">
+            <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <div class="topNavRight">
+              <a class="button secondary sm" href="#">Log in</a>
+              <a class="button primary sm" href="#">Sign up</a>
+            </div>
+          </header>
+          <div class="appShellBody noSidebar"><div class="appShellMain"><div class="lib-placeholder">Page content</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lib-spec">
+      <span class="lib-cap">Logged in · gamer only</span>
+      <div class="lib-shell">
+        <div class="appShell">
+          <header class="topNav">
+            <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <div class="topNavRight">
+              <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar xs">S</span>snapking</a>
+              <button class="topNavSignOut" type="button">Sign out</button>
+              <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu"><svg class="icon"><use href="#i-menu"/></svg></button>
+            </div>
+          </header>
+          <div class="appShellBody">
+            <nav class="sidebar" aria-label="Main">
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" aria-current="page"><svg class="icon"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon"><use href="#i-arrow-right"/></svg></a>
+              </div>
+            </nav>
+            <main class="appShellMain"><h1>Dashboard</h1><div class="lib-placeholder" style="min-height:200px">Page content</div></main>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lib-spec">
+      <span class="lib-cap">Logged in · gamer and coach · in the coach block</span>
+      <div class="lib-shell" style="--shell-h:500px">
+        <div class="appShell">
+          <header class="topNav">
+            <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <div class="topNavRight">
+              <a class="topNavUser isHover" href="#" aria-label="Kairo, account settings"><span class="avatar xs">K</span>Kairo</a>
+              <button class="topNavSignOut" type="button">Sign out</button>
+              <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu"><svg class="icon"><use href="#i-menu"/></svg></button>
+            </div>
+          </header>
+          <div class="appShellBody">
+            <nav class="sidebar" aria-label="Main">
+              <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink isHover" href="#"><svg class="icon"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+            </nav>
+            <main class="appShellMain"><h1>Coach dashboard</h1><div class="lib-placeholder" style="min-height:260px">Page content</div></main>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:13.5px;color:var(--muted)">Shown with hover on the name and on "Browse coaches". The block you're in has a green label; the other stays one click away, which is the switcher.</p>
+    </div>
+
+    <div class="lib-sub">
+      <h3>Phone</h3>
+      <p>Below 1000px the sidebar folds into a menu behind the burger. It opens as a solid sheet under the top bar, with your account first.</p>
+      <div class="lib-devices">
+        <div class="lib-device">
+          <span class="lib-cap">Menu closed</span>
+          <div class="lib-shell">
+            <div class="appShell">
+              <header class="topNav">
+                <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+                <div class="topNavRight">
+                  <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon"><use href="#i-menu"/></svg></button>
+                </div>
+              </header>
+              <nav class="mobileMenu" aria-label="Main" hidden>
+                <a class="mobileMenuUser" href="#"><span class="avatar sm">K</span><span><span class="mobileMenuName">Kairo</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon"><use href="#i-chevron-right"/></svg></a>
+                <div class="sidebarBlock"><span class="sidebarBlockLabel">Gamer</span>
+                  <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-home"/></svg>Dashboard</a>
+                  <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-search"/></svg>Browse coaches</a>
+                  <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-calendar"/></svg>My sessions</a></div>
+                <div class="sidebarBlock active"><span class="sidebarBlockLabel">Coach</span>
+                  <a class="sidebarLink" href="#" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg>Coach dashboard</a>
+                  <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-calendar-check"/></svg>Coach sessions</a></div>
+                <button class="button secondary block" type="button">Sign out</button>
+              </nav>
+              <div class="appShellBody"><main class="appShellMain"><h1>Coach dashboard</h1><div class="lib-placeholder" style="min-height:360px">Page content</div></main></div>
+            </div>
+          </div>
+        </div>
+        <div class="lib-device">
+          <span class="lib-cap">Menu open</span>
+          <div class="lib-shell">
+            <div class="appShell">
+              <header class="topNav">
+                <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+                <div class="topNavRight">
+                  <button class="iconButton quiet topNavMenu" type="button" aria-label="Close menu" aria-expanded="true" data-menu-toggle><svg class="icon"><use href="#i-close"/></svg></button>
+                </div>
+              </header>
+              <nav class="mobileMenu" aria-label="Main">
+                <a class="mobileMenuUser" href="#"><span class="avatar sm">K</span><span><span class="mobileMenuName">Kairo</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon"><use href="#i-chevron-right"/></svg></a>
+                <div class="sidebarBlock"><span class="sidebarBlockLabel">Gamer</span>
+                  <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-home"/></svg>Dashboard</a>
+                  <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-search"/></svg>Browse coaches</a>
+                  <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-calendar"/></svg>My sessions</a></div>
+                <div class="sidebarBlock active"><span class="sidebarBlockLabel">Coach</span>
+                  <a class="sidebarLink" href="#" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg>Coach dashboard</a>
+                  <a class="sidebarLink" href="#"><svg class="icon"><use href="#i-calendar-check"/></svg>Coach sessions</a></div>
+                <button class="button secondary block" type="button">Sign out</button>
+              </nav>
+              <div class="appShellBody"><main class="appShellMain"><h1>Coach dashboard</h1><div class="lib-placeholder" style="min-height:360px">Page content</div></main></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BUTTONS ===================== -->
+  <section class="lib-sec" data-state="buttons" data-label="Buttons">
+    <div class="lib-sec-head">
+      <h2>Buttons</h2>
+      <p>One primary per view. It rests with a soft glow and the halo comes in on hover. Everything else is an outline pill or a link. Labels say what happens.</p>
+      <span class="lib-files">Button · TextLink · IconButton</span>
+    </div>
+    <div class="lib-stage" style="padding-block:var(--space-2)">
+      <div class="lib-row">
+        <div class="lib-row-name"><b>Primary</b><span>The one main action</span></div>
+        <div class="lib-cells">
+          <div class="lib-cell"><span class="lib-cap">Rest</span><button class="button primary" type="button">Confirm session</button></div>
+          <div class="lib-cell"><span class="lib-cap">Hover</span><button class="button primary isHover" type="button">Confirm session</button></div>
+          <div class="lib-cell"><span class="lib-cap">Focus</span><button class="button primary mk-focus" type="button">Confirm session</button></div>
+          <div class="lib-cell"><span class="lib-cap">Disabled</span><button class="button primary" type="button" disabled>Join session</button></div>
+          <div class="lib-cell"><span class="lib-cap">Loading</span><button class="button primary" type="button" aria-busy="true"><span class="buttonSpinner" aria-hidden="true"></span>Confirming…</button></div>
+        </div>
+      </div>
+      <div class="lib-row">
+        <div class="lib-row-name"><b>Secondary</b><span>Outline pill</span></div>
+        <div class="lib-cells">
+          <div class="lib-cell"><span class="lib-cap">Rest</span><button class="button secondary" type="button">Report a problem</button></div>
+          <div class="lib-cell"><span class="lib-cap">Hover</span><button class="button secondary isHover" type="button">Report a problem</button></div>
+          <div class="lib-cell"><span class="lib-cap">Focus</span><button class="button secondary mk-focus" type="button">Report a problem</button></div>
+          <div class="lib-cell"><span class="lib-cap">Disabled</span><button class="button secondary" type="button" disabled>Request a new time</button></div>
+          <div class="lib-cell"><span class="lib-cap">Loading</span><button class="button secondary" type="button" aria-busy="true"><span class="buttonSpinner" aria-hidden="true"></span>Sending…</button></div>
+        </div>
+      </div>
+      <div class="lib-row">
+        <div class="lib-row-name"><b>Warning</b><span>Last step of a cancel or delete only</span></div>
+        <div class="lib-cells">
+          <div class="lib-cell"><span class="lib-cap">Rest</span><button class="button warning" type="button">Cancel booking</button></div>
+          <div class="lib-cell"><span class="lib-cap">Hover</span><button class="button warning isHover" type="button">Cancel booking</button></div>
+          <div class="lib-cell"><span class="lib-cap">Focus</span><button class="button warning mk-focus" type="button">Cancel booking</button></div>
+          <div class="lib-cell"><span class="lib-cap">Disabled</span><button class="button warning" type="button" disabled>Cancel booking</button></div>
+          <div class="lib-cell"><span class="lib-cap">Loading</span><button class="button warning" type="button" aria-busy="true"><span class="buttonSpinner" aria-hidden="true"></span>Cancelling…</button></div>
+        </div>
+      </div>
+      <div class="lib-row">
+        <div class="lib-row-name"><b>Small</b><span>Top bar, notices, tight rows</span></div>
+        <div class="lib-cells">
+          <div class="lib-cell"><span class="lib-cap">Primary</span><button class="button primary sm" type="button">Sign up</button></div>
+          <div class="lib-cell"><span class="lib-cap">Secondary</span><button class="button secondary sm" type="button">Log in</button></div>
+          <div class="lib-cell"><span class="lib-cap">With icon</span><button class="button secondary sm" type="button"><svg class="icon"><use href="#i-refresh"/></svg>Try again</button></div>
+        </div>
+      </div>
+      <div class="lib-row">
+        <div class="lib-row-name"><b>Text link</b><span>Inline and low-key actions</span></div>
+        <div class="lib-cells">
+          <div class="lib-cell"><span class="lib-cap">Rest</span><a class="textLink" href="#">View profile</a></div>
+          <div class="lib-cell"><span class="lib-cap">Hover</span><a class="textLink isHover" href="#">View profile</a></div>
+          <div class="lib-cell"><span class="lib-cap">Focus</span><a class="textLink mk-focus" href="#">View profile</a></div>
+          <div class="lib-cell"><span class="lib-cap">Quiet</span><button class="textLink quiet" type="button">Change number</button></div>
+          <div class="lib-cell"><span class="lib-cap">Quiet hover</span><button class="textLink quiet isHover" type="button">Change number</button></div>
+        </div>
+      </div>
+      <div class="lib-row">
+        <div class="lib-row-name"><b>Icon button</b><span>Always has a spoken label</span></div>
+        <div class="lib-cells">
+          <div class="lib-cell"><span class="lib-cap">Rest</span><button class="iconButton" type="button" aria-label="Open menu"><svg class="icon"><use href="#i-menu"/></svg></button></div>
+          <div class="lib-cell"><span class="lib-cap">Hover</span><button class="iconButton isHover" type="button" aria-label="Open menu"><svg class="icon"><use href="#i-menu"/></svg></button></div>
+          <div class="lib-cell"><span class="lib-cap">Focus</span><button class="iconButton mk-focus" type="button" aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div>
+          <div class="lib-cell"><span class="lib-cap">Disabled</span><button class="iconButton" type="button" aria-label="Close" disabled><svg class="icon"><use href="#i-close"/></svg></button></div>
+          <div class="lib-cell"><span class="lib-cap">Quiet</span><button class="iconButton quiet isHover" type="button" aria-label="Open menu"><svg class="icon"><use href="#i-menu"/></svg></button></div>
+          <div class="lib-cell"><span class="lib-cap">Small</span><button class="iconButton sm" type="button" aria-label="Remove image"><svg class="icon"><use href="#i-close"/></svg></button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FORM FIELDS ===================== -->
+  <section class="lib-sec" data-state="fields" data-label="Form fields">
+    <div class="lib-sec-head">
+      <h2>Form fields</h2>
+      <p>Label above, hint under the label, error under the field in amber with what to do next. Inputs use 16px text so phones don't zoom.</p>
+      <span class="lib-files">Field · Checkbox · OtpInput · ImageUpload · StepCounter</span>
+    </div>
+
+    <div class="lib-sub">
+      <h3>Text, select and textarea</h3>
+      <div class="lib-specs">
+        <div class="lib-spec"><span class="lib-cap">Empty, with hint</span>
+          <div class="field"><label class="fieldLabel" for="f-user">Username</label><span class="fieldHint" id="f-user-h">Letters, numbers, dots and underscores. Shown as your @handle.</span><input class="fieldControl" id="f-user" placeholder="e.g. snapking" aria-describedby="f-user-h"></div></div>
+        <div class="lib-spec"><span class="lib-cap">Focus</span>
+          <div class="field"><label class="fieldLabel" for="f-email">Email</label><input class="fieldControl isFocus" id="f-email" type="email" value="snapking@example.com"></div></div>
+        <div class="lib-spec"><span class="lib-cap">Error</span>
+          <div class="field"><label class="fieldLabel" for="f-user2">Username</label><input class="fieldControl" id="f-user2" value="kairo.gg" aria-invalid="true" aria-describedby="f-user2-e"><span class="fieldError" id="f-user2-e"><svg class="icon"><use href="#i-alert-circle"/></svg>That username is taken. Try another.</span></div></div>
+        <div class="lib-spec"><span class="lib-cap">Disabled, with reason</span>
+          <div class="field"><label class="fieldLabel" for="f-country-l">Country</label><input class="fieldControl" id="f-country-l" value="Philippines" disabled aria-describedby="f-country-l-h"><span class="fieldHint" id="f-country-l-h">Locked once your payout account is set up. Contact support to change it.</span></div></div>
+        <div class="lib-spec"><span class="lib-cap">Select</span>
+          <div class="field"><label class="fieldLabel" for="f-tz">Time zone</label><select class="fieldControl" id="f-tz"><option>Singapore (SGT, UTC+8)</option><option>Manila (PHT, UTC+8)</option><option>Kuala Lumpur (MYT, UTC+8)</option><option>Bangkok (ICT, UTC+7)</option></select></div></div>
+        <div class="lib-spec"><span class="lib-cap">Select · error</span>
+          <div class="field"><label class="fieldLabel" for="f-ctry">Country</label><select class="fieldControl" id="f-ctry" aria-invalid="true" aria-describedby="f-ctry-e"><option>Choose your country</option><option>Singapore</option><option>Malaysia</option><option>Philippines</option></select><span class="fieldError" id="f-ctry-e"><svg class="icon"><use href="#i-alert-circle"/></svg>Choose your country.</span></div></div>
+        <div class="lib-spec"><span class="lib-cap">Textarea · counter</span>
+          <div class="field"><label class="fieldLabel" for="f-bio">Bio</label><textarea class="fieldControl" id="f-bio" maxlength="500" data-counter="f-bio-c">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</textarea><div class="fieldFoot"><span class="fieldCounter" id="f-bio-c"></span></div></div></div>
+        <div class="lib-spec"><span class="lib-cap">Text · counter at limit</span>
+          <div class="field"><label class="fieldLabel" for="f-rank">Rank or top achievement</label><span class="fieldHint">Checked against your proof screenshots.</span><input class="fieldControl" id="f-rank" maxlength="40" data-counter="f-rank-c" value="Regional Qualifier · Top 8 · Season 2025"><div class="fieldFoot"><span class="fieldCounter" id="f-rank-c"></span></div></div></div>
+      </div>
+    </div>
+
+    <div class="lib-sub">
+      <h3>Checkbox and date of birth</h3>
+      <p>Date of birth is three plain fields, which is quicker than scrolling a calendar back decades.</p>
+      <div class="lib-specs">
+        <div class="lib-spec"><span class="lib-cap">Checkbox · unchecked, checked</span>
+          <div style="display:grid;gap:var(--space-4)">
+            <label class="checkbox"><input class="checkboxInput" type="checkbox" id="f-cb1"><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label>
+            <label class="checkbox"><input class="checkboxInput" type="checkbox" id="f-cb2" checked><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label>
+          </div></div>
+        <div class="lib-spec"><span class="lib-cap">Checkbox · error</span>
+          <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox" id="f-cb3" aria-invalid="true" aria-describedby="f-cb3-e"><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label><span class="fieldError" id="f-cb3-e"><svg class="icon"><use href="#i-alert-circle"/></svg>Accept the terms to continue.</span></div></div>
+        <div class="lib-spec"><span class="lib-cap">Date of birth</span>
+          <fieldset class="field" style="border:0;margin:0;padding:0"><legend class="fieldLabel" style="padding:0;margin-bottom:var(--space-2)">Date of birth</legend>
+            <div class="fieldDob">
+              <div><label class="fieldSublabel" for="f-dd">Day</label><input class="fieldControl" id="f-dd" inputmode="numeric" maxlength="2" value="14"></div>
+              <div><label class="fieldSublabel" for="f-mm">Month</label><select class="fieldControl" id="f-mm"><option>January</option><option>February</option><option selected>March</option></select></div>
+              <div><label class="fieldSublabel" for="f-yy">Year</label><input class="fieldControl" id="f-yy" inputmode="numeric" maxlength="4" value="1999"></div>
+            </div></fieldset></div>
+        <div class="lib-spec"><span class="lib-cap">Date of birth · error</span>
+          <fieldset class="field" style="border:0;margin:0;padding:0"><legend class="fieldLabel" style="padding:0;margin-bottom:var(--space-2)">Date of birth</legend>
+            <div class="fieldDob">
+              <div><label class="fieldSublabel" for="f-dd2">Day</label><input class="fieldControl" id="f-dd2" inputmode="numeric" maxlength="2" value="14"></div>
+              <div><label class="fieldSublabel" for="f-mm2">Month</label><select class="fieldControl" id="f-mm2"><option selected>March</option></select></div>
+              <div><label class="fieldSublabel" for="f-yy2">Year</label><input class="fieldControl" id="f-yy2" inputmode="numeric" maxlength="4" placeholder="YYYY" aria-invalid="true" aria-describedby="f-dob-e"></div>
+            </div>
+            <span class="fieldError" id="f-dob-e" style="margin-top:var(--space-2)"><svg class="icon"><use href="#i-alert-circle"/></svg>Enter the year you were born.</span></fieldset></div>
+      </div>
+    </div>
+
+    <div class="lib-sub">
+      <h3>Phone and one-time code</h3>
+      <p>Number and code sit on the same page, so nobody loses their place.</p>
+      <div class="lib-specs" style="--lib-min:340px">
+        <div class="lib-spec"><span class="lib-cap">1 · Enter number</span>
+          <div class="field"><label class="fieldLabel" for="f-ph">Phone number</label><span class="fieldHint">We'll text you a code to check it's yours.</span>
+            <div class="fieldPhone"><select class="fieldControl" id="f-cc" aria-label="Country code"><option>+63 PH</option><option>+65 SG</option><option>+60 MY</option></select><input class="fieldControl" id="f-ph" type="tel" inputmode="tel" value="917 482 3301"><button class="button secondary sm" type="button">Send code</button></div></div></div>
+        <div class="lib-spec"><span class="lib-cap">2 · Code sent</span>
+          <div class="field"><label class="fieldLabel" for="otp1-1">Enter the code we sent to <span class="mono" style="font-weight:500">+63 917 482 3301</span></label>
+            <div class="otpInput" role="group" aria-label="6-digit code"><input class="otpCell" id="otp1-1" value="4" maxlength="1" inputmode="numeric" aria-label="Digit 1"><input class="otpCell" value="8" maxlength="1" inputmode="numeric" aria-label="Digit 2"><input class="otpCell" value="2" maxlength="1" inputmode="numeric" aria-label="Digit 3"><input class="otpCell isFocus" maxlength="1" inputmode="numeric" aria-label="Digit 4"><input class="otpCell" maxlength="1" inputmode="numeric" aria-label="Digit 5"><input class="otpCell" maxlength="1" inputmode="numeric" aria-label="Digit 6"></div>
+            <div class="otpMeta"><span>Resend code in <span class="otpTimer" data-resend="42">0:42</span></span><button class="textLink quiet" type="button">Change number</button></div></div></div>
+        <div class="lib-spec"><span class="lib-cap">3 · Wrong code</span>
+          <div class="field"><label class="fieldLabel" for="otp2-1">Enter the code we sent to <span class="mono" style="font-weight:500">+63 917 482 3301</span></label>
+            <div class="otpInput invalid" role="group" aria-label="6-digit code" aria-describedby="otp2-e"><input class="otpCell" id="otp2-1" value="4" maxlength="1" aria-label="Digit 1"><input class="otpCell" value="8" maxlength="1" aria-label="Digit 2"><input class="otpCell" value="2" maxlength="1" aria-label="Digit 3"><input class="otpCell" value="7" maxlength="1" aria-label="Digit 4"><input class="otpCell" value="1" maxlength="1" aria-label="Digit 5"><input class="otpCell" value="9" maxlength="1" aria-label="Digit 6"></div>
+            <span class="fieldError" id="otp2-e"><svg class="icon"><use href="#i-alert-circle"/></svg>That code doesn't match. Check the latest text and try again.</span>
+            <div class="otpMeta"><button class="textLink" type="button">Resend code</button></div></div></div>
+        <div class="lib-spec"><span class="lib-cap">4 · Verified</span>
+          <div class="field"><span class="fieldLabel">Phone number</span>
+            <div class="lib-inline" style="min-height:48px"><span class="mono" style="font-size:15px">+63 917 482 3301</span><span class="statusLabel positive">Verified</span><button class="textLink quiet" type="button">Change</button></div></div></div>
+      </div>
+    </div>
+
+    <div class="lib-sub">
+      <h3>Image upload</h3>
+      <div class="lib-specs" style="--lib-min:340px">
+        <div class="lib-spec"><span class="lib-cap">Single · empty</span>
+          <div class="field"><span class="fieldLabel">Profile photo</span><button class="uploadDrop" type="button"><svg class="icon"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Upload a photo</span><span class="uploadDropMeta">JPG, PNG or WebP · up to 5 MB</span></span></button></div></div>
+        <div class="lib-spec"><span class="lib-cap">Single · dragging over</span>
+          <div class="field"><span class="fieldLabel">Profile photo</span><div class="uploadDrop isDragging"><svg class="icon"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Drop to upload</span><span class="uploadDropMeta">One image</span></span></div></div></div>
+        <div class="lib-spec"><span class="lib-cap">Single · uploaded</span>
+          <div class="field"><span class="fieldLabel">Profile photo</span><div class="uploadSingle"><span class="avatar md">K</span><span style="display:grid;gap:6px;min-width:0"><span class="mono" style="font-size:13px;color:var(--ink-soft)">kairo-avatar.jpg</span><span class="uploadSingleActions"><button class="textLink" type="button">Replace</button><button class="textLink quiet" type="button">Remove</button></span></span></div></div></div>
+        <div class="lib-spec wide"><span class="lib-cap">Up to 5 · uploading, uploaded, failed</span>
+          <div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Proof of your rank</span><span class="uploadCount">4 / 5</span></div><span class="fieldHint">Screenshots that show the rank you entered, with your in-game name visible. <span class="mono" style="font-size:12px;color:var(--muted)">JPG, PNG or WebP · up to 10 MB each</span></span>
+            <div class="uploadThumbs">
+              <div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-image"/></svg></div><div class="uploadThumbName">rank-proof-1.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove rank-proof-1.png"><svg class="icon"><use href="#i-close"/></svg></button></div>
+              <div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-image"/></svg></div><div class="uploadThumbName">rank-proof-2.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove rank-proof-2.png"><svg class="icon"><use href="#i-close"/></svg></button></div>
+              <div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-image"/></svg></div><div class="uploadProgress" role="progressbar" aria-label="Uploading season-stats.png" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"><span style="width:62%"></span></div><div class="uploadThumbName">season-stats.png · <span style="color:var(--ink-soft)">62%</span></div></div>
+              <div class="uploadThumb failed"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-alert"/></svg></div><div class="uploadThumbName">match-history.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove match-history.png"><svg class="icon"><use href="#i-close"/></svg></button></div>
+              <button class="uploadAdd" type="button"><svg class="icon"><use href="#i-plus"/></svg>Add image</button>
+            </div>
+            <span class="fieldError"><svg class="icon"><use href="#i-alert-circle"/></svg><span>match-history.png didn't upload. Check your connection, then remove it and add it again.</span></span>
+          </div></div>
+        <div class="lib-spec"><span class="lib-cap">Rejected · too large</span>
+          <div class="field"><span class="fieldLabel">Proof of your rank</span><button class="uploadDrop" type="button" aria-describedby="up-big"><svg class="icon"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Add screenshots</span><span class="uploadDropMeta">JPG, PNG or WebP · up to 10 MB each</span></span></button><span class="fieldError" id="up-big"><svg class="icon"><use href="#i-alert-circle"/></svg><span>season-stats.png is <span class="mono">14.2 MB</span>. Images can be up to <span class="mono">10 MB</span>.</span></span></div></div>
+        <div class="lib-spec"><span class="lib-cap">Rejected · wrong type</span>
+          <div class="field"><span class="fieldLabel">Proof of your rank</span><button class="uploadDrop" type="button" aria-describedby="up-type"><svg class="icon"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Add screenshots</span><span class="uploadDropMeta">JPG, PNG or WebP · up to 10 MB each</span></span></button><span class="fieldError" id="up-type"><svg class="icon"><use href="#i-alert-circle"/></svg><span>rank-proof.heic isn't a JPG, PNG or WebP. Save it as one of those and try again.</span></span></div></div>
+        <div class="lib-spec"><span class="lib-cap">Dispute evidence · images or PDF</span>
+          <div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">2 / 5</span></div>
+            <div class="uploadThumbs">
+              <div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-image"/></svg></div><div class="uploadThumbName">payment-screen.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove payment-screen.png"><svg class="icon"><use href="#i-close"/></svg></button></div>
+              <div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon"><use href="#i-file"/></svg></div><div class="uploadThumbName">bank-statement-sep.pdf</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove bank-statement-sep.pdf"><svg class="icon"><use href="#i-close"/></svg></button></div>
+              <button class="uploadAdd" type="button"><svg class="icon"><use href="#i-plus"/></svg>Add file</button>
+            </div>
+            <span class="uploadDropMeta">JPG, PNG, WebP or PDF · up to 10 MB each</span>
+          </div></div>
+      </div>
+    </div>
+
+    <div class="lib-sub">
+      <h3>Step counter</h3>
+      <div class="lib-specs">
+        <div class="lib-spec"><span class="lib-cap">Step 2 of 5</span>
+          <div class="stepCounter"><span class="stepCounterText">Step <b>02</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="current"></span><span></span><span></span><span></span></div></div></div>
+        <div class="lib-spec"><span class="lib-cap">Step 5 of 5</span>
+          <div class="stepCounter"><span class="stepCounterText">Step <b>05</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="current"></span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STATUS AND BADGES ===================== -->
+  <section class="lib-sec" data-state="status" data-label="Status and badges">
+    <div class="lib-sec-head">
+      <h2>Status and badges</h2>
+      <p>Every booking and dispute status, always as a mono label with a dot. Green for done or going ahead, amber when someone needs to act, muted once it's over. No filled pills, no red.</p>
+      <span class="lib-files">StatusLabel · Badge</span>
+    </div>
+    <div class="lib-specs" style="--lib-min:420px">
+      <div class="lib-spec"><span class="lib-cap">Booking</span>
+        <div class="lib-stage lib-list">
+          <div class="lib-li"><span class="statusLabel action">Awaiting payment</span><span>Slot held for 30 minutes while the gamer pays</span></div>
+          <div class="lib-li"><span class="statusLabel positive">Confirmed</span><span>Paid and booked</span></div>
+          <div class="lib-li"><span><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span><span>A new time has been asked for. Status doesn't change</span></div>
+          <div class="lib-li"><span class="statusLabel positive">In session</span><span>Someone has joined</span></div>
+          <div class="lib-li"><span class="statusLabel action">Pending confirmation</span><span>Ended. The gamer has 72 hours to confirm</span></div>
+          <div class="lib-li"><span class="statusLabel positive">Completed</span><span>Confirmed or auto-confirmed. Payment released</span></div>
+          <div class="lib-li"><span class="statusLabel action">Disputed</span><span>A problem was reported. Payment stays held</span></div>
+          <div class="lib-li"><span class="statusLabel ended">Cancelled</span><span>Cancelled by the gamer or coach</span></div>
+          <div class="lib-li"><span class="statusLabel ended">Expired</span><span>Not paid within 30 minutes</span></div>
+          <div class="lib-li"><span class="statusLabel ended">Refunded</span><span>Dispute resolved for the gamer</span></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Dispute</span>
+        <div class="lib-stage lib-list">
+          <div class="lib-li"><span class="statusLabel action">Open</span><span>Filed. The other person can respond</span></div>
+          <div class="lib-li"><span class="statusLabel action">Under review</span><span>The team is looking at it</span></div>
+          <div class="lib-li"><span class="statusLabel ended">Resolved · refunded to gamer</span><span>Full refund</span></div>
+          <div class="lib-li"><span class="statusLabel ended">Resolved · paid to coach</span><span>Full release</span></div>
+        </div>
+        <span class="lib-cap" style="margin-top:var(--space-6)">Badges · right after the coach's name</span>
+        <div class="lib-stage">
+          <div class="lib-inline"><span class="lib-name">Vexa</span><span class="badge verified"><svg class="icon"><use href="#i-shield-check"/></svg>Verified</span></div>
+          <div class="lib-inline"><span class="lib-name">nullpoint</span><span class="badge newCoach">New coach</span></div>
+          <p style="font-size:13.5px;color:var(--muted)">These are the only two badges. A coach shows one or the other, never both.</p>
+        </div></div>
+    </div>
+  </section>
+
+  <!-- ===================== IDENTITY, PRICE, RANK, RATING ===================== -->
+  <section class="lib-sec" data-state="identity" data-label="Avatar, price, rank, rating">
+    <div class="lib-sec-head">
+      <h2>Avatar, price, rank and rating</h2>
+      <p>The facts a gamer compares. All figures are mono; names and game names stay in Geist.</p>
+      <span class="lib-files">Avatar · Price · GameRank · Rating</span>
+    </div>
+    <div class="lib-specs" style="--lib-min:420px">
+      <div class="lib-spec"><span class="lib-cap">Avatar · default, by size</span>
+        <div class="lib-stage"><div class="lib-avatars">
+          <div class="lib-cell"><span class="avatar xs">S</span><span class="lib-cap">32</span></div>
+          <div class="lib-cell"><span class="avatar sm">V</span><span class="lib-cap">40</span></div>
+          <div class="lib-cell"><span class="avatar md">K</span><span class="lib-cap">56</span></div>
+          <div class="lib-cell"><span class="avatar lg">N</span><span class="lib-cap">96</span></div>
+          <div class="lib-cell"><span class="lib-photo-slot"><svg class="icon"><use href="#i-image"/></svg></span><span class="lib-cap">Photo</span></div>
+        </div>
+        <p style="font-size:13.5px;color:var(--muted)">Default is the first letter of the display name. The photo state uses your avatar images once they arrive: cropped to a circle with a quiet grey ring instead of the green one.</p></div></div>
+
+      <div class="lib-spec"><span class="lib-cap">Price</span>
+        <div class="lib-stage lib-list">
+          <div class="lib-li"><span class="price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></span><span>Already in your currency</span></div>
+          <div class="lib-li"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><span>Converted from the coach's currency</span></div>
+          <div class="lib-li"><span class="price"><span class="priceFrom">from</span><span class="priceAmount">S$38</span> <span class="pricePer">/ session</span></span><span>Browse card, coach with more than one game</span></div>
+          <div class="lib-li"><span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><span>Both</span></div>
+          <div class="lib-li" style="grid-template-columns:minmax(0,1fr)"><p class="priceNote">Kairo's price is <span class="price">₱1,850</span>. Your bank converts at checkout.</p></div>
+        </div></div>
+
+      <div class="lib-spec"><span class="lib-cap">Rank line · one per game</span>
+        <div class="lib-stage">
+          <div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div>
+          <div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 500</span></div>
+          <div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 2</span></div>
+          <div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 21,450</span></div>
+          <div class="gameRank"><span class="gameRankGame">Riftbound</span><span class="gameRankValue">Regional Qualifier · Top 8</span></div>
+        </div></div>
+
+      <div class="lib-spec"><span class="lib-cap">Rating · display and input</span>
+        <div class="lib-stage">
+          <div class="lib-inline">
+            <span class="rating"><svg class="icon"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span>
+            <span class="rating"><svg class="icon"><use href="#i-star"/></svg>5.0 <span class="ratingCount">(1)</span></span>
+            <span class="rating none">No reviews yet</span>
+          </div>
+          <div style="height:1px;background:var(--line)"></div>
+          <fieldset class="ratingInput" data-rating="0"><legend class="fieldLabel" style="padding:0;margin-bottom:var(--space-1)">How was your session with Kairo?</legend>
+            <div class="ratingInputStars" role="radiogroup" aria-label="Rating out of 5"></div></fieldset>
+          <fieldset class="ratingInput" data-rating="4"><legend class="fieldLabel" style="padding:0;margin-bottom:var(--space-1)">How was your session with Kairo?</legend>
+            <div class="ratingInputStars" role="radiogroup" aria-label="Rating out of 5"></div></fieldset>
+          <fieldset class="ratingInput invalid" data-rating="0" aria-describedby="rt-e"><legend class="fieldLabel" style="padding:0;margin-bottom:var(--space-1)">How was your session with Kairo?</legend>
+            <div class="ratingInputStars" role="radiogroup" aria-label="Rating out of 5"></div>
+            <span class="fieldError" id="rt-e"><svg class="icon"><use href="#i-alert-circle"/></svg>Choose a star rating to post your review.</span></fieldset>
+        </div></div>
+    </div>
+  </section>
+
+  <!-- ===================== CARDS AND LISTS ===================== -->
+  <section class="lib-sec" data-state="cards" data-label="Cards and lists">
+    <div class="lib-sec-head">
+      <h2>Cards and lists</h2>
+      <p>Cards are solid and flat. Only the one card that matters most in a view gets the green top line, and it brightens on hover. Coach cards and list rows are links, so they respond to hover; plain cards don't.</p>
+      <span class="lib-files">Card · CoachCard · SessionList</span>
+    </div>
+
+    <div class="lib-specs" style="--lib-min:400px">
+      <div class="lib-spec"><span class="lib-cap">Accent card · rest</span>
+        <article class="card accent">
+          <span class="eyebrow">Next session</span>
+          <h3 style="font:var(--text-card-title);letter-spacing:-.01em;margin-top:var(--space-3)">Tuesday with Kairo</h3>
+          <p style="margin-top:var(--space-1);color:var(--muted)">Mobile Legends · <span class="value" style="color:var(--ink-soft)">Mythical Glory · 85★</span></p>
+          <dl class="cardFacts"><dt>When</dt><dd>Tue 6 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min</dd><dt>Status</dt><dd><span class="statusLabel positive">Confirmed</span></dd></dl>
+          <div class="cardActions" style="justify-content:space-between"><span style="font-size:13.5px;color:var(--muted)">Join opens <span class="mono" style="color:var(--ink-soft)">19:50 SGT</span></span><button class="button primary" type="button" disabled>Join session</button></div>
+        </article></div>
+      <div class="lib-spec"><span class="lib-cap">Accent card · hover</span>
+        <article class="card accent isHover">
+          <span class="eyebrow">Next session</span>
+          <h3 style="font:var(--text-card-title);letter-spacing:-.01em;margin-top:var(--space-3)">Tuesday with Kairo</h3>
+          <p style="margin-top:var(--space-1);color:var(--muted)">Mobile Legends · <span class="value" style="color:var(--ink-soft)">Mythical Glory · 85★</span></p>
+          <dl class="cardFacts"><dt>When</dt><dd>Tue 6 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min</dd><dt>Status</dt><dd><span class="statusLabel positive">Confirmed</span></dd></dl>
+          <div class="cardActions" style="justify-content:space-between"><span style="font-size:13.5px;color:var(--muted)">Join opens <span class="mono" style="color:var(--ink-soft)">19:50 SGT</span></span><button class="button primary" type="button">Join session</button></div>
+        </article></div>
+      <div class="lib-spec"><span class="lib-cap">Flat card</span>
+        <article class="card">
+          <div class="cardHead"><span style="font-weight:600">Mirae · Riftbound</span><span class="statusLabel action">Pending confirmation</span></div>
+          <p class="cardBody">Session on <span class="mono" style="color:var(--ink-soft)">Sat 3 Oct · 18:00 SGT</span>. Payment releases automatically in <span class="countdown">41h 12m</span>.</p>
+          <div class="cardActions"><button class="button secondary" type="button">Confirm session</button><button class="button secondary" type="button">Report a problem</button></div>
+        </article></div>
+      <div class="lib-spec"><span class="lib-cap">Inset inside a card</span>
+        <article class="card">
+          <h3>Booking summary</h3>
+          <div class="cardInset" style="margin-top:var(--space-4);display:flex;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap"><span style="color:var(--muted)">Session with Vexa · Valorant</span><span class="value">S$45.00</span></div>
+        </article></div>
+    </div>
+
+    <div class="lib-sub">
+      <h3>Coach card</h3>
+      <p>Shows the coach's cheapest game, so the rank and the "from" price always belong together. With a game filter set, it shows that game's rank and price instead. "from" appears only when the coach has more than one game.</p>
+      <div class="lib-specs" style="--lib-min:400px">
+        <div class="lib-spec"><span class="lib-cap">Verified · two games · converted</span>
+          <a class="coachCard" href="#"><span class="avatar md">K</span>
+            <div class="coachCardMain"><div><div class="coachCardName">Kairo <span class="badge verified"><svg class="icon"><use href="#i-shield-check"/></svg>Verified</span></div><span class="coachCardHandle">@kairo.gg</span></div>
+              <div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div>
+              <span class="rating"><svg class="icon"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
+            <div class="coachCardPrice price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></div></a></div>
+        <div class="lib-spec"><span class="lib-cap">Verified · one game · hover</span>
+          <a class="coachCard isHover" href="#"><span class="avatar md">V</span>
+            <div class="coachCardMain"><div><div class="coachCardName">Vexa <span class="badge verified"><svg class="icon"><use href="#i-shield-check"/></svg>Verified</span></div><span class="coachCardHandle">@vexa</span></div>
+              <div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 2</span></div>
+              <span class="rating"><svg class="icon"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(32)</span></span></div>
+            <div class="coachCardPrice price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></div></a></div>
+        <div class="lib-spec"><span class="lib-cap">New coach · no reviews</span>
+          <a class="coachCard" href="#"><span class="avatar md">N</span>
+            <div class="coachCardMain"><div><div class="coachCardName">nullpoint <span class="badge newCoach">New coach</span></div><span class="coachCardHandle">@nullpoint</span></div>
+              <div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 21,450</span></div>
+              <span class="rating none">No reviews yet</span></div>
+            <div class="coachCardPrice price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></div></a></div>
+        <div class="lib-spec"><span class="lib-cap">Filtered · Call of Duty: Mobile</span>
+          <a class="coachCard" href="#"><span class="avatar md">K</span>
+            <div class="coachCardMain"><div><div class="coachCardName">Kairo <span class="badge verified"><svg class="icon"><use href="#i-shield-check"/></svg>Verified</span></div><span class="coachCardHandle">@kairo.gg</span></div>
+              <div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 500</span></div>
+              <span class="rating"><svg class="icon"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
+            <div class="coachCardPrice price"><span class="priceAmount"><span class="priceApprox">≈</span>S$49</span> <span class="pricePer">/ session</span></div></a></div>
+      </div>
+    </div>
+
+    <div class="lib-sub">
+      <h3>Session list</h3>
+      <p>The gamer's list names the coach; the coach's list names the gamer. Rows sit on the page as insets, and the whole row opens the session. Shown with the third row hovered.</p>
+      <div class="sessionList">
+        <div class="sessionListHead"><span>Coach</span><span>Date and time</span><span>Status</span><span></span></div>
+        <a class="sessionRow" href="#"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Tue 6 Oct · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
+        <a class="sessionRow" href="#"><span class="sessionRowWho"><span class="avatar sm">V</span><span><span class="sessionRowName">Vexa</span><span class="sessionRowGame">Valorant</span></span></span><span class="sessionRowWhen">Thu 8 Oct · 21:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
+        <a class="sessionRow isHover" href="#"><span class="sessionRowWho"><span class="avatar sm">M</span><span><span class="sessionRowName">Mirae</span><span class="sessionRowGame">Riftbound</span></span></span><span class="sessionRowWhen">Sat 3 Oct · 18:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel action">Pending confirmation</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
+        <a class="sessionRow" href="#"><span class="sessionRowWho"><span class="avatar sm">N</span><span><span class="sessionRowName">nullpoint</span><span class="sessionRowGame">Counter-Strike 2</span></span></span><span class="sessionRowWhen">Thu 1 Oct · 19:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel action">Disputed</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
+        <a class="sessionRow" href="#"><span class="sessionRowWho"><span class="avatar sm">G</span><span><span class="sessionRowName">Ghostline</span><span class="sessionRowGame">Call of Duty: Mobile</span></span></span><span class="sessionRowWhen">Sun 27 Sep · 15:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Completed</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
+        <a class="sessionRow" href="#"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Fri 25 Sep · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel ended">Expired</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== NOTICES AND COUNTDOWNS ===================== -->
+  <section class="lib-sec" data-state="notices" data-label="Notices and countdowns">
+    <div class="lib-sec-head">
+      <h2>Notices and countdowns</h2>
+      <p>Notices sit in the page flow, never over it. Countdowns are quiet mono figures that turn amber when time is short.</p>
+      <span class="lib-files">Notice · CallBanner · Countdown</span>
+    </div>
+    <div class="lib-specs" style="--lib-min:420px">
+      <div class="lib-spec"><span class="lib-cap">Info</span>
+        <div class="notice" role="status"><svg class="icon"><use href="#i-info"/></svg><div><p class="noticeText">Times are shown in your time zone, <span class="mono" style="color:var(--ink-soft)">SGT</span>. You can change it in <a class="textLink" href="#">account settings</a>.</p></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Warning · needs action</span>
+        <div class="notice warning"><svg class="icon"><use href="#i-phone"/></svg><div><p class="noticeTitle">Verify your phone to book</p><p class="noticeText">We'll text a code to the number on your account. It takes a minute.</p><div class="noticeActions"><button class="button secondary sm" type="button">Verify phone</button></div></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Error · with a way out</span>
+        <div class="notice error" role="alert"><svg class="icon"><use href="#i-alert"/></svg><div><p class="noticeTitle">Payment didn't go through</p><p class="noticeText">Your slot is still held until <span class="mono" style="color:var(--ink-soft)">20:41 SGT</span>, so you can try again.</p><div class="noticeActions"><button class="button primary sm" type="button">Try payment again</button></div></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">In-call banners · 10, 5 and 1 minutes</span>
+        <div style="display:grid;gap:var(--space-3)">
+          <div class="callBanner" role="status"><svg class="icon"><use href="#i-clock"/></svg><span class="callBannerText">Session ends in <span class="mono">10 min</span>, at <span class="mono">21:00 SGT</span></span><span class="callBannerClock">50:00</span></div>
+          <div class="callBanner" role="status"><svg class="icon"><use href="#i-clock"/></svg><span class="callBannerText">Session ends in <span class="mono">5 min</span>, at <span class="mono">21:00 SGT</span></span><span class="callBannerClock">55:00</span></div>
+          <div class="callBanner final" role="status"><svg class="icon"><use href="#i-clock"/></svg><span class="callBannerText">Session ends in 1 minute</span><span class="callBannerClock">59:00</span></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Payment hold · 30 minutes</span>
+        <div style="display:grid;gap:var(--space-3)">
+          <div class="holdTimer"><span>Your slot is held while you pay</span><span class="countdown" data-countdown="1452" aria-live="off">24:12</span></div>
+          <div class="holdTimer soon"><span>Your hold ends soon</span><span class="countdown soon">03:41</span></div>
+          <div class="holdTimer"><span>This slot is no longer held. <a class="textLink" href="#">Pick another time</a></span><span class="countdown over">00:00</span></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Auto-release · 72 hours</span>
+        <div class="lib-stage">
+          <p style="color:var(--muted)">Payment releases automatically in <span class="countdown">41h 12m</span>.</p>
+          <p style="color:var(--muted)">Payment releases automatically in <span class="countdown soon">23h 05m</span>. Confirm or report a problem before then.</p>
+          <p style="color:var(--muted)">Paused while the dispute is open.</p>
+        </div></div>
+    </div>
+  </section>
+
+  <!-- ===================== CONFIRM STEP ===================== -->
+  <section class="lib-sec" data-state="confirm" data-label="Confirm step">
+    <div class="lib-sec-head">
+      <h2>Confirm step</h2>
+      <p>Opens in place of the button that asked for it, so the exact amounts sit next to what's being changed and nothing covers a call or a shared screen. Used for cancel booking, end session and delete account.</p>
+      <span class="lib-files">ConfirmStep</span>
+    </div>
+    <div class="lib-specs" style="--lib-min:420px">
+      <div class="lib-spec"><span class="lib-cap">Before · on session detail</span>
+        <article class="card"><h3>Need to change something?</h3><p class="cardBody">You can ask for a new time or cancel up to <span class="mono" style="color:var(--ink-soft)">24 hours</span> before the session.</p>
+          <div class="cardActions"><button class="button secondary" type="button">Request a new time</button><button class="button secondary" type="button">Cancel booking</button></div></article></div>
+      <div class="lib-spec"><span class="lib-cap">Cancel · gamer, 24 hours or more ahead</span>
+        <div class="confirmStep" role="group" aria-labelledby="cs1">
+          <p class="confirmStepTitle" id="cs1">Cancel your session with Kairo on <span class="mono" style="font-weight:500">Tue 6 Oct</span>?</p>
+          <dl class="confirmStepLines">
+            <div class="confirmStepLine"><dt>Kairo's price, refunded</dt><dd>₱1,850.00</dd></div>
+            <div class="confirmStepLine"><dt>Platform fee, not refundable</dt><dd>₱111.00</dd></div>
+            <div class="confirmStepLine total"><dt>You get back</dt><dd>₱1,850.00</dd></div>
+          </dl>
+          <p class="confirmStepText">Your bank converts the refund to SGD.</p>
+          <div class="confirmStepActions"><button class="button secondary" type="button">Keep booking</button><button class="button warning" type="button">Cancel booking</button></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Cancel · within 1 hour of booking</span>
+        <div class="confirmStep" role="group" aria-labelledby="cs2">
+          <p class="confirmStepTitle" id="cs2">Cancel your session with Vexa on <span class="mono" style="font-weight:500">Thu 8 Oct</span>?</p>
+          <p class="confirmStepText">You booked less than an hour ago, so the platform fee is refunded too.</p>
+          <dl class="confirmStepLines">
+            <div class="confirmStepLine"><dt>Vexa's price</dt><dd>S$45.00</dd></div>
+            <div class="confirmStepLine"><dt>Platform fee</dt><dd>S$2.70</dd></div>
+            <div class="confirmStepLine total"><dt>You get back</dt><dd>S$47.70</dd></div>
+          </dl>
+          <div class="confirmStepActions"><button class="button secondary" type="button">Keep booking</button><button class="button warning" type="button">Cancel booking</button></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Cancel · working</span>
+        <div class="confirmStep" role="group" aria-labelledby="cs3" aria-busy="true">
+          <p class="confirmStepTitle" id="cs3">Cancel your session with Kairo on <span class="mono" style="font-weight:500">Tue 6 Oct</span>?</p>
+          <dl class="confirmStepLines">
+            <div class="confirmStepLine"><dt>Kairo's price, refunded</dt><dd>₱1,850.00</dd></div>
+            <div class="confirmStepLine"><dt>Platform fee, not refundable</dt><dd>₱111.00</dd></div>
+            <div class="confirmStepLine total"><dt>You get back</dt><dd>₱1,850.00</dd></div>
+          </dl>
+          <div class="confirmStepActions"><button class="button secondary" type="button" disabled>Keep booking</button><button class="button warning" type="button" aria-busy="true"><span class="buttonSpinner" aria-hidden="true"></span>Cancelling…</button></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">End session · in the call</span>
+        <div class="confirmStep" role="group" aria-labelledby="cs4">
+          <p class="confirmStepTitle" id="cs4">End the session now?</p>
+          <p class="confirmStepText">Vexa will be asked to agree. The session ends only when you both do.</p>
+          <div class="confirmStepActions"><button class="button secondary" type="button">Keep going</button><button class="button primary" type="button">End session</button></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Delete account</span>
+        <div class="confirmStep" role="group" aria-labelledby="cs5">
+          <p class="confirmStepTitle" id="cs5">Request account deletion?</p>
+          <p class="confirmStepText">Your account and profile will be deleted and you'll be signed out. This can't be undone.</p>
+          <div class="confirmStepActions"><button class="button secondary" type="button">Keep my account</button><button class="button warning" type="button">Request deletion</button></div>
+        </div></div>
+    </div>
+  </section>
+
+  <!-- ===================== PATTERNS ===================== -->
+  <section class="lib-sec" data-state="patterns" data-label="Empty, loading, error">
+    <div class="lib-sec-head">
+      <h2>Empty, loading and error</h2>
+      <p>Every list and card has all three. Empty says what will appear and how to get it. Loading keeps the shape of what's coming. Errors say what failed and offer a retry.</p>
+      <span class="lib-files">EmptyState · Skeleton · ErrorState</span>
+    </div>
+    <div class="lib-specs" style="--lib-min:400px">
+      <div class="lib-spec"><span class="lib-cap">Empty · first use</span>
+        <article class="card"><div class="emptyState" style="padding-block:var(--space-2)"><svg class="icon"><use href="#i-calendar"/></svg><p class="emptyStateTitle">No sessions yet</p><p class="emptyStateText">When you book a coach, your sessions show up here.</p><div class="emptyStateAction"><a class="button primary" href="#">Browse coaches</a></div></div></article></div>
+      <div class="lib-spec"><span class="lib-cap">Empty · no results</span>
+        <div class="emptyState"><svg class="icon"><use href="#i-search"/></svg><p class="emptyStateTitle">No coaches match these filters</p><p class="emptyStateText">Try another game or a wider price range.</p><div class="emptyStateAction"><button class="button secondary" type="button">Clear filters</button></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Loading · coach cards</span>
+        <div style="display:grid;gap:var(--space-3)" aria-busy="true" aria-label="Loading coaches">
+          <div class="lib-skel-card"><span class="skeleton circle" style="width:56px;height:56px"></span><div class="lib-skel-stack"><span class="skeleton" style="width:46%;height:14px"></span><span class="skeleton" style="width:30%"></span><span class="skeleton" style="width:64%;margin-top:6px"></span><span class="skeleton" style="width:22%"></span></div><span class="skeleton" style="height:18px;justify-self:end;width:64px"></span></div>
+          <div class="lib-skel-card"><span class="skeleton circle" style="width:56px;height:56px"></span><div class="lib-skel-stack"><span class="skeleton" style="width:38%;height:14px"></span><span class="skeleton" style="width:26%"></span><span class="skeleton" style="width:58%;margin-top:6px"></span><span class="skeleton" style="width:22%"></span></div><span class="skeleton" style="height:18px;justify-self:end;width:64px"></span></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Loading · session rows</span>
+        <div style="display:grid;gap:var(--space-2)" aria-busy="true" aria-label="Loading sessions">
+          <div class="lib-skel-row"><span class="skeleton circle" style="width:40px;height:40px"></span><span class="lib-skel-stack"><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:56%"></span></span><span class="skeleton pill" style="height:10px"></span></div>
+          <div class="lib-skel-row"><span class="skeleton circle" style="width:40px;height:40px"></span><span class="lib-skel-stack"><span class="skeleton" style="width:34%"></span><span class="skeleton" style="width:50%"></span></span><span class="skeleton pill" style="height:10px"></span></div>
+          <div class="lib-skel-row"><span class="skeleton circle" style="width:40px;height:40px"></span><span class="lib-skel-stack"><span class="skeleton" style="width:44%"></span><span class="skeleton" style="width:60%"></span></span><span class="skeleton pill" style="height:10px"></span></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Error · with retry</span>
+        <article class="card"><div class="errorState" style="padding-block:var(--space-2)"><svg class="icon"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load your sessions</p><p class="errorStateText">Check your connection, then try again.</p><div class="errorStateAction"><button class="button secondary" type="button"><svg class="icon"><use href="#i-refresh"/></svg>Try again</button></div></div></article></div>
+      <div class="lib-spec"><span class="lib-cap">Error · retrying</span>
+        <article class="card"><div class="errorState" style="padding-block:var(--space-2)"><svg class="icon"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load your sessions</p><p class="errorStateText">Check your connection, then try again.</p><div class="errorStateAction"><button class="button secondary" type="button" aria-busy="true"><span class="buttonSpinner" aria-hidden="true"></span>Trying again…</button></div></div></article></div>
+    </div>
+  </section>
+
+</main>
+</div>
+</div>
+
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* specimen behaviour: counters, star input, hold countdown, resend timer, mobile menu */
+(function () {
+  document.querySelectorAll('[data-counter]').forEach(function (el) {
+    var out = document.getElementById(el.dataset.counter), max = +el.getAttribute('maxlength');
+    function upd() { out.textContent = el.value.length + ' / ' + max; out.classList.toggle('atLimit', el.value.length >= max); }
+    el.addEventListener('input', upd); upd();
+  });
+
+  var star = '<svg class="icon"><use href="#i-star"/></svg>';
+  document.querySelectorAll('.ratingInput').forEach(function (fs, n) {
+    var wrap = fs.querySelector('.ratingInputStars'), value = +fs.dataset.rating, btns = [];
+    for (var i = 1; i <= 5; i++) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'ratingStar'; b.setAttribute('role', 'radio');
+      b.setAttribute('aria-label', i + (i === 1 ? ' star' : ' stars')); b.dataset.v = i; b.innerHTML = star;
+      wrap.appendChild(b); btns.push(b);
+    }
+    var label = document.createElement('span'); label.className = 'ratingInputValue'; wrap.appendChild(label);
+    function paint(v) { btns.forEach(function (b) { b.classList.toggle('isOn', +b.dataset.v <= v); }); }
+    function set(v) {
+      value = v; paint(v);
+      btns.forEach(function (b) { b.setAttribute('aria-checked', String(+b.dataset.v === v)); b.tabIndex = (+b.dataset.v === (v || 1)) ? 0 : -1; });
+      label.textContent = v ? v + ' out of 5' : 'Not rated';
+      if (v) fs.classList.remove('invalid');
+    }
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () { set(+b.dataset.v); });
+      b.addEventListener('mouseenter', function () { paint(+b.dataset.v); });
+      b.addEventListener('keydown', function (e) {
+        var d = (e.key === 'ArrowRight' || e.key === 'ArrowUp') ? 1 : (e.key === 'ArrowLeft' || e.key === 'ArrowDown') ? -1 : 0;
+        if (d) { e.preventDefault(); var v = Math.min(5, Math.max(1, (value || 0) + d)); set(v); btns[v - 1].focus(); }
+      });
+    });
+    wrap.addEventListener('mouseleave', function () { paint(value); });
+    set(value);
+  });
+
+  function mmss(s) { return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+  var hold = document.querySelector('[data-countdown]'), left = +(hold && hold.dataset.countdown);
+  var resend = document.querySelector('[data-resend]'), rleft = +(resend && resend.dataset.resend);
+  if (!document.body.classList.contains('mk-capture')) setInterval(function () {
+    if (hold && left > 0) { left--; hold.textContent = mmss(left); }
+    if (resend && rleft > 0) { rleft--; resend.textContent = Math.floor(rleft / 60) + ':' + String(rleft % 60).padStart(2, '0'); }
+  }, 1000);
+
+  document.querySelectorAll('[data-menu-toggle]').forEach(function (btn) {
+    var shell = btn.closest('.appShell'), menu = shell.querySelector('.mobileMenu');
+    btn.addEventListener('click', function () {
+      var open = menu.hidden; menu.hidden = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      btn.querySelector('use').setAttribute('href', open ? '#i-close' : '#i-menu');
+    });
+  });
+})();
+</script>

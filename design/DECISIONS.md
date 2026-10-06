@@ -46,6 +46,8 @@ Decisions agreed during design that change or clarify the MVP feature list. Newe
 - Payment stays held. Price and fee rates snapshotted at booking are unchanged.
 - If a gamer declines a coach's request, the gamer chooses: keep the original time, or cancel for a full refund including the platform fee.
 - In the sessions list the status stays `Confirmed`, with a `Reschedule requested` second line while a request is open.
+- Both dashboards show a "Reschedule request" card with the offered slots and the time left to reply, whenever a request is waiting on that person.
+- Session detail offers "Request a new time" and "Cancel booking" only when allowed, with the reason when not (e.g. "Changes close 24 hours before the session").
 
 ## Cancellation (new, not in the feature list)
 
@@ -202,7 +204,7 @@ In the design
 - Flat surfaces: page `--bg`, cards solid `--surface`, inset areas (chat panel, list rows) `--bg-mid`. No gradients on cards.
 - One new shadow token for all cards: `--shadow-flat` (about `0 1px 2px #00000059`).
 - Primary buttons keep a softer resting glow via a new token `--shadow-cta-rest` (about half of `--shadow-cta`); on hover they move to `--shadow-cta-hover` and the blurred halo fades in.
-- Secondary button: outline pill, `--line` border, `--ink` text.
+- Secondary button: outline pill, `--line-strong` border, `--ink` text. Inputs use the same `--line-strong` border. (Changed at checkpoint 1 from `--line`, which almost disappears on the dark ground.)
 - Green glow only as a deliberate accent: a thin glowing top line on the one card that matters most in view.
 - The top nav keeps its blur and transparency. Nothing else is frosted.
 - No background grid, film grain or breathing glow in the webapp; those stay on marketing pages.
@@ -212,3 +214,46 @@ In the design
 - Prices use `S$` for SGD; other currencies per the currency display decision.
 - Geist Mono for data and labels: money, dates, times, durations, countdowns, statuses, ranks, ratings and counts, eyebrows, small labels, column headers, step and character counters, references, @handles. Geist for names, body, buttons, links, field labels, chat, game names, credential lines. Sora for headings.
 - Dark theme only.
+
+## Design deliverables and canvas
+
+- The HTML pages are the single source of truth: one file per page in `design/pages/`, shared tokens in `design/foundations/tokens.css`, each with a state switcher and a desktop/mobile toggle, published as a private artifact link.
+- One Claude Design canvas holds the overview. Its frames are exact renders of each HTML page's states (desktop and phone), grouped by phase in build order, labelled "NN Page · State · Width", with a note linking each page's interactive version. Frames are images, so they can't drift from the HTML.
+- Changes go through the HTML pages (asked for in chat or as a canvas comment), then the frames are re-rendered.
+- Only one canvas: create it once, in Phase 0, and add each phase's frames to it. Don't create a new canvas per phase.
+- Figma only if hand-editable frames are needed later; it can be generated from the finished HTML pages.
+- The canvas is **Harbourly webapp**: https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ. Add every phase's frames to it.
+- File layout: component styles in `design/foundations/components/<Name>.css`, one per component, each becoming `<Name>.module.css`; every selector starts with the component's root class so nothing leaks between modules. The mockup harness (state switcher, width toggle) is `design/foundations/mockup.css` and `mockup.js` and is not product code. Icons are a sprite in `design/foundations/icons.js`.
+- Publishing and frames: `node design/tools/build.mjs <page> <outDir>` inlines the shared CSS and JS into one publishable file; `node design/tools/render.mjs <built page> <outDir> <prefix>` renders every state at 1440 and 390 wide for the canvas.
+- Responsive rules use container queries on a container named `app` (the app shell), so components follow the space they're given. In the app the root layout element carries `container: app / inline-size`.
+
+## Navigation and identity (agreed at Phase 0)
+
+- Account settings: the avatar and name in the top bar link to `/account`; "Sign out" sits beside them. On phones the menu sheet starts with the same account row.
+- Avatars: photos use fictional avatar images you supply. Until they arrive, mockups show the default avatar (first letter of the display name in Sora on `--bg-mid`) and the component library shows the photo state as a marked slot.
+
+## Browse coach card (agreed at Phase 0)
+
+- With no game filter, the card shows the coach's cheapest game: that game's name and rank, and "from" its price, plus "+1 game" (or "+2 games") when there are more.
+- With a game filter set, the card shows that game's rank and its exact price.
+- "from" appears only when the coach lists more than one game. A single-game card shows the exact price, e.g. "S$45 / session".
+
+## Checkpoint 1 outcomes
+
+- Status colours follow this file, not the Geist Mono specimen: `Completed` is green. `In session` is green; resolved dispute statuses are muted; "Reschedule requested" is an amber mono second line.
+- Phone verification codes are 6 digits.
+
+## Uploads (agreed after checkpoint 1)
+
+| Upload | File types | Max size | Other limits |
+|---|---|---|---|
+| Profile photo | JPG, PNG, WebP | 5 MB | At least 256 × 256 px, cropped to a circle |
+| Banner | JPG, PNG, WebP | 10 MB | At least 1200 px wide |
+| Rank proof (application, rank update, new game) | JPG, PNG, WebP | 10 MB each | Up to 5 |
+| Dispute evidence | JPG, PNG, WebP, PDF | 10 MB each | Up to 5 |
+
+- No GIF (animated avatars pull attention) and no video evidence in the MVP; a clip can be linked in the dispute description.
+- No HEIC. iPhone screenshots are PNG already; iPhone Safari is expected to convert camera photos to JPEG on upload when HEIC isn't accepted. Confirm on a real iPhone when building.
+- Build note: strip location and other metadata from uploaded images before storing them.
+- Upload hint line, e.g. "JPG, PNG or WebP · up to 10 MB". Errors: "season-stats.png is 14.2 MB. Images can be up to 10 MB." and "rank-proof.heic isn't a JPG, PNG or WebP. Save it as one of those and try again."
+- Still to decide in Phase 6: voice intro length, portfolio format.

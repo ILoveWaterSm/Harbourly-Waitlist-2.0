@@ -1,0 +1,27 @@
+/* CoachCard → CoachCard.module.css. Browse result. Shows the game behind the "from" price
+   (its cheapest listing); with a game filter set, that game's rank and its exact price. */
+.coachCard {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: start;
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-flat);
+  color: inherit;
+  text-decoration: none;
+  transition: transform .2s, background-color .2s;
+}
+.coachCard:hover, .coachCard.isHover { transform: translateY(-2px); background: color-mix(in srgb, var(--surface) 94%, var(--ink)); }
+.coachCard:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.coachCardMain { display: grid; gap: var(--space-3); min-width: 0; }
+.coachCardName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-size: 16px; font-weight: 600; color: var(--ink); }
+.coachCardHandle { display: block; margin-top: 2px; font: 400 12.5px/1.3 var(--font-mono); color: var(--faint); }
+.coachCardPrice { text-align: right; }
+@container app (max-width: 520px) {
+  .coachCard { grid-template-columns: 48px minmax(0, 1fr); }
+  .coachCard .avatar { --avatar-size: 48px; }
+  .coachCardPrice { grid-column: 2; text-align: left; }
+  .coachCardPrice .priceFrom { display: inline; margin: 0 4px 0 0; }
+}
