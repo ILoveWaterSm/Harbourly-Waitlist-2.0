@@ -109,6 +109,7 @@ flowchart TD
   Own -->|"Yes"| NoBook(["No Book button. This is your profile"])
   Own -->|"No"| Game["Choose a game"]
   Game --> Slot["Pick a one-hour slot, in your local time"]
+  Own -->|"No, Choose a time on a game section"| Slot
   Slot --> LoggedIn{"Logged in?"}
   LoggedIn -->|"No"| Auth["Log in or sign up"]
   Auth --> Slot

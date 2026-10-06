@@ -257,3 +257,16 @@ In the design
 - Build note: strip location and other metadata from uploaded images before storing them.
 - Upload hint line, e.g. "JPG, PNG or WebP · up to 10 MB". Errors: "season-stats.png is 14.2 MB. Images can be up to 10 MB." and "rank-proof.heic isn't a JPG, PNG or WebP. Save it as one of those and try again."
 - Still to decide in Phase 6: voice intro length, portfolio format.
+
+## Booking from the coach profile (agreed before Phase 1)
+
+- Gamers book a coach, never a game. The game only says what the session with that coach is about.
+- The profile header has one primary "Book a session" button. It opens Pick a slot, where the gamer chooses the game (if the coach has more than one) and then a time.
+- Each game section on a profile with two or more games also has a secondary "Choose a time" button, beside that game's price. It opens the same Pick a slot page with that game already chosen.
+- A coach with one game shows only the header button.
+
+## Labels (agreed before Phase 1)
+
+- Short labels that say what happens next and who it's with, e.g. "Book a session", "Choose a time", "Continue to payment", "View session".
+- Never phrase a label as if the gamer books or buys a game.
+- The same action keeps the same label on every page and in every email.

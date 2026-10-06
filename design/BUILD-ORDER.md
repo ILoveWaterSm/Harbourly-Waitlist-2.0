@@ -56,6 +56,7 @@ One page showing every shared component in every state. Introduces:
 ### 2. Coach profile · L
 `/coaches/[username]` *proposed*. Viewable logged out.
 - Avatar, banner, name, Verified or New Coach, bio, per-game sections (rank, credentials, price), availability preview, voice intro, reviews.
+- "Book a session" in the header; with two or more games, each game section also has "Choose a time", which opens Pick a slot with that game chosen.
 - States: Verified coach, New Coach, one game vs several, no reviews yet, no voice intro, converted price with "Kairo's price is ₱1,850" line, logged out (Book leads to log in), your own profile (no Book button), preview mode (used later by 22), loading, not found.
 
 ### 3. Pick a slot · M
