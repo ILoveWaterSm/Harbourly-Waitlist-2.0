@@ -54,7 +54,7 @@ Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. Everything up to checkpoint 1 shoul
 
 - **Never create a second canvas.** Add each phase's frames to https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ.
 - Each frame is one artboard: a `.dc.html` that only shows the uploaded PNG at its true CSS size (PNG pixels ÷ 2). Upload the PNGs to the canvas as assets first, then reference each one's `/_blob/…` url. Board titles follow "NN Page · State · Width", e.g. "01 Browse coaches · No results · Phone".
-- Layout so far: each state is a pair (desktop, then phone 80 px to its right), 200 px between pairs, three pairs per row, 200 px between rows. A `title1` note names the phase and each page, and a green sticky to the left of each page links its interactive version and source file. Phase 0 ends at about y = 18,850; Phase 1 runs from y = 19,444 to about y = 49,600, so Phase 2 starts below that.
+- Layout so far: each state is a pair (desktop, then phone 80 px to its right), 200 px between pairs, three pairs per row, 200 px between rows. A `title1` note names the phase and each page, and a green sticky to the left of each page links its interactive version and source file. Phase 0 ends at about y = 19,300; Phase 1 runs from y = 19,908 to about y = 52,600, so Phase 2 starts below that.
 - **Read `project/canvas.json` from the canvas right before every update.** The canvas editor re-saves it in its own format, and a publish based on an old copy is refused. Change only your keys and keep everything else.
 - Changes always go through the HTML page first, then the frames are re-rendered and replaced.
 
