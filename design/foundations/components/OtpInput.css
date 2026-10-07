@@ -20,3 +20,5 @@
 @container app (max-width: 400px) {
   .otpCell { width: 44px; height: 52px; }
 }
+/* Fill: cells share the width they're given (inside a narrow card), up to the normal size. */
+.otpInput.fill .otpCell { flex: 1 1 0; width: auto; min-width: 0; max-width: 48px; }

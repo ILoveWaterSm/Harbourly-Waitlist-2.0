@@ -145,11 +145,12 @@ flowchart TD
 flowchart TD
   Browse[&quot;Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency&quot;] --&gt; Card[&quot;Coach card&quot;]
   Browse --&gt;|&quot;Load more&quot;| Browse
-  Card --&gt; Profile[&quot;Coach profile: bio, per-game rank and credentials, per-game price, availability preview, voice intro, reviews&quot;]
+  Card --&gt; Profile[&quot;Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, availability preview, voice intro, reviews&quot;]
   Profile --&gt; Own{&quot;Is this your own coach profile?&quot;}
   Own --&gt;|&quot;Yes&quot;| NoBook([&quot;No Book button. This is your profile&quot;])
   Own --&gt;|&quot;No&quot;| Game[&quot;Choose a game&quot;]
   Game --&gt; Slot[&quot;Pick a one-hour slot, in your local time&quot;]
+  Own --&gt;|&quot;No, Choose a time on a game section: game already chosen&quot;| Slot
   Slot --&gt; LoggedIn{&quot;Logged in?&quot;}
   LoggedIn --&gt;|&quot;No&quot;| Auth[&quot;Log in or sign up&quot;]
   Auth --&gt; Slot
@@ -159,12 +160,13 @@ flowchart TD
   Phone --&gt;|&quot;Yes&quot;| Hold[&quot;Slot held for 30 minutes. Booking is pending payment&quot;]
   Hold --&gt; Summary[&quot;Checkout summary: price, platform fee, total in the coach&#x27;s currency, cancellation rule, how the escrow hold works&quot;]
   Summary --&gt; Hosted[&quot;Stripe or Xendit hosted payment page&quot;]
+  Summary --&gt;|&quot;Choose another time: hold released&quot;| Slot
   Hosted --&gt; Back[&quot;Back on Harbourly: confirming your payment&quot;]
   Back --&gt; Result{&quot;Payment provider result&quot;}
   Result --&gt;|&quot;Paid&quot;| Confirmed([&quot;Booking confirmed. Emails to both&quot;])
   Result --&gt;|&quot;Not paid, hold still active&quot;| Failed[&quot;Payment didn&#x27;t go through&quot;]
   Failed --&gt; Summary
-  Result --&gt;|&quot;Hold expired&quot;| Expired[&quot;This slot is no longer held. Email to gamer&quot;]
+  Result --&gt;|&quot;Hold expired&quot;| Expired[&quot;This time is no longer held. Email to gamer&quot;]
   Expired --&gt; Slot
 </pre></div>
 </section>
@@ -281,7 +283,7 @@ flowchart TD
   Payout --&gt;|&quot;Couldn&#x27;t verify&quot;| PayoutFail[&quot;Your payout account couldn&#x27;t be verified. Try again or contact support&quot;]
   PayoutFail --&gt; Payout
   Gates --&gt; PhoneGate[&quot;Phone verified&quot;]
-  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, availability, price and credentials per game&quot;]
+  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, languages, availability, price and credentials per game&quot;]
   Setup --&gt;|&quot;Leave and come back&quot;| Setup
   Payout --&gt; AllDone{&quot;All four done?&quot;}
   PhoneGate --&gt; AllDone
@@ -299,7 +301,7 @@ flowchart TD
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   CDash([&quot;Coach dashboard&quot;]) --&gt; Settings[&quot;Coach profile settings&quot;]
-  Settings --&gt; Bio[&quot;Edit bio, avatar, banner&quot;]
+  Settings --&gt; Bio[&quot;Edit bio, avatar, banner, languages&quot;]
   Settings --&gt; Avail[&quot;Edit weekly availability, in your own time zone&quot;]
   Settings --&gt; Rates[&quot;Edit price per game&quot;]
   Settings --&gt; Rank[&quot;Update rank: new screenshot, old rank shown until approved&quot;]

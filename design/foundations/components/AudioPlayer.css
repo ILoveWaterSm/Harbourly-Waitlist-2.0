@@ -1,0 +1,33 @@
+/* AudioPlayer → AudioPlayer.module.css. The coach's voice intro: play or pause, a thin progress line,
+   elapsed and total time in mono. One player per profile. */
+.audioPlayer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 440px;
+  padding: var(--space-3) var(--space-5) var(--space-3) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--bg-mid);
+}
+.audioPlayerButton {
+  display: inline-grid;
+  place-items: center;
+  width: 44px; height: 44px;
+  flex: none;
+  padding: 0;
+  border: 1px solid var(--green-line);
+  border-radius: var(--radius-round);
+  background: none;
+  color: var(--green);
+  cursor: pointer;
+  transition: border-color .2s, background-color .2s;
+}
+.audioPlayerButton svg { width: 18px; height: 18px; }
+.audioPlayerButton:hover, .audioPlayerButton.isHover { border-color: var(--green); background: var(--green-tint); }
+.audioPlayerButton:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.audioPlayerBody { display: grid; gap: var(--space-2); flex: 1; min-width: 0; }
+.audioPlayerTop { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.audioPlayerTitle { font-weight: 600; font-size: 14.5px; color: var(--ink); }
+.audioPlayerTime { font: 400 12.5px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+.audioPlayerTrack { height: 3px; border-radius: var(--radius-pill); background: var(--fill-subtle); overflow: hidden; }
+.audioPlayerTrack > span { display: block; height: 100%; border-radius: inherit; background: var(--green); }

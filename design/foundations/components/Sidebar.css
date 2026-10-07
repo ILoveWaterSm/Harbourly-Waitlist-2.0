@@ -1,6 +1,6 @@
 /* Sidebar → Sidebar.module.css. Gamer block always; coach block once a coach record exists.
    The block you're in has a green label; "Become a coach" is a dashed invitation, not a section. */
-.sidebar { position: sticky; top: 64px; display: grid; gap: var(--space-8); align-content: start; padding: var(--space-6) var(--space-4); border-right: 1px solid var(--line); min-height: calc(100% - 64px); }
+.sidebar { position: sticky; top: 76px; display: grid; gap: var(--space-8); align-content: start; padding: var(--space-6) var(--space-4); border-right: 1px solid var(--line); min-height: calc(100% - 76px); }
 .sidebarBlock { display: grid; gap: var(--space-1); }
 .sidebarBlockLabel { padding: 0 var(--space-3) var(--space-2); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
 .sidebarBlock.active .sidebarBlockLabel { color: var(--green); }

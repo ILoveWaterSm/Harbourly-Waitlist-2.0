@@ -48,31 +48,35 @@ One page showing every shared component in every state. Introduces:
 
 ## Phase 1: Find and book a coach
 
+Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`design/pages/01-browse-coaches.html`) · [02 Coach profile](https://claude.ai/artifact/GUw5NpQEWds2tvVRkCVH2Y) (`design/pages/02-coach-profile.html`) · [03 Pick a slot](https://claude.ai/artifact/DoTXw1NFPY7nMf64rrNVV9) (`design/pages/03-pick-a-slot.html`) · [04 Checkout summary](https://claude.ai/artifact/EFj1Br4ak4Xnd7935vocsw) (`design/pages/04-checkout-summary.html`) · [05 Payment return](https://claude.ai/artifact/HSpMwJ9o7dDJAEYaDy6wUa) (`design/pages/05-payment-return.html`) · frames on the [canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ)
+
 ### 1. Browse coaches · M
 `/coaches` *proposed*. Logged in and logged out.
 - Filters: game, price. Sort: price (default, low to high), rating, most reviewed.
+- One card per row: identity with flag, languages and time zone, one-line bio that opens on hover, rank and rating, price and next free time.
 - States: results, filtered, no results, loading, load more, error, prices in the viewer's currency with "≈".
 
 ### 2. Coach profile · L
 `/coaches/[username]` *proposed*. Viewable logged out.
-- Avatar, banner, name, Verified or New Coach, bio, per-game sections (rank, credentials, price), availability preview, voice intro, reviews.
+- Avatar, banner, name, Verified or New Coach, country with flag, languages, time zone, bio, per-game sections (rank, credentials, price), availability preview, voice intro, reviews.
+- "Book a session" in the header; with two or more games, each game section also has "Choose a time", which opens Pick a slot with that game chosen.
 - States: Verified coach, New Coach, one game vs several, no reviews yet, no voice intro, converted price with "Kairo's price is ₱1,850" line, logged out (Book leads to log in), your own profile (no Book button), preview mode (used later by 22), loading, not found.
 
 ### 3. Pick a slot · M
 `/coaches/[username]/book` *proposed*.
 - Choose game, then a one-hour slot from weekly availability in your local time.
-- States: slots available, nothing free this week, slot just taken, returning after log in, phone not verified (verify before continuing).
+- States: slots available, logged out (log in to continue), nothing free this week, slot just taken, returning after log in, phone not verified (verify before continuing).
 
 ### 4. Checkout summary · M
 `/checkout/[bookingId]` *proposed*.
 - Coach price, platform fee, total in the coach's currency, the "your bank converts this" line, cancellation rule, how payment is held, hold countdown (30 minutes).
-- States: same currency, different currency, hold nearly expired, hold expired, back after a failed payment.
+- States: same currency, different currency, session in under 24 hours (can't be cancelled or moved), hold nearly expired, hold expired, back after a failed payment.
 
 ### 5. Payment return · S
 `/checkout/[bookingId]/return` *proposed*.
 - States: confirming your payment, booking confirmed, payment didn't go through (try again while held), slot no longer held (pick another).
 
-**Checkpoint 2:** the booking flow end to end.
+**Checkpoint 2:** the booking flow end to end. Built and published 6 Oct 2026; waiting for review.
 
 ---
 
@@ -183,7 +187,7 @@ One page showing every shared component in every state. Introduces:
 
 ### 21. Profile setup · L
 `/coach/setup` *proposed*.
-- Bio (500 characters), avatar or default, banner, weekly availability in your own time zone, price per game in your currency, up to 3 credential lines per game.
+- Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency, up to 3 credential lines per game.
 - States: each step, saved and resumed, validation, complete (moves to live once payout and phone are done).
 
 **Checkpoint 6:** coach onboarding.
@@ -194,7 +198,7 @@ One page showing every shared component in every state. Introduces:
 
 ### 22. Coach profile settings · L
 `/coach/profile` *proposed*.
-- Edit bio, avatar, banner, availability, prices.
+- Edit bio, avatar, banner, languages, availability, prices.
 - Update rank (screenshot, pending, old rank still shown).
 - Add a game (proof, under review).
 - Voice intro (record, pending, approved, declined).

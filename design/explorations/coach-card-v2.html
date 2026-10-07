@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coach card v2</title>
+<meta name="description" content="Exploration: the one-per-row browse coach card, desktop and phone, at rest and expanded.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Price.css">
+<link rel="stylesheet" href="../foundations/components/GameRank.css">
+<link rel="stylesheet" href="../foundations/components/Rating.css">
+<style>
+/* Exploration only. If approved, these rules replace CoachCard.css (and the star fill moves into Rating.css). */
+.xWrap { display: grid; gap: var(--space-8); max-width: 1080px; margin: 0 auto; padding: var(--space-10) var(--space-10) var(--space-20); }
+.xHead { display: grid; gap: var(--space-2); max-width: 70ch; }
+.xHead p { color: var(--muted); }
+.xGroup { display: grid; gap: var(--space-3); }
+.xCap { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+.xList { display: grid; gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+
+/* Filled star (point 6) */
+.rating svg { fill: currentColor; }
+
+/* Flag: inline SVG, 3:2, with a hairline so white stripes hold their edge on the dark ground */
+.flag { display: inline-block; width: 21px; height: 14px; flex: none; border-radius: 2px; box-shadow: 0 0 0 1px var(--line-strong); vertical-align: -2px; overflow: hidden; }
+.flag svg { display: block; width: 100%; height: 100%; }
+
+/* The card */
+.coachRow {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 216px 180px 20px;
+  grid-template-areas: "avatar who proof decision go";
+  gap: var(--space-2) var(--space-6);
+  align-items: start;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-flat);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color .2s;
+}
+.coachRow:hover, .coachRow:focus-visible, .coachRow.isOpen { background: color-mix(in srgb, var(--surface) 94%, var(--ink)); }
+.coachRow:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.coachRow > .avatar { grid-area: avatar; align-self: center; --avatar-size: 72px; }
+.coachRowWho { grid-area: who; display: grid; gap: 6px; min-width: 0; }
+.coachRowZone + .coachRowLong { margin-left: calc(var(--space-2) * -1); }
+.coachRowName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-size: 17px; font-weight: 600; line-height: 1.3; color: var(--ink); }
+.coachRowMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px var(--space-2); font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+.coachRowMeta .handle { font-size: 12.5px; }
+.coachRowMeta .sep { color: var(--subtle); }
+.coachRowPlace { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+.coachRowZone { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-soft); }
+
+/* Bio: one line at rest, fading at its end; expands smoothly on hover or keyboard focus (after a short pause, so moving down the list doesn't make cards jump) */
+.coachRowBio {
+  margin-top: 4px;
+  max-height: 1.55em;
+  overflow: hidden;
+  font-size: 14.5px; line-height: 1.55; color: var(--ink-soft);
+  transition: max-height .35s ease;
+}
+.coachRowBio.isClamped { -webkit-mask-image: linear-gradient(90deg, #000 72%, transparent); mask-image: linear-gradient(90deg, #000 72%, transparent); }
+@media (hover: hover) {
+  .coachRow:hover .coachRowBio { max-height: 12em; transition-delay: .15s; -webkit-mask-image: none; mask-image: none; }
+}
+.coachRow:focus-visible .coachRowBio, .coachRow.isOpen .coachRowBio { max-height: 12em; -webkit-mask-image: none; mask-image: none; }
+
+.coachRowProof { grid-area: proof; display: grid; gap: var(--space-2); align-content: start; padding-left: var(--space-6); border-left: 1px solid var(--line); min-width: 0; }
+.coachRowDecision { grid-area: decision; display: grid; gap: var(--space-2); justify-items: end; align-content: start; text-align: right; }
+.coachRowDecision .priceAmount { font-size: 20px; }
+.coachRowNext { display: grid; gap: 2px; font-size: 12.5px; line-height: 1.35; color: var(--muted); }
+.coachRowNext .mono { font-size: 13px; color: var(--ink-soft); }
+.coachRowGo { grid-area: go; align-self: center; color: var(--subtle); transition: color .2s; }
+.coachRowGo svg { display: block; width: 20px; height: 20px; }
+.coachRow:hover .coachRowGo, .coachRow.isOpen .coachRowGo { color: var(--ink); }
+.flagName { display: inline; }
+
+@container app (max-width: 640px) {
+  .xWrap { padding: var(--space-6) var(--space-4) var(--space-14); }
+  .coachRow {
+    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-areas: "avatar who" "bio bio" "proof proof" "decision decision";
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+  .coachRow > .avatar { --avatar-size: 72px; }
+  .coachRow > .avatar { margin-block: -2px; } /* as tall as the three identity lines, so the rows below don't move */
+  .coachRowWho { display: contents; }
+  .coachRowId { grid-area: who; display: grid; gap: 4px; align-self: center; min-width: 0; }
+  .coachRowName { font-size: 16px; }
+  .flagName, .coachRowLong { display: none; }
+  .coachRowBio { grid-area: bio; margin-top: 0; max-height: 3.1em; }
+  .coachRowBio.isClamped { -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(90deg, #000 60%, transparent); -webkit-mask-size: 100% 50%, 100% 50%; -webkit-mask-position: top, bottom; -webkit-mask-repeat: no-repeat; mask-image: linear-gradient(#000 0 0), linear-gradient(90deg, #000 60%, transparent); mask-size: 100% 50%, 100% 50%; mask-position: top, bottom; mask-repeat: no-repeat; }
+  .coachRow.isOpen .coachRowBio { max-height: 3.1em; }
+  /* Two rows: what they coach and how they're rated, then what it costs and when */
+  .coachRowProof { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); padding: var(--space-4) 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .coachRowProof .rating { margin-top: 1px; }
+  .coachRowDecision { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-3); text-align: left; }
+  .coachRowDecision .priceAmount { font-size: 18px; }
+  .coachRowNext { text-align: right; }
+  .coachRowNext .mono { font-size: 12.5px; white-space: nowrap; }
+  .coachRowGo { display: none; }
+  .xOpen { display: none; }
+}
+@container app (min-width: 641px) { .coachRowId { display: grid; gap: 6px; } }
+</style>
+</head>
+<body>
+<div class="mk-stage">
+<div class="mk-frame" data-page="Coach card v2 · exploration">
+<section data-state="cards" data-label="Cards">
+<main class="xWrap">
+  <header class="xHead">
+    <span class="eyebrow">Exploration · browse card</span>
+    <h1>Coach card, one per row</h1>
+    <p>Who they are, then proof they can coach your game, then price and when you can start. The proof and price columns line up down the list, so coaches compare at a glance.</p>
+  </header>
+
+  <div class="xGroup">
+    <span class="xCap">At rest</span>
+    <ul class="xList">
+      <li><a class="coachRow" href="#">
+        <span class="avatar">K</span>
+        <div class="coachRowWho">
+          <div class="coachRowId">
+            <div class="coachRowName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+            <p class="coachRowMeta"><span class="handle">@kairo.gg</span><span class="sep">·</span><span class="coachRowPlace"><span class="flag" role="img" aria-label="Philippines" data-flag="ph"></span><span class="flagName">Philippines</span></span></p>
+            <p class="coachRowMeta"><span><span class="coachRowLong">Speaks </span>English, Filipino</span><span class="sep">·</span><span class="coachRowZone">PHT</span><span class="coachRowLong">, same time as you</span></p>
+          </div>
+          <p class="coachRowBio">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</p>
+        </div>
+        <div class="coachRowProof">
+          <div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div>
+          <span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span>
+        </div>
+        <div class="coachRowDecision">
+          <span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span>
+          <p class="coachRowNext"><span>Next free</span><span class="mono">Today, 19:00 SGT</span></p>
+        </div>
+        <span class="coachRowGo" aria-hidden="true"><svg class="icon"><use href="#i-chevron-right"/></svg></span>
+      </a></li>
+
+      <li><a class="coachRow" href="#">
+        <span class="avatar">V</span>
+        <div class="coachRowWho">
+          <div class="coachRowId">
+            <div class="coachRowName">Vexa <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+            <p class="coachRowMeta"><span class="handle">@vexa</span><span class="sep">·</span><span class="coachRowPlace"><span class="flag" role="img" aria-label="Singapore" data-flag="sg"></span><span class="flagName">Singapore</span></span></p>
+            <p class="coachRowMeta"><span><span class="coachRowLong">Speaks </span>English, Mandarin</span><span class="sep">·</span><span class="coachRowZone">SGT</span><span class="coachRowLong">, same time as you</span></p>
+          </div>
+          <p class="coachRowBio">Controller and Sentinel main. I focus on crosshair placement, utility and comms. We can review your VODs or you can play live while I watch.</p>
+        </div>
+        <div class="coachRowProof">
+          <div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 2</span></div>
+          <span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(32)</span></span>
+        </div>
+        <div class="coachRowDecision">
+          <span class="price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></span>
+          <p class="coachRowNext"><span>Next free</span><span class="mono">Tue 13 Oct, 20:00 SGT</span></p>
+        </div>
+        <span class="coachRowGo" aria-hidden="true"><svg class="icon"><use href="#i-chevron-right"/></svg></span>
+      </a></li>
+
+      <li><a class="coachRow" href="#">
+        <span class="avatar">N</span>
+        <div class="coachRowWho">
+          <div class="coachRowId">
+            <div class="coachRowName">nullpoint <span class="badge newCoach">New coach</span></div>
+            <p class="coachRowMeta"><span class="handle">@nullpoint</span><span class="sep">·</span><span class="coachRowPlace"><span class="flag" role="img" aria-label="Malaysia" data-flag="my"></span><span class="flagName">Malaysia</span></span></p>
+            <p class="coachRowMeta"><span><span class="coachRowLong">Speaks </span>English, Malay</span><span class="sep">·</span><span class="coachRowZone">MYT</span><span class="coachRowLong">, same time as you</span></p>
+          </div>
+          <p class="coachRowBio">Rifler and in-game leader. I review demos with you round by round: utility, positioning and mid-round calls.</p>
+        </div>
+        <div class="coachRowProof">
+          <div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 21,450</span></div>
+          <span class="rating none">No reviews yet</span>
+        </div>
+        <div class="coachRowDecision">
+          <span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span>
+          <p class="coachRowNext"><span>Next free</span><span class="mono">Tomorrow, 19:00 SGT</span></p>
+        </div>
+        <span class="coachRowGo" aria-hidden="true"><svg class="icon"><use href="#i-chevron-right"/></svg></span>
+      </a></li>
+    </ul>
+  </div>
+
+  <div class="xGroup xOpen">
+    <span class="xCap">Hover or keyboard focus · the bio opens after a short pause</span>
+    <ul class="xList">
+      <li><a class="coachRow isOpen" href="#" tabindex="-1">
+        <span class="avatar">K</span>
+        <div class="coachRowWho">
+          <div class="coachRowId">
+            <div class="coachRowName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+            <p class="coachRowMeta"><span class="handle">@kairo.gg</span><span class="sep">·</span><span class="coachRowPlace"><span class="flag" role="img" aria-label="Philippines" data-flag="ph"></span><span class="flagName">Philippines</span></span></p>
+            <p class="coachRowMeta"><span><span class="coachRowLong">Speaks </span>English, Filipino</span><span class="sep">·</span><span class="coachRowZone">PHT</span><span class="coachRowLong">, same time as you</span></p>
+          </div>
+          <p class="coachRowBio">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</p>
+        </div>
+        <div class="coachRowProof">
+          <div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div>
+          <span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span>
+        </div>
+        <div class="coachRowDecision">
+          <span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span>
+          <p class="coachRowNext"><span>Next free</span><span class="mono">Today, 19:00 SGT</span></p>
+        </div>
+        <span class="coachRowGo" aria-hidden="true"><svg class="icon"><use href="#i-chevron-right"/></svg></span>
+      </a></li>
+    </ul>
+  </div>
+</main>
+</section>
+</div>
+</div>
+<script src="../foundations/icons.js"></script>
+<script>
+// Flags: simplified inline SVGs (production would use a full flag icon set in the same 3:2 box).
+var FLAGS = {
+  ph: '<svg viewBox="0 0 30 20"><rect width="30" height="10" fill="#0038a8"/><rect y="10" width="30" height="10" fill="#ce1126"/><path d="M0 0 13 10 0 20z" fill="#fff"/><circle cx="4.6" cy="10" r="2" fill="#fcd116"/></svg>',
+  sg: '<svg viewBox="0 0 30 20"><rect width="30" height="10" fill="#ef3340"/><rect y="10" width="30" height="10" fill="#fff"/><circle cx="6.2" cy="5" r="3.3" fill="#fff"/><circle cx="7.4" cy="5" r="3" fill="#ef3340"/><g fill="#fff"><circle cx="10.6" cy="3.1" r=".55"/><circle cx="12.4" cy="4.4" r=".55"/><circle cx="11.7" cy="6.5" r=".55"/><circle cx="9.5" cy="6.5" r=".55"/><circle cx="8.8" cy="4.4" r=".55"/></g></svg>',
+  my: '<svg viewBox="0 0 30 20"><g fill="#cc0001"><rect width="30" height="20"/></g><g fill="#fff"><rect y="1.43" width="30" height="1.43"/><rect y="4.29" width="30" height="1.43"/><rect y="7.14" width="30" height="1.43"/><rect y="10" width="30" height="1.43"/><rect y="12.86" width="30" height="1.43"/><rect y="15.71" width="30" height="1.43"/><rect y="18.57" width="30" height="1.43"/></g><rect width="15" height="11.43" fill="#010066"/><circle cx="5.6" cy="5.7" r="3.6" fill="#fc0"/><circle cx="6.7" cy="5.7" r="3" fill="#010066"/><circle cx="11" cy="5.7" r="1.6" fill="#fc0"/></svg>'
+};
+document.querySelectorAll('[data-flag]').forEach(function (f) { f.innerHTML = FLAGS[f.dataset.flag]; });
+// Fade the end of a bio only when it doesn't fit (re-checked when the width changes).
+function clamp() { document.querySelectorAll('.coachRowBio').forEach(function (b) { if (b.closest('.isOpen')) return; b.classList.toggle('isClamped', b.scrollHeight > b.clientHeight + 1); }); }
+document.addEventListener('mk:change', function () { requestAnimationFrame(clamp); });
+window.addEventListener('resize', clamp);
+</script>
+<script src="../foundations/mockup.js"></script>
+</body>
+</html>

@@ -257,3 +257,77 @@ In the design
 - Build note: strip location and other metadata from uploaded images before storing them.
 - Upload hint line, e.g. "JPG, PNG or WebP · up to 10 MB". Errors: "season-stats.png is 14.2 MB. Images can be up to 10 MB." and "rank-proof.heic isn't a JPG, PNG or WebP. Save it as one of those and try again."
 - Still to decide in Phase 6: voice intro length, portfolio format.
+
+## Booking from the coach profile (agreed before Phase 1)
+
+- Gamers book a coach, never a game. The game only says what the session with that coach is about.
+- The profile header has one primary "Book a session" button. It opens Pick a slot, where the gamer chooses the game (if the coach has more than one) and then a time.
+- Each game section on a profile with two or more games also has a secondary "Choose a time" button, beside that game's price. It opens the same Pick a slot page with that game already chosen.
+- A coach with one game shows only the header button.
+
+## Labels (agreed before Phase 1)
+
+- Short labels that say what happens next and who it's with, e.g. "Book a session", "Choose a time", "Continue to payment", "View session".
+- Never phrase a label as if the gamer books or buys a game.
+- The same action keeps the same label on every page and in every email.
+
+## Phase 1 decisions (agreed before Phase 1)
+
+Browse
+- Price filter: a "Max price" select in the viewer's currency: Any price, Up to S$30, Up to S$40, Up to S$50, Up to S$60. Converted prices are compared at their converted value.
+- Sort labels: "Lowest price" (default), "Highest rating", "Most reviewed".
+- 12 coaches per page, then "Load more".
+- A line under the filters explains "≈": prices are in your currency, ≈ means converted from the coach's.
+
+Cast additions (fictional, used across all pages)
+- **Mirae** `@mirae`, Singapore, Verified, 4.7 (19). Riftbound `Regional Qualifier · Top 8` at S$38; Valorant `Ascendant 3` at S$40.
+- **Ghostline** `@ghostline`, Malaysia, Verified, 4.6 (24). Call of Duty: Mobile `Legendary · Top 2,000` at RM 120 (≈ S$34, at the same rate as RM 150 ≈ S$43).
+- Browse filler: **Lumen** `@lumen` (Philippines, New Coach, Riftbound `Regional Qualifier · Top 16`, ₱1,250 ≈ S$29); **Pallas** `@pallas` (Singapore, Verified, 4.6 (8), Mobile Legends `Mythical Glory · 64★`, S$30); **Marlowe** `@marlowe` (Malaysia, New Coach, Valorant `Immortal 1`, RM 110 ≈ S$32); **Kestrel** `@kestrel.cod` (Singapore, Verified, 4.5 (11), Call of Duty: Mobile `Legendary · Top 1,000`, S$33); **Tidewalker** `@tidewalker` (Philippines, Verified, 4.8 (41), Mobile Legends `Mythical Immortal · 112★`, ₱1,500 ≈ S$35); **Rook** `@rookcs` (Malaysia, Verified, 4.7 (15), Counter-Strike 2 `Premier 24,800`, RM 180 ≈ S$52); **Hanabi** `@hanabi.vlr` (Singapore, Verified, 4.9 (26), Valorant `Radiant · #312 APAC`, S$60).
+- 19 coaches are listed in total; the first page shows 12.
+
+Coach profile
+- Availability preview: the next 7 days, each with its number of free one-hour slots, the next free time, and "See all times" (opens Pick a slot). No clickable times on the profile.
+- Banner: until real images exist, and for any coach without one, a plain `--bg-mid` band.
+- Reviews: the 5 newest, then "Show more reviews" (5 more each time). Each shows the reviewer's username, stars, game, month and text. No rating breakdown, no coach replies.
+- Voice intro: a shared audio player (play or pause, duration in mono, a thin progress line). Mocked at 0:45 until the length is decided in Phase 6.
+- Logged out: "Book a session" still opens Pick a slot; log in or sign up comes after a time is chosen, and returns to the same choice.
+
+Pick a slot
+- Bookable up to 4 weeks ahead. Slots start on the hour. The earliest slot starts at least 2 hours from now.
+- Picking a time and pressing "Continue to checkout" creates the 30-minute hold.
+
+Checkout and payment return
+- Both pages drop the sidebar and keep the top nav, so attention stays on the amounts and the hold.
+- The page names the payment provider: Xendit for coaches in the Philippines, Stripe for Singapore and Malaysia ("You'll pay on Xendit's secure page.").
+- "Choose another time" on checkout releases the hold at once and returns to Pick a slot. The same label is used wherever a hold has ended.
+- Booking less than 24 hours ahead: checkout replaces the cancellation rule with "This session starts in under 24 hours, so it can't be cancelled or moved."
+- Otherwise checkout also says: "Cancel within 1 hour of booking for a full refund, including the platform fee."
+- Booking confirmed: a session summary, "View session" and "Back to dashboard". No calendar export.
+
+New shared components for Phase 1: OptionCard (choice card with a radio), SlotPicker, AudioPlayer, ReviewItem, PriceBreakdown, Spinner.
+
+## Browse card and top nav (agreed 7 Oct 2026, after Phase 1 review)
+
+Browse coaches
+- One coach card per row at every width (was two per row on desktop).
+- The result count ("19 coaches") is set in Geist bold, and the filter summary after it in Geist regular, muted. A deliberate exception to "counts in Geist Mono", because the count works as a heading for the list.
+
+Coach card (CoachCard component; mockup in `design/explorations/coach-card-v2.html`)
+- Desktop reads in three zones: who they are, proof they can coach your game, then price and when you can start. The proof and decision columns have fixed widths so ranks, ratings and prices line up down the list.
+- Who: 72px avatar centred vertically; name and Verified or New Coach badge; @handle, flag and country; "Speaks English, Filipino · PHT, same time as you"; the coach's About text on one line.
+- The bio shows one line (two on phone) and fades at its end when it doesn't fit. On hover, after a 150 ms pause so scanning the list doesn't make cards jump, or on keyboard focus, it opens smoothly to its full length. Phones don't expand it; tapping opens the profile. The hover lift is dropped; the card lightens instead.
+- Proof: game, rank and rating, behind a hairline. Decision: price as the largest figure, then "Next free" with the next free time in the viewer's zone ("Today, 19:00 SGT", "Tue 13 Oct, 20:00 SGT"). A chevron marks the whole card as a link.
+- Phone: 72px avatar beside name, handle and flag (no country name), and "English, Filipino · PHT"; two lines of bio; then rank with the rating on its line; then price with the next free time.
+- Time zone is phrased from the viewer's side: "same time as you", or e.g. "1 hour behind you".
+- Ratings use a filled green star everywhere.
+
+New coach data
+- Coaches choose the languages they coach in during profile setup and can change them in coach profile settings. Shown on the browse card and on the coach profile under the name, with country (flag and name) and time zone.
+- Flags are the one place colours outside the palette appear. Mockups use simplified flags (`foundations/flags.js`); the app uses a full flag icon set in the same 3:2 box (Flag component).
+
+Top nav (all pages)
+- 76px tall on desktop with a 42px logo, a 40px avatar and 16px name and Sign out; Log in and Sign up use full-size buttons. 68px tall below 1000px with a 36px logo (32px at 400px and under) and a 44px menu button. Edge padding 32px on desktop, 16px on phone.
+
+Cast details (fictional)
+- Languages: Kairo English, Filipino; Vexa English, Mandarin; nullpoint English, Malay; Mirae English, Korean; Ghostline English, Malay; Lumen English, Filipino; Pallas English; Marlowe English, Malay; Kestrel English, Mandarin; Tidewalker English, Filipino; Rook English, Malay; Hanabi English, Mandarin. Time zones follow country (PHT, SGT, MYT), all UTC+8.
+- Every cast coach has a short bio; the browse page source holds the text.

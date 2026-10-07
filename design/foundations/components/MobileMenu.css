@@ -2,7 +2,7 @@
    top nav with the same blocks as the sidebar, plus account and sign out. */
 .mobileMenu {
   position: absolute;
-  top: 60px; left: 0; right: 0;
+  top: 68px; left: 0; right: 0;
   z-index: 19;
   display: grid;
   gap: var(--space-6);

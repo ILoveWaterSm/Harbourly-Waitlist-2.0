@@ -1,0 +1,49 @@
+/* SlotPicker → SlotPicker.module.css. One row per day, its free one-hour slots as chips, all in the
+   viewer's time zone. Rows (not a calendar grid) so the same layout reads at every width. */
+.slotPicker { display: grid; gap: var(--space-4); min-width: 0; }
+.slotPickerHead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.slotPickerWeek { display: flex; align-items: center; gap: var(--space-3); }
+.slotPickerRange { min-width: 128px; text-align: center; font: 500 14px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.slotPickerZone { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.slotDays { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.slotDay {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--line);
+}
+.slotDay:first-child { border-top: 0; }
+.slotDayLabel { display: grid; gap: 4px; padding-top: 11px; }
+.slotDayName { font-weight: 600; font-size: 14.5px; line-height: 1; color: var(--ink); }
+.slotDayDate { font: 400 12px/1 var(--font-mono); color: var(--muted); }
+.slotDayToday { color: var(--green); }
+.slotDayTimes { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.slotDayNone { padding-top: 12px; font-size: 13.5px; color: var(--subtle); }
+.slot {
+  min-width: 76px;
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--ink);
+  font: 500 14px/1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: border-color .2s, background-color .2s, color .2s;
+}
+.slot:hover:not([aria-pressed="true"]), .slot.isHover { border-color: var(--green-line); background: var(--fill-subtle); }
+.slot:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.slot[aria-pressed="true"] { border-color: var(--green); background: var(--green); color: var(--green-ink); font-weight: 600; }
+.slotPickerEmpty { display: grid; gap: var(--space-2); justify-items: start; padding: var(--space-6) 0 var(--space-2); border-top: 1px solid var(--line); }
+.slotPickerEmptyTitle { font-weight: 600; font-size: 15.5px; color: var(--ink); }
+.slotPickerEmptyText { font-size: 14px; line-height: 1.55; color: var(--muted); }
+.slotPickerEmpty .button { margin-top: var(--space-2); }
+@container app (max-width: 560px) {
+  .slotDay { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); padding: var(--space-4) 0; }
+  .slotDayLabel { display: flex; align-items: baseline; gap: var(--space-2); padding-top: 0; }
+  .slotDayNone { padding-top: 0; }
+  .slot { min-height: 44px; flex: 1 0 76px; max-width: calc((100% - 2 * var(--space-2)) / 3); }
+}

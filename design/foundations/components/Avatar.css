@@ -20,3 +20,4 @@
 .avatar.md { --avatar-size: 56px; }
 .avatar.lg { --avatar-size: 96px; }
 .avatar.photo { border-color: var(--line-strong); }
+.avatar.ml { --avatar-size: 72px; }

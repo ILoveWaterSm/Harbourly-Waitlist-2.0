@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 Browse coaches</title>
+<meta name="description" content="Phase 1, page 1: browse coaches, logged in and out, with every state.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Flag.css">
+<link rel="stylesheet" href="../foundations/components/Price.css">
+<link rel="stylesheet" href="../foundations/components/GameRank.css">
+<link rel="stylesheet" href="../foundations/components/Rating.css">
+<link rel="stylesheet" href="../foundations/components/CoachCard.css">
+<link rel="stylesheet" href="../foundations/components/EmptyState.css">
+<link rel="stylesheet" href="../foundations/components/Skeleton.css">
+<link rel="stylesheet" href="../foundations/components/ErrorState.css">
+<style>
+/* Page: Browse coaches (/coaches) → app/coaches/page.module.css. Layout only; every part is a shared component. */
+.pageHead { display: grid; gap: var(--space-3); max-width: 62ch; }
+.pageLead { font: var(--text-body); color: var(--muted); }
+.browseFilters { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 220px) minmax(0, 220px) auto; gap: var(--space-4); align-items: end; margin-top: var(--space-8); }
+.browseClear { padding-bottom: 14px; white-space: nowrap; }
+.browseMeta { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-2) var(--space-6); margin-top: var(--space-8); padding-bottom: var(--space-4); border-bottom: 1px solid var(--line); font-size: 13.5px; color: var(--muted); }
+.browseCount { font: 700 15px/1.3 var(--font-body); font-variant-numeric: tabular-nums; color: var(--ink); }
+.browseCount span { color: var(--muted); font-weight: 400; }
+.browseGrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
+.browseGrid > li { display: grid; min-width: 0; }
+.browseError { margin-top: var(--space-6); padding-top: var(--space-8); border-top: 1px solid var(--line); max-width: none; }
+.browseMore { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); margin-top: var(--space-8); }
+.browseMoreCount { font: 400 13px/1.3 var(--font-mono); color: var(--muted); }
+@container app (max-width: 640px) {
+  .browseFilters { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin-top: var(--space-6); }
+  .browseFilters > :first-child { grid-column: 1 / -1; }
+  .browseClear { grid-column: 1 / -1; justify-self: start; padding-bottom: 0; }
+  .browseMeta { margin-top: var(--space-6); }
+  .browseMore .button { width: 100%; }
+}
+</style>
+</head>
+<body>
+<template id="shell-gamer">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody">
+          <nav class="sidebar" aria-label="Main">
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          </nav>
+          <main class="appShellMain"><div class="appShellContent" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-guest">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="button secondary" href="#">Log in</a>
+            <a class="button primary" href="#">Sign up</a>
+          </div>
+        </header>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="01 Browse coaches">
+
+  <section data-state="results" data-label="Results" data-shell="gamer" data-nav="browse">
+      <div class="pageHead">
+        <h1>Browse coaches</h1>
+        <p class="pageLead">Book a one-hour, 1-on-1 session with a coach. Your payment is held until you confirm the session went ahead.</p>
+      </div>
+      <form class="browseFilters" role="search" aria-label="Filter coaches" onsubmit="return false">
+        <div class="field"><label class="fieldLabel" for="r-game">Game</label><select class="fieldControl" id="r-game"><option selected>All games</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option>Valorant</option><option>Counter-Strike 2</option><option>Riftbound</option></select></div>
+        <div class="field"><label class="fieldLabel" for="r-price">Max price</label><select class="fieldControl" id="r-price"><option selected>Any price</option><option>Up to S$30</option><option>Up to S$40</option><option>Up to S$50</option><option>Up to S$60</option></select></div>
+        <div class="field"><label class="fieldLabel" for="r-sort">Sort by</label><select class="fieldControl" id="r-sort"><option selected>Lowest price</option><option>Highest rating</option><option>Most reviewed</option></select></div>
+        
+      </form>
+      <div class="browseMeta"><p class="browseCount" aria-live="polite">19 coaches</p><p>Prices in SGD. ≈ means converted from the coach's currency.</p></div>
+      <ul class="browseGrid">
+        <li><a class="coachCard" href="#"><span class="avatar">L</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Lumen <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@lumen</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Regional qualifier in Riftbound's first season. I teach deck building, mulligans and how to read your opponent's lines. Bring a decklist.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Riftbound</span><span class="gameRankValue">Regional Qualifier · Top 16</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$29</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">P</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Pallas <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@pallas</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Mage and support main. I help solo queue players climb with better map awareness, vision and teamfight positioning.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends</span><span class="gameRankValue">Mythical Glory · 64★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.6 <span class="ratingCount">(8)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$30</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 21:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">M</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Marlowe <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@marlowe</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Duelist main. Aim routines, entry timing and trading with your team instead of dying alone.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 1</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$32</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Wed 7 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">K</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Kestrel <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@kestrel.cod</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Search and Destroy specialist. I break down your rounds: spawns, lines of sight and when to rotate. Good for players stuck in Master.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 1,000</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.5 <span class="ratingCount">(11)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$33</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 21:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">G</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Ghostline <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@ghostline</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Former university league captain. I coach Hardpoint rotations and team comms, and we go through your gameplay clips together.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 2,000</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.6 <span class="ratingCount">(24)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$34</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Thu 8 Oct, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">T</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Tidewalker <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@tidewalker</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Gold laner and long-time solo queue grinder. I focus on farming routes, wave control and late-game decisions.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends</span><span class="gameRankValue">Mythical Immortal · 112★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(41)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$35</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">M</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Mirae <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@mirae</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Korean</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Riftbound regional top 8 and Valorant Ascendant. Deck reviews, matchup prep and calm, structured feedback.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Riftbound <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Regional Qualifier · Top 8</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.7 <span class="ratingCount">(19)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceFrom">from</span><span class="priceAmount">S$38</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Sat 10 Oct, 14:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">K</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@kairo.gg</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">N</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">nullpoint <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@nullpoint</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Rifler and in-game leader. I review demos with you round by round: utility, positioning and mid-round calls.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 21,450</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">V</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Vexa <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@vexa</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Controller and Sentinel main. I focus on crosshair placement, utility and comms. We can review your VODs or you can play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 2</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(32)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tue 13 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">R</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Rook <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@rookcs</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">AWPer for a semi-pro team in Malaysia. Positioning, utility for AWP setups and how to win more of your duels.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 24,800</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.7 <span class="ratingCount">(15)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$52</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 22:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">H</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Hanabi <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@hanabi.vlr</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Initiator player. I coach team play: setups, retakes and how to lead a five-stack's comms.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Radiant · #312 APAC</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(26)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$60</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Fri 9 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+      </ul>
+      <div class="browseMore"><button class="button secondary" type="button">Load more coaches</button><span class="browseMoreCount">Showing 12 of 19</span></div>
+  </section>
+
+  <section data-state="guest" data-label="Logged out" data-shell="guest">
+      <div class="pageHead">
+        <h1>Browse coaches</h1>
+        <p class="pageLead">Book a one-hour, 1-on-1 session with a coach. Your payment is held until you confirm the session went ahead.</p>
+      </div>
+      <form class="browseFilters" role="search" aria-label="Filter coaches" onsubmit="return false">
+        <div class="field"><label class="fieldLabel" for="g-game">Game</label><select class="fieldControl" id="g-game"><option selected>All games</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option>Valorant</option><option>Counter-Strike 2</option><option>Riftbound</option></select></div>
+        <div class="field"><label class="fieldLabel" for="g-price">Max price</label><select class="fieldControl" id="g-price"><option selected>Any price</option><option>Up to S$30</option><option>Up to S$40</option><option>Up to S$50</option><option>Up to S$60</option></select></div>
+        <div class="field"><label class="fieldLabel" for="g-sort">Sort by</label><select class="fieldControl" id="g-sort"><option selected>Lowest price</option><option>Highest rating</option><option>Most reviewed</option></select></div>
+        
+      </form>
+      <div class="browseMeta"><p class="browseCount" aria-live="polite">19 coaches</p><p>Prices in SGD. ≈ means converted from the coach's currency.</p></div>
+      <ul class="browseGrid">
+        <li><a class="coachCard" href="#"><span class="avatar">L</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Lumen <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@lumen</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Regional qualifier in Riftbound's first season. I teach deck building, mulligans and how to read your opponent's lines. Bring a decklist.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Riftbound</span><span class="gameRankValue">Regional Qualifier · Top 16</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$29</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">P</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Pallas <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@pallas</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Mage and support main. I help solo queue players climb with better map awareness, vision and teamfight positioning.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends</span><span class="gameRankValue">Mythical Glory · 64★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.6 <span class="ratingCount">(8)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$30</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 21:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">M</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Marlowe <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@marlowe</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Duelist main. Aim routines, entry timing and trading with your team instead of dying alone.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 1</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$32</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Wed 7 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">K</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Kestrel <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@kestrel.cod</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Search and Destroy specialist. I break down your rounds: spawns, lines of sight and when to rotate. Good for players stuck in Master.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 1,000</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.5 <span class="ratingCount">(11)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$33</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 21:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">G</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Ghostline <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@ghostline</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Former university league captain. I coach Hardpoint rotations and team comms, and we go through your gameplay clips together.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 2,000</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.6 <span class="ratingCount">(24)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$34</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Thu 8 Oct, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">T</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Tidewalker <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@tidewalker</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Gold laner and long-time solo queue grinder. I focus on farming routes, wave control and late-game decisions.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends</span><span class="gameRankValue">Mythical Immortal · 112★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(41)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$35</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">M</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Mirae <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@mirae</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Korean</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Riftbound regional top 8 and Valorant Ascendant. Deck reviews, matchup prep and calm, structured feedback.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Riftbound <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Regional Qualifier · Top 8</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.7 <span class="ratingCount">(19)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceFrom">from</span><span class="priceAmount">S$38</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Sat 10 Oct, 14:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">K</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@kairo.gg</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">N</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">nullpoint <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@nullpoint</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Rifler and in-game leader. I review demos with you round by round: utility, positioning and mid-round calls.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 21,450</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">V</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Vexa <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@vexa</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Controller and Sentinel main. I focus on crosshair placement, utility and comms. We can review your VODs or you can play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 2</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(32)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tue 13 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">R</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Rook <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@rookcs</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">AWPer for a semi-pro team in Malaysia. Positioning, utility for AWP setups and how to win more of your duels.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 24,800</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.7 <span class="ratingCount">(15)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$52</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 22:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">H</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Hanabi <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@hanabi.vlr</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Initiator player. I coach team play: setups, retakes and how to lead a five-stack's comms.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Radiant · #312 APAC</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(26)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$60</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Fri 9 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+      </ul>
+      <div class="browseMore"><button class="button secondary" type="button">Load more coaches</button><span class="browseMoreCount">Showing 12 of 19</span></div>
+  </section>
+
+  <section data-state="filtered" data-label="Filtered" data-shell="gamer" data-nav="browse">
+      <div class="pageHead">
+        <h1>Browse coaches</h1>
+        <p class="pageLead">Book a one-hour, 1-on-1 session with a coach. Your payment is held until you confirm the session went ahead.</p>
+      </div>
+      <form class="browseFilters" role="search" aria-label="Filter coaches" onsubmit="return false">
+        <div class="field"><label class="fieldLabel" for="f-game">Game</label><select class="fieldControl" id="f-game"><option>All games</option><option selected>Mobile Legends</option><option>Call of Duty: Mobile</option><option>Valorant</option><option>Counter-Strike 2</option><option>Riftbound</option></select></div>
+        <div class="field"><label class="fieldLabel" for="f-price">Max price</label><select class="fieldControl" id="f-price"><option>Any price</option><option>Up to S$30</option><option>Up to S$40</option><option selected>Up to S$50</option><option>Up to S$60</option></select></div>
+        <div class="field"><label class="fieldLabel" for="f-sort">Sort by</label><select class="fieldControl" id="f-sort"><option selected>Lowest price</option><option>Highest rating</option><option>Most reviewed</option></select></div>
+        <button class="textLink quiet browseClear" type="button">Clear filters</button>
+      </form>
+      <div class="browseMeta"><p class="browseCount" aria-live="polite">3 coaches <span>· Mobile Legends · up to S$50</span></p><p>Prices in SGD. ≈ means converted from the coach's currency.</p></div>
+      <ul class="browseGrid">
+        <li><a class="coachCard" href="#"><span class="avatar">P</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Pallas <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@pallas</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Mage and support main. I help solo queue players climb with better map awareness, vision and teamfight positioning.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends</span><span class="gameRankValue">Mythical Glory · 64★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.6 <span class="ratingCount">(8)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$30</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 21:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">T</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Tidewalker <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@tidewalker</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Gold laner and long-time solo queue grinder. I focus on farming routes, wave control and late-game decisions.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends</span><span class="gameRankValue">Mythical Immortal · 112★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(41)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$35</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><a class="coachCard" href="#"><span class="avatar">K</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@kairo.gg</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends</span><span class="gameRankValue">Mythical Glory · 85★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+      </ul>
+  </section>
+
+  <section data-state="empty" data-label="No results" data-shell="gamer" data-nav="browse">
+      <div class="pageHead">
+        <h1>Browse coaches</h1>
+        <p class="pageLead">Book a one-hour, 1-on-1 session with a coach. Your payment is held until you confirm the session went ahead.</p>
+      </div>
+      <form class="browseFilters" role="search" aria-label="Filter coaches" onsubmit="return false">
+        <div class="field"><label class="fieldLabel" for="e-game">Game</label><select class="fieldControl" id="e-game"><option>All games</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option>Valorant</option><option selected>Counter-Strike 2</option><option>Riftbound</option></select></div>
+        <div class="field"><label class="fieldLabel" for="e-price">Max price</label><select class="fieldControl" id="e-price"><option>Any price</option><option selected>Up to S$30</option><option>Up to S$40</option><option>Up to S$50</option><option>Up to S$60</option></select></div>
+        <div class="field"><label class="fieldLabel" for="e-sort">Sort by</label><select class="fieldControl" id="e-sort"><option selected>Lowest price</option><option>Highest rating</option><option>Most reviewed</option></select></div>
+        <button class="textLink quiet browseClear" type="button">Clear filters</button>
+      </form>
+      <div class="browseMeta"><p class="browseCount" aria-live="polite">0 coaches <span>· Counter-Strike 2 · up to S$30</span></p><p>Prices in SGD. ≈ means converted from the coach's currency.</p></div>
+      <div class="emptyState"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><p class="emptyStateTitle">No Counter-Strike 2 coaches up to S$30</p><p class="emptyStateText">The lowest Counter-Strike 2 price right now is <span class="mono" style="color:var(--ink-soft)">≈ S$43</span> a session. Try a higher max price or another game.</p><div class="emptyStateAction"><button class="button secondary" type="button">Show all prices</button></div></div>
+  </section>
+
+  <section data-state="loading" data-label="Loading" data-shell="gamer" data-nav="browse">
+      <div class="pageHead">
+        <h1>Browse coaches</h1>
+        <p class="pageLead">Book a one-hour, 1-on-1 session with a coach. Your payment is held until you confirm the session went ahead.</p>
+      </div>
+      <form class="browseFilters" role="search" aria-label="Filter coaches" onsubmit="return false">
+        <div class="field"><label class="fieldLabel" for="l-game">Game</label><select class="fieldControl" id="l-game"><option selected>All games</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option>Valorant</option><option>Counter-Strike 2</option><option>Riftbound</option></select></div>
+        <div class="field"><label class="fieldLabel" for="l-price">Max price</label><select class="fieldControl" id="l-price"><option selected>Any price</option><option>Up to S$30</option><option>Up to S$40</option><option>Up to S$50</option><option>Up to S$60</option></select></div>
+        <div class="field"><label class="fieldLabel" for="l-sort">Sort by</label><select class="fieldControl" id="l-sort"><option selected>Lowest price</option><option>Highest rating</option><option>Most reviewed</option></select></div>
+        
+      </form>
+      <div class="browseMeta" aria-hidden="true"><span class="skeleton" style="width:88px;height:13px"></span><span class="skeleton" style="width:300px;max-width:60%;height:12px"></span></div>
+      <ul class="browseGrid" aria-busy="true" aria-label="Loading coaches">
+        <li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li><li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li><li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li><li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li><li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li><li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li>
+      </ul>
+  </section>
+
+  <section data-state="more" data-label="Loading more" data-shell="gamer" data-nav="browse">
+      <div class="pageHead">
+        <h1>Browse coaches</h1>
+        <p class="pageLead">Book a one-hour, 1-on-1 session with a coach. Your payment is held until you confirm the session went ahead.</p>
+      </div>
+      <form class="browseFilters" role="search" aria-label="Filter coaches" onsubmit="return false">
+        <div class="field"><label class="fieldLabel" for="m-game">Game</label><select class="fieldControl" id="m-game"><option selected>All games</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option>Valorant</option><option>Counter-Strike 2</option><option>Riftbound</option></select></div>
+        <div class="field"><label class="fieldLabel" for="m-price">Max price</label><select class="fieldControl" id="m-price"><option selected>Any price</option><option>Up to S$30</option><option>Up to S$40</option><option>Up to S$50</option><option>Up to S$60</option></select></div>
+        <div class="field"><label class="fieldLabel" for="m-sort">Sort by</label><select class="fieldControl" id="m-sort"><option selected>Lowest price</option><option>Highest rating</option><option>Most reviewed</option></select></div>
+        
+      </form>
+      <div class="browseMeta"><p class="browseCount" aria-live="polite">19 coaches</p><p>Prices in SGD. ≈ means converted from the coach's currency.</p></div>
+      <ul class="browseGrid" aria-busy="true">
+        <li><a class="coachCard" href="#"><span class="avatar">L</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Lumen <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@lumen</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Regional qualifier in Riftbound's first season. I teach deck building, mulligans and how to read your opponent's lines. Bring a decklist.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Riftbound</span><span class="gameRankValue">Regional Qualifier · Top 16</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$29</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">P</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Pallas <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@pallas</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Mage and support main. I help solo queue players climb with better map awareness, vision and teamfight positioning.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends</span><span class="gameRankValue">Mythical Glory · 64★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.6 <span class="ratingCount">(8)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$30</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 21:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">M</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Marlowe <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@marlowe</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Duelist main. Aim routines, entry timing and trading with your team instead of dying alone.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 1</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$32</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Wed 7 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">K</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Kestrel <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@kestrel.cod</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Search and Destroy specialist. I break down your rounds: spawns, lines of sight and when to rotate. Good for players stuck in Master.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 1,000</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.5 <span class="ratingCount">(11)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$33</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 21:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">G</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Ghostline <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@ghostline</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Former university league captain. I coach Hardpoint rotations and team comms, and we go through your gameplay clips together.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 2,000</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.6 <span class="ratingCount">(24)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$34</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Thu 8 Oct, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">T</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Tidewalker <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@tidewalker</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Gold laner and long-time solo queue grinder. I focus on farming routes, wave control and late-game decisions.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends</span><span class="gameRankValue">Mythical Immortal · 112★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(41)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$35</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">M</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Mirae <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@mirae</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Korean</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Riftbound regional top 8 and Valorant Ascendant. Deck reviews, matchup prep and calm, structured feedback.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Riftbound <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Regional Qualifier · Top 8</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.7 <span class="ratingCount">(19)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceFrom">from</span><span class="priceAmount">S$38</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Sat 10 Oct, 14:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">K</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@kairo.gg</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">N</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">nullpoint <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@nullpoint</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Rifler and in-game leader. I review demos with you round by round: utility, positioning and mid-round calls.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 21,450</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">V</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Vexa <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@vexa</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Controller and Sentinel main. I focus on crosshair placement, utility and comms. We can review your VODs or you can play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 2</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(32)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tue 13 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">R</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Rook <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@rookcs</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">AWPer for a semi-pro team in Malaysia. Positioning, utility for AWP setups and how to win more of your duels.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 24,800</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.7 <span class="ratingCount">(15)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$52</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 22:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li><li><a class="coachCard" href="#"><span class="avatar">H</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Hanabi <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@hanabi.vlr</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Initiator player. I coach team play: setups, retakes and how to lead a five-stack's comms.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Radiant · #312 APAC</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(26)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$60</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Fri 9 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+        <li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li><li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li>
+      </ul>
+      <div class="browseMore"><button class="button secondary" type="button" aria-busy="true"><span class="buttonSpinner" aria-hidden="true"></span>Loading more coaches…</button><span class="browseMoreCount">Showing 12 of 19</span></div>
+  </section>
+
+  <section data-state="error" data-label="Error" data-shell="gamer" data-nav="browse">
+      <div class="pageHead">
+        <h1>Browse coaches</h1>
+        <p class="pageLead">Book a one-hour, 1-on-1 session with a coach. Your payment is held until you confirm the session went ahead.</p>
+      </div>
+      <form class="browseFilters" role="search" aria-label="Filter coaches" onsubmit="return false">
+        <div class="field"><label class="fieldLabel" for="x-game">Game</label><select class="fieldControl" id="x-game"><option selected>All games</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option>Valorant</option><option>Counter-Strike 2</option><option>Riftbound</option></select></div>
+        <div class="field"><label class="fieldLabel" for="x-price">Max price</label><select class="fieldControl" id="x-price"><option selected>Any price</option><option>Up to S$30</option><option>Up to S$40</option><option>Up to S$50</option><option>Up to S$60</option></select></div>
+        <div class="field"><label class="fieldLabel" for="x-sort">Sort by</label><select class="fieldControl" id="x-sort"><option selected>Lowest price</option><option>Highest rating</option><option>Most reviewed</option></select></div>
+        
+      </form>
+      <div class="errorState browseError" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load coaches</p><p class="errorStateText">Check your connection, then try again. Your filters are kept.</p><div class="errorStateAction"><button class="button secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Try again</button></div></div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script>// Coach card bio: fade its end only when it doesn't fit (re-measured when the width changes).
+function clampBios() { document.querySelectorAll('.coachCardBio').forEach(function (b) { if (b.closest('.isOpen') || !b.offsetParent) return; b.classList.toggle('isClamped', b.scrollHeight > b.clientHeight + 1); }); }
+document.addEventListener('mk:change', function () { requestAnimationFrame(clampBios); });
+window.addEventListener('resize', clampBios);
+</script>
+<script src="../foundations/mockup.js"></script>
+</body>
+</html>

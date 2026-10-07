@@ -15,3 +15,4 @@
 .textLink:hover, .textLink.isHover { border-bottom-color: var(--green); }
 .textLink.quiet { color: var(--muted); border-bottom-color: transparent; }
 .textLink.quiet:hover, .textLink.quiet.isHover { color: var(--ink); border-bottom-color: var(--line-strong); }
+.textLink svg { width: 16px; height: 16px; margin-right: 6px; vertical-align: -3px; }

@@ -27,6 +27,10 @@
     user: '<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1-3.5 3.8-5.5 7-5.5s6 2 7 5.5"/>',
     logout: '<path d="M14 4.5H6.5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1H14"/><path d="M10.5 12h9M16.5 8.5 20 12l-3.5 3.5"/>',
     lock: '<rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>',
+    "arrow-left": '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+    "chevron-left": '<path d="m15 6-6 6 6 6"/>',
+    play: '<path d="M8 5.5v13l10.5-6.5z"/>',
+    pause: '<path d="M8.5 5.5v13M15.5 5.5v13"/>',
     phone: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 17.5h2"/>'
   };
   var s = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">';

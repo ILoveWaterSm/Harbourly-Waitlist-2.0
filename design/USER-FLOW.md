@@ -104,11 +104,12 @@ The gamer or coach choice is a routing hint only. Every account can book as a ga
 flowchart TD
   Browse["Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency"] --> Card["Coach card"]
   Browse -->|"Load more"| Browse
-  Card --> Profile["Coach profile: bio, per-game rank and credentials, per-game price, availability preview, voice intro, reviews"]
+  Card --> Profile["Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, availability preview, voice intro, reviews"]
   Profile --> Own{"Is this your own coach profile?"}
   Own -->|"Yes"| NoBook(["No Book button. This is your profile"])
   Own -->|"No"| Game["Choose a game"]
   Game --> Slot["Pick a one-hour slot, in your local time"]
+  Own -->|"No, Choose a time on a game section: game already chosen"| Slot
   Slot --> LoggedIn{"Logged in?"}
   LoggedIn -->|"No"| Auth["Log in or sign up"]
   Auth --> Slot
@@ -118,12 +119,13 @@ flowchart TD
   Phone -->|"Yes"| Hold["Slot held for 30 minutes. Booking is pending payment"]
   Hold --> Summary["Checkout summary: price, platform fee, total in the coach's currency, cancellation rule, how the escrow hold works"]
   Summary --> Hosted["Stripe or Xendit hosted payment page"]
+  Summary -->|"Choose another time: hold released"| Slot
   Hosted --> Back["Back on Harbourly: confirming your payment"]
   Back --> Result{"Payment provider result"}
   Result -->|"Paid"| Confirmed(["Booking confirmed. Emails to both"])
   Result -->|"Not paid, hold still active"| Failed["Payment didn't go through"]
   Failed --> Summary
-  Result -->|"Hold expired"| Expired["This slot is no longer held. Email to gamer"]
+  Result -->|"Hold expired"| Expired["This time is no longer held. Email to gamer"]
   Expired --> Slot
 ```
 
@@ -249,7 +251,7 @@ flowchart TD
   Payout -->|"Couldn't verify"| PayoutFail["Your payout account couldn't be verified. Try again or contact support"]
   PayoutFail --> Payout
   Gates --> PhoneGate["Phone verified"]
-  Gates --> Setup["Profile setup: bio, avatar, banner, availability, price and credentials per game"]
+  Gates --> Setup["Profile setup: bio, avatar, banner, languages, availability, price and credentials per game"]
   Setup -->|"Leave and come back"| Setup
   Payout --> AllDone{"All four done?"}
   PhoneGate --> AllDone
@@ -270,7 +272,7 @@ The four conditions to go live: application approved, payout setup complete, pho
 ```mermaid
 flowchart TD
   CDash(["Coach dashboard"]) --> Settings["Coach profile settings"]
-  Settings --> Bio["Edit bio, avatar, banner"]
+  Settings --> Bio["Edit bio, avatar, banner, languages"]
   Settings --> Avail["Edit weekly availability, in your own time zone"]
   Settings --> Rates["Edit price per game"]
   Settings --> Rank["Update rank: new screenshot, old rank shown until approved"]
