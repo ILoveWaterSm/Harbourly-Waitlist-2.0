@@ -83,12 +83,13 @@
 @container app (max-width: 640px) {
   .xWrap { padding: var(--space-6) var(--space-4) var(--space-14); }
   .coachRow {
-    grid-template-columns: 56px minmax(0, 1fr);
+    grid-template-columns: 72px minmax(0, 1fr);
     grid-template-areas: "avatar who" "bio bio" "proof proof" "decision decision";
     gap: var(--space-4);
     padding: var(--space-5);
   }
-  .coachRow > .avatar { --avatar-size: 56px; }
+  .coachRow > .avatar { --avatar-size: 72px; }
+  .coachRow > .avatar { margin-block: -2px; } /* as tall as the three identity lines, so the rows below don't move */
   .coachRowWho { display: contents; }
   .coachRowId { grid-area: who; display: grid; gap: 4px; align-self: center; min-width: 0; }
   .coachRowName { font-size: 16px; }
