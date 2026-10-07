@@ -1,30 +1,87 @@
-/* CoachCard → CoachCard.module.css. Browse result. Shows the game behind the "from" price
-   (its cheapest listing); with a game filter set, that game's rank and its exact price. */
+/* CoachCard → CoachCard.module.css. Browse result, one per row.
+   Three zones read left to right: who they are, proof they can coach your game, then price and when you can start.
+   The proof and decision columns have fixed widths so ranks, ratings and prices line up down the list.
+   With a game filter set, the proof column shows that game and the price is its exact price (no "from", no "+1 game"). */
 .coachCard {
   display: grid;
-  grid-template-columns: 56px minmax(0, 1fr) auto;
-  gap: var(--space-4);
+  grid-template-columns: 72px minmax(0, 1fr) 268px 168px 20px;
+  grid-template-areas: "avatar who proof decision go";
+  gap: var(--space-2) var(--space-6);
   align-items: start;
-  padding: var(--space-5);
+  padding: var(--space-6);
   border-radius: var(--radius-lg);
   background: var(--surface);
   box-shadow: var(--shadow-flat);
   color: inherit;
   text-decoration: none;
-  transition: transform .2s, background-color .2s;
+  transition: background-color .2s;
 }
-.coachCard:hover, .coachCard.isHover { transform: translateY(-2px); background: color-mix(in srgb, var(--surface) 94%, var(--ink)); }
+.coachCard:hover, .coachCard:focus-visible, .coachCard.isHover { background: color-mix(in srgb, var(--surface) 94%, var(--ink)); }
 .coachCard:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.coachCardMain { display: grid; gap: var(--space-3); min-width: 0; }
-.coachCardName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-size: 16px; font-weight: 600; color: var(--ink); }
-.coachCardHandle { display: block; margin-top: 2px; font: 400 12.5px/1.3 var(--font-mono); color: var(--faint); }
-.coachCardPrice { text-align: right; }
-@container app (max-width: 520px) {
-  .coachCard { grid-template-columns: 48px minmax(0, 1fr); }
-  .coachCard .avatar { --avatar-size: 48px; }
-  .coachCardPrice { grid-column: 2; text-align: left; }
-  .coachCardPrice .priceFrom { display: inline; margin: 0 4px 0 0; }
+.coachCard > .avatar { grid-area: avatar; align-self: center; --avatar-size: 72px; }
+
+.coachCardWho { grid-area: who; display: grid; gap: 6px; min-width: 0; }
+.coachCardId { display: grid; gap: 6px; min-width: 0; }
+.coachCardName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-size: 17px; font-weight: 600; line-height: 1.3; color: var(--ink); }
+.coachCardMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px var(--space-2); font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+.coachCardMeta .handle { font-size: 12.5px; }
+.coachCardSep { color: var(--subtle); }
+.coachCardPlace { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+.coachCardZone { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-soft); }
+.coachCardZone + .coachCardLong { margin-left: calc(var(--space-2) * -1); }
+
+/* Bio: one line at rest, its end fading when it doesn't fit (isClamped, set by measuring).
+   Hover (after a short pause, so moving down the list doesn't make cards jump) or keyboard focus opens it. */
+.coachCardBio {
+  margin-top: 4px;
+  max-height: 1.55em;
+  overflow: hidden;
+  font-size: 14.5px; line-height: 1.55; color: var(--ink-soft);
+  transition: max-height .35s ease;
 }
+.coachCardBio.isClamped { -webkit-mask-image: linear-gradient(90deg, #000 72%, transparent); mask-image: linear-gradient(90deg, #000 72%, transparent); }
+@media (hover: hover) {
+  .coachCard:hover .coachCardBio { max-height: 12em; transition-delay: .15s; -webkit-mask-image: none; mask-image: none; }
+}
+.coachCard:focus-visible .coachCardBio, .coachCard.isOpen .coachCardBio { max-height: 12em; -webkit-mask-image: none; mask-image: none; }
+
+.coachCardProof { grid-area: proof; display: grid; gap: var(--space-2); align-content: start; min-width: 0; padding-left: var(--space-6); border-left: 1px solid var(--line); }
+.coachCardDecision { grid-area: decision; display: grid; gap: var(--space-2); justify-items: end; align-content: start; text-align: right; }
+.coachCardDecision .priceAmount { font-size: 20px; }
+.coachCardNext { display: grid; gap: 2px; font-size: 12.5px; line-height: 1.35; color: var(--muted); }
+.coachCardNext .mono { font-size: 13px; color: var(--ink-soft); }
+.coachCardGo { grid-area: go; align-self: center; color: var(--subtle); transition: color .2s; }
+.coachCardGo svg { display: block; width: 20px; height: 20px; }
+.coachCard:hover .coachCardGo, .coachCard:focus-visible .coachCardGo, .coachCard.isHover .coachCardGo { color: var(--ink); }
+
 /* Loading placeholder in the same shape; not a link, so no hover. */
-.coachCard.loading, .coachCard.loading:hover { transform: none; background: var(--surface); pointer-events: none; }
-.coachCard.loading .coachCardMain { gap: var(--space-2); }
+.coachCard.loading, .coachCard.loading:hover { background: var(--surface); pointer-events: none; }
+
+@container app (max-width: 640px) {
+  .coachCard {
+    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-areas: "avatar who" "bio bio" "proof proof" "decision decision";
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+  /* The avatar is as tall as the three identity lines, so it grows into the space beside them without pushing anything down */
+  .coachCard > .avatar { margin-block: -2px; }
+  .coachCardWho { display: contents; }
+  .coachCardId { grid-area: who; gap: 4px; align-self: center; }
+  .coachCardName { font-size: 16px; }
+  .coachCardCountry, .coachCardLong { display: none; }
+  .coachCardBio { grid-area: bio; margin-top: 0; max-height: 3.1em; }
+  .coachCardBio.isClamped { -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(90deg, #000 60%, transparent); -webkit-mask-size: 100% 50%, 100% 50%; -webkit-mask-position: top, bottom; -webkit-mask-repeat: no-repeat; mask-image: linear-gradient(#000 0 0), linear-gradient(90deg, #000 60%, transparent); mask-size: 100% 50%, 100% 50%; mask-position: top, bottom; mask-repeat: no-repeat; }
+  .coachCard.isOpen .coachCardBio, .coachCard:focus-visible .coachCardBio { max-height: 3.1em; }
+  /* Two rows: what they coach and how they're rated, then what it costs and when */
+  .coachCardProof { grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--space-3); padding: var(--space-4) 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .coachCardProof .gameRank { display: contents; }
+  .coachCardProof .gameRankGame { grid-column: 1; grid-row: 1; }
+  .coachCardProof .gameRankValue { grid-column: 1 / -1; grid-row: 2; }
+  .coachCardProof .rating { grid-column: 2; grid-row: 1; align-self: start; }
+  .coachCardDecision { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-3); text-align: left; }
+  .coachCardDecision .priceAmount { font-size: 18px; }
+  .coachCardNext { text-align: right; }
+  .coachCardNext .mono { font-size: 12.5px; white-space: nowrap; }
+  .coachCardGo { display: none; }
+}

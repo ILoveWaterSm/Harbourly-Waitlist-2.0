@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="../foundations/components/IconButton.css">
 <link rel="stylesheet" href="../foundations/components/Badge.css">
 <link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Flag.css">
 <link rel="stylesheet" href="../foundations/components/Price.css">
 <link rel="stylesheet" href="../foundations/components/Rating.css">
 <link rel="stylesheet" href="../foundations/components/Card.css">
@@ -37,6 +38,8 @@
 .profileFacts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); font-size: 14.5px; color: var(--muted); }
 .profileFacts .handle { font-size: 13px; }
 .profileSep { color: var(--subtle); }
+.profilePlace { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+.profileZone { font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); }
 .profileBook { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-3) var(--space-5); }
 .profileBook .price { text-align: right; }
 .profileBook .button { min-width: 200px; }
@@ -61,7 +64,7 @@
 .gameCardPrice { display: grid; justify-items: end; align-content: start; gap: var(--space-2); max-width: 240px; text-align: right; }
 .gameCardPrice .priceNote { margin-bottom: var(--space-2); }
 
-.profileAside { position: sticky; top: 88px; display: grid; gap: var(--space-4); }
+.profileAside { position: sticky; top: 100px; display: grid; gap: var(--space-4); }
 .availZone { margin-top: var(--space-1); font-size: 13.5px; color: var(--muted); }
 .availList { display: grid; margin: var(--space-4) 0 0; padding: 0; list-style: none; }
 .availDay { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink); }
@@ -111,7 +114,7 @@
         <header class="topNav">
           <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
           <div class="topNavRight">
-            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar xs">S</span>snapking</a>
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
             <button class="topNavSignOut" type="button">Sign out</button>
             <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
           </div>
@@ -146,8 +149,8 @@
         <header class="topNav">
           <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
           <div class="topNavRight">
-            <a class="button secondary sm" href="#">Log in</a>
-            <a class="button primary sm" href="#">Sign up</a>
+            <a class="button secondary" href="#">Log in</a>
+            <a class="button primary" href="#">Sign up</a>
           </div>
         </header>
         <div class="appShellBody noSidebar">
@@ -160,7 +163,7 @@
         <header class="topNav">
           <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
           <div class="topNavRight">
-            <a class="topNavUser" href="#" aria-label="Kairo, account settings"><span class="avatar xs">K</span>Kairo</a>
+            <a class="topNavUser" href="#" aria-label="Kairo, account settings"><span class="avatar sm">K</span>Kairo</a>
             <button class="topNavSignOut" type="button">Sign out</button>
             <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
           </div>
@@ -203,7 +206,7 @@
         <header class="topNav">
           <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
           <div class="topNavRight">
-            <a class="topNavUser" href="#" aria-label="Kairo, account settings"><span class="avatar xs">K</span>Kairo</a>
+            <a class="topNavUser" href="#" aria-label="Kairo, account settings"><span class="avatar sm">K</span>Kairo</a>
             <button class="topNavSignOut" type="button">Sign out</button>
             <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
           </div>
@@ -249,7 +252,7 @@
       <div class="profileBanner" aria-hidden="true"></div>
       <header class="profileHead">
         <span class="avatar lg">K</span>
-        <div class="profileId"><div class="profileNameRow"><h1>Kairo</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@kairo.gg</span><span class="profileSep">·</span><span>Philippines</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></p></div>
+        <div class="profileId"><div class="profileNameRow"><h1>Kairo</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@kairo.gg</span><span class="profileSep">·</span><span class="profilePlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span>Philippines</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></p><p class="profileFacts"><span>Speaks English, Filipino</span><span class="profileSep">·</span><span><span class="profileZone">PHT</span>, same time as you</span></p></div>
         <div class="profileBook"><span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><a class="button primary" href="#">Book a session</a></div>
       </header>
       <div class="profileBody">
@@ -293,7 +296,7 @@
       <div class="profileBanner" aria-hidden="true"></div>
       <header class="profileHead">
         <span class="avatar lg">V</span>
-        <div class="profileId"><div class="profileNameRow"><h1>Vexa</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@vexa</span><span class="profileSep">·</span><span>Singapore</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(32)</span></span></p></div>
+        <div class="profileId"><div class="profileNameRow"><h1>Vexa</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@vexa</span><span class="profileSep">·</span><span class="profilePlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span>Singapore</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(32)</span></span></p><p class="profileFacts"><span>Speaks English, Mandarin</span><span class="profileSep">·</span><span><span class="profileZone">SGT</span>, same time as you</span></p></div>
         <div class="profileBook"><span class="price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></span><a class="button primary" href="#">Book a session</a></div>
       </header>
       <div class="profileBody">
@@ -333,7 +336,7 @@
       <div class="profileBanner" aria-hidden="true"></div>
       <header class="profileHead">
         <span class="avatar lg">N</span>
-        <div class="profileId"><div class="profileNameRow"><h1>nullpoint</h1><span class="badge newCoach">New coach</span></div><p class="profileFacts"><span class="handle">@nullpoint</span><span class="profileSep">·</span><span>Malaysia</span><span class="profileSep">·</span><span class="rating none">No reviews yet</span></p></div>
+        <div class="profileId"><div class="profileNameRow"><h1>nullpoint</h1><span class="badge newCoach">New coach</span></div><p class="profileFacts"><span class="handle">@nullpoint</span><span class="profileSep">·</span><span class="profilePlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span>Malaysia</span><span class="profileSep">·</span><span class="rating none">No reviews yet</span></p><p class="profileFacts"><span>Speaks English, Malay</span><span class="profileSep">·</span><span><span class="profileZone">MYT</span>, same time as you</span></p></div>
         <div class="profileBook"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><a class="button primary" href="#">Book a session</a></div>
       </header>
       <div class="profileBody">
@@ -366,7 +369,7 @@
       <div class="profileBanner" aria-hidden="true"></div>
       <header class="profileHead">
         <span class="avatar lg">K</span>
-        <div class="profileId"><div class="profileNameRow"><h1>Kairo</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@kairo.gg</span><span class="profileSep">·</span><span>Philippines</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></p></div>
+        <div class="profileId"><div class="profileNameRow"><h1>Kairo</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@kairo.gg</span><span class="profileSep">·</span><span class="profilePlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span>Philippines</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></p><p class="profileFacts"><span>Speaks English, Filipino</span><span class="profileSep">·</span><span><span class="profileZone">PHT</span>, same time as you</span></p></div>
         <div class="profileBook"><span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><a class="button primary" href="#">Book a session</a><p class="profileBookNote">You'll log in or sign up after choosing a time.</p></div>
       </header>
       <div class="profileBody">
@@ -410,7 +413,7 @@
       <div class="profileBanner" aria-hidden="true"></div>
       <header class="profileHead">
         <span class="avatar lg">K</span>
-        <div class="profileId"><div class="profileNameRow"><h1>Kairo</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@kairo.gg</span><span class="profileSep">·</span><span>Philippines</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></p></div>
+        <div class="profileId"><div class="profileNameRow"><h1>Kairo</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@kairo.gg</span><span class="profileSep">·</span><span class="profilePlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span>Philippines</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></p><p class="profileFacts"><span>Speaks English, Filipino</span><span class="profileSep">·</span><span><span class="profileZone">PHT</span>, same time as you</span></p></div>
         <div class="profileOwn"><p class="profileOwnTitle">This is your profile</p><p class="profileOwnText">Gamers see a Book a session button here. You can't book yourself.</p><a class="textLink" href="#">Edit profile</a></div>
       </header>
       <div class="profileBody">
@@ -455,7 +458,7 @@
       <div class="profileBanner" aria-hidden="true"></div>
       <header class="profileHead">
         <span class="avatar lg">K</span>
-        <div class="profileId"><div class="profileNameRow"><h1>Kairo</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@kairo.gg</span><span class="profileSep">·</span><span>Philippines</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></p></div>
+        <div class="profileId"><div class="profileNameRow"><h1>Kairo</h1><span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div><p class="profileFacts"><span class="handle">@kairo.gg</span><span class="profileSep">·</span><span class="profilePlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span>Philippines</span><span class="profileSep">·</span><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></p><p class="profileFacts"><span>Speaks English, Filipino</span><span class="profileSep">·</span><span><span class="profileZone">PHT</span>, same time as you</span></p></div>
         <div class="profileBook"><span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><a class="button primary" href="#">Book a session</a></div>
       </header>
       <div class="profileBody">
@@ -513,6 +516,7 @@
 
 </div>
 </div>
+<script src="../foundations/flags.js"></script>
 <script src="../foundations/icons.js"></script>
 <script>// Preview mode: links look exactly as gamers see them but do nothing.
 document.addEventListener('click', function (e) { if (e.target.closest('[data-preview-inert]')) e.preventDefault(); });

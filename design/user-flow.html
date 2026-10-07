@@ -145,7 +145,7 @@ flowchart TD
 flowchart TD
   Browse[&quot;Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency&quot;] --&gt; Card[&quot;Coach card&quot;]
   Browse --&gt;|&quot;Load more&quot;| Browse
-  Card --&gt; Profile[&quot;Coach profile: bio, per-game rank and credentials, per-game price, availability preview, voice intro, reviews&quot;]
+  Card --&gt; Profile[&quot;Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, availability preview, voice intro, reviews&quot;]
   Profile --&gt; Own{&quot;Is this your own coach profile?&quot;}
   Own --&gt;|&quot;Yes&quot;| NoBook([&quot;No Book button. This is your profile&quot;])
   Own --&gt;|&quot;No&quot;| Game[&quot;Choose a game&quot;]
@@ -283,7 +283,7 @@ flowchart TD
   Payout --&gt;|&quot;Couldn&#x27;t verify&quot;| PayoutFail[&quot;Your payout account couldn&#x27;t be verified. Try again or contact support&quot;]
   PayoutFail --&gt; Payout
   Gates --&gt; PhoneGate[&quot;Phone verified&quot;]
-  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, availability, price and credentials per game&quot;]
+  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, languages, availability, price and credentials per game&quot;]
   Setup --&gt;|&quot;Leave and come back&quot;| Setup
   Payout --&gt; AllDone{&quot;All four done?&quot;}
   PhoneGate --&gt; AllDone
@@ -301,7 +301,7 @@ flowchart TD
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   CDash([&quot;Coach dashboard&quot;]) --&gt; Settings[&quot;Coach profile settings&quot;]
-  Settings --&gt; Bio[&quot;Edit bio, avatar, banner&quot;]
+  Settings --&gt; Bio[&quot;Edit bio, avatar, banner, languages&quot;]
   Settings --&gt; Avail[&quot;Edit weekly availability, in your own time zone&quot;]
   Settings --&gt; Rates[&quot;Edit price per game&quot;]
   Settings --&gt; Rank[&quot;Update rank: new screenshot, old rank shown until approved&quot;]

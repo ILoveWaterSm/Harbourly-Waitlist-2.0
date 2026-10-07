@@ -53,11 +53,12 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 ### 1. Browse coaches · M
 `/coaches` *proposed*. Logged in and logged out.
 - Filters: game, price. Sort: price (default, low to high), rating, most reviewed.
+- One card per row: identity with flag, languages and time zone, one-line bio that opens on hover, rank and rating, price and next free time.
 - States: results, filtered, no results, loading, load more, error, prices in the viewer's currency with "≈".
 
 ### 2. Coach profile · L
 `/coaches/[username]` *proposed*. Viewable logged out.
-- Avatar, banner, name, Verified or New Coach, bio, per-game sections (rank, credentials, price), availability preview, voice intro, reviews.
+- Avatar, banner, name, Verified or New Coach, country with flag, languages, time zone, bio, per-game sections (rank, credentials, price), availability preview, voice intro, reviews.
 - "Book a session" in the header; with two or more games, each game section also has "Choose a time", which opens Pick a slot with that game chosen.
 - States: Verified coach, New Coach, one game vs several, no reviews yet, no voice intro, converted price with "Kairo's price is ₱1,850" line, logged out (Book leads to log in), your own profile (no Book button), preview mode (used later by 22), loading, not found.
 
@@ -186,7 +187,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 21. Profile setup · L
 `/coach/setup` *proposed*.
-- Bio (500 characters), avatar or default, banner, weekly availability in your own time zone, price per game in your currency, up to 3 credential lines per game.
+- Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency, up to 3 credential lines per game.
 - States: each step, saved and resumed, validation, complete (moves to live once payout and phone are done).
 
 **Checkpoint 6:** coach onboarding.
@@ -197,7 +198,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 22. Coach profile settings · L
 `/coach/profile` *proposed*.
-- Edit bio, avatar, banner, availability, prices.
+- Edit bio, avatar, banner, languages, availability, prices.
 - Update rank (screenshot, pending, old rank still shown).
 - Add a game (proof, under review).
 - Voice intro (record, pending, approved, declined).

@@ -40,7 +40,7 @@
 .checkSteps li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: var(--space-3); font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); counter-increment: step; }
 .checkSteps li::before { content: counter(step, decimal-leading-zero); padding-top: 2px; font: 500 12.5px/1.4 var(--font-mono); color: var(--green); }
 .checkSteps b { color: var(--ink); font-weight: 600; }
-.checkPay { position: sticky; top: 88px; display: grid; gap: var(--space-5); }
+.checkPay { position: sticky; top: 100px; display: grid; gap: var(--space-5); }
 .checkRule { display: grid; gap: var(--space-2); }
 .checkRule p { display: flex; gap: var(--space-2); font-size: 13.5px; line-height: 1.5; color: var(--muted); }
 .checkRule svg { width: 16px; height: 16px; flex: none; margin-top: 2px; color: var(--muted); }
@@ -69,7 +69,7 @@
         <header class="topNav">
           <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
           <div class="topNavRight">
-            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar xs">S</span>snapking</a>
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
             <button class="topNavSignOut" type="button">Sign out</button>
             <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
           </div>

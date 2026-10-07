@@ -1,4 +1,5 @@
-/* TopNav → TopNav.module.css. The only frosted surface in the webapp. */
+/* TopNav → TopNav.module.css. The only frosted surface in the webapp.
+   76px tall (68px below 1000px) so the logo, your name and the auth buttons read at a comfortable size. */
 .topNav {
   position: sticky;
   top: 0;
@@ -6,44 +7,49 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
-  height: 64px;
-  padding: 0 var(--space-6);
+  gap: var(--space-6);
+  height: 76px;
+  padding: 0 var(--space-8);
   background: color-mix(in srgb, var(--bg) 72%, transparent);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
 .topNav::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--green-line), transparent); }
 .topNavLogo { display: block; flex: none; border-radius: var(--radius-md); }
-.topNavLogo img { display: block; height: 34px; width: auto; }
-.topNavRight { display: flex; align-items: center; gap: var(--space-2); }
+.topNavLogo img { display: block; height: 42px; width: auto; }
+.topNavRight { display: flex; align-items: center; gap: var(--space-3); }
 .topNavUser {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 4px 14px 4px 4px;
+  display: inline-flex; align-items: center; gap: var(--space-3);
+  padding: 4px 18px 4px 4px;
   border-radius: var(--radius-pill);
   color: var(--ink);
-  font: 600 14.5px/1 var(--font-body);
+  font: 600 16px/1 var(--font-body);
   text-decoration: none;
   transition: background-color .2s;
 }
 .topNavUser:hover, .topNavUser.isHover { background: var(--fill-subtle); }
 .topNavSignOut {
-  padding: 10px 14px;
+  min-height: 44px;
+  padding: 0 var(--space-5);
   border: 0;
   border-radius: var(--radius-pill);
   background: none;
   color: var(--muted);
-  font: 600 14.5px/1 var(--font-body);
+  font: 600 16px/1 var(--font-body);
   cursor: pointer;
   transition: color .2s, background-color .2s;
 }
 .topNavSignOut:hover { color: var(--ink); background: var(--fill-subtle); }
 .topNav .topNavMenu { display: none; }
 @container app (max-width: 999px) {
-  .topNav { height: 60px; padding: 0 var(--space-2) 0 var(--space-4); }
+  .topNav { height: 68px; padding: 0 var(--space-3) 0 var(--space-4); gap: var(--space-3); }
+  .topNavLogo img { height: 36px; }
   .topNavUser, .topNavSignOut { display: none; }
-  .topNav .topNavMenu { display: inline-grid; }
+  .topNav .topNavMenu { display: inline-grid; width: 44px; height: 44px; }
+  .topNav .topNavMenu svg { width: 22px; height: 22px; }
+  .topNavRight { gap: var(--space-2); }
 }
 @container app (max-width: 400px) {
-  .topNavLogo img { height: 30px; }
+  .topNavLogo img { height: 32px; }
+  .topNav { padding-right: var(--space-4); }
 }

@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="../foundations/components/StatusLabel.css">
 <link rel="stylesheet" href="../foundations/components/Badge.css">
 <link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Flag.css">
 <link rel="stylesheet" href="../foundations/components/Price.css">
 <link rel="stylesheet" href="../foundations/components/GameRank.css">
 <link rel="stylesheet" href="../foundations/components/Rating.css">
@@ -71,9 +72,9 @@
 .lib-placeholder { display: grid; place-items: center; min-height: 120px; border: 1px dashed var(--line-strong); border-radius: var(--radius-lg); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--subtle); }
 
 /* shell specimens */
-.lib-shell { position: relative; height: var(--shell-h, 440px); overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--radius-lg); }
+.lib-shell { position: relative; height: var(--shell-h, 452px); overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--radius-lg); }
 .lib-shell .appShell { height: 100%; }
-.lib-shell .appShellBody { height: calc(100% - 64px); }
+.lib-shell .appShellBody { height: calc(100% - 76px); }
 .lib-shell .sidebar { position: static; min-height: 100%; }
 .lib-shell .appShellMain { display: grid; gap: var(--space-6); align-content: start; }
 .lib-devices { display: flex; flex-wrap: wrap; gap: var(--space-8); align-items: start; }
@@ -86,6 +87,7 @@
 .lib-avatars { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-6); }
 .lib-avatars .lib-cell { justify-items: center; }
 
+.lib-cardlist { display: grid; margin: 0; padding: 0; list-style: none; }
 .lib-skel-card { display: grid; grid-template-columns: 56px minmax(0, 1fr) 72px; gap: var(--space-4); padding: var(--space-5); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-flat); }
 .lib-skel-stack { display: grid; gap: 10px; align-content: start; }
 .lib-skel-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 90px; gap: var(--space-3); align-items: center; padding: 14px var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); }
@@ -125,13 +127,13 @@
 
     <div class="lib-spec">
       <span class="lib-cap">Logged out · coach profile or browse</span>
-      <div class="lib-shell" style="--shell-h:236px">
+      <div class="lib-shell" style="--shell-h:250px">
         <div class="appShell">
           <header class="topNav">
             <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
             <div class="topNavRight">
-              <a class="button secondary sm" href="#">Log in</a>
-              <a class="button primary sm" href="#">Sign up</a>
+              <a class="button secondary" href="#">Log in</a>
+              <a class="button primary" href="#">Sign up</a>
             </div>
           </header>
           <div class="appShellBody noSidebar"><div class="appShellMain"><div class="lib-placeholder">Page content</div></div></div>
@@ -146,7 +148,7 @@
           <header class="topNav">
             <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
             <div class="topNavRight">
-              <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar xs">S</span>snapking</a>
+              <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
               <button class="topNavSignOut" type="button">Sign out</button>
               <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu"><svg class="icon"><use href="#i-menu"/></svg></button>
             </div>
@@ -169,12 +171,12 @@
 
     <div class="lib-spec">
       <span class="lib-cap">Logged in · gamer and coach · in the coach block</span>
-      <div class="lib-shell" style="--shell-h:500px">
+      <div class="lib-shell" style="--shell-h:512px">
         <div class="appShell">
           <header class="topNav">
             <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
             <div class="topNavRight">
-              <a class="topNavUser isHover" href="#" aria-label="Kairo, account settings"><span class="avatar xs">K</span>Kairo</a>
+              <a class="topNavUser isHover" href="#" aria-label="Kairo, account settings"><span class="avatar sm">K</span>Kairo</a>
               <button class="topNavSignOut" type="button">Sign out</button>
               <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu"><svg class="icon"><use href="#i-menu"/></svg></button>
             </div>
@@ -506,6 +508,7 @@
           <div class="lib-cell"><span class="avatar xs">S</span><span class="lib-cap">32</span></div>
           <div class="lib-cell"><span class="avatar sm">V</span><span class="lib-cap">40</span></div>
           <div class="lib-cell"><span class="avatar md">K</span><span class="lib-cap">56</span></div>
+          <div class="lib-cell"><span class="avatar ml">M</span><span class="lib-cap">72</span></div>
           <div class="lib-cell"><span class="avatar lg">N</span><span class="lib-cap">96</span></div>
           <div class="lib-cell"><span class="lib-photo-slot"><svg class="icon"><use href="#i-image"/></svg></span><span class="lib-cap">Photo</span></div>
         </div>
@@ -527,6 +530,12 @@
           <div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 2</span></div>
           <div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 21,450</span></div>
           <div class="gameRank"><span class="gameRankGame">Riftbound</span><span class="gameRankValue">Regional Qualifier · Top 8</span></div>
+        </div></div>
+
+      <div class="lib-spec"><span class="lib-cap">Flag · country, 3:2 with a hairline</span>
+        <div class="lib-stage">
+          <div class="lib-inline"><span class="lib-inline" style="gap:8px"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span>Philippines</span></span><span class="lib-inline" style="gap:8px"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span>Singapore</span></span><span class="lib-inline" style="gap:8px"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span>Malaysia</span></span></div>
+          <p style="font-size:13.5px;color:var(--muted)">On a coach card: the flag and country name on desktop, the flag alone on phone. The real build uses a full flag icon set in the same box; these are simplified for mockups.</p>
         </div></div>
 
       <div class="lib-spec"><span class="lib-cap">Rating · display and input</span>
@@ -588,32 +597,60 @@
 
     <div class="lib-sub">
       <h3>Coach card</h3>
-      <p>Shows the coach's cheapest game, so the rank and the "from" price always belong together. With a game filter set, it shows that game's rank and price instead. "from" appears only when the coach has more than one game.</p>
-      <div class="lib-specs" style="--lib-min:400px">
+      <p>One per row. Who they are, then proof they can coach your game, then price and when you can start; the proof and price columns have fixed widths so they line up down the list. The bio shows one line and opens on hover (after a short pause) or keyboard focus. Shows the coach's cheapest game, so the rank and the "from" price belong together; with a game filter set, that game's rank and exact price. On phone the card stacks: identity, two lines of bio, then rank and rating, then price and next free time.</p>
+      <div class="lib-specs" style="--lib-min:100%">
         <div class="lib-spec"><span class="lib-cap">Verified · two games · converted</span>
-          <a class="coachCard" href="#"><span class="avatar md">K</span>
-            <div class="coachCardMain"><div><div class="coachCardName">Kairo <span class="badge verified"><svg class="icon"><use href="#i-shield-check"/></svg>Verified</span></div><span class="coachCardHandle">@kairo.gg</span></div>
-              <div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div>
-              <span class="rating"><svg class="icon"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
-            <div class="coachCardPrice price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></div></a></div>
-        <div class="lib-spec"><span class="lib-cap">Verified · one game · hover</span>
-          <a class="coachCard isHover" href="#"><span class="avatar md">V</span>
-            <div class="coachCardMain"><div><div class="coachCardName">Vexa <span class="badge verified"><svg class="icon"><use href="#i-shield-check"/></svg>Verified</span></div><span class="coachCardHandle">@vexa</span></div>
-              <div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 2</span></div>
-              <span class="rating"><svg class="icon"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(32)</span></span></div>
-            <div class="coachCardPrice price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></div></a></div>
+          <ul class="lib-cardlist"><li><a class="coachCard" href="#"><span class="avatar">K</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@kairo.gg</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li></ul></div>
+        <div class="lib-spec"><span class="lib-cap">Verified · one game · hover, bio open</span>
+          <ul class="lib-cardlist"><li><a class="coachCard isOpen isHover" href="#"><span class="avatar">V</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Vexa <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@vexa</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Controller and Sentinel main. I focus on crosshair placement, utility and comms. We can review your VODs or you can play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Immortal 2</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.8 <span class="ratingCount">(32)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount">S$45</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tue 13 Oct, 20:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li></ul></div>
         <div class="lib-spec"><span class="lib-cap">New coach · no reviews</span>
-          <a class="coachCard" href="#"><span class="avatar md">N</span>
-            <div class="coachCardMain"><div><div class="coachCardName">nullpoint <span class="badge newCoach">New coach</span></div><span class="coachCardHandle">@nullpoint</span></div>
-              <div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 21,450</span></div>
-              <span class="rating none">No reviews yet</span></div>
-            <div class="coachCardPrice price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></div></a></div>
+          <ul class="lib-cardlist"><li><a class="coachCard" href="#"><span class="avatar">N</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">nullpoint <span class="badge newCoach">New coach</span></div>
+              <p class="coachCardMeta"><span class="handle">@nullpoint</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Malaysia"><svg><use href="#flag-my"/></svg></span><span class="coachCardCountry">Malaysia</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Malay</span><span class="coachCardSep">·</span><span class="coachCardZone">MYT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Rifler and in-game leader. I review demos with you round by round: utility, positioning and mid-round calls.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 21,450</span></div><span class="rating none">No reviews yet</span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Tomorrow, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li></ul></div>
         <div class="lib-spec"><span class="lib-cap">Filtered · Call of Duty: Mobile</span>
-          <a class="coachCard" href="#"><span class="avatar md">K</span>
-            <div class="coachCardMain"><div><div class="coachCardName">Kairo <span class="badge verified"><svg class="icon"><use href="#i-shield-check"/></svg>Verified</span></div><span class="coachCardHandle">@kairo.gg</span></div>
-              <div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 500</span></div>
-              <span class="rating"><svg class="icon"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
-            <div class="coachCardPrice price"><span class="priceAmount"><span class="priceApprox">≈</span>S$49</span> <span class="pricePer">/ session</span></div></a></div>
+          <ul class="lib-cardlist"><li><a class="coachCard" href="#"><span class="avatar">K</span>
+          <div class="coachCardWho">
+            <div class="coachCardId">
+              <div class="coachCardName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <p class="coachCardMeta"><span class="handle">@kairo.gg</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+              <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+            </div>
+            <p class="coachCardBio">Former MPL PH substitute. I coach jungle and roam: rotations, objective timing and drafting. Bring a replay or play live while I watch.</p>
+          </div>
+          <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Call of Duty: Mobile</span><span class="gameRankValue">Legendary · Top 500</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
+          <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$49</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 19:00 SGT</span></p></div>
+          <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li></ul></div>
       </div>
     </div>
 
@@ -737,11 +774,14 @@
         <article class="card"><div class="emptyState" style="padding-block:var(--space-2)"><svg class="icon"><use href="#i-calendar"/></svg><p class="emptyStateTitle">No sessions yet</p><p class="emptyStateText">When you book a coach, your sessions show up here.</p><div class="emptyStateAction"><a class="button primary" href="#">Browse coaches</a></div></div></article></div>
       <div class="lib-spec"><span class="lib-cap">Empty · no results</span>
         <div class="emptyState"><svg class="icon"><use href="#i-search"/></svg><p class="emptyStateTitle">No coaches match these filters</p><p class="emptyStateText">Try another game or a wider price range.</p><div class="emptyStateAction"><button class="button secondary" type="button">Clear filters</button></div></div></div>
-      <div class="lib-spec"><span class="lib-cap">Loading · coach cards</span>
-        <div style="display:grid;gap:var(--space-3)" aria-busy="true" aria-label="Loading coaches">
-          <div class="lib-skel-card"><span class="skeleton circle" style="width:56px;height:56px"></span><div class="lib-skel-stack"><span class="skeleton" style="width:46%;height:14px"></span><span class="skeleton" style="width:30%"></span><span class="skeleton" style="width:64%;margin-top:6px"></span><span class="skeleton" style="width:22%"></span></div><span class="skeleton" style="height:18px;justify-self:end;width:64px"></span></div>
-          <div class="lib-skel-card"><span class="skeleton circle" style="width:56px;height:56px"></span><div class="lib-skel-stack"><span class="skeleton" style="width:38%;height:14px"></span><span class="skeleton" style="width:26%"></span><span class="skeleton" style="width:58%;margin-top:6px"></span><span class="skeleton" style="width:22%"></span></div><span class="skeleton" style="height:18px;justify-self:end;width:64px"></span></div>
-        </div></div>
+      <div class="lib-spec wide"><span class="lib-cap">Loading · coach cards</span>
+        <ul class="lib-cardlist" style="gap:var(--space-3)" aria-busy="true" aria-label="Loading coaches"><li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li><li><div class="coachCard loading" aria-hidden="true"><span class="skeleton circle" style="width:72px;height:72px;grid-area:avatar;align-self:center"></span>
+          <div class="coachCardWho" style="gap:10px"><span class="skeleton" style="width:34%;height:15px"></span><span class="skeleton" style="width:46%"></span><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:78%;margin-top:4px"></span></div>
+          <div class="coachCardProof" style="gap:10px"><span class="skeleton" style="width:70%"></span><span class="skeleton" style="width:84%"></span><span class="skeleton" style="width:40%"></span></div>
+          <div class="coachCardDecision" style="gap:10px"><span class="skeleton" style="width:96px;height:18px"></span><span class="skeleton" style="width:120px"></span></div></div></li></ul></div>
       <div class="lib-spec"><span class="lib-cap">Loading · session rows</span>
         <div style="display:grid;gap:var(--space-2)" aria-busy="true" aria-label="Loading sessions">
           <div class="lib-skel-row"><span class="skeleton circle" style="width:40px;height:40px"></span><span class="lib-skel-stack"><span class="skeleton" style="width:40%"></span><span class="skeleton" style="width:56%"></span></span><span class="skeleton pill" style="height:10px"></span></div>
@@ -806,7 +846,14 @@
 </div>
 </div>
 
+<script src="../foundations/flags.js"></script>
 <script src="../foundations/icons.js"></script>
+<script>
+// Coach card bio: fade its end only when it doesn't fit (re-measured when the width changes).
+function clampBios() { document.querySelectorAll('.coachCardBio').forEach(function (b) { if (b.closest('.isOpen') || !b.offsetParent) return; b.classList.toggle('isClamped', b.scrollHeight > b.clientHeight + 1); }); }
+document.addEventListener('mk:change', function () { requestAnimationFrame(clampBios); });
+window.addEventListener('resize', clampBios);
+</script>
 <script src="../foundations/mockup.js"></script>
 <script>
 /* specimen behaviour: counters, star input, hold countdown, resend timer, mobile menu */

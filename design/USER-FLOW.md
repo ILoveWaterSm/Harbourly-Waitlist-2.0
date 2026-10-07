@@ -104,7 +104,7 @@ The gamer or coach choice is a routing hint only. Every account can book as a ga
 flowchart TD
   Browse["Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency"] --> Card["Coach card"]
   Browse -->|"Load more"| Browse
-  Card --> Profile["Coach profile: bio, per-game rank and credentials, per-game price, availability preview, voice intro, reviews"]
+  Card --> Profile["Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, availability preview, voice intro, reviews"]
   Profile --> Own{"Is this your own coach profile?"}
   Own -->|"Yes"| NoBook(["No Book button. This is your profile"])
   Own -->|"No"| Game["Choose a game"]
@@ -251,7 +251,7 @@ flowchart TD
   Payout -->|"Couldn't verify"| PayoutFail["Your payout account couldn't be verified. Try again or contact support"]
   PayoutFail --> Payout
   Gates --> PhoneGate["Phone verified"]
-  Gates --> Setup["Profile setup: bio, avatar, banner, availability, price and credentials per game"]
+  Gates --> Setup["Profile setup: bio, avatar, banner, languages, availability, price and credentials per game"]
   Setup -->|"Leave and come back"| Setup
   Payout --> AllDone{"All four done?"}
   PhoneGate --> AllDone
@@ -272,7 +272,7 @@ The four conditions to go live: application approved, payout setup complete, pho
 ```mermaid
 flowchart TD
   CDash(["Coach dashboard"]) --> Settings["Coach profile settings"]
-  Settings --> Bio["Edit bio, avatar, banner"]
+  Settings --> Bio["Edit bio, avatar, banner, languages"]
   Settings --> Avail["Edit weekly availability, in your own time zone"]
   Settings --> Rates["Edit price per game"]
   Settings --> Rank["Update rank: new screenshot, old rank shown until approved"]

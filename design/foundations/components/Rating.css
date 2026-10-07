@@ -1,6 +1,6 @@
 /* Rating → Rating.module.css. Display (average and count) and the 5-star input. */
 .rating { display: inline-flex; align-items: center; gap: 6px; font: var(--text-value); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
-.rating svg { width: 14px; height: 14px; flex: none; color: var(--green); }
+.rating svg { width: 14px; height: 14px; flex: none; color: var(--green); fill: currentColor; }
 .ratingCount { color: var(--muted); }
 .rating.none { color: var(--muted); font-size: 12.5px; }
 

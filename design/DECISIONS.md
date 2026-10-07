@@ -305,3 +305,29 @@ Checkout and payment return
 - Booking confirmed: a session summary, "View session" and "Back to dashboard". No calendar export.
 
 New shared components for Phase 1: OptionCard (choice card with a radio), SlotPicker, AudioPlayer, ReviewItem, PriceBreakdown, Spinner.
+
+## Browse card and top nav (agreed 7 Oct 2026, after Phase 1 review)
+
+Browse coaches
+- One coach card per row at every width (was two per row on desktop).
+- The result count ("19 coaches") is set in Geist bold, and the filter summary after it in Geist regular, muted. A deliberate exception to "counts in Geist Mono", because the count works as a heading for the list.
+
+Coach card (CoachCard component; mockup in `design/explorations/coach-card-v2.html`)
+- Desktop reads in three zones: who they are, proof they can coach your game, then price and when you can start. The proof and decision columns have fixed widths so ranks, ratings and prices line up down the list.
+- Who: 72px avatar centred vertically; name and Verified or New Coach badge; @handle, flag and country; "Speaks English, Filipino · PHT, same time as you"; the coach's About text on one line.
+- The bio shows one line (two on phone) and fades at its end when it doesn't fit. On hover, after a 150 ms pause so scanning the list doesn't make cards jump, or on keyboard focus, it opens smoothly to its full length. Phones don't expand it; tapping opens the profile. The hover lift is dropped; the card lightens instead.
+- Proof: game, rank and rating, behind a hairline. Decision: price as the largest figure, then "Next free" with the next free time in the viewer's zone ("Today, 19:00 SGT", "Tue 13 Oct, 20:00 SGT"). A chevron marks the whole card as a link.
+- Phone: 72px avatar beside name, handle and flag (no country name), and "English, Filipino · PHT"; two lines of bio; then rank with the rating on its line; then price with the next free time.
+- Time zone is phrased from the viewer's side: "same time as you", or e.g. "1 hour behind you".
+- Ratings use a filled green star everywhere.
+
+New coach data
+- Coaches choose the languages they coach in during profile setup and can change them in coach profile settings. Shown on the browse card and on the coach profile under the name, with country (flag and name) and time zone.
+- Flags are the one place colours outside the palette appear. Mockups use simplified flags (`foundations/flags.js`); the app uses a full flag icon set in the same 3:2 box (Flag component).
+
+Top nav (all pages)
+- 76px tall on desktop with a 42px logo, a 40px avatar and 16px name and Sign out; Log in and Sign up use full-size buttons. 68px tall below 1000px with a 36px logo (32px at 400px and under) and a 44px menu button. Edge padding 32px on desktop, 16px on phone.
+
+Cast details (fictional)
+- Languages: Kairo English, Filipino; Vexa English, Mandarin; nullpoint English, Malay; Mirae English, Korean; Ghostline English, Malay; Lumen English, Filipino; Pallas English; Marlowe English, Malay; Kestrel English, Mandarin; Tidewalker English, Filipino; Rook English, Malay; Hanabi English, Mandarin. Time zones follow country (PHT, SGT, MYT), all UTC+8.
+- Every cast coach has a short bio; the browse page source holds the text.
