@@ -189,7 +189,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 ### 21. Profile setup · L
 `/coach/setup` *proposed*.
 - Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency, up to 3 credential lines per game, showcase (optional: up to 5 images, caption up to 80 characters each).
-- Showcase upload: checking, passed (live), refused with a reason (automatic check; see DECISIONS.md "Coach profile showcase").
+- Photo, banner and showcase uploads: checking, passed (live), refused with a reason (automatic check; see DECISIONS.md "Automatic image check").
 - States: each step, saved and resumed, validation, complete (moves to live once payout and phone are done).
 
 **Checkpoint 6:** coach onboarding.
@@ -200,7 +200,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 22. Coach profile settings · L
 `/coach/profile` *proposed*.
-- Edit bio, avatar, banner, languages, availability, prices.
+- Edit bio, avatar, banner, languages, availability, prices. A new photo or banner is checked automatically: checking, live, or refused with a reason (the old one stays until the new one passes).
 - Showcase: add, replace, remove, reorder, edit captions; each image checking, live, or refused with a reason (replaced image stays live until the new one passes); empty (no showcase).
 - Update rank (screenshot, pending, old rank still shown).
 - Add a game (proof, under review).
@@ -221,7 +221,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 24. Account settings · M
 `/account` *proposed*.
-- Name, username, avatar; change email (verify new, notice to old); change password; change phone (OTP); country, time zone, currency (coach country locked after payout setup).
+- Name, username, avatar (checked automatically: checking, live, refused with a reason; old photo stays until the new one passes); change email (verify new, notice to old); change password; change phone (OTP); country, time zone, currency (coach country locked after payout setup).
 - Delete account: blocked while sessions or disputes are open; confirm step; requested.
 
 ### 25. System pages · S
@@ -243,4 +243,4 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 - Coach launch countries with Stripe and Xendit, including Thailand.
 - Exchange-rate source for converted prices.
 - Chat retention period, alongside the Terms of Service wording.
-- Moderation service for showcase images and captions: a dedicated image-moderation API (cheapest per image, catches nudity, violence and similar) or a vision AI model (also reads text inside images, e.g. contact details or slurs). Both cost a fraction of a cent per image; none is perfect, so uncertain results are refused.
+- Moderation service for every public image (profile photos, banners, showcase images and captions): a dedicated image-moderation API (cheapest per image, catches nudity, violence and similar) or a vision AI model (also reads text inside images, e.g. contact details or slurs). Both cost a fraction of a cent per image; none is perfect, so uncertain results are refused.

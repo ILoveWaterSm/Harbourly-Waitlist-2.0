@@ -247,11 +247,11 @@ In the design
 
 | Upload | File types | Max size | Other limits |
 |---|---|---|---|
-| Profile photo | JPG, PNG, WebP | 5 MB | At least 256 × 256 px, cropped to a circle |
-| Banner | JPG, PNG, WebP | 10 MB | At least 1200 px wide |
+| Profile photo | JPG, PNG, WebP | 5 MB | At least 256 × 256 px, cropped to a circle; checked automatically (see "Automatic image check") |
+| Banner | JPG, PNG, WebP | 10 MB | At least 1200 px wide; checked automatically (see "Automatic image check") |
 | Rank proof (application, rank update, new game) | JPG, PNG, WebP | 10 MB each | Up to 5 |
 | Dispute evidence | JPG, PNG, WebP, PDF | 10 MB each | Up to 5 |
-| Showcase (coach profile) | JPG, PNG, WebP | 10 MB each | Up to 5; optional caption up to 80 characters; checked automatically (see "Coach profile showcase") |
+| Showcase (coach profile) | JPG, PNG, WebP | 10 MB each | Up to 5; optional caption up to 80 characters; checked automatically (see "Automatic image check") |
 
 - No GIF (animated avatars pull attention) and no video evidence in the MVP; a clip can be linked in the dispute description.
 - No HEIC. iPhone screenshots are PNG already; iPhone Safari is expected to convert camera photos to JPEG on upload when HEIC isn't accepted. Confirm on a real iPhone when building.
@@ -365,3 +365,15 @@ Elsewhere
 
 Profile order at one-column widths (below 1100px)
 - About, Showcase, Games, then Availability, then Reviews. (Was Availability first.) Desktop keeps Availability in the right-hand column.
+
+## Automatic image check for every public image (agreed 9 Oct 2026)
+
+Extends the showcase check above to every image other people can see.
+
+- Covered: profile photos (every account, gamer or coach: they show in the top nav, on reviews and on coach profiles), coach banners, and showcase images with their captions.
+- Not covered: private uploads only the team sees (rank proof, dispute evidence, portfolio). The team already looks at those.
+- Same behaviour everywhere: checked when uploaded or changed; passes, live at once; fails, not used, and the person is told in place with a plain reason ("This photo can't be used on Harbourly. Choose a different one."); uncertain counts as a fail; no email; no manual review.
+- A replaced photo or banner stays until its replacement passes. A first photo that fails leaves the default avatar (first letter); a first banner that fails leaves the plain `--bg-mid` band.
+- Where it's designed: profile setup (21: photo, banner, showcase), coach profile settings (22: the same), account settings (24: photo). Each upload shows a short "Checking…" state, then passed or refused.
+- One moderation service for all of it, to confirm before code is built.
+

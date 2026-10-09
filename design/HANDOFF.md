@@ -115,7 +115,7 @@ Keep using the same cast so pages stay consistent. Mockups are set around Mon 5 
 ## Open items
 
 - **Avatar and showcase images:** I'll supply fictional avatar images and showcase images. Until then, avatars show the default (first letter in Sora) and showcase images are marked empty slots. When they arrive, use them for the cast above (Kairo has 5 showcase images, Vexa 1, nullpoint none).
-- **Showcase moderation service** (before code is built): pick the automatic check for showcase images and captions; options are in BUILD-ORDER.md.
+- **Image moderation service** (before code is built): pick the automatic check for every public image (profile photos, banners, showcase images and captions; see "Automatic image check" in DECISIONS.md); options are in BUILD-ORDER.md.
 - **Sign-up password (assumed, not confirmed):** email sign-ups enter email and password once, on the sign-up page, and "Finish setting up" doesn't ask again; Google sign-ups never set a password. Check with me when designing sign-up (Phase 4).
 - **Phase 6:** voice intro length and portfolio format are still to decide.
 - **Languages field:** coaches pick the languages they coach in (shown on the browse card and profile). Design the field in profile setup (page 21) and coach profile settings (page 22).

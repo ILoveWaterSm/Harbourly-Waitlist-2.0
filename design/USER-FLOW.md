@@ -272,7 +272,7 @@ The four conditions to go live: application approved, payout setup complete, pho
 ```mermaid
 flowchart TD
   CDash(["Coach dashboard"]) --> Settings["Coach profile settings"]
-  Settings --> Bio["Edit bio, avatar, banner, languages"]
+  Settings --> Bio["Edit bio, avatar, banner, languages. Photos checked automatically on upload"]
   Settings --> Avail["Edit weekly availability, in your own time zone"]
   Settings --> Rates["Edit price per game"]
   Settings --> Rank["Update rank: new screenshot, old rank shown until approved"]
@@ -294,7 +294,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  Account(["Account settings"]) --> Profile["Name, username, avatar"]
+  Account(["Account settings"]) --> Profile["Name, username, avatar. Photo checked automatically on upload"]
   Account --> EmailChange["Change email: verify the new one, notice to the old one"]
   Account --> Password["Change password"]
   Account --> PhoneChange["Change phone: OTP"]
