@@ -58,9 +58,10 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 2. Coach profile · L
 `/coaches/[username]` *proposed*. Viewable logged out.
-- Avatar, banner, name, Verified or New Coach, country with flag, languages, time zone, bio, per-game sections (rank, credentials, price), availability preview, voice intro, reviews.
+- Avatar, banner, name, Verified or New Coach, country with flag, languages, time zone, bio, showcase (up to 5 images with optional captions, straight after About; left out when there are none), per-game sections (rank, credentials, price), availability preview, voice intro, reviews.
+- One column (below 1100px): About, Showcase, Games, Availability, Reviews.
 - "Book a session" in the header; with two or more games, each game section also has "Choose a time", which opens Pick a slot with that game chosen.
-- States: Verified coach, New Coach, one game vs several, no reviews yet, no voice intro, converted price with "Kairo's price is ₱1,850" line, logged out (Book leads to log in), your own profile (no Book button), preview mode (used later by 22), loading, not found.
+- States: Verified coach, New Coach, one game vs several, showcase with several images / one image / none, no reviews yet, no voice intro, converted price with "Kairo's price is ₱1,850" line, logged out (Book leads to log in), your own profile (no Book button), preview mode (used later by 22), loading, not found.
 
 ### 3. Pick a slot · M
 `/coaches/[username]/book` *proposed*.
@@ -187,7 +188,8 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 21. Profile setup · L
 `/coach/setup` *proposed*.
-- Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency, up to 3 credential lines per game.
+- Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency, up to 3 credential lines per game, showcase (optional: up to 5 images, caption up to 80 characters each).
+- Showcase upload: checking, passed (live), refused with a reason (automatic check; see DECISIONS.md "Coach profile showcase").
 - States: each step, saved and resumed, validation, complete (moves to live once payout and phone are done).
 
 **Checkpoint 6:** coach onboarding.
@@ -199,6 +201,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 ### 22. Coach profile settings · L
 `/coach/profile` *proposed*.
 - Edit bio, avatar, banner, languages, availability, prices.
+- Showcase: add, replace, remove, reorder, edit captions; each image checking, live, or refused with a reason (replaced image stays live until the new one passes); empty (no showcase).
 - Update rank (screenshot, pending, old rank still shown).
 - Add a game (proof, under review).
 - Voice intro (record, pending, approved, declined).
@@ -240,3 +243,4 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 - Coach launch countries with Stripe and Xendit, including Thailand.
 - Exchange-rate source for converted prices.
 - Chat retention period, alongside the Terms of Service wording.
+- Moderation service for showcase images and captions: a dedicated image-moderation API (cheapest per image, catches nudity, violence and similar) or a vision AI model (also reads text inside images, e.g. contact details or slurs). Both cost a fraction of a cent per image; none is perfect, so uncertain results are refused.

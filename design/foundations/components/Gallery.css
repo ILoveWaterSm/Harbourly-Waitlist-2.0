@@ -1,0 +1,74 @@
+/* Gallery → Gallery.module.css. A coach's showcase: up to 5 images, one large at a time.
+   Every image shows whole (contained, never cropped) in a fixed 16:9 frame on --bg-deep, so screenshots
+   and photos of any shape sit in the same box. Thumbnails below pick an image; the current one has a green ring.
+   An optional caption (up to 80 characters) sits under the image with the position in mono.
+   One image: no arrows, no position, no thumbnails. Phones swipe instead of using the arrows. */
+.gallery { display: grid; gap: var(--space-3); min-width: 0; }
+.galleryStage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+.galleryImage { display: block; width: 100%; height: 100%; object-fit: contain; }
+.galleryNav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  display: inline-grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-round);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-flat);
+  cursor: pointer;
+  transition: border-color .2s, background-color .2s;
+}
+.galleryNav svg { width: 18px; height: 18px; }
+.galleryNav.prev { left: var(--space-3); }
+.galleryNav.next { right: var(--space-3); }
+.galleryNav:hover, .galleryNav.isHover { border-color: var(--muted); background: color-mix(in srgb, var(--surface) 88%, var(--ink)); }
+.galleryNav:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.galleryNav:disabled { opacity: 0; pointer-events: none; }
+
+.galleryFoot { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); min-height: 22px; }
+.galleryCaption { min-width: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-soft); }
+.galleryPos { margin-left: auto; font: 400 12.5px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+
+/* Up to five thumbnails share the row (up to 104px each), so none is ever cut off */
+.galleryThumbs { display: flex; gap: var(--space-2); margin: 0; padding: 4px; list-style: none; }
+.galleryThumbs > li { flex: 1 1 0; min-width: 0; max-width: 104px; }
+.galleryThumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-deep);
+  overflow: hidden;
+  opacity: .62;
+  cursor: pointer;
+  transition: opacity .2s, border-color .2s, box-shadow .2s;
+}
+.galleryThumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.galleryThumb:hover, .galleryThumb.isHover { opacity: 1; }
+.galleryThumb:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.galleryThumb[aria-current="true"] { opacity: 1; border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
+
+/* Mockup placeholder until real images exist: a marked empty slot, not a picture. */
+.galleryPlaceholder { display: grid; place-items: center; align-content: center; gap: var(--space-2); width: 100%; height: 100%; color: var(--subtle); }
+.galleryPlaceholder svg { width: 28px; height: 28px; }
+.galleryPlaceholder span { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; }
+.galleryThumb .galleryPlaceholder svg { width: 18px; height: 18px; }
+
+@container app (max-width: 640px) {
+  .galleryStage { border-radius: var(--radius-md); }
+  .galleryNav { display: none; }
+  .galleryThumb { border-radius: var(--radius-xs); }
+}

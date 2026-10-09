@@ -104,7 +104,7 @@ The gamer or coach choice is a routing hint only. Every account can book as a ga
 flowchart TD
   Browse["Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency"] --> Card["Coach card"]
   Browse -->|"Load more"| Browse
-  Card --> Profile["Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, availability preview, voice intro, reviews"]
+  Card --> Profile["Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, showcase images if added, availability preview, voice intro, reviews"]
   Profile --> Own{"Is this your own coach profile?"}
   Own -->|"Yes"| NoBook(["No Book button. This is your profile"])
   Own -->|"No"| Game["Choose a game"]
@@ -251,7 +251,7 @@ flowchart TD
   Payout -->|"Couldn't verify"| PayoutFail["Your payout account couldn't be verified. Try again or contact support"]
   PayoutFail --> Payout
   Gates --> PhoneGate["Phone verified"]
-  Gates --> Setup["Profile setup: bio, avatar, banner, languages, availability, price and credentials per game"]
+  Gates --> Setup["Profile setup: bio, avatar, banner, languages, availability, price and credentials per game, showcase (optional)"]
   Setup -->|"Leave and come back"| Setup
   Payout --> AllDone{"All four done?"}
   PhoneGate --> AllDone
@@ -278,6 +278,7 @@ flowchart TD
   Settings --> Rank["Update rank: new screenshot, old rank shown until approved"]
   Settings --> AddGame["Add a game: proof, listing under review until approved"]
   Settings --> Voice["Record a voice intro: pending, then approved or declined"]
+  Settings --> Showcase["Showcase: up to 5 images, optional captions. Checked automatically on upload; shown at once if it passes, refused with a reason if not"]
   Settings --> Portfolio["Submit portfolio for Verified"]
   Settings --> Preview["Preview my public profile"]
   CDash --> PayoutSet["Payout settings: status and link to Stripe or Xendit"]

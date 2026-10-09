@@ -145,7 +145,7 @@ flowchart TD
 flowchart TD
   Browse[&quot;Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency&quot;] --&gt; Card[&quot;Coach card&quot;]
   Browse --&gt;|&quot;Load more&quot;| Browse
-  Card --&gt; Profile[&quot;Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, availability preview, voice intro, reviews&quot;]
+  Card --&gt; Profile[&quot;Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, showcase images if added, availability preview, voice intro, reviews&quot;]
   Profile --&gt; Own{&quot;Is this your own coach profile?&quot;}
   Own --&gt;|&quot;Yes&quot;| NoBook([&quot;No Book button. This is your profile&quot;])
   Own --&gt;|&quot;No&quot;| Game[&quot;Choose a game&quot;]
@@ -283,7 +283,7 @@ flowchart TD
   Payout --&gt;|&quot;Couldn&#x27;t verify&quot;| PayoutFail[&quot;Your payout account couldn&#x27;t be verified. Try again or contact support&quot;]
   PayoutFail --&gt; Payout
   Gates --&gt; PhoneGate[&quot;Phone verified&quot;]
-  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, languages, availability, price and credentials per game&quot;]
+  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, languages, availability, price and credentials per game, showcase (optional)&quot;]
   Setup --&gt;|&quot;Leave and come back&quot;| Setup
   Payout --&gt; AllDone{&quot;All four done?&quot;}
   PhoneGate --&gt; AllDone
@@ -307,6 +307,7 @@ flowchart TD
   Settings --&gt; Rank[&quot;Update rank: new screenshot, old rank shown until approved&quot;]
   Settings --&gt; AddGame[&quot;Add a game: proof, listing under review until approved&quot;]
   Settings --&gt; Voice[&quot;Record a voice intro: pending, then approved or declined&quot;]
+  Settings --&gt; Showcase[&quot;Showcase: up to 5 images, optional captions. Checked automatically on upload; shown at once if it passes, refused with a reason if not&quot;]
   Settings --&gt; Portfolio[&quot;Submit portfolio for Verified&quot;]
   Settings --&gt; Preview[&quot;Preview my public profile&quot;]
   CDash --&gt; PayoutSet[&quot;Payout settings: status and link to Stripe or Xendit&quot;]

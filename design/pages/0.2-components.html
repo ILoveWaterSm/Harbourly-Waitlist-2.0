@@ -37,6 +37,7 @@
 <link rel="stylesheet" href="../foundations/components/ReviewItem.css">
 <link rel="stylesheet" href="../foundations/components/PriceBreakdown.css">
 <link rel="stylesheet" href="../foundations/components/Spinner.css">
+<link rel="stylesheet" href="../foundations/components/Gallery.css">
 <style>
 /* Layout: a working library. Each section is one component family; each specimen is
    captioned with its state in mono, on the ground it really sits on (page or card). */
@@ -799,8 +800,8 @@
   <section class="lib-sec" data-state="booking" data-label="Booking parts">
     <div class="lib-sec-head">
       <h2>Booking parts</h2>
-      <p>Added in Phase 1 for browsing, profiles and checkout. Choices are whole-card radios, times are chips in day rows that read the same at every width, and the total is always the largest figure in a price breakdown.</p>
-      <span class="lib-files">OptionCard · SlotPicker · AudioPlayer · ReviewItem · PriceBreakdown · Spinner</span>
+      <p>Added in Phase 1 for browsing, profiles and checkout. Choices are whole-card radios, times are chips in day rows that read the same at every width, and the total is always the largest figure in a price breakdown. The gallery holds a coach's showcase: up to 5 images, each shown whole in a 16:9 frame, with an optional caption.</p>
+      <span class="lib-files">OptionCard · SlotPicker · AudioPlayer · ReviewItem · PriceBreakdown · Spinner · Gallery</span>
     </div>
     <div class="lib-specs" style="--lib-min:420px">
       <div class="lib-spec"><span class="lib-cap">Option card · selected, rest, hover</span>
@@ -835,6 +836,11 @@
           <dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>₱111.00</dd></div><div class="priceBreakdownLine total"><dt>Total</dt><dd>₱1,961.00</dd></div></dl>
           <p class="priceBreakdownNote">Charged in Philippine pesos. Your bank converts <span class="mono">₱1,961.00</span> to SGD.</p>
         </article></div>
+      <div class="lib-spec"><span class="lib-cap">Gallery · five images, second shown, hover on a thumbnail</span>
+        <div class="lib-stage"><div class="gallery" aria-roledescription="carousel" aria-label="Kairo's showcase"><div class="galleryStage"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Image 2</span></span><button class="galleryNav prev" type="button" aria-label="Previous image"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><button class="galleryNav next" type="button" aria-label="Next image"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div><div class="galleryFoot"><p class="galleryCaption">MPL Philippines 2024, with the team as substitute jungler</p><span class="galleryPos">2 / 5</span></div><ul class="galleryThumbs"><li><button class="galleryThumb" type="button" aria-current="false" aria-label="Show image 1"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li><li><button class="galleryThumb" type="button" aria-current="true" aria-label="Show image 2"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li><li><button class="galleryThumb isHover" type="button" aria-current="false" aria-label="Show image 3"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li><li><button class="galleryThumb" type="button" aria-current="false" aria-label="Show image 4"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li><li><button class="galleryThumb" type="button" aria-current="false" aria-label="Show image 5"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li></ul></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Gallery · one image: no arrows, position or thumbnails</span>
+        <div class="lib-stage"><div class="gallery" aria-label="Vexa's showcase"><div class="galleryStage"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Image 1</span></span></div><div class="galleryFoot"><p class="galleryCaption">Immortal 2 at the end of this act</p></div></div>
+          <p style="font-size:13.5px;color:var(--muted)">Images are placeholders until real ones are supplied. With no images, the profile leaves the section out.</p></div></div>
       <div class="lib-spec"><span class="lib-cap">Spinner · and the other Phase 1 additions</span>
         <div class="lib-stage">
           <div class="lib-inline"><span class="spinner" aria-hidden="true"></span><span class="spinner lg" aria-hidden="true"></span></div>
