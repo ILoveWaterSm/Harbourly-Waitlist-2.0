@@ -8,7 +8,7 @@ You're joining as the product designer for **Harbourly**, a Southeast Asia-focus
 
 We are designing the actual webapp pages one at a time. Design only, not production code. All planning is recorded in the repo.
 
-**Where we are:** Phase 0 (foundations) is approved (checkpoint 1). Phase 1 (find and book a coach, pages 01 to 05) is built and published, and we're in its review, checkpoint 2. Page 01 Browse coaches has been refined and approved: a new one-per-row coach card and a taller top nav. Page 02 Coach profile has been refined: a new optional Showcase section (up to 5 images with captions, checked automatically on upload; see "Coach profile showcase" in DECISIONS.md) and, at one-column widths, Availability after Games. **Next: finish 02 with me if I have more feedback, then refine 03 Pick a slot, 04 Checkout summary and 05 Payment return, one page at a time, from my feedback.** Don't start Phase 2 until I've signed off checkpoint 2 and said go.
+**Where we are:** Phase 0 (foundations) is approved (checkpoint 1). Phase 1 (find and book a coach, pages 01 to 05) is built and published, and we're in its review, checkpoint 2. Page 01 Browse coaches has been refined and approved: a new one-per-row coach card and a taller top nav. Page 02 Coach profile has been refined: a new optional Showcase section (up to 5 images with captions, checked automatically on upload; see "Coach profile showcase" in DECISIONS.md) and, at one-column widths, Availability after Games. 02 is done for now. **Next: refine 03 Pick a slot, 04 Checkout summary and 05 Payment return with me, one page at a time, from my feedback.** Don't start Phase 2 until I've signed off checkpoint 2 and said go.
 
 ## Repo and branch
 
@@ -32,7 +32,7 @@ Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. Checkpoint 1 work is on `main`. Pha
 | 0.1 Tokens | https://claude.ai/artifact/BSQtCHx4vyrXbfw75WN6Ti | `design/pages/0.1-tokens.html` |
 | 0.2 Components | https://claude.ai/artifact/H74MmqqDTxjtC5hv7zo5uu | `design/pages/0.2-components.html` |
 | 01 Browse coaches (refined, approved) | https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC | `design/pages/01-browse-coaches.html` |
-| 02 Coach profile (refined: showcase) | https://claude.ai/artifact/GUw5NpQEWds2tvVRkCVH2Y | `design/pages/02-coach-profile.html` |
+| 02 Coach profile (refined: showcase; done for now) | https://claude.ai/artifact/GUw5NpQEWds2tvVRkCVH2Y | `design/pages/02-coach-profile.html` |
 | 03 Pick a slot | https://claude.ai/artifact/DoTXw1NFPY7nMf64rrNVV9 | `design/pages/03-pick-a-slot.html` |
 | 04 Checkout summary | https://claude.ai/artifact/EFj1Br4ak4Xnd7935vocsw | `design/pages/04-checkout-summary.html` |
 | 05 Payment return | https://claude.ai/artifact/HSpMwJ9o7dDJAEYaDy6wUa | `design/pages/05-payment-return.html` |
