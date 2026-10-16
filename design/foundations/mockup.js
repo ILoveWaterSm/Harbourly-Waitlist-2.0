@@ -26,6 +26,21 @@
       btn.querySelector('use').setAttribute('href', open ? '#i-close' : '#i-menu');
     });
   });
+  // Links between mockup pages: data-link="07#gamer-after" opens that page's published mockup at that
+  // state (in a new tab); a link to a state on this same page just switches to it.
+  var PAGES = {
+    "01": "https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC", "02": "https://claude.ai/artifact/GUw5NpQEWds2tvVRkCVH2Y",
+    "03": "https://claude.ai/artifact/DoTXw1NFPY7nMf64rrNVV9", "04": "https://claude.ai/artifact/EFj1Br4ak4Xnd7935vocsw",
+    "05": "https://claude.ai/artifact/HSpMwJ9o7dDJAEYaDy6wUa", "06": "https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3",
+    "07": "https://claude.ai/artifact/FLFRVmLwDCbUqCB4p4vbZM", "08": "https://claude.ai/artifact/LB4gwSiruwp8qDVRLS27Nt"
+  };
+  var self = (frame.dataset.page || '').slice(0, 2);
+  Array.prototype.forEach.call(frame.querySelectorAll('[data-link]'), function (a) {
+    var parts = a.dataset.link.split('#'), pg = parts[0], st = parts[1] || '';
+    if (pg === self) {
+      a.addEventListener('click', function (e) { e.preventDefault(); window.mk.set(st); window.scrollTo(0, 0); });
+    } else if (PAGES[pg]) { a.href = PAGES[pg] + (st ? '#' + st : ''); a.target = '_blank'; a.rel = 'noopener'; }
+  });
   var sections = Array.prototype.slice.call(frame.querySelectorAll('[data-state]'));
   var allowAll = frame.hasAttribute('data-all-states');
   var states = sections.map(function (s) { return { id: s.dataset.state, label: s.dataset.label || s.dataset.state }; });

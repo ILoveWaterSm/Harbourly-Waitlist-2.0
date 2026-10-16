@@ -83,6 +83,8 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ## Phase 2: The session and after
 
+Pages: [06 Session detail](https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3) (`design/pages/06-session-detail.html`) · [07 Report a problem](https://claude.ai/artifact/FLFRVmLwDCbUqCB4p4vbZM) (`design/pages/07-report-a-problem.html`) · [08 Live session](https://claude.ai/artifact/LB4gwSiruwp8qDVRLS27Nt) (`design/pages/08-live-session.html`) · frames on the [canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ)
+
 ### 6. Session detail, gamer and coach · L
 `/sessions/[id]` and `/coach/sessions/[id]` *proposed*. One layout, two role views: header with status, then what to do now and changes on the left, session facts and payment on the right.
 - **Upcoming, more than 24 hours:** Request a new time, Cancel booking.
@@ -106,7 +108,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 - Voice call (camera optional, off by default), chat (saved), screen share on computers, one at a time.
 - States: waiting for the other person; no-show report available 15 minutes after start (gamer); coach waiting for an absent gamer; live; camera on; screen share on; mobile (watching only, with note); reminder banners at 10, 5 and 1 minutes; end request sent; end request received (End now, Keep going); you're reconnecting; the other person lost connection; microphone or camera blocked; session ended (gamer, coach).
 
-**Checkpoint 3:** session lifecycle.
+**Checkpoint 3:** session lifecycle. Built and published 16 Oct 2026; waiting for review.
 
 ---
 
