@@ -77,7 +77,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 `/checkout/[bookingId]/return` *proposed*.
 - States: confirming your payment, booking confirmed (with "Book another time with Kairo": Pick a slot, same game chosen), payment didn't go through (try again while held), slot no longer held (pick another).
 
-**Checkpoint 2:** the booking flow end to end. Built and published 6 Oct 2026; waiting for review.
+**Checkpoint 2:** the booking flow end to end. Built and published 6 Oct 2026; reviewed and closed 16 Oct 2026 (refinements to 01, 02, 03 and 05; 04 unchanged).
 
 ---
 
