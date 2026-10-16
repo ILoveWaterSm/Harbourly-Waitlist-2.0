@@ -38,6 +38,9 @@
 <link rel="stylesheet" href="../foundations/components/PriceBreakdown.css">
 <link rel="stylesheet" href="../foundations/components/Spinner.css">
 <link rel="stylesheet" href="../foundations/components/Gallery.css">
+<link rel="stylesheet" href="../foundations/components/ParticipantTile.css">
+<link rel="stylesheet" href="../foundations/components/CallControls.css">
+<link rel="stylesheet" href="../foundations/components/ChatPanel.css">
 <style>
 /* Layout: a working library. Each section is one component family; each specimen is
    captioned with its state in mono, on the ground it really sits on (page or card). */
@@ -848,6 +851,47 @@
         </div></div>
     </div>
   </section>
+
+  <!-- ===================== SESSION PARTS (added in Phase 2) ===================== -->
+  <section class="lib-sec" data-state="session" data-label="Session parts">
+    <div class="lib-sec-head">
+      <h2>Session parts</h2>
+      <p>Added in Phase 2 for the live session and session detail. Cameras are off by default, so a person is their avatar and name, with a green ring while they speak. Controls are labelled pills, and a control that's off is inverted rather than coloured. Chat carries every sender and time, left-aligned, and is saved with the session. The slot picker can also take up to 3 times, for a reschedule request.</p>
+      <span class="lib-files">ParticipantTile · CallControls · ChatPanel · SlotPicker (up to 3) · Rating.js · Field.js · new icons in icons.js</span>
+    </div>
+    <div class="lib-specs" style="--lib-min:300px">
+      <div class="lib-spec"><span class="lib-cap">Tile · speaking</span><div class="participantTile isSpeaking" style="aspect-ratio:4/3"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · you, muted</span><div class="participantTile" style="aspect-ratio:4/3"><span class="avatar">S</span><span class="participantTileName"><svg class="icon" aria-hidden="true"><use href="#i-mic-off"/></svg>snapking <span class="participantTileYou">You</span></span></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · camera on (marked slot)</span><div class="participantTile" style="aspect-ratio:4/3"><div class="participantTileVideo"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg>Your camera</div><span class="avatar">S</span><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · waiting, with action</span><div class="participantTile isEmpty" style="aspect-ratio:4/3"><span class="avatar">K</span><div class="participantTileNote"><p class="participantTileNoteTitle">Kairo hasn't joined</p><p class="participantTileNoteText">The session started at 20:00. You can keep waiting until 21:00, or report a no-show.</p><a class="button secondary sm" href="#"><svg class="icon" aria-hidden="true"><use href="#i-flag"/></svg>Report a no-show</a></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · lost connection</span><div class="participantTile isEmpty" style="aspect-ratio:4/3"><span class="avatar">K</span><div class="participantTileNote"><p class="participantTileNoteTitle">Kairo lost connection</p><p class="participantTileNoteText">Kairo can rejoin until 21:00 SGT. The session keeps running.</p></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · microphone blocked</span><div class="participantTile hasAlert" style="aspect-ratio:4/3"><div style="display:grid;gap:8px;justify-items:center;text-align:center;max-width:30ch"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--amber)"><use href="#i-mic-off"/></svg><p class="participantTileNoteTitle">Your browser blocked the microphone</p><p class="participantTileNoteText">Allow microphone access, then try again.</p></div><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div></div>
+      <div class="lib-spec wide"><span class="lib-cap">Shared screen with the tile strip</span>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 196px;gap:16px;align-items:center;max-width:900px"><div class="sharedScreen" role="img" aria-label="Kairo's shared screen"><span class="sharedScreenWho"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo's screen</span><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Shared screen · Mobile Legends replay</span></div>
+        <div style="display:grid;gap:12px"><div class="participantTile mini"><span class="avatar">S</span><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div><div class="participantTile mini isSpeaking"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div></div></div>
+      <div class="lib-spec wide"><span class="lib-cap">Call controls · default · muted, camera on, the other person sharing · you're sharing</span>
+        <div class="lib-stage" style="padding:0">
+          <div class="callControls"><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap"></span><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button></div>
+          <div class="callControls" style="border-top:1px solid var(--line)"><button class="callControl isOff" type="button" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-mic-off"/></svg>Unmute</button><button class="callControl isActive" type="button" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg>Stop camera</button><button class="callControl" type="button" disabled><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo is sharing</button><span class="callControlsGap"></span><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button></div>
+          <div class="callControls" style="border-top:1px solid var(--line)"><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl isActive" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Stop sharing</button><span class="callControlsGap"></span><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Call banners in the session bar</span>
+        <div style="display:grid;gap:12px">
+          <div class="callBanner" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="callBannerText">Waiting for Kairo to agree to end</span><button class="button secondary sm" type="button" style="margin-left:auto">Withdraw</button></div>
+          <div class="callBanner" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg><span class="callBannerText">Kairo wants to end the session</span><span style="display:flex;gap:8px;margin-left:auto"><button class="button secondary sm" type="button">Keep going</button><button class="button primary sm" type="button">End now</button></span></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Chat panel</span><section class="chatPanel" aria-label="Chat" style="height:420px;border-radius:var(--radius-lg);overflow:hidden">
+            <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+            <ul class="chatMessages"><li class="chatSystem">Kairo joined · 19:58</li><li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li><li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li><li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30.</p></li></ul>
+            <div class="chatComposer"><textarea class="fieldControl" rows="1" placeholder="Message Kairo" aria-label="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+          </section></div>
+      <div class="lib-spec"><span class="lib-cap">Slot picker · up to 3 times, all chosen</span>
+        <div class="lib-stage"><div class="slotPicker"><div class="slotPickerHead"><span class="slotPickerRange" style="text-align:left;min-width:0">5–11 Oct</span><span class="slotPickerCount"><b>3</b> of 3 chosen</span></div>
+          <ul class="slotDays"><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Thu</span><span class="slotDayDate">8 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" disabled>19:00</button><button class="slot" type="button" aria-pressed="true">20:00</button><button class="slot" type="button" aria-pressed="true">21:00</button></div></li>
+          <li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sat</span><span class="slotDayDate">10 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" disabled>14:00</button><button class="slot" type="button" aria-pressed="true">15:00</button><button class="slot" type="button" disabled>16:00</button></div></li></ul></div></div></div>
+      <div class="lib-spec wide"><span class="lib-cap">New icons</span><div class="lib-stage" style="display:flex;flex-wrap:wrap;gap:16px"><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-mic"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">mic</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-mic-off"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">mic-off</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-camera"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">camera</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-camera-off"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">camera-off</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-screen"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">screen</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-chat"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">chat</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-send"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">send</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-call-end"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">call-end</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-flag"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">flag</span></span></div></div>
+    </div>
+  </section>
 </main>
 </div>
 </div>
@@ -861,45 +905,12 @@ document.addEventListener('mk:change', function () { requestAnimationFrame(clamp
 window.addEventListener('resize', clampBios);
 </script>
 <script src="../foundations/components/OtpInput.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/components/Rating.js"></script>
 <script src="../foundations/mockup.js"></script>
 <script>
-/* specimen behaviour: counters, star input, hold countdown, resend timer, mobile menu */
+/* specimen behaviour: hold countdown, resend timer (counters and the star input: Field.js, Rating.js) */
 (function () {
-  document.querySelectorAll('[data-counter]').forEach(function (el) {
-    var out = document.getElementById(el.dataset.counter), max = +el.getAttribute('maxlength');
-    function upd() { out.textContent = el.value.length + ' / ' + max; out.classList.toggle('atLimit', el.value.length >= max); }
-    el.addEventListener('input', upd); upd();
-  });
-
-  var star = '<svg class="icon"><use href="#i-star"/></svg>';
-  document.querySelectorAll('.ratingInput').forEach(function (fs, n) {
-    var wrap = fs.querySelector('.ratingInputStars'), value = +fs.dataset.rating, btns = [];
-    for (var i = 1; i <= 5; i++) {
-      var b = document.createElement('button');
-      b.type = 'button'; b.className = 'ratingStar'; b.setAttribute('role', 'radio');
-      b.setAttribute('aria-label', i + (i === 1 ? ' star' : ' stars')); b.dataset.v = i; b.innerHTML = star;
-      wrap.appendChild(b); btns.push(b);
-    }
-    var label = document.createElement('span'); label.className = 'ratingInputValue'; wrap.appendChild(label);
-    function paint(v) { btns.forEach(function (b) { b.classList.toggle('isOn', +b.dataset.v <= v); }); }
-    function set(v) {
-      value = v; paint(v);
-      btns.forEach(function (b) { b.setAttribute('aria-checked', String(+b.dataset.v === v)); b.tabIndex = (+b.dataset.v === (v || 1)) ? 0 : -1; });
-      label.textContent = v ? v + ' out of 5' : 'Not rated';
-      if (v) fs.classList.remove('invalid');
-    }
-    btns.forEach(function (b) {
-      b.addEventListener('click', function () { set(+b.dataset.v); });
-      b.addEventListener('mouseenter', function () { paint(+b.dataset.v); });
-      b.addEventListener('keydown', function (e) {
-        var d = (e.key === 'ArrowRight' || e.key === 'ArrowUp') ? 1 : (e.key === 'ArrowLeft' || e.key === 'ArrowDown') ? -1 : 0;
-        if (d) { e.preventDefault(); var v = Math.min(5, Math.max(1, (value || 0) + d)); set(v); btns[v - 1].focus(); }
-      });
-    });
-    wrap.addEventListener('mouseleave', function () { paint(value); });
-    set(value);
-  });
-
   function mmss(s) { return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
   var hold = document.querySelector('[data-countdown]'), left = +(hold && hold.dataset.countdown);
   var resend = document.querySelector('[data-resend]'), rleft = +(resend && resend.dataset.resend);

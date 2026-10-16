@@ -1,0 +1,30 @@
+/* ChatPanel → ChatPanel.module.css. The session chat: text and links, saved with the session.
+   Every message carries its sender and time, left-aligned, so a long thread scans like notes.
+   Also used read-only on session detail after the session. */
+.chatPanel { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0; background: var(--bg-mid); }
+.chatPanelHead { display: grid; gap: 4px; padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--line); }
+.chatPanelTitle { display: flex; align-items: center; gap: var(--space-2); font: 600 15px/1.2 var(--font-body); color: var(--ink); }
+.chatPanelTitle svg { width: 18px; height: 18px; color: var(--muted); }
+.chatPanelNote { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.chatMessages { display: flex; flex-direction: column; justify-content: flex-end; gap: var(--space-4); margin: 0; padding: var(--space-5); list-style: none; overflow-y: auto; min-height: 0; }
+.chatMsg { display: grid; gap: 3px; }
+.chatMsgHead { display: flex; align-items: baseline; gap: var(--space-2); }
+.chatMsgName { font: 600 13.5px/1.2 var(--font-body); color: var(--ink); }
+.chatMsg.isYou .chatMsgName { color: var(--green); }
+.chatMsgTime { font: 400 11.5px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--faint); }
+.chatMsgText { font-size: 14px; line-height: 1.55; color: var(--ink-soft); overflow-wrap: anywhere; }
+.chatMsgText a { color: var(--green); text-decoration: none; border-bottom: 1px solid var(--green-line); }
+.chatSystem { display: flex; align-items: center; gap: var(--space-3); font: 400 11.5px/1.3 var(--font-mono); color: var(--faint); }
+.chatSystem::before, .chatSystem::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.chatComposer { display: flex; align-items: flex-end; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-4); border-top: 1px solid var(--line); }
+.chatComposer .fieldControl { min-height: 44px; padding: 10px 14px; font-size: 15px; resize: none; }
+.chatComposer .iconButton { width: 44px; height: 44px; color: var(--green-ink); background: var(--green); border-color: var(--green); }
+.chatComposer .iconButton:disabled { background: none; color: var(--subtle); border-color: var(--line); }
+/* Read-only transcript inside a card (session detail). */
+.chatPanel.transcript { background: none; grid-template-rows: auto; }
+.chatPanel.transcript .chatMessages { justify-content: flex-start; padding: 0; overflow: visible; }
+@container app (max-width: 640px) {
+  .chatPanelHead { padding: var(--space-3) var(--space-4); }
+  .chatMessages { gap: var(--space-3); padding: var(--space-4); }
+  .chatComposer { padding: var(--space-2) var(--space-3) var(--space-3); }
+}

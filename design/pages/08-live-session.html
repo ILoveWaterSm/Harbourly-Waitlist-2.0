@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 Live session</title>
+<meta name="description" content="Phase 2, page 8: the live session, shared by gamer and coach, with every state.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Flag.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/Countdown.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/ConfirmStep.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/Spinner.css">
+<link rel="stylesheet" href="../foundations/components/ParticipantTile.css">
+<link rel="stylesheet" href="../foundations/components/CallControls.css">
+<link rel="stylesheet" href="../foundations/components/ChatPanel.css">
+<style>
+/* Page: Live session (/sessions/[id]/live) → app/sessions/[id]/live/page.module.css. Layout only.
+   Full window, no top nav or sidebar, so the call keeps its space. Desktop: session bar across the top,
+   the stage, the controls under it, chat in a 360px column on the right. Reminders and end requests sit
+   in the centre of the session bar, so nothing moves and nothing covers the stage.
+   Phone: bar, stage (16:9), a banner strip when needed, chat filling the rest, controls pinned at the bottom. */
+.callRoom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-rows: 64px minmax(0, 1fr) auto;
+  grid-template-areas: "bar bar" "stage chat" "controls chat";
+  height: 100dvh;
+  background: var(--bg);
+}
+/* Mockup only: the frame stands in for the browser window. */
+.mk-frame[data-width="desktop"] .callRoom { height: 900px; }
+.mk-frame[data-width="phone"] .callRoom { height: 844px; }
+
+.callBar { grid-area: bar; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--space-4); padding: 0 var(--space-6); border-bottom: 1px solid var(--line); }
+.callBarWho { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
+.callBarWho img { display: block; height: 30px; width: auto; flex: none; }
+.callBarWho .callBarSep { width: 1px; height: 24px; background: var(--line-strong); flex: none; }
+.callBarTitle { min-width: 0; }
+.callBarTitle b { display: block; font: 600 15px/1.25 var(--font-body); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.callBarTitle span { display: block; font-size: 13px; line-height: 1.3; color: var(--muted); white-space: nowrap; }
+.callBarRight { display: flex; align-items: center; gap: var(--space-5); }
+.callClock { display: grid; justify-items: end; gap: 2px; }
+.callClockTime { font: 500 16px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.callClockTime span { color: var(--subtle); }
+.callClockEnd { font: var(--text-label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+/* Banner slot: centred in the bar on desktop */
+.callBannerSlot { grid-area: bar; justify-self: center; align-self: center; z-index: 1; display: flex; max-width: min(620px, calc(100% - 640px)); }
+.callBannerSlot .callBanner { flex-wrap: nowrap; padding: 8px 8px 8px var(--space-4); min-height: 44px; }
+.callBannerSlot .callBanner.text { padding-right: var(--space-4); }
+.callBannerSlot .callBannerText { white-space: nowrap; }
+.callBannerSlot .callBannerText .mono { color: var(--ink-soft); }
+.callBannerActions { display: flex; gap: var(--space-2); margin-left: var(--space-2); }
+.callBannerSlot .callBanner.ask > svg { color: var(--green); }
+
+.callStage { grid-area: stage; position: relative; display: grid; min-height: 0; padding: var(--space-6); }
+.callTiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); align-content: center; }
+.callTiles .participantTile { aspect-ratio: 4 / 3; }
+.callShare { display: grid; grid-template-columns: minmax(0, 1fr) 196px; gap: var(--space-4); align-items: center; min-height: 0; }
+.callStrip { display: grid; gap: var(--space-3); }
+.callTileAlert { display: grid; gap: var(--space-2); justify-items: center; max-width: 34ch; text-align: center; }
+.callTileAlert > svg { width: 26px; height: 26px; color: var(--amber); }
+.callTileAlert .button { margin-top: var(--space-2); }
+
+/* Your own connection dropped: the stage dims and says so; nothing else moves. */
+.callReconnect { position: absolute; inset: var(--space-6); z-index: 2; display: grid; place-content: center; justify-items: center; gap: var(--space-3); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--bg) 82%, transparent); text-align: center; }
+.callReconnect p { max-width: 40ch; font-size: 14px; line-height: 1.55; color: var(--muted); }
+.callReconnect b { font: var(--text-h3); color: var(--ink); }
+
+.callRoom > .callControls { grid-area: controls; border-top: 1px solid var(--line); }
+.callControlsNote { display: none; }
+.callRoom > .chatPanel { grid-area: chat; border-left: 1px solid var(--line); }
+.callRoom.isDown .chatComposer, .callRoom.isDown .callControls { opacity: .55; }
+
+/* Ended */
+.endHead { display: grid; gap: var(--space-3); max-width: 62ch; justify-items: start; }
+.endHead p { font: var(--text-body); color: var(--muted); }
+.endHead .mono { color: var(--ink-soft); font-size: 15px; }
+.endCard { display: grid; gap: var(--space-5); max-width: 560px; margin-top: var(--space-8); }
+.endWho { display: flex; align-items: center; gap: var(--space-3); }
+.endWhoName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-weight: 600; font-size: 15px; }
+.endWho .handle { display: block; margin-top: 2px; }
+.endCard .cardFacts { margin: 0; padding-top: var(--space-4); border-top: 1px solid var(--line); }
+.endCard .cardActions { margin-top: 0; }
+.endCard .holdTimer { font-size: 14px; }
+.endNote { font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+
+@container app (max-width: 640px) {
+  .callRoom {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 56px auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "bar" "stage" "banner" "chat" "controls";
+  }
+  .callBar { padding: 0 var(--space-3) 0 var(--space-4); gap: var(--space-3); }
+  .callBarWho img, .callBarWho .callBarSep { display: none; }
+  .callBarTitle b { font-size: 14px; }
+  .callBarTitle span { font-size: 12px; }
+  .callBarRight { gap: var(--space-3); }
+  .callClockTime { font-size: 14px; }
+  .callClockEnd { font-size: 9.5px; letter-spacing: .1em; }
+  .callBar .button span { display: none; }
+  .callBar .button { min-height: 36px; padding: 8px 12px; }
+  .callBannerSlot { grid-area: banner; justify-self: stretch; max-width: none; padding: 0 var(--space-3) var(--space-3); }
+  .callBannerSlot .callBanner { flex: 1; flex-wrap: wrap; padding: 10px 12px; }
+  .callBannerSlot .callBannerText { white-space: normal; flex: 1; }
+  .callBannerActions { flex-basis: 100%; margin-left: 0; }
+  .callBannerActions .button { flex: 1; }
+  .callStage { padding: var(--space-3); }
+  .callTiles { gap: var(--space-2); }
+  .callTiles .participantTile { aspect-ratio: 5 / 4; }
+  .callShare { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .callStrip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+  .callReconnect { inset: var(--space-3); padding: var(--space-4); }
+  .callReconnect b { font-size: 16px; }
+  .callReconnect p { font-size: 13px; }
+  .callTileAlert > svg { width: 20px; height: 20px; }
+  .callTileAlert .participantTileNoteText { font-size: 12.5px; }
+  /* A tile with a message (waiting, dropped, blocked) needs the width: it takes the row, and plain tiles step aside. */
+  .callTiles:has(.isEmpty, .hasAlert) { grid-template-columns: minmax(0, 1fr); }
+  .callTiles:has(.isEmpty, .hasAlert) .participantTile { aspect-ratio: auto; padding: var(--space-4); }
+  .callTiles:has(.isEmpty, .hasAlert) .participantTile:not(.isEmpty):not(.hasAlert) { display: none; }
+  .callTiles .participantTile.isEmpty .avatar { display: none; }
+  .callTileAlert { padding-bottom: var(--space-6); }
+  .callReconnect p { display: none; }
+  .callRoom > .chatPanel { border-left: 0; border-top: 1px solid var(--line); }
+  .callRoom > .chatPanel .chatPanelNote { display: none; }
+  .callShareBtn, .callControlsGap { display: none; }
+  .callControlsNote { display: flex; }
+  .endCard .cardActions .button { flex: 1 1 100%; }
+}
+</style>
+</head>
+<body>
+<template id="shell-focused">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-focused-kairo">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="Kairo, account settings"><span class="avatar sm">K</span>Kairo</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">K</span><span><span class="mobileMenuName">Kairo</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="coach-sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="08 Live session">
+
+  <section data-state="waiting" data-label="Waiting for Kairo">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock"><span class="callClockTime">20:00</span><span class="callClockEnd">Starts · SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile isEmpty"><span class="avatar">K</span><div class="participantTileNote"><p class="participantTileNoteTitle">Waiting for Kairo</p><p class="participantTileNoteText">The session starts at 20:00 SGT. You can chat while you wait.</p></div></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-1">Message Kairo</label><textarea class="fieldControl" id="msg-1" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="no-show" data-label="Kairo hasn't joined, no-show report open">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">16:04 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile isEmpty"><span class="avatar">K</span><div class="participantTileNote"><p class="participantTileNoteTitle">Kairo hasn&#39;t joined</p><p class="participantTileNoteText">The session started at 20:00. You can keep waiting until 21:00, or report a no-show.</p><a class="button secondary sm" href="#" data-link="07#gamer-noshow"><svg class="icon" aria-hidden="true"><use href="#i-flag"/></svg>Report a no-show</a></div></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:05</span></div><p class="chatMsgText">Hi Kairo, I'm here whenever you're ready</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-2">Message Kairo</label><textarea class="fieldControl" id="msg-2" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="coach-waiting" data-label="Coach · waiting for snapking">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with snapking</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">16:04 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 PHT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">K</span><span class="participantTileName">Kairo <span class=participantTileYou>You</span></span></div><div class="participantTile isEmpty"><span class="avatar">S</span><div class="participantTileNote"><p class="participantTileNoteTitle">snapking hasn&#39;t joined</p><p class="participantTileNoteText">If snapking doesn&#39;t join, you&#39;re still paid. The session ends at 21:00 PHT.</p></div></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:58</li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:02</span></div><p class="chatMsgText">Hi snapking, I'm in the call whenever you're ready.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-3">Message snapking</label><textarea class="fieldControl" id="msg-3" rows="1" placeholder="Message snapking"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="live" data-label="Live">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">12:34 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile isSpeaking"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-4">Message Kairo</label><textarea class="fieldControl" id="msg-4" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="camera" data-label="Your camera on">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">14:02 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile isSpeaking"><div class="participantTileVideo"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg>Your camera</div><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl isActive" type="button" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg>Stop camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-5">Message Kairo</label><textarea class="fieldControl" id="msg-5" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="share" data-label="Kairo sharing a screen (phone: watching only)">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">31:08 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callShare">
+          <div class="sharedScreen" role="img" aria-label="Kairo's shared screen"><span class="sharedScreenWho"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo's screen</span><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Shared screen · Mobile Legends replay</span></div>
+          <div class="callStrip"><div class="participantTile mini"><span class="avatar">S</span><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div><div class="participantTile mini isSpeaking"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div>
+        </div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button" disabled><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo is sharing</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-6">Message Kairo</label><textarea class="fieldControl" id="msg-6" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="banner-10" data-label="Banner · 10 minutes left">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">50:00 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        <div class="callBannerSlot"><div class="callBanner text" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="callBannerText">Session ends in <span class="mono">10 min</span>, at <span class="mono">21:00 SGT</span></span></div></div>
+        <main class="callStage" aria-label="Call"><div class="callShare">
+          <div class="sharedScreen" role="img" aria-label="Kairo's shared screen"><span class="sharedScreenWho"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo's screen</span><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Shared screen · Mobile Legends replay</span></div>
+          <div class="callStrip"><div class="participantTile mini"><span class="avatar">S</span><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div><div class="participantTile mini isSpeaking"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div>
+        </div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button" disabled><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo is sharing</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:38</span></div><p class="chatMsgText">Note 2: at 14:00, group with your team before Lord. Don't contest it alone.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-7">Message Kairo</label><textarea class="fieldControl" id="msg-7" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="banner-5" data-label="Banner · 5 minutes left">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">55:00 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        <div class="callBannerSlot"><div class="callBanner text" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="callBannerText">Session ends in <span class="mono">5 min</span>, at <span class="mono">21:00 SGT</span></span></div></div>
+        <main class="callStage" aria-label="Call"><div class="callShare">
+          <div class="sharedScreen" role="img" aria-label="Kairo's shared screen"><span class="sharedScreenWho"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo's screen</span><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Shared screen · Mobile Legends replay</span></div>
+          <div class="callStrip"><div class="participantTile mini isSpeaking"><span class="avatar">S</span><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div><div class="participantTile mini"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div>
+        </div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button" disabled><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo is sharing</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:38</span></div><p class="chatMsgText">Note 2: at 14:00, group with your team before Lord. Don't contest it alone.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:52</span></div><p class="chatMsgText">This helped a lot, thank you</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:53</span></div><p class="chatMsgText">Play 5 ranked games with these two notes, then send me a new replay if you want a second look.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-8">Message Kairo</label><textarea class="fieldControl" id="msg-8" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="banner-1" data-label="Banner · 1 minute left">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">59:00 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        <div class="callBannerSlot"><div class="callBanner text final" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="callBannerText">Session ends in 1 minute</span></div></div>
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile isSpeaking"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:38</span></div><p class="chatMsgText">Note 2: at 14:00, group with your team before Lord. Don't contest it alone.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:52</span></div><p class="chatMsgText">This helped a lot, thank you</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:53</span></div><p class="chatMsgText">Play 5 ranked games with these two notes, then send me a new replay if you want a second look.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-9">Message Kairo</label><textarea class="fieldControl" id="msg-9" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="end-confirm" data-label="End session, confirm">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">42:10 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile isSpeaking"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div></main>
+        <div class="callControls"><div class="confirmStep" role="group" aria-labelledby="ec-t">
+            <div><p class="confirmStepTitle" id="ec-t">End the session now?</p><p class="confirmStepText">Kairo will be asked to agree. It ends only when you both do.</p></div>
+            <div class="confirmStepActions"><button class="button secondary" type="button" data-go="live">Keep going</button><button class="button primary" type="button" data-go="end-sent">End session</button></div>
+          </div></div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:38</span></div><p class="chatMsgText">Note 2: at 14:00, group with your team before Lord. Don't contest it alone.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-10">Message Kairo</label><textarea class="fieldControl" id="msg-10" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="end-sent" data-label="End request sent">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">42:16 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        <div class="callBannerSlot"><div class="callBanner" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="callBannerText">Waiting for Kairo to agree to end</span><span class="callBannerActions"><button class="button secondary sm" type="button" data-go="live">Withdraw</button></span></div></div>
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile isSpeaking"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:38</span></div><p class="chatMsgText">Note 2: at 14:00, group with your team before Lord. Don't contest it alone.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-11">Message Kairo</label><textarea class="fieldControl" id="msg-11" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="end-received" data-label="End request received">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">42:16 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        <div class="callBannerSlot"><div class="callBanner ask" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg><span class="callBannerText">Kairo wants to end the session</span><span class="callBannerActions"><button class="button secondary sm" type="button" data-go="live">Keep going</button><button class="button primary sm" type="button" data-go="ended">End now</button></span></div></div>
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile isSpeaking"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:38</span></div><p class="chatMsgText">Note 2: at 14:00, group with your team before Lord. Don't contest it alone.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-12">Message Kairo</label><textarea class="fieldControl" id="msg-12" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="reconnecting" data-label="You're reconnecting">
+      <div class="callRoom isDown">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">36:20 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div><div class="callReconnect" role="status"><span class="spinner lg" aria-hidden="true"></span><b>Reconnecting…</b><p>Your connection dropped. You'll be back in the call as soon as it returns. The session runs until 21:00 SGT.</p></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false" disabled><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false" disabled><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button" disabled><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm" disabled><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-13">Message Kairo</label><textarea class="fieldControl" id="msg-13" rows="1" placeholder="Message Kairo" disabled></textarea><button class="iconButton" type="button" aria-label="Send" disabled><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="other-dropped" data-label="Kairo lost connection">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock" role="timer" aria-label="Time in the session"><span class="callClockTime">36:20 <span>/ 60:00</span></span><span class="callClockEnd">Ends 21:00 SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile"><span class="avatar">S</span><span class="participantTileName">snapking <span class=participantTileYou>You</span></span></div><div class="participantTile isEmpty"><span class="avatar">K</span><div class="participantTileNote"><p class="participantTileNoteTitle">Kairo lost connection</p><p class="participantTileNoteText">Kairo can rejoin until 21:00 SGT. The session keeps running.</p></div></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+<li class="chatSystem">Kairo joined · 19:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:01</span></div><p class="chatMsgText">Perfect. I'll share my screen and we'll start with your rotations in the first 5 minutes.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30. You were late to the first two fights.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">20:11</span></div><p class="chatMsgText">Got it. I always farm one more wave before I move</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:12</span></div><p class="chatMsgText">That extra wave is the problem. Ward the enemy buff before you invade, then go.</p></li>
+<li class="chatSystem">Kairo lost connection · 20:35</li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-14">Message Kairo</label><textarea class="fieldControl" id="msg-14" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="blocked" data-label="Microphone blocked">
+      <div class="callRoom">
+        <header class="callBar">
+          <div class="callBarWho"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"><span class="callBarSep" aria-hidden="true"></span><div class="callBarTitle"><b>Session with Kairo</b><span>Mobile Legends</span></div></div>
+          <div class="callBarRight"><div class="callClock"><span class="callClockTime">20:00</span><span class="callClockEnd">Starts · SGT</span></div><a class="button secondary sm" href="#" data-link="06#in-session" aria-label="Leave the call"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Leave</span></a></div>
+        </header>
+        
+        <main class="callStage" aria-label="Call"><div class="callTiles"><div class="participantTile hasAlert"><div class="callTileAlert" id="mic-e"><svg class="icon" aria-hidden="true"><use href="#i-mic-off"/></svg><p class="participantTileNoteTitle">Your browser blocked the microphone</p><p class="participantTileNoteText">Allow microphone access for Harbourly in your browser's site settings, then try again. You can still listen and chat.</p><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Try again</button></div><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div><div class="participantTile isEmpty"><span class="avatar">K</span><div class="participantTileNote"><p class="participantTileNoteTitle">Waiting for Kairo</p><p class="participantTileNoteText">The session starts at 20:00 SGT. You can chat while you wait.</p></div></div></div></main>
+        <div class="callControls">
+          <p class="callControlsNote"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>To share your screen, join from a computer.</p>
+          <button class="callControl hasAlert" type="button" aria-describedby="mic-e"><svg class="icon" aria-hidden="true"><use href="#i-mic-off"/></svg>Microphone blocked</button><button class="callControl" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl callShareBtn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap" aria-hidden="true"></span>
+          <button class="callControl" type="button" data-go="end-confirm"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button>
+        </div>
+        <section class="chatPanel" aria-label="Chat">
+          <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+          <ul class="chatMessages">
+<li class="chatSystem">You joined · 19:53</li>
+          </ul>
+          <div class="chatComposer"><label class="visuallyHidden" for="msg-15">Message Kairo</label><textarea class="fieldControl" id="msg-15" rows="1" placeholder="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="ended" data-label="Session ended" data-shell="focused">
+      <div class="endHead"><span class="statusLabel action">Pending confirmation</span><h1>The session has ended</h1><p>Your session with Kairo ended at <span class="mono">21:00 SGT</span>. Did it go ahead?</p></div>
+      <section class="card accent endCard" aria-label="Your session">
+        <div class="endWho"><span class="avatar md">K</span><div><span class="endWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+        <dl class="cardFacts"><dt>Game</dt><dd>Mobile Legends</dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd></dl>
+        <div class="holdTimer" role="timer"><span>Kairo is paid automatically on <span class="mono">Sat 10 Oct, 21:00 SGT</span></span><span class="countdown">72h 00m</span></div>
+        <p class="endNote">Confirm it and Kairo is paid now. If something went wrong, report a problem instead and the payment stays held.</p>
+        <div class="cardActions"><a class="button primary" href="#" data-link="06#confirm-step">Confirm session</a><a class="button secondary" href="#" data-link="07#gamer-after">Report a problem</a></div>
+        <a class="textLink quiet" href="#" data-link="06#pending" style="justify-self:start;font-size:14px">View session</a>
+      </section>
+  </section>
+
+  <section data-state="coach-ended" data-label="Coach · session ended" data-shell="focused-kairo">
+      <div class="endHead"><span class="statusLabel action">Pending confirmation</span><h1>The session has ended</h1><p>Your session with snapking ended at <span class="mono">21:00 PHT</span>. You're paid <span class="mono">₱1,850.00</span> when snapking confirms, or automatically after 72 hours.</p></div>
+      <section class="card accent endCard" aria-label="Your session">
+        <div class="endWho"><span class="avatar md">S</span><div><span class="endWhoName">snapking</span><span class="endWhoMeta" style="display:flex;gap:6px;align-items:center;margin-top:3px;font-size:13px;color:var(--muted)"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span>Singapore</span></div></div>
+        <dl class="cardFacts"><dt>Game</dt><dd>Mobile Legends</dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 PHT</dd></dl>
+        <div class="holdTimer" role="timer"><span>Released to you automatically on <span class="mono">Sat 10 Oct, 21:00 PHT</span></span><span class="countdown">72h 00m</span></div>
+        <div class="cardActions"><a class="button primary" href="#" data-link="06#coach-pending">View session</a><a class="button secondary" href="#" data-link="07#coach-after">Report a problem</a></div>
+      </section>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* Mockup behaviour for this page: controls toggle, End session steps through the end states,
+   and a chat message can be typed and sent. */
+(function () {
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-go]');
+    if (go && !go.disabled) { e.preventDefault(); window.mk.set(go.dataset.go); return; }
+    var c = e.target.closest('.callControl[aria-pressed]');
+    if (c && !c.disabled) {
+      var on = c.getAttribute('aria-pressed') !== 'true', use = c.querySelector('use'), t = c.lastChild;
+      c.setAttribute('aria-pressed', String(on));
+      if (/mic/.test(use.getAttribute('href'))) { c.classList.toggle('isOff', on); use.setAttribute('href', on ? '#i-mic-off' : '#i-mic'); t.textContent = on ? 'Unmute' : 'Mute'; }
+      else { c.classList.toggle('isActive', on); use.setAttribute('href', on ? '#i-camera' : '#i-camera-off'); t.textContent = on ? 'Stop camera' : 'Start camera'; }
+    }
+  });
+  document.querySelectorAll('.chatComposer').forEach(function (f) {
+    var ta = f.querySelector('textarea'), btn = f.querySelector('button'), list = f.parentNode.querySelector('.chatMessages');
+    function send() {
+      var v = ta.value.trim(); if (!v) return;
+      var li = document.createElement('li'); li.className = 'chatMsg isYou';
+      li.innerHTML = '<div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">now</span></div><p class="chatMsgText"></p>';
+      li.querySelector('.chatMsgText').textContent = v; list.appendChild(li); ta.value = ''; list.scrollTop = list.scrollHeight;
+    }
+    btn.addEventListener('click', send);
+    ta.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+  });
+  document.addEventListener('mk:change', function () { document.querySelectorAll('.chatMessages').forEach(function (l) { l.scrollTop = l.scrollHeight; }); });
+})();
+</script>
+</body>
+</html>
