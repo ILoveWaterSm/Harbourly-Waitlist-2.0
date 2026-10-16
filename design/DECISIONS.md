@@ -377,3 +377,17 @@ Extends the showcase check above to every image other people can see.
 - Where it's designed: profile setup (21: photo, banner, showcase), coach profile settings (22: the same), account settings (24: photo). Each upload shows a short "Checking…" state, then passed or refused.
 - One moderation service for all of it, to confirm before code is built.
 
+## One session per checkout, and code entry (agreed 16 Oct 2026, checkpoint 2)
+
+One session per checkout for the MVP
+- Pick a slot stays one time per checkout: choosing a new time replaces the old one. "One slot per booking" (core decisions) stands.
+- Why: one payment, one session, one release or refund keeps every agreed rule simple (24-hour cancellation, free cancellation within 1 hour, reschedules, disputes, auto-release) on both Stripe and Xendit; holding several times would block coaches' calendars; mixed rules would crowd checkout.
+- Post-MVP: choosing several times in one checkout, and session packs, once real demand shows. Each session already stands alone, so nothing after booking would need redesigning.
+- Booking again is made quick instead: the booking-confirmed state of Payment return (05) has a "Book another time with Kairo" text link under its buttons. It opens Pick a slot for the same coach with the same game already chosen.
+
+Code entry (OtpInput, everywhere a 6-digit code is entered)
+- Digits 0–9 only; letters and symbols never land. Each box has `inputmode="numeric"` so phones show the number pad.
+- Typing a digit moves to the next box. Backspace on an empty box moves back one and clears it. Arrow keys move between boxes.
+- Pasting a code, or the phone's text-message suggestion (`autocomplete="one-time-code"` on the first box), fills all six, ignoring spaces.
+- Mockup behaviour lives in `foundations/components/OtpInput.js`, beside its stylesheet.
+

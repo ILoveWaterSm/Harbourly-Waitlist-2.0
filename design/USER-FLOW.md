@@ -123,6 +123,7 @@ flowchart TD
   Hosted --> Back["Back on Harbourly: confirming your payment"]
   Back --> Result{"Payment provider result"}
   Result -->|"Paid"| Confirmed(["Booking confirmed. Emails to both"])
+  Confirmed -->|"Book another time with this coach: same game chosen"| Slot
   Result -->|"Not paid, hold still active"| Failed["Payment didn't go through"]
   Failed --> Summary
   Result -->|"Hold expired"| Expired["This time is no longer held. Email to gamer"]

@@ -164,6 +164,7 @@ flowchart TD
   Hosted --&gt; Back[&quot;Back on Harbourly: confirming your payment&quot;]
   Back --&gt; Result{&quot;Payment provider result&quot;}
   Result --&gt;|&quot;Paid&quot;| Confirmed([&quot;Booking confirmed. Emails to both&quot;])
+  Confirmed --&gt;|&quot;Book another time with this coach: same game chosen&quot;| Slot
   Result --&gt;|&quot;Not paid, hold still active&quot;| Failed[&quot;Payment didn&#x27;t go through&quot;]
   Failed --&gt; Summary
   Result --&gt;|&quot;Hold expired&quot;| Expired[&quot;This time is no longer held. Email to gamer&quot;]

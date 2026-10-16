@@ -65,7 +65,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 3. Pick a slot · M
 `/coaches/[username]/book` *proposed*.
-- Choose game, then a one-hour slot from weekly availability in your local time.
+- Choose game, then one one-hour slot from weekly availability in your local time (one session per checkout in the MVP).
 - States: slots available, logged out (log in to continue), nothing free this week, slot just taken, returning after log in, phone not verified (verify before continuing).
 
 ### 4. Checkout summary · M
@@ -75,7 +75,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 5. Payment return · S
 `/checkout/[bookingId]/return` *proposed*.
-- States: confirming your payment, booking confirmed, payment didn't go through (try again while held), slot no longer held (pick another).
+- States: confirming your payment, booking confirmed (with "Book another time with Kairo": Pick a slot, same game chosen), payment didn't go through (try again while held), slot no longer held (pick another).
 
 **Checkpoint 2:** the booking flow end to end. Built and published 6 Oct 2026; waiting for review.
 
