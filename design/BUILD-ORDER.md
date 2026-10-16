@@ -84,27 +84,27 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 ## Phase 2: The session and after
 
 ### 6. Session detail, gamer and coach · L
-`/sessions/[id]` and `/coach/sessions/[id]` *proposed*. One layout, two role views.
+`/sessions/[id]` and `/coach/sessions/[id]` *proposed*. One layout, two role views: header with status, then what to do now and changes on the left, session facts and payment on the right.
 - **Upcoming, more than 24 hours:** Request a new time, Cancel booking.
-- **Upcoming, under 24 hours:** locked, with the reason; coach can still cancel.
-- **Reschedule:** request form (offer up to 3 slots); waiting on reply; request received (pick a slot or decline); coach's request declined (gamer chooses keep or cancel); expired.
-- **Cancel:** confirm step with exact refund amounts for each case; cancelled.
-- **Join:** opens 10 minutes before; mobile screen-share note.
-- **Pending confirmation:** confirm or report a problem, auto-release countdown (gamer); waiting on gamer (coach).
-- **Completed:** leave a review (5 stars, optional text); review left.
-- **Disputed:** dispute section with status, details, the other person's response, outcome.
-- **Also:** awaiting payment (continue to payment), expired, refunded, loading, error.
+- **Upcoming, under 24 hours:** locked, with the reason; coach can still cancel (serious incident inside 24 hours).
+- **Reschedule:** request form (offer up to 3 times, at least 24 hours away); waiting on reply (withdraw); request received (pick a time or decline); coach's request declined (gamer chooses keep or cancel with a full refund); declined; expired; moved (can't be moved again).
+- **Cancel:** confirm step with exact refund amounts for each case (fee kept, within 1 hour of booking, coach cancels); cancelled by you; cancelled by the coach.
+- **Join:** opens 10 minutes before; screen-share note; in session (rejoin).
+- **Pending confirmation:** confirm (confirm step) or report a problem, auto-release countdown, under 24 hours left (gamer); waiting on gamer (coach).
+- **Completed:** leave a review (5 stars, optional text up to 500 characters); review posted; released amount and the gamer's review (coach); session chat, read-only.
+- **Disputed:** dispute section with status, details, the other person's response, outcome (refunded, paid to coach); filed against you, with respond (coach); payment problem after completion.
+- **Also:** awaiting payment (continue to payment), expired, loading, error.
 
 ### 7. Report a problem · M
-`/sessions/[id]/report` and `/coach/sessions/[id]/report` *proposed*.
-- Reason list by role and timing (window vs within 30 days after completion), description, optional evidence upload, submitted.
-- Response form for the other person (one response, optional evidence).
-- States: each reason list, validation, upload error, submitted, response sent.
+`/sessions/[id]/report` and `/coach/sessions/[id]/report` *proposed*. Focused layout (top nav, no sidebar).
+- Reason list by role and timing: coach didn't show up (gamer, during the session); the after-session list (gamer, coach); payment reasons within 30 days after completion (gamer, coach). Description (required, up to 1,000 characters), optional evidence (up to 5 images or PDFs), submitted.
+- Response form for the other person (one response within 48 hours, optional evidence); response sent.
+- States: each reason list, validation, upload error, submitted, response form, response sent.
 
 ### 8. Live session · L
-`/sessions/[id]/live` *proposed*. Shared by gamer and coach.
-- Call, chat (saved), screen share on computers.
-- States: waiting for the other person; no-show report available 15 minutes after start (gamer); live; screen share on; mobile (watching only, with note); reminder banners at 10, 5 and 1 minutes; end request sent; end request received (End now, Keep going); reconnecting; camera or microphone blocked; session ended.
+`/sessions/[id]/live` *proposed*. Shared by gamer and coach. Full window: session bar, stage, chat, controls.
+- Voice call (camera optional, off by default), chat (saved), screen share on computers, one at a time.
+- States: waiting for the other person; no-show report available 15 minutes after start (gamer); coach waiting for an absent gamer; live; camera on; screen share on; mobile (watching only, with note); reminder banners at 10, 5 and 1 minutes; end request sent; end request received (End now, Keep going); you're reconnecting; the other person lost connection; microphone or camera blocked; session ended (gamer, coach).
 
 **Checkpoint 3:** session lifecycle.
 
