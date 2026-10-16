@@ -322,7 +322,7 @@
             <div class="bookVerify" role="group" aria-labelledby="pv-p">
               <p class="bookVerifyTitle" id="pv-p"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>Verify your phone to book</p>
               <p class="bookVerifyText">Every booking needs a verified phone. We've texted a 6-digit code to <span class="mono" style="color:var(--ink-soft)">+65 •••• 4567</span>.</p>
-              <div class="otpInput fill" role="group" aria-label="6-digit code"><input class="otpCell isFocus" inputmode="numeric" maxlength="1" aria-label="Digit 1"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 2"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 3"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 4"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 5"><input class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 6"></div>
+              <div class="otpInput fill" role="group" aria-label="6-digit code"><input autocomplete="one-time-code" pattern="[0-9]*" class="otpCell isFocus" inputmode="numeric" maxlength="1" aria-label="Digit 1"><input pattern="[0-9]*" class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 2"><input pattern="[0-9]*" class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 3"><input pattern="[0-9]*" class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 4"><input pattern="[0-9]*" class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 5"><input pattern="[0-9]*" class="otpCell" inputmode="numeric" maxlength="1" aria-label="Digit 6"></div>
               <p class="otpMeta">Didn't get it? Resend in <span class="otpTimer">0:42</span></p>
               <button class="button primary block" type="button">Verify and continue</button>
               <p class="bookHoldNote"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>We'll hold this time for 30 minutes while you pay. Nothing is charged yet.</span></p>
@@ -349,6 +349,7 @@ document.addEventListener('change', function (e) {
   if (p) p.innerHTML = r.dataset.price.replace(/ \((.*)\)/, ' <span style="color:var(--muted)">($1)</span>');
 });
 </script>
+<script src="../foundations/components/OtpInput.js"></script>
 <script src="../foundations/mockup.js"></script>
 </body>
 </html>

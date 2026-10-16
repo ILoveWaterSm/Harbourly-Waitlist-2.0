@@ -247,10 +247,11 @@ In the design
 
 | Upload | File types | Max size | Other limits |
 |---|---|---|---|
-| Profile photo | JPG, PNG, WebP | 5 MB | At least 256 × 256 px, cropped to a circle |
-| Banner | JPG, PNG, WebP | 10 MB | At least 1200 px wide |
+| Profile photo | JPG, PNG, WebP | 5 MB | At least 256 × 256 px, cropped to a circle; checked automatically (see "Automatic image check") |
+| Banner | JPG, PNG, WebP | 10 MB | At least 1200 px wide; checked automatically (see "Automatic image check") |
 | Rank proof (application, rank update, new game) | JPG, PNG, WebP | 10 MB each | Up to 5 |
 | Dispute evidence | JPG, PNG, WebP, PDF | 10 MB each | Up to 5 |
+| Showcase (coach profile) | JPG, PNG, WebP | 10 MB each | Up to 5; optional caption up to 80 characters; checked automatically (see "Automatic image check") |
 
 - No GIF (animated avatars pull attention) and no video evidence in the MVP; a clip can be linked in the dispute description.
 - No HEIC. iPhone screenshots are PNG already; iPhone Safari is expected to convert camera photos to JPEG on upload when HEIC isn't accepted. Confirm on a real iPhone when building.
@@ -331,3 +332,62 @@ Top nav (all pages)
 Cast details (fictional)
 - Languages: Kairo English, Filipino; Vexa English, Mandarin; nullpoint English, Malay; Mirae English, Korean; Ghostline English, Malay; Lumen English, Filipino; Pallas English; Marlowe English, Malay; Kestrel English, Mandarin; Tidewalker English, Filipino; Rook English, Malay; Hanabi English, Mandarin. Time zones follow country (PHT, SGT, MYT), all UTC+8.
 - Every cast coach has a short bio; the browse page source holds the text.
+
+## Coach profile showcase (agreed 9 Oct 2026, checkpoint 2)
+
+A new, optional part of the coach profile. Not in the feature list.
+
+What it is
+- Coaches can add up to 5 images of anything they want to show gamers: rank screenshots, tournament photos, notes they share with students. With no images, the profile leaves the section out entirely.
+- Each image can have an optional caption, up to 80 characters, e.g. "MPL Philippines 2024, with the team as substitute jungler".
+- Separate from the portfolio for Verified: the portfolio is evidence for the team only, and its format is still to decide in Phase 6.
+
+On the profile (page 02)
+- A "Showcase" section straight after About.
+- Gallery component: one large image at a time in a fixed 16:9 frame on `--bg-deep`, shown whole and never cropped, so screenshots and photos of any shape sit in the same box. Under it, the caption (Geist) and the position, e.g. "2 / 5" (Geist Mono). Below that, a row of thumbnails; the current one has a green ring. Previous and next buttons sit on the image's sides on computers; phones swipe. Thumbnails share the row so all five always fit.
+- One image: no arrows, no position, no thumbnails.
+- No full-size view or pop-up in the MVP.
+- Mockups show marked empty image slots until real images are supplied (as with avatars).
+
+Where coaches manage it
+- Profile setup (page 21): an optional showcase step.
+- Coach profile settings (page 22): add, replace, remove and reorder images, and edit captions.
+
+Automatic check, no manual review
+- Every showcase image and caption is checked automatically by a moderation service when it's uploaded or changed, so the team never reviews showcase images by hand.
+- Passes: it's live straight away. Fails: it isn't published, and the coach is told in place, while uploading, with a plain reason (e.g. "This image can't be shown on Harbourly. Choose a different one."). No email, because the coach sees the result as it happens.
+- A replaced image stays live until its replacement passes. Uncertain results count as a fail, so nothing waits for a person.
+- Settings and setup show a short "Checking…" state per image while the check runs.
+- Which service to use is to confirm before code is built (see BUILD-ORDER.md).
+
+Elsewhere
+- Browse coaches (page 01) doesn't change: the showcase lives on the profile only, and the approved card stays as it is.
+
+Profile order at one-column widths (below 1100px)
+- About, Showcase, Games, then Availability, then Reviews. (Was Availability first.) Desktop keeps Availability in the right-hand column.
+
+## Automatic image check for every public image (agreed 9 Oct 2026)
+
+Extends the showcase check above to every image other people can see.
+
+- Covered: profile photos (every account, gamer or coach: they show in the top nav, on reviews and on coach profiles), coach banners, and showcase images with their captions.
+- Not covered: private uploads only the team sees (rank proof, dispute evidence, portfolio). The team already looks at those.
+- Same behaviour everywhere: checked when uploaded or changed; passes, live at once; fails, not used, and the person is told in place with a plain reason ("This photo can't be used on Harbourly. Choose a different one."); uncertain counts as a fail; no email; no manual review.
+- A replaced photo or banner stays until its replacement passes. A first photo that fails leaves the default avatar (first letter); a first banner that fails leaves the plain `--bg-mid` band.
+- Where it's designed: profile setup (21: photo, banner, showcase), coach profile settings (22: the same), account settings (24: photo). Each upload shows a short "Checking…" state, then passed or refused.
+- One moderation service for all of it, to confirm before code is built.
+
+## One session per checkout, and code entry (agreed 16 Oct 2026, checkpoint 2)
+
+One session per checkout for the MVP
+- Pick a slot stays one time per checkout: choosing a new time replaces the old one. "One slot per booking" (core decisions) stands.
+- Why: one payment, one session, one release or refund keeps every agreed rule simple (24-hour cancellation, free cancellation within 1 hour, reschedules, disputes, auto-release) on both Stripe and Xendit; holding several times would block coaches' calendars; mixed rules would crowd checkout.
+- Post-MVP: choosing several times in one checkout, and session packs, once real demand shows. Each session already stands alone, so nothing after booking would need redesigning.
+- Booking again is made quick instead: the booking-confirmed state of Payment return (05) has a "Book another time with Kairo" text link under its buttons. It opens Pick a slot for the same coach with the same game already chosen.
+
+Code entry (OtpInput, everywhere a 6-digit code is entered)
+- Digits 0–9 only; letters and symbols never land. Each box has `inputmode="numeric"` so phones show the number pad.
+- Typing a digit moves to the next box. Backspace on an empty box moves back one and clears it. Arrow keys move between boxes.
+- Pasting a code, or the phone's text-message suggestion (`autocomplete="one-time-code"` on the first box), fills all six, ignoring spaces.
+- Mockup behaviour lives in `foundations/components/OtpInput.js`, beside its stylesheet.
+

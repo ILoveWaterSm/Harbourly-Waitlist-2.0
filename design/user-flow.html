@@ -145,7 +145,7 @@ flowchart TD
 flowchart TD
   Browse[&quot;Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency&quot;] --&gt; Card[&quot;Coach card&quot;]
   Browse --&gt;|&quot;Load more&quot;| Browse
-  Card --&gt; Profile[&quot;Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, availability preview, voice intro, reviews&quot;]
+  Card --&gt; Profile[&quot;Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, showcase images if added, availability preview, voice intro, reviews&quot;]
   Profile --&gt; Own{&quot;Is this your own coach profile?&quot;}
   Own --&gt;|&quot;Yes&quot;| NoBook([&quot;No Book button. This is your profile&quot;])
   Own --&gt;|&quot;No&quot;| Game[&quot;Choose a game&quot;]
@@ -164,6 +164,7 @@ flowchart TD
   Hosted --&gt; Back[&quot;Back on Harbourly: confirming your payment&quot;]
   Back --&gt; Result{&quot;Payment provider result&quot;}
   Result --&gt;|&quot;Paid&quot;| Confirmed([&quot;Booking confirmed. Emails to both&quot;])
+  Confirmed --&gt;|&quot;Book another time with this coach: same game chosen&quot;| Slot
   Result --&gt;|&quot;Not paid, hold still active&quot;| Failed[&quot;Payment didn&#x27;t go through&quot;]
   Failed --&gt; Summary
   Result --&gt;|&quot;Hold expired&quot;| Expired[&quot;This time is no longer held. Email to gamer&quot;]
@@ -283,7 +284,7 @@ flowchart TD
   Payout --&gt;|&quot;Couldn&#x27;t verify&quot;| PayoutFail[&quot;Your payout account couldn&#x27;t be verified. Try again or contact support&quot;]
   PayoutFail --&gt; Payout
   Gates --&gt; PhoneGate[&quot;Phone verified&quot;]
-  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, languages, availability, price and credentials per game&quot;]
+  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, languages, availability, price and credentials per game, showcase (optional)&quot;]
   Setup --&gt;|&quot;Leave and come back&quot;| Setup
   Payout --&gt; AllDone{&quot;All four done?&quot;}
   PhoneGate --&gt; AllDone
@@ -301,12 +302,13 @@ flowchart TD
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   CDash([&quot;Coach dashboard&quot;]) --&gt; Settings[&quot;Coach profile settings&quot;]
-  Settings --&gt; Bio[&quot;Edit bio, avatar, banner, languages&quot;]
+  Settings --&gt; Bio[&quot;Edit bio, avatar, banner, languages. Photos checked automatically on upload&quot;]
   Settings --&gt; Avail[&quot;Edit weekly availability, in your own time zone&quot;]
   Settings --&gt; Rates[&quot;Edit price per game&quot;]
   Settings --&gt; Rank[&quot;Update rank: new screenshot, old rank shown until approved&quot;]
   Settings --&gt; AddGame[&quot;Add a game: proof, listing under review until approved&quot;]
   Settings --&gt; Voice[&quot;Record a voice intro: pending, then approved or declined&quot;]
+  Settings --&gt; Showcase[&quot;Showcase: up to 5 images, optional captions. Checked automatically on upload; shown at once if it passes, refused with a reason if not&quot;]
   Settings --&gt; Portfolio[&quot;Submit portfolio for Verified&quot;]
   Settings --&gt; Preview[&quot;Preview my public profile&quot;]
   CDash --&gt; PayoutSet[&quot;Payout settings: status and link to Stripe or Xendit&quot;]
@@ -321,7 +323,7 @@ flowchart TD
   <p class="note">A coach&#x27;s country can&#x27;t be changed here once payout setup is done.</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
-  Account([&quot;Account settings&quot;]) --&gt; Profile[&quot;Name, username, avatar&quot;]
+  Account([&quot;Account settings&quot;]) --&gt; Profile[&quot;Name, username, avatar. Photo checked automatically on upload&quot;]
   Account --&gt; EmailChange[&quot;Change email: verify the new one, notice to the old one&quot;]
   Account --&gt; Password[&quot;Change password&quot;]
   Account --&gt; PhoneChange[&quot;Change phone: OTP&quot;]
