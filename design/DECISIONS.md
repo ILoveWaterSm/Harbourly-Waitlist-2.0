@@ -435,3 +435,7 @@ Mockup times (Phase 2)
 - "Now" per state: upcoming and cancel Mon 5 Oct 18:00 (free cancel 14:40); reschedule received Tue 6 Oct 09:00; locked Wed 7 Oct 11:00; join 19:52; no-show 20:16; live 20:12 to 20:42; banners 20:50, 20:55, 20:59; ended 21:00; pending 21:20 (releases Sat 10 Oct 21:00); pending under 24 hours Fri 9 Oct 22:00; disputes Wed 7 to Mon 12 Oct; payment problem Thu 15 Oct.
 
 New shared parts for Phase 2: ParticipantTile, CallControls and ChatPanel (page 08); SlotPicker choosing up to 3 times (reschedule request); Rating.js and Field.js (star input and character counter behaviour, moved out of the component library page); icons for microphone, camera, screen share, chat, send and end call.
+
+## Checkpoint 3 refinements (from 18 Oct 2026)
+
+- Session detail, dispute section (06): a response that hasn't been sent yet is shown as a dashed, empty slot with a clock icon, "No response from Kairo yet", the deadline and the time left. It never uses the quote box, which is kept for words someone actually sent (with its "Sent …" line), so the app's own status text can't be mistaken for the other person's response. Applies wherever a pending response, review or reply is shown later (dashboards in Phase 3, coach dashboard in Phase 5).
