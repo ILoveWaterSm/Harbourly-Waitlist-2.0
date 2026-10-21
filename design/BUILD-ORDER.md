@@ -108,7 +108,7 @@ Pages: [06 Session detail](https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3) (`
 - Voice call (camera optional, off by default), chat (saved), screen share on computers, one at a time.
 - States: waiting for the other person; no-show report available 15 minutes after start (gamer); coach waiting for an absent gamer; live; camera on; screen share on; mobile (watching only, with note); reminder banners at 10, 5 and 1 minutes; end request sent; end request received (End now, Keep going); you're reconnecting; the other person lost connection; microphone or camera blocked; session ended (gamer, coach).
 
-**Checkpoint 3:** session lifecycle. Built and published 16 Oct 2026; waiting for review.
+**Checkpoint 3:** session lifecycle. Built and published 16 Oct 2026; reviewed and closed 21 Oct 2026 (one refinement on 06: a response not sent yet shows as a dashed status slot).
 
 ---
 
