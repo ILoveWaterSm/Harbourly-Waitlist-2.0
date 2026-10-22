@@ -1,6 +1,6 @@
 # Handoff prompt
 
-Paste everything below the line into a new chat. Last updated 16 Oct 2026: checkpoint 2 closed, Phase 2 next.
+Paste everything below the line into a new chat. Last updated 22 Oct 2026: checkpoint 2 closed; policy changes on `main` to reconcile; then Phase 2.
 
 ---
 
@@ -14,7 +14,7 @@ We are designing the actual webapp pages one at a time. Design only, not product
 
 ## Repo and branch
 
-Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. `main` has the work up to the browse refinement. Everything since (02 to 05 refinements, Gallery, OtpInput.js, these docs) is on `claude/vibrant-curie-s51c0x`, not merged to `main` yet. If your branch doesn't have `design/foundations/components/OtpInput.js`, merge `origin/claude/vibrant-curie-s51c0x` into it first (a merge commit, no rebase), then work from there.
+Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. `main` has the design work up to the browse refinement, plus my 11 Oct marketing copy commit (`landing.html`, `verification-standard.html`). Everything else since (02 to 05 refinements, Gallery, OtpInput.js, these docs) is on `claude/vibrant-curie-s51c0x`, which already includes that `main` commit; it isn't merged to `main` yet. If your branch doesn't have `design/foundations/components/OtpInput.js`, merge `origin/claude/vibrant-curie-s51c0x` into it first (a merge commit, no rebase), then work from there.
 
 ## Read these first, in this order
 
@@ -26,6 +26,21 @@ Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. `main` has the work up to the brows
 6. `design-system/README.md` and `design-system/tokens.json`: the brand design system (also at https://claude.ai/artifact/4HHoqwJVacXMMDzG9XLp4n).
 7. `design/explorations/mono-specimen.html`: what is set in Geist Mono. Where it differs from DECISIONS.md, DECISIONS.md wins.
 8. `landing.html`: brand feel only, not a template.
+
+## First: reconcile the policy changes on `main`
+
+On 11 Oct I updated the marketing copy on `main` (commit adc8868, "Update copy for locked fee, New Coach, and coach policy decisions": `landing.html` FAQ and `verification-standard.html`). That copy states policies that **contradict `design/DECISIONS.md` and the Phase 1 designs**. DECISIONS.md hasn't been updated to match, and Phase 2 is built on exactly these rules. Before anything else, read that diff (`git show adc8868`), then put every conflict to me as a short list with the current DECISIONS.md rule beside the new copy, and ask which one stands. Don't change DECISIONS.md, the flow or any page until I answer. The conflicts I know of:
+
+1. **Verified badge.** DECISIONS: New Coach, then Verified via a portfolio or 5 clean sessions; the Badge component and pages 01 to 05 show Verified. New copy: no badge at all. Every coach is "New Coach" until 5 completed sessions with no serious disputes, then the label simply stops showing. A reasonable dispute in that period resets progress to 0; a serious one (scamming, predatory or grooming conduct) is an immediate permanent ban. The portfolio is optional, only shown on the profile, and never grants a badge. Voice check is no longer part of verification.
+2. **Fees.** DECISIONS: 6% platform fee paid by the gamer (S$2.70 on S$45). Commit message: coach commission 12%; the copy no longer states the gamer's fee. Ask what the gamer pays and what the coach pays.
+3. **Games.** DECISIONS: Mobile Legends, Call of Duty: Mobile, Valorant, Counter-Strike 2, Riftbound. Commit message: Counter-Strike 2 swapped for Teamfight Tactics. Affects nullpoint and Rook in the cast, and browse filters.
+4. **Cancellation.** DECISIONS: cancel 24 hours or more ahead for the coach's price back (fee kept); free within 1 hour of booking; no gamer cancellation inside 24 hours. New copy: cancel at least 1 hour before for a full refund; inside that hour, or a gamer no-show after a 15-minute grace window, the payment is split 50/50 between gamer and coach; repeated late cancellations or no-shows can lead to suspension. (DECISIONS also says no partial refunds in the MVP.) Affects 04's cancellation lines, rescheduling's 24-hour lock, and all of 06.
+5. **Coach no-show and no-show reports.** DECISIONS: a gamer files a "coach didn't show up" dispute from 15 minutes after the start; the team decides. New copy: a coach no-show means a full refund (first time no other consequence; repeats get a warning, then suspension); either party can report a no-show, and a report not confirmed within 24 hours resolves automatically as a refund. Affects 06, 07 and 08.
+6. **Rates.** DECISIONS: fixed 60-minute sessions, one price per game. New copy: a floor of S$10 per session; "rates can vary by session length or type"; a coach can't raise the price of a session already booked (matches the price snapshot).
+7. **New features in the copy, not in DECISIONS:** fully non-exclusive coaches, and importing reviews from Metafy and Fiverr onto the Harbourly profile.
+8. **Unchanged, for reference:** payout is automatic per session once the 72-hour hold clears; identity is checked by the payment partner at payout setup, before listing.
+
+Once I've answered, record the outcome in DECISIONS.md (a new dated section, and correct the older sections it overrides), update USER-FLOW.md and `user-flow.html` (republished) and BUILD-ORDER.md, and list which already-built pages (01 to 05, the component library) need changing. Ask me whether to fix those before or after Phase 2. Then continue below.
 
 ## Before you build anything
 
@@ -135,4 +150,4 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT, 
 
 ## Next step
 
-Read the files above, then send me your understanding of 06, 07 and 08, the gaps you found, and your recommendations. After I answer, build 06 Session detail, 07 Report a problem and 08 Live session, publish each as a new artifact, put their frames on the canvas under "Phase 2 · The session and after", update BUILD-ORDER.md with the links, commit and push, and stop for checkpoint 3.
+First reconcile the policy changes on `main` with me (section above) and record the answers. Then send me your understanding of 06, 07 and 08, the gaps you found, and your recommendations. After I answer, build 06 Session detail, 07 Report a problem and 08 Live session, publish each as a new artifact, put their frames on the canvas under "Phase 2 · The session and after", update BUILD-ORDER.md with the links, commit and push, and stop for checkpoint 3.
