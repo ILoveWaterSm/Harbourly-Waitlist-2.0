@@ -10,7 +10,7 @@ Diagrams:
 4. Before the session: reminders, rescheduling, cancelling
 5. The session
 6. After the session: confirm, review
-7. Disputes
+7. Disputes and no-show reports
 8. Coach journey: application to live
 9. Live coach: managing the profile
 10. Account
@@ -139,7 +139,7 @@ flowchart TD
   Confirmed(["Booking confirmed"]) --> Window{"More than 24 hours to go?"}
 
   Window -->|"Yes"| Options["Session detail offers: Request a new time, Cancel booking"]
-  Window -->|"No"| Locked["Time locked. No reschedule. Gamer can't cancel"]
+  Window -->|"No"| Locked["Time locked: no new times. Cancel booking still offered"]
 
   Options --> Req["Requester offers up to 3 slots from the coach's availability. Slots held"]
   Req --> Other{"Other person responds"}
@@ -151,18 +151,18 @@ flowchart TD
   GamerChoice -->|"Cancel"| FullRefund(["Cancelled. Full refund including platform fee"])
   Other -->|"No reply in 48h, or 12h before start"| Stands
 
-  Options --> CancelWho{"Who cancels?"}
-  CancelWho -->|"Gamer, within 1 hour of booking"| FullRefund
-  CancelWho -->|"Gamer, otherwise"| PartRefund(["Cancelled. Coach price refunded, platform fee kept"])
-  CancelWho -->|"Coach"| CoachCancel(["Cancelled. Full refund to gamer. Recorded against coach"])
-  Locked -->|"Coach can still cancel"| CoachCancel
+  Options --> CancelWho{"Who cancels, and when?"}
+  Locked --> CancelWho
+  CancelWho -->|"Gamer, 1 hour or more before the start"| FullRefund
+  CancelWho -->|"Gamer, inside the last hour"| Split(["Cancelled. Coach's price split 50/50, platform fee kept"])
+  CancelWho -->|"Coach, any time"| CoachCancel(["Cancelled. Full refund to gamer. Recorded against coach"])
 
   Confirmed --> Remind["Reminder emails 24h and 1h before"]
   Remind --> Join(["Join session opens 10 minutes before start"])
   Locked --> Join
 ```
 
-Only one open request per booking, and at most one accepted reschedule per booking. A coach cancelling inside 24 hours counts as a serious incident.
+Only one open request per booking, and at most one accepted reschedule per booking. A coach cancelling inside 24 hours counts like a coach no-show (DECISIONS.md, "Coach reliability").
 
 ---
 
@@ -173,7 +173,7 @@ flowchart TD
   Join(["Join session, from 10 minutes before"]) --> Waiting{"Other person here?"}
   Waiting -->|"No"| Room["Waiting for the other person"]
   Room --> Waiting
-  Room -->|"Gamer, 15 minutes after start, coach absent"| NoShow(["Report a no-show: opens a dispute"])
+  Room -->|"15 minutes after start, other person absent"| NoShow(["Report a no-show: see diagram 7"])
   Waiting -->|"Yes"| Live["Live: call, chat saved, screen share on computers only"]
   Live --> Banners["Banners at 10, 5 and 1 minutes before the end"]
   Live -->|"Disconnected"| Rejoin["Rejoin until the scheduled end"]
@@ -204,12 +204,12 @@ flowchart TD
 
 ---
 
-## 7. Disputes
+## 7. Disputes and no-show reports
 
 ```mermaid
 flowchart TD
   Start(["Report a problem on session detail"]) --> When{"When?"}
-  When -->|"Before confirmation"| WindowReasons["Reasons for your role: conduct, no-show, ended early, didn't coach, didn't match listing, technical, other"]
+  When -->|"Before confirmation"| WindowReasons["Reasons for your role: conduct, ended early, didn't coach, didn't match listing, technical, other"]
   When -->|"Within 30 days after completion"| PayReasons["Payment reasons only: wrong amount, charged twice, refund missing, payout missing or wrong, other"]
   WindowReasons --> Form
   PayReasons --> Form["Description and optional evidence"]
@@ -221,9 +221,16 @@ flowchart TD
   Outcome -->|"Release"| Paid(["Resolved: paid to coach"])
   Refunded --> Email(["Outcome emailed to both"])
   Paid --> Email
+
+  NoShow(["Report a no-show: from 15 minutes after the start, while the other person hasn't joined"]) --> NSOpen["No-show reported. Payment stays held. Email to both"]
+  NSOpen --> NSAnswer{"Reported person, within 24 hours"}
+  NSAnswer -->|"Confirms, or doesn't answer"| NSWho{"Who didn't show?"}
+  NSWho -->|"Coach"| NSRefund(["Refunded to gamer in full, platform fee included"])
+  NSWho -->|"Gamer"| NSSplit(["Coach's price split 50/50, platform fee kept"])
+  NSAnswer -->|"Contests"| Review
 ```
 
-Always a full refund or a full release. Resolution happens in the Stripe or Xendit dashboard.
+Disputes always end in a full refund or a full release. A contested no-show report is decided by the team from the call's join records, by the same two no-show rules. Resolution happens in the Stripe or Xendit dashboard.
 
 ---
 
@@ -259,12 +266,13 @@ flowchart TD
   Setup --> AllDone
   AllDone -->|"Yes"| Live(["Live and bookable as a New Coach. Email"])
 
-  Live --> Path{"Path to Verified"}
-  Path -->|"Submit portfolio, passes review"| Verified(["Verified"])
-  Path -->|"5 sessions with no serious incidents"| Verified
+  Live --> NewCoach{"New Coach period"}
+  NewCoach -->|"5 completed sessions, no upheld dispute"| Dropped(["Label stops showing. Email"])
+  NewCoach -->|"Upheld dispute, coach no-show, or coach cancels inside 24 hours"| Reset["Progress back to 0. Email with the reason"]
+  Reset --> NewCoach
 ```
 
-The four conditions to go live: application approved, payout setup complete, phone verified, profile complete.
+The four conditions to go live: application approved, payout setup complete, phone verified, profile complete. There is no Verified badge; a portfolio never shortens the New Coach period. Scamming, predatory or grooming conduct is a permanent ban at any stage.
 
 ---
 
@@ -275,12 +283,12 @@ flowchart TD
   CDash(["Coach dashboard"]) --> Settings["Coach profile settings"]
   Settings --> Bio["Edit bio, avatar, banner, languages. Photos checked automatically on upload"]
   Settings --> Avail["Edit weekly availability, in your own time zone"]
-  Settings --> Rates["Edit price per game"]
+  Settings --> Rates["Edit price per game, not below the floor (about S$10)"]
   Settings --> Rank["Update rank: new screenshot, old rank shown until approved"]
   Settings --> AddGame["Add a game: proof, listing under review until approved"]
   Settings --> Voice["Record a voice intro: pending, then approved or declined"]
   Settings --> Showcase["Showcase: up to 5 images, optional captions. Checked automatically on upload; shown at once if it passes, refused with a reason if not"]
-  Settings --> Portfolio["Submit portfolio for Verified"]
+  Settings --> Portfolio["Submit portfolio: reviewed by hand, shown on your profile if it passes"]
   Settings --> Preview["Preview my public profile"]
   CDash --> PayoutSet["Payout settings: status and link to Stripe or Xendit"]
   CDash --> CSessions["Coach sessions list"]
@@ -324,9 +332,13 @@ stateDiagram-v2
   pending_payment --> expired: 30 minutes, not paid
 
   confirmed --> confirmed: reschedule accepted
-  confirmed --> cancelled: gamer 24h or more ahead, or coach any time
-  confirmed --> in_session: someone joins
-  confirmed --> disputed: coach no-show reported
+  confirmed --> cancelled: gamer cancels (full refund, or 50/50 inside the last hour), or coach any time
+  confirmed --> in_session: both have joined
+  confirmed --> no_show_reported: 15 minutes after start, other person absent
+
+  no_show_reported --> refunded: coach no-show, confirmed or unanswered in 24h
+  no_show_reported --> missed: gamer no-show, confirmed or unanswered in 24h (50/50)
+  no_show_reported --> disputed: contested
 
   in_session --> pending_confirmation: session ends
   pending_confirmation --> completed: gamer confirms, or 72 hours pass
@@ -334,14 +346,16 @@ stateDiagram-v2
 
   disputed --> refunded: resolved for gamer
   disputed --> completed: resolved for coach
+  disputed --> missed: contested gamer no-show upheld
 
   cancelled --> [*]
+  missed --> [*]
   expired --> [*]
   refunded --> [*]
   completed --> [*]
 ```
 
-A reschedule request is shown as a second line on a confirmed booking, not a separate status. A payment dispute after completion is tracked on the dispute record, not as a new booking status.
+A reschedule request is shown as a second line on a confirmed booking, not a separate status. `missed` is a gamer no-show settled 50/50; a late cancellation stays `cancelled`, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.
 
 ---
 
@@ -359,10 +373,16 @@ stateDiagram-v2
 
   state live {
     [*] --> new_coach
-    new_coach --> verified: portfolio passes, or 5 clean sessions
+    new_coach --> new_coach: upheld dispute, coach no-show or late cancel resets progress
+    new_coach --> established: 5 completed sessions, no upheld dispute (label stops showing)
   }
 
+  live --> suspended: team decision after warnings
+  suspended --> live: team lifts it
+  live --> banned: scamming, predatory or grooming conduct
+
   not_eligible --> [*]
+  banned --> [*]
 ```
 
 ---

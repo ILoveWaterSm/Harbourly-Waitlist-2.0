@@ -16,13 +16,13 @@ Decisions agreed during design that change or clarify the MVP feature list. Newe
 - **Sign-in:** email and password, plus Google. No Discord or other social login.
 - **KYC:** happens during payout setup, after approval, before going live.
 - **Phone verification:** OTP at sign-up for everyone; needed by both gamers and coaches.
-- **Sessions:** fixed 60 minutes, one slot per booking. Price is per session, shown as "S$45 / session"; cards show "from S$X".
+- **Sessions:** fixed 60 minutes, one slot per booking. Price is per session, shown as "S$45 / session"; cards show "from S$X". (Confirmed 23 Oct 2026: other session lengths and types are post-MVP. Price floor: see "Policy update, 23 Oct 2026".)
 - **Time:** all times in the viewer's local time zone with a zone label. Coaches set availability in their own time zone.
 - **Payment hold:** a `pending_payment` booking holds the slot for 30 minutes, matching the Stripe Checkout minimum expiry; Xendit invoice expiry set the same. Shown as a quiet countdown.
 - **Checkout:** hosted Stripe or Xendit page, then return to Harbourly. States: confirming your payment, payment didn't go through, slot no longer held.
 - **Session detail page:** added for gamers and coaches.
 - **Coach profile settings page:** added (bio, availability, games and rates, rank updates, voice intro, portfolio).
-- **New Coach label:** shown publicly, in the same position as the Verified badge.
+- **New Coach label:** shown publicly beside the coach's name until it drops. There is no Verified badge; nothing replaces the label (changed 23 Oct 2026, see "Policy update, 23 Oct 2026").
 - **Logo:** goes to the dashboard when logged in, the marketing home when logged out.
 - **Mobile sessions:** phones can watch a shared screen but not share their own; the share button is replaced by "To share your screen, join from a computer", also noted on session detail and the confirmation email.
 
@@ -38,7 +38,7 @@ Decisions agreed during design that change or clarify the MVP feature list. Newe
 
 ## Rescheduling (new, not in the feature list)
 
-- Either party can request a reschedule up to 24 hours before the session start. After that the time is locked.
+- Either party can request a reschedule up to 24 hours before the session start. After that the time is locked. (Kept on 23 Oct 2026, though cancelling now closes later: offered slots are held and the other person needs time to answer.)
 - The requester offers up to 3 one-hour slots from the coach's availability. Offered slots are held while the request is open.
 - The other party picks one slot or declines. Declining keeps the original time.
 - One open request per booking, and at most one accepted reschedule per booking.
@@ -47,23 +47,29 @@ Decisions agreed during design that change or clarify the MVP feature list. Newe
 - If a gamer declines a coach's request, the gamer chooses: keep the original time, or cancel for a full refund including the platform fee.
 - In the sessions list the status stays `Confirmed`, with a `Reschedule requested` second line while a request is open.
 - Both dashboards show a "Reschedule request" card with the offered slots and the time left to reply, whenever a request is waiting on that person.
-- Session detail offers "Request a new time" and "Cancel booking" only when allowed, with the reason when not (e.g. "Changes close 24 hours before the session").
+- Session detail offers "Request a new time" and "Cancel booking" only when allowed, with the reason when not (e.g. "New times close 24 hours before the session").
 
-## Cancellation (new, not in the feature list)
+## Cancellation (new, not in the feature list; rewritten 23 Oct 2026)
 
-- Gamer cancels 24 hours or more before the start: the coach's price is refunded in full; the platform fee is kept.
-- Free cancellation within 1 hour of booking, as long as the session is still 24 hours or more away: full refund including the platform fee.
-- Gamer cannot cancel inside 24 hours. A gamer no-show means the coach is paid.
+Replaced by the 11 Oct 2026 marketing copy, agreed 23 Oct 2026. Amounts use the Phase 1 booking: Kairo, ₱1,850.00 + ₱111.00 platform fee = ₱1,961.00 (same currency: Vexa, S$45.00 + S$2.70 = S$47.70).
+
+- Gamer cancels at least 1 hour before the start: full refund including the platform fee (₱1,961.00).
+- Gamer cancels inside the last hour, up to the start time: the coach's price is split 50/50. The gamer gets half the coach's price back (₱925.00; S$22.50); the platform fee is kept; the coach is paid the other half less the 12% commission on that half (₱925.00 − ₱111.00 = ₱814.00; S$22.50 − S$2.70 = S$19.80).
+- Gamer no-show (hasn't joined by 15 minutes after the start): the same 50/50 split. See "No-shows" below.
+- The old "free cancellation within 1 hour of booking" rule is gone: every booking starts at least 2 hours away, so a full refund is always available until 1 hour before.
 - Gamer cancels after declining a coach's reschedule request: full refund including the platform fee.
-- Coach can cancel at any time: full refund to the gamer including the platform fee. Harbourly absorbs the processing cost. Recorded against the coach.
-- The rule is shown before payment at checkout ("Cancel up to 24 hours before for a refund of S$45.00. The S$2.70 platform fee isn't refundable."), again on a confirm step with exact amounts before cancelling, and in the Terms of Service with the same wording.
+- Coach can cancel at any time: full refund to the gamer including the platform fee. Harbourly absorbs the processing cost. Recorded against the coach (see "Coach reliability").
+- Repeated late cancellations or no-shows by a gamer are flagged for team review and can lead to suspension. Never automatic.
+- The 50/50 split is the one fixed exception to "no partial refunds": dispute outcomes stay a full refund or a full release.
+- The rule is shown before payment at checkout ("Cancel up to 1 hour before the start for a full refund of ₱1,961.00. Cancel later, or don't join within 15 minutes of the start, and ₱925.00 is refunded."), again on a confirm step with exact amounts before cancelling, and in the Terms of Service with the same wording.
 
-## Coach reliability and the Verified badge
+## Coach reliability (rewritten 23 Oct 2026; was "Coach reliability and the Verified badge")
 
-- A coach cancellation inside 24 hours counts as a serious incident, the same as a coach no-show. For a New Coach it delays Verified like a serious dispute.
-- A coach cancellation 24 hours or more ahead does not count on its own.
-- 3 or more coach cancellations of any kind in a rolling 30 days flags the coach for manual team review in Supabase. The team decides on badge removal and emails the coach the reason. Never removed automatically.
-- No cancellation count is shown publicly in the MVP.
+- A coach no-show means a full refund to the gamer. The first carries no other consequence; a repeat pattern gets a warning (email), then suspension. Flagged automatically, applied by the team.
+- A coach cancellation inside 24 hours counts the same as a coach no-show towards that pattern. A coach cancellation 24 hours or more ahead does not count on its own.
+- For a New Coach, a coach no-show or a coach cancellation inside 24 hours also resets New Coach progress to 0.
+- 3 or more coach cancellations of any kind in a rolling 30 days flags the coach for manual team review in Supabase. The team decides on a warning or suspension and emails the coach the reason. Never applied automatically.
+- No cancellation or no-show count is shown publicly in the MVP.
 
 ## Emails
 
@@ -75,13 +81,17 @@ Booking and sessions
 - Session ended, please confirm, with 72-hour deadline (gamer)
 - 24 hours left to confirm (gamer)
 - Session confirmed or auto-confirmed (both)
-- Payment released (coach)
+- Payment released (coach, with the 12% commission and the payout amount)
 - Leave a review (gamer, once completed)
 
 Rescheduling and cancellation
 - Reschedule requested (other party)
 - Reschedule accepted, declined or expired (requester; accepted also to both with the new time)
-- Booking cancelled, with refund amount (both)
+- Booking cancelled, with refund amount (both; for a late cancellation, the coach's email shows their half)
+
+No-shows (added 23 Oct 2026)
+- No-show reported (both: reporter gets a receipt; the other person is told, with 24 hours to confirm or contest)
+- No-show outcome (both)
 
 Disputes
 - Dispute filed (both: filer gets a receipt, the other party is told and invited to respond)
@@ -92,7 +102,10 @@ Coach journey
 - Still to finish before you go live (nudge after a few days stuck)
 - You're live and bookable
 - Rank update, new game listing, voice intro: approved or declined
-- Portfolio result, Verified earned
+- Portfolio result (shown on your profile, or not, with the reason) (was "Portfolio result, Verified earned")
+- Your New Coach label has dropped (added 23 Oct 2026)
+- Your New Coach progress was reset, with the reason (added 23 Oct 2026)
+- Reliability warning (added 23 Oct 2026)
 
 Account
 - Verify your email
@@ -100,6 +113,7 @@ Account
 - Password changed
 - Email changed (sent to the old address)
 - Terms updated
+- Account suspended, with the reason (added 23 Oct 2026; gamer or coach)
 
 ## In-session timing (feature list section 10)
 
@@ -114,8 +128,9 @@ Account
 Two filing windows, with different reason lists per role.
 
 Window: after the session ends, before confirmation or auto-release (funds held). Filing pauses the 72-hour auto-release.
-- Gamer: coach didn't show up (available from 15 minutes after the start time, without waiting for the scheduled end); session ended early; coach was present but didn't coach; coach behaved inappropriately; session didn't match the listing; technical problems stopped the session; other.
-- Coach: gamer didn't show up; gamer behaved inappropriately; gamer left early but the session should still be paid; other.
+- Gamer: session ended early; coach was present but didn't coach; coach behaved inappropriately; session didn't match the listing; technical problems stopped the session; other.
+- Coach: gamer behaved inappropriately; gamer left early but the session should still be paid; other.
+- "Coach didn't show up" and "gamer didn't show up" left these lists on 23 Oct 2026: they are no-show reports now (see "Policy update, 23 Oct 2026"). A contested no-show report becomes a dispute.
 - "Gamer refusing to confirm without reason" is removed: the 72-hour auto-release already covers it.
 
 After completion: payment problems only, up to 30 days after release.
@@ -125,7 +140,7 @@ After completion: payment problems only, up to 30 days after release.
 Status and outcome
 - Shown as a dispute section on the session detail page, not a separate page.
 - Statuses: Open, Under review, Resolved (refunded to gamer), Resolved (paid to coach). The team sets them in Supabase.
-- Outcomes are always a full refund or a full release. No partial refunds in the MVP.
+- Outcomes are always a full refund or a full release. No partial refunds in the MVP. (The 50/50 split for a late cancellation or gamer no-show is a fixed rule, not a dispute outcome.)
 - The other party is emailed when a dispute is filed against them and can add one written response with optional evidence.
 - Both parties are emailed the outcome.
 
@@ -209,7 +224,7 @@ In the design
 - The top nav keeps its blur and transparency. Nothing else is frosted.
 - No background grid, film grain or breathing glow in the webapp; those stay on marketing pages.
 - Type scale reuses existing tokens: page title `--text-kpi` (32px), section title `--text-card-title` (24px), card title `--text-h3` (19px).
-- Status colours: green for confirmed, completed, verified; amber for anything needing action (awaiting payment, pending confirmation, disputed, reschedule requested); muted for ended or neutral (expired, refunded, past). Shown as a mono label with a coloured dot, not filled pills. No red.
+- Status colours: green for confirmed, completed; amber for anything needing action (awaiting payment, pending confirmation, disputed, reschedule requested); muted for ended or neutral (expired, refunded, past). Shown as a mono label with a coloured dot, not filled pills. No red.
 - Brief overrides the design system on three points: no 60px icon chips heading cards, no centring by default, hover lift only on clickable elements.
 - Prices use `S$` for SGD; other currencies per the currency display decision.
 - Geist Mono for data and labels: money, dates, times, durations, countdowns, statuses, ranks, ratings and counts, eyebrows, small labels, column headers, step and character counters, references, @handles. Geist for names, body, buttons, links, field labels, chat, game names, credential lines. Sora for headings.
@@ -280,7 +295,7 @@ Browse
 - 12 coaches per page, then "Load more".
 - A line under the filters explains "≈": prices are in your currency, ≈ means converted from the coach's.
 
-Cast additions (fictional, used across all pages)
+Cast additions (fictional, used across all pages; since 23 Oct 2026 "Verified" in the cast means past the New Coach period, with no label shown)
 - **Mirae** `@mirae`, Singapore, Verified, 4.7 (19). Riftbound `Regional Qualifier · Top 8` at S$38; Valorant `Ascendant 3` at S$40.
 - **Ghostline** `@ghostline`, Malaysia, Verified, 4.6 (24). Call of Duty: Mobile `Legendary · Top 2,000` at RM 120 (≈ S$34, at the same rate as RM 150 ≈ S$43).
 - Browse filler: **Lumen** `@lumen` (Philippines, New Coach, Riftbound `Regional Qualifier · Top 16`, ₱1,250 ≈ S$29); **Pallas** `@pallas` (Singapore, Verified, 4.6 (8), Mobile Legends `Mythical Glory · 64★`, S$30); **Marlowe** `@marlowe` (Malaysia, New Coach, Valorant `Immortal 1`, RM 110 ≈ S$32); **Kestrel** `@kestrel.cod` (Singapore, Verified, 4.5 (11), Call of Duty: Mobile `Legendary · Top 1,000`, S$33); **Tidewalker** `@tidewalker` (Philippines, Verified, 4.8 (41), Mobile Legends `Mythical Immortal · 112★`, ₱1,500 ≈ S$35); **Rook** `@rookcs` (Malaysia, Verified, 4.7 (15), Counter-Strike 2 `Premier 24,800`, RM 180 ≈ S$52); **Hanabi** `@hanabi.vlr` (Singapore, Verified, 4.9 (26), Valorant `Radiant · #312 APAC`, S$60).
@@ -301,8 +316,8 @@ Checkout and payment return
 - Both pages drop the sidebar and keep the top nav, so attention stays on the amounts and the hold.
 - The page names the payment provider: Xendit for coaches in the Philippines, Stripe for Singapore and Malaysia ("You'll pay on Xendit's secure page.").
 - "Choose another time" on checkout releases the hold at once and returns to Pick a slot. The same label is used wherever a hold has ended.
-- Booking less than 24 hours ahead: checkout replaces the cancellation rule with "This session starts in under 24 hours, so it can't be cancelled or moved."
-- Otherwise checkout also says: "Cancel within 1 hour of booking for a full refund, including the platform fee."
+- Booking less than 24 hours ahead: checkout adds "This session starts in under 24 hours, so its time can't be moved." under the cancellation rule. (Changed 23 Oct 2026: it used to say it couldn't be cancelled either.)
+- The "Cancel within 1 hour of booking for a full refund" line is removed (23 Oct 2026); the cancellation rule is in "Cancellation".
 - Booking confirmed: a session summary, "View session" and "Back to dashboard". No calendar export.
 
 New shared components for Phase 1: OptionCard (choice card with a radio), SlotPicker, AudioPlayer, ReviewItem, PriceBreakdown, Spinner.
@@ -340,7 +355,7 @@ A new, optional part of the coach profile. Not in the feature list.
 What it is
 - Coaches can add up to 5 images of anything they want to show gamers: rank screenshots, tournament photos, notes they share with students. With no images, the profile leaves the section out entirely.
 - Each image can have an optional caption, up to 80 characters, e.g. "MPL Philippines 2024, with the team as substitute jungler".
-- Separate from the portfolio for Verified: the portfolio is evidence for the team only, and its format is still to decide in Phase 6.
+- Separate from the portfolio: the portfolio is reviewed by the team and, once it passes, shown on the profile (changed 23 Oct 2026; how it shows is decided with its format in Phase 6). The showcase isn't reviewed by hand.
 
 On the profile (page 02)
 - A "Showcase" section straight after About.
@@ -371,7 +386,7 @@ Profile order at one-column widths (below 1100px)
 Extends the showcase check above to every image other people can see.
 
 - Covered: profile photos (every account, gamer or coach: they show in the top nav, on reviews and on coach profiles), coach banners, and showcase images with their captions.
-- Not covered: private uploads only the team sees (rank proof, dispute evidence, portfolio). The team already looks at those.
+- Not covered: private uploads only the team sees (rank proof, dispute evidence, a portfolio under review). The team already looks at those. A portfolio that passes review is public, so its images also go through this check before they show (added 23 Oct 2026).
 - Same behaviour everywhere: checked when uploaded or changed; passes, live at once; fails, not used, and the person is told in place with a plain reason ("This photo can't be used on Harbourly. Choose a different one."); uncertain counts as a fail; no email; no manual review.
 - A replaced photo or banner stays until its replacement passes. A first photo that fails leaves the default avatar (first letter); a first banner that fails leaves the plain `--bg-mid` band.
 - Where it's designed: profile setup (21: photo, banner, showcase), coach profile settings (22: the same), account settings (24: photo). Each upload shows a short "Checking…" state, then passed or refused.
@@ -391,3 +406,55 @@ Code entry (OtpInput, everywhere a 6-digit code is entered)
 - Pasting a code, or the phone's text-message suggestion (`autocomplete="one-time-code"` on the first box), fills all six, ignoring spaces.
 - Mockup behaviour lives in `foundations/components/OtpInput.js`, beside its stylesheet.
 
+
+## Policy update, 23 Oct 2026 (reconciling the 11 Oct marketing copy)
+
+The marketing copy on `main` (commit `adc8868`, 11 Oct 2026: `landing.html` FAQ and `verification-standard.html`) stated policies that differed from this file. Agreed 23 Oct 2026; the older sections above are corrected to match and point here.
+
+New Coach label, no Verified badge
+- There is no Verified badge. Every coach clears the identity check at payout setup, then goes live labelled New Coach.
+- The label drops automatically after 5 completed sessions (confirmed or auto-confirmed, including a dispute resolved as paid to the coach) with no upheld dispute. Nothing replaces it: the label simply stops showing.
+- Only an upheld dispute (resolved as refunded to the gamer) during the New Coach period resets progress to 0. A dispute resolved as paid to the coach doesn't count against them. A coach no-show or a coach cancellation inside 24 hours also resets it (see "Coach reliability").
+- Sessions that end as a gamer no-show or a cancellation don't count towards the 5, and don't reset them.
+- Scamming, predatory or grooming conduct is an immediate permanent ban, at any stage, decided by the team.
+- Emails: "Your New Coach label has dropped" and "Your New Coach progress was reset" (with the reason).
+- In the design: the Badge component keeps only New Coach; coaches shown as Verified in pages 01 to 05 and the cast are past their New Coach period and show no label. Webapp copy doesn't call coaches "verified".
+
+Portfolio
+- Optional, reviewed by the team by hand. If it holds up, it's shown on the coach's profile. It never gates bookings, never shortens the New Coach period and never grants a badge.
+- How it shows on the profile is decided with its format in Phase 6. Once public, its images also go through the automatic image check. The Showcase stays separate and isn't reviewed by hand.
+
+Rank proof (kept)
+- Ranks stay checked against proof screenshots at application and on every rank change ("Ranks" above). "Credentials: optional" in the landing copy refers to the portfolio only. What dropping this later would change is noted in `HANDOFF.md`, Open items.
+
+Fees
+- Gamer: the coach's price plus a 6% platform fee (₱1,850.00 + ₱111.00 = ₱1,961.00; S$45.00 + S$2.70 = S$47.70).
+- Coach: a 12% commission on the coach's price, taken from the payout; never charged on the gamer's fee. Kairo's payout: ₱1,850.00 − ₱222.00 = ₱1,628.00; Vexa's: S$45.00 − S$5.40 = S$39.60.
+- Both rates are snapshotted at booking. Payout stays automatic per session once the 72-hour hold clears.
+
+Cancellation
+- Cancel at least 1 hour before for a full refund; inside the last hour, or a gamer no-show, the coach's price is split 50/50. Full rules and amounts in "Cancellation" above.
+
+No-shows
+- Coach no-show: full refund to the gamer, including the platform fee. Consequences in "Coach reliability".
+- Gamer no-show (not joined by 15 minutes after the start): the coach's price is split 50/50, as a late cancellation.
+- Either person can report a no-show from 15 minutes after the start, while the other person hasn't joined the call. It replaces the "didn't show up" dispute reasons.
+- The reported person can confirm or contest it. Confirmed, or no answer within 24 hours: it resolves automatically by the rule for whoever didn't show (coach no-show: full refund; gamer no-show: 50/50 split). Contested: it becomes a dispute and the team decides, using the call's join records.
+- The payment stays held while a report is open.
+- Emails: "No-show reported" and "No-show outcome" (both).
+
+Rates
+- Sessions stay a fixed 60 minutes with one price per game for the MVP. Other session lengths or types are post-MVP (the landing copy's "rates can vary by session length or type" goes further than the MVP).
+- Price floor: about S$10 per session, set by the team as a fixed floor in each coach currency (S$10, RM 35, ₱430 at the mockups' rates). Price fields in profile setup (21) and coach profile settings (22) enforce it.
+- Coaches can change prices any time; a booked session keeps the price it was booked at (the price snapshot).
+
+Coaches aren't exclusive
+- Coaches are free to coach on other platforms too. No design change.
+
+Post-MVP: importing reviews from other platforms
+- Coaches importing their reviews from Metafy and Fiverr onto their Harbourly profile is wanted, but after the MVP. For the MVP the profile shows Harbourly reviews only.
+- Notes for later: Harbourly can't confirm imported reviews are real, so show them in a separate, labelled block (e.g. "From Metafy") that doesn't count towards the Harbourly rating or review count. It would touch the coach profile (02), coach profile settings (22) and possibly the browse card rating (01).
+- The landing FAQ still promises it; the copy is the owner's to change.
+
+Unchanged
+- The five games; the identity check at payout setup before listing; the 72-hour hold and auto-release; the 72-hour dispute window and 30-day payment disputes; rescheduling (still closes 24 hours before).
