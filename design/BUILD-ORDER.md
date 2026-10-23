@@ -77,7 +77,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 `/checkout/[bookingId]/return` *proposed*.
 - States: confirming your payment, booking confirmed (with "Book another time with Kairo": Pick a slot, same game chosen), payment didn't go through (try again while held), slot no longer held (pick another).
 
-**Checkpoint 2:** the booking flow end to end. Built and published 6 Oct 2026; reviewed and closed 16 Oct 2026 (refinements to 01, 02, 03 and 05; 04 unchanged).
+**Checkpoint 2:** the booking flow end to end. Built and published 6 Oct 2026; reviewed and closed 16 Oct 2026 (refinements to 01, 02, 03 and 05; 04 unchanged). Updated 23 Oct 2026 for the policy update (no Verified badge on 01 to 05; new cancellation lines on 04 and 05), republished at the same links with frames replaced on the canvas.
 
 ---
 
@@ -111,7 +111,7 @@ Pages: [06 Session detail](https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3) (`
 - States: waiting for the other person; no-show report available 15 minutes after start (gamer); coach waiting for an absent gamer ("If snapking doesn't join, you can report it after the session. You'd be paid half your price.", changed 23 Oct 2026); live; camera on; screen share on; mobile (watching only, with note); reminder banners at 10, 5 and 1 minutes; end request sent; end request received (End now, Keep going); you're reconnecting; the other person lost connection; microphone or camera blocked; session ended (gamer, coach).
 
 
-**Checkpoint 3:** session lifecycle. Built and published 16 Oct 2026; reviewed and closed 21 Oct 2026 (one refinement on 06: a response not sent yet shows as a dashed status slot).
+**Checkpoint 3:** session lifecycle. Built and published 16 Oct 2026; reviewed and closed 21 Oct 2026 (one refinement on 06: a response not sent yet shows as a dashed status slot). Updated 23 Oct 2026 for the policy update (06 cancel states, coach payout, confirm step; 08 coach waiting line; no Verified badge), republished at the same links with frames replaced on the canvas.
 
 ---
 
