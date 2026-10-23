@@ -55,7 +55,7 @@ Replaced by the 11 Oct 2026 marketing copy, agreed 23 Oct 2026. Amounts use the 
 
 - Gamer cancels at least 1 hour before the start: full refund including the platform fee (₱1,961.00).
 - Gamer cancels inside the last hour, up to the start time: the coach's price is split 50/50. The gamer gets half the coach's price back (₱925.00; S$22.50); the platform fee is kept; the coach is paid the other half less the 12% commission on that half (₱925.00 − ₱111.00 = ₱814.00; S$22.50 − S$2.70 = S$19.80).
-- Gamer no-show (hasn't joined by 15 minutes after the start): the same 50/50 split. See "No-shows" below.
+- Gamer no-show (hasn't joined by 15 minutes after the start): the same 50/50 split, once the team upholds the coach's report. See "No-shows" in "Policy update, 23 Oct 2026".
 - The old "free cancellation within 1 hour of booking" rule is gone: every booking starts at least 2 hours away, so a full refund is always available until 1 hour before.
 - Gamer cancels after declining a coach's reschedule request: full refund including the platform fee.
 - Coach can cancel at any time: full refund to the gamer including the platform fee. Harbourly absorbs the processing cost. Recorded against the coach (see "Coach reliability").
@@ -88,10 +88,6 @@ Rescheduling and cancellation
 - Reschedule requested (other party)
 - Reschedule accepted, declined or expired (requester; accepted also to both with the new time)
 - Booking cancelled, with refund amount (both; for a late cancellation, the coach's email shows their half)
-
-No-shows (added 23 Oct 2026)
-- No-show reported (both: reporter gets a receipt; the other person is told, with 24 hours to confirm or contest)
-- No-show outcome (both)
 
 Disputes
 - Dispute filed (both: filer gets a receipt, the other party is told and invited to respond)
@@ -128,9 +124,9 @@ Account
 Two filing windows, with different reason lists per role.
 
 Window: after the session ends, before confirmation or auto-release (funds held). Filing pauses the 72-hour auto-release.
-- Gamer: session ended early; coach was present but didn't coach; coach behaved inappropriately; session didn't match the listing; technical problems stopped the session; other.
-- Coach: gamer behaved inappropriately; gamer left early but the session should still be paid; other.
-- "Coach didn't show up" and "gamer didn't show up" left these lists on 23 Oct 2026: they are no-show reports now (see "Policy update, 23 Oct 2026"). A contested no-show report becomes a dispute.
+- Gamer: coach didn't show up (available from 15 minutes after the start time, without waiting for the scheduled end); session ended early; coach was present but didn't coach; coach behaved inappropriately; session didn't match the listing; technical problems stopped the session; other.
+- Coach: gamer didn't show up; gamer behaved inappropriately; gamer left early but the session should still be paid; other.
+- No-shows stay disputes (confirmed 23 Oct 2026). An upheld "gamer didn't show up" now ends in the 50/50 split, not a full release (see "Policy update, 23 Oct 2026").
 - "Gamer refusing to confirm without reason" is removed: the 72-hour auto-release already covers it.
 
 After completion: payment problems only, up to 30 days after release.
@@ -139,8 +135,8 @@ After completion: payment problems only, up to 30 days after release.
 
 Status and outcome
 - Shown as a dispute section on the session detail page, not a separate page.
-- Statuses: Open, Under review, Resolved (refunded to gamer), Resolved (paid to coach). The team sets them in Supabase.
-- Outcomes are always a full refund or a full release. No partial refunds in the MVP. (The 50/50 split for a late cancellation or gamer no-show is a fixed rule, not a dispute outcome.)
+- Statuses: Open, Under review, Resolved (refunded to gamer), Resolved (paid to coach), and since 23 Oct 2026 Resolved (split 50/50) for an upheld gamer no-show. The team sets them in Supabase.
+- Outcomes are always a full refund or a full release. No partial refunds in the MVP. (One exception since 23 Oct 2026: an upheld "gamer didn't show up" dispute ends in the 50/50 split.)
 - The other party is emailed when a dispute is filed against them and can add one written response with optional evidence.
 - Both parties are emailed the outcome.
 
@@ -421,7 +417,7 @@ Live session (page 08)
 - One screen share at a time. While the other person shares, your button is disabled and reads "Kairo is sharing". Mockups show the coach sharing a replay. Known MVP limit: Mobile Legends and Call of Duty: Mobile are phone games, so gamers usually can't share live gameplay; coaches review replays or share their own screen.
 - Reconnecting: two states. Yours: the stage dims and controls pause until you're back. Theirs: "Kairo lost connection. They can rejoin until 21:00."
 - No separate device check before joining. If the browser blocks the microphone or camera, a notice sits in place of your tile with how to allow it; you can still listen and chat.
-- No-show: from 15 minutes after the start the gamer's waiting state offers "Report a no-show", which opens Report a problem with that reason already chosen. Once filed, the session closes for both. A coach waiting for an absent gamer sees no button, only "If snapking doesn't join, you're still paid." (Changed 23 Oct 2026: either person can report a no-show, the reported person confirms or contests within 24 hours, and a gamer no-show splits the coach's price 50/50. See "Policy update, 23 Oct 2026".)
+- No-show: from 15 minutes after the start the gamer's waiting state offers "Report a no-show", which opens Report a problem with that reason already chosen. Once filed, the session closes for both. A coach waiting for an absent gamer sees no button, only "If snapking doesn't join, you're still paid." (Changed 23 Oct 2026: the line now reads "If snapking doesn't join, you can report it after the session. You'd be paid half your price.")
 - If nobody joins, the booking moves to Pending confirmation at the scheduled end, as usual.
 - Session ended screen: the gamer gets "Confirm session" (session detail, confirm step open) and "Report a problem"; the coach gets "View session".
 
@@ -438,10 +434,10 @@ Session detail (page 06)
 - No booking reference and no activity history. The session facts include "Booked Mon 5 Oct, 14:12 SGT", because the free-cancel hour depends on it. (23 Oct 2026: the free-cancel hour is gone, so this line has no job left.)
 
 Disputes (pages 06 and 07)
-- Reason lists. Gamer: "Coach didn't show up" alone during the session (from 15 minutes after the start); the full window list after the session ends; payment reasons after completion. Coach: the window list after the session ends; payment reasons after completion. (Changed 23 Oct 2026: "Coach didn't show up" leaves the lists; it's a no-show report.)
+- Reason lists. Gamer: "Coach didn't show up" alone during the session (from 15 minutes after the start); the full window list after the session ends; payment reasons after completion. Coach: the window list after the session ends; payment reasons after completion.
 - Description required, up to 1,000 characters. Evidence optional: up to 5 files, JPG, PNG, WebP or PDF, 10 MB each; the hint says to paste a link for a video clip. A line says the team can read the session chat, so screenshots of it aren't needed.
 - The other person sees the reason, description and evidence, and can send one response (text up to 1,000 characters, up to 5 files) within 48 hours; after that the team decides without it. The filer sees the response.
-- Coach no-show reports: the coach has 24 hours to respond; with no response the gamer is refunded in full automatically (matches the landing page FAQ). Everything else is decided by the team. (Changed 23 Oct 2026: no-show reports work the same both ways and are separate from the reason lists; see "Policy update, 23 Oct 2026".)
+- Coach no-show reports: the coach has 24 hours to respond; with no response the gamer is refunded in full automatically (matches the landing page FAQ). Everything else is decided by the team.
 - One dispute per booking at a time; the other person responds rather than filing their own. A payment problem after completion is a separate dispute, handled between that person and Harbourly: the other person isn't asked to respond. A report can't be withdrawn in the MVP.
 - Outcome: an optional one-line note from the team, plus refund timing ("It can take up to 10 working days to show, depending on your bank"). No promise of how long the team takes.
 
@@ -481,15 +477,13 @@ Fees
 - Both rates are snapshotted at booking. Payout stays automatic per session once the 72-hour hold clears.
 
 Cancellation
-- Cancel at least 1 hour before for a full refund; inside the last hour, or a gamer no-show, the coach's price is split 50/50. Full rules and amounts in "Cancellation" above.
+- Cancel at least 1 hour before for a full refund; inside the last hour, or an upheld gamer no-show, the coach's price is split 50/50. Full rules and amounts in "Cancellation" above.
 
-No-shows
-- Coach no-show: full refund to the gamer, including the platform fee. Consequences in "Coach reliability".
-- Gamer no-show (not joined by 15 minutes after the start): the coach's price is split 50/50, as a late cancellation.
-- Either person can report a no-show from 15 minutes after the start, while the other person hasn't joined the call. It replaces the "didn't show up" dispute reasons.
-- The reported person can confirm or contest it. Confirmed, or no answer within 24 hours: it resolves automatically by the rule for whoever didn't show (coach no-show: full refund; gamer no-show: 50/50 split). Contested: it becomes a dispute and the team decides, using the call's join records.
-- The payment stays held while a report is open.
-- Emails: "No-show reported" and "No-show outcome" (both).
+No-shows (the 16 Oct rule stays; only the gamer no-show outcome changes)
+- Kept as built in Phase 2, for simplicity: a no-show is a dispute. The gamer reports "Coach didn't show up" on Report a problem from 15 minutes after the start; the coach reports "Gamer didn't show up" after the session.
+- Coach no-show: the coach has 24 hours to respond; with no response the gamer is refunded in full automatically, platform fee included. Otherwise the team decides from the call's join records. Consequences in "Coach reliability".
+- Gamer no-show: the team decides. If upheld, the coach's price is split 50/50, as a late cancellation (the gamer gets ₱925.00 back, the coach is paid ₱814.00), instead of the coach being paid in full.
+- Considered and not taken (23 Oct 2026): either person reporting, with automatic settlement when the other doesn't contest. Revisit if no-show disputes take up too much of the team's time.
 
 Rates
 - Sessions stay a fixed 60 minutes with one price per game for the MVP. Other session lengths or types are post-MVP (the landing copy's "rates can vary by session length or type" goes further than the MVP).

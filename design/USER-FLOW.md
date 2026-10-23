@@ -10,7 +10,7 @@ Diagrams:
 4. Before the session: reminders, rescheduling, cancelling
 5. The session
 6. After the session: confirm, review
-7. Disputes and no-show reports
+7. Disputes
 8. Coach journey: application to live
 9. Live coach: managing the profile
 10. Account
@@ -174,7 +174,7 @@ flowchart TD
   Join(["Join session, from 10 minutes before"]) --> Waiting{"Other person here?"}
   Waiting -->|"No"| Room["Waiting for the other person. Chat open"]
   Room --> Waiting
-  Room -->|"15 minutes after start, other person absent"| NoShow(["Report a no-show: see diagram 7"])
+  Room -->|"Gamer, 15 minutes after start, coach absent"| NoShow(["Report a no-show: opens a dispute, session closes for both"])
   Room -->|"Nobody joins by the scheduled end"| Ended
   Waiting -->|"Yes"| Live["Live: voice call, optional camera, chat saved, screen share on computers only, one at a time"]
   Live --> Banners["Banners at 10, 5 and 1 minutes before the end"]
@@ -208,34 +208,32 @@ Session detail keeps the session chat, read-only, after the session.
 
 ---
 
-## 7. Disputes and no-show reports
+## 7. Disputes
 
 ```mermaid
 flowchart TD
-  Start(["Report a problem on session detail"]) --> When{"When?"}
-  When -->|"After the session, before confirmation"| WindowReasons["Reasons for your role: conduct, ended early, didn't coach, didn't match listing, technical, other"]
+  Start(["Report a problem on session detail, or Report a no-show in the session"]) --> When{"When?"}
+  When -->|"During the session, 15 minutes after start, coach absent (gamer)"| NoShowReason["Coach didn't show up"]
+  When -->|"After the session, before confirmation"| WindowReasons["Reasons for your role: conduct, no-show, ended early, didn't coach, didn't match listing, technical, other"]
   When -->|"Within 30 days after completion"| PayReasons["Payment reasons only: wrong amount, charged twice, refund missing, payout missing or wrong, other"]
+  NoShowReason --> Form
   WindowReasons --> Form
   PayReasons --> PayForm["Description and optional evidence"]
   PayForm --> PayOpen(["Open. Handled between you and Harbourly. Outcome emailed"])
   Form["Description (required) and optional evidence: up to 5 images or PDFs"] --> Open["Status: Open. Auto-release paused"]
   Open --> Notify["Email to both. The other person can send one response with evidence within 48 hours"]
+  Notify -->|"Coach no-show, no response in 24 hours"| Refunded
   Notify --> Review["Status: Under review. Team reviews in Supabase"]
   Review --> Outcome{"Outcome"}
   Outcome -->|"Refund"| Refunded(["Resolved: refunded to gamer"])
   Outcome -->|"Release"| Paid(["Resolved: paid to coach"])
+  Outcome -->|"Gamer no-show upheld"| Split(["Resolved: coach's price split 50/50"])
   Refunded --> Email(["Outcome emailed to both, with an optional note from the team"])
   Paid --> Email
-
-  NoShow(["Report a no-show: from 15 minutes after the start, while the other person hasn't joined"]) --> NSOpen["No-show reported. Payment stays held. Email to both"]
-  NSOpen --> NSAnswer{"Reported person, within 24 hours"}
-  NSAnswer -->|"Confirms, or doesn't answer"| NSWho{"Who didn't show?"}
-  NSWho -->|"Coach"| NSRefund(["Refunded to gamer in full, platform fee included"])
-  NSWho -->|"Gamer"| NSSplit(["Coach's price split 50/50, platform fee kept"])
-  NSAnswer -->|"Contests"| Review
+  Split --> Email
 ```
 
-Disputes always end in a full refund or a full release. A contested no-show report is decided by the team from the call's join records, by the same two no-show rules. Resolution happens in the Stripe or Xendit dashboard. One dispute per booking at a time; a report can't be withdrawn in the MVP.
+Disputes end in a full refund or a full release, except an upheld gamer no-show, which splits the coach's price 50/50 (23 Oct 2026). The team checks no-shows against the call's join records. Resolution happens in the Stripe or Xendit dashboard. One dispute per booking at a time; a report can't be withdrawn in the MVP.
 
 ---
 
@@ -338,12 +336,8 @@ stateDiagram-v2
 
   confirmed --> confirmed: reschedule accepted
   confirmed --> cancelled: gamer cancels (full refund, or 50/50 inside the last hour), or coach any time
-  confirmed --> in_session: both have joined
-  confirmed --> no_show_reported: 15 minutes after start, other person absent
-
-  no_show_reported --> refunded: coach no-show, confirmed or unanswered in 24h
-  no_show_reported --> missed: gamer no-show, confirmed or unanswered in 24h (50/50)
-  no_show_reported --> disputed: contested
+  confirmed --> in_session: someone joins
+  confirmed --> disputed: coach no-show reported
 
   in_session --> pending_confirmation: session ends
   pending_confirmation --> completed: gamer confirms, or 72 hours pass
@@ -351,16 +345,16 @@ stateDiagram-v2
 
   disputed --> refunded: resolved for gamer
   disputed --> completed: resolved for coach
-  disputed --> missed: contested gamer no-show upheld
+  disputed --> split: gamer no-show upheld (50/50)
 
   cancelled --> [*]
-  missed --> [*]
+  split --> [*]
   expired --> [*]
   refunded --> [*]
   completed --> [*]
 ```
 
-A reschedule request is shown as a second line on a confirmed booking, not a separate status. `missed` is a gamer no-show settled 50/50; a late cancellation stays `cancelled`, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.
+A reschedule request is shown as a second line on a confirmed booking, not a separate status. `split` is an upheld gamer no-show (coach's price split 50/50); a late cancellation stays `cancelled`, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.
 
 ---
 
