@@ -500,3 +500,42 @@ Post-MVP: importing reviews from other platforms
 
 Unchanged
 - The five games; the identity check at payout setup before listing; the 72-hour hold and auto-release; the 72-hour dispute window and 30-day payment disputes; rescheduling (still closes 24 hours before).
+
+## Phase 3 decisions (agreed 23 Oct 2026, before Phase 3)
+
+Gamer dashboard (page 09)
+- A list of things to do and things coming up, never a report. Title "Dashboard". Desktop: two columns. Left: **To do**. Right (344px): **Coming up**, **Problems you've reported**, **Recent sessions**. Below 1100px one column in that order.
+- **To do**: one card per thing waiting on you, soonest deadline first. Each card says what's needed in 06's own words (status, the same title, the booking's coach, game, date and time, the countdown) and offers the action 06 offers. In the busy account: Awaiting payment (Continue to payment, Choose another time), Did the session go ahead? (Confirm session, Report a problem), the coach asked to move this session (the offered times read only, the time left, View session; picking or declining happens on 06), How was your session? (Leave a review, with the date reviews close).
+- **Accent line**: the first To do card. When a session's Join is open (from 10 minutes before the start to the end), that session moves to the top and takes it. With nothing to do, the next session card takes it. Primary buttons only on the accent card; the others use secondary buttons, so one thing glows.
+- **Each booking appears once**, in the most urgent place it fits: To do, Problems you've reported, Coming up or Recent. My sessions stays the complete list.
+- **Coming up**: the next session as a card (Join session, disabled until 10 minutes before, with its countdown; View session), then up to 3 rows for the rest.
+- **Reviews**: one card lists every completed session still open for review (30 days), each with its date; an entry goes once the review is posted. Posted reviews never show on the dashboard.
+- **Problems you've reported**: disputes you filed only, each as 06 shows it ("Problem reported", Open or Under review, reason, sent time); a response not sent yet is the dashed PendingSlot. A resolved dispute stays 7 days with its outcome status, then lives on in My sessions and 06. Hidden when there are none.
+- **Recent sessions**: the last 3 finished bookings not shown elsewhere (completed and reviewed or past the review window, cancelled, refunded, expired, disputes resolved more than 7 days ago), then "All sessions". Hidden when there are none.
+- **No quick-links card**: the sidebar has Browse coaches and My sessions; "All sessions" sits under Recent and "Browse coaches" is the action in the empty states.
+- **Change actions** (Request a new time, Cancel booking) stay on 06; the dashboard never cancels.
+- **Money**: only the awaiting payment card shows an amount, in the coach's currency as charged (S$47.70). No "≈" figures on the dashboard.
+- **Empty**: To do ("Nothing needs you right now") and Coming up ("No sessions coming up", Browse coaches) always show. A brand-new account sees one block instead: "Book your first session" with Browse coaches as the one action.
+- **Coach data never shows here.** A dual-role account reaches the coach dashboard through the sidebar's Coach block (the switcher, as in the component library). No dual-role state on 09.
+- No join-open state is drawn on 09 (it would need more 06 copies); the ordering rule above covers it.
+
+My sessions (page 10)
+- Two plain SessionList groups: **Upcoming**, soonest first (awaiting payment, confirmed, in session), and **Past**, newest first (pending confirmation, disputed, completed, refunded, cancelled, expired). Coach and game, date and time, status, the amber "Reschedule requested" line; the whole row opens 06. No amounts, no filters, no accent line.
+- Past shows 20, then "Load more" (browse's label). Not drawn: the mockup has 4 past bookings.
+
+Booking set and mockup times (Phase 3)
+- Busy dashboard and My sessions: **Mon 5 Oct 2026, 14:12 SGT**, the moment 05's "Back to dashboard" lands after booking Kairo for Wed 7 Oct, and the moment 06's awaiting-payment state is set (24:12 left, held until 14:36).
+- The bookings at that moment (the component library's session list, reconciled): Kairo, Mobile Legends, Tue 6 Oct 20:00–21:00, Confirmed, ₱1,961.00 (join in 29h 38m). Kairo, Mobile Legends, Wed 7 Oct 20:00–21:00, Confirmed (the 06 booking). Vexa, Valorant, Thu 8 Oct 21:00–22:00, Confirmed with Reschedule requested: Vexa asked on Mon 5 Oct, 10:00, offering Wed 14 Oct 20:00, Thu 15 Oct 21:00 and Sat 17 Oct 15:00; reply by Wed 7 Oct, 10:00 (43h 48m). Vexa, Valorant, Tue 13 Oct 20:00–21:00, Awaiting payment, S$47.70. Mirae, Riftbound, Sat 3 Oct 18:00–19:00, Pending confirmation, S$38.00 + S$2.28 = S$40.28; paid automatically Tue 6 Oct, 19:00 (28h 48m). nullpoint, Counter-Strike 2, Thu 1 Oct 19:00–20:00, Disputed, RM 150.00 + RM 9.00 = RM 159.00; "Session ended early" reported Sun 4 Oct, 18:30; nullpoint can respond until Tue 6 Oct, 18:30 (28h 18m). Ghostline, Call of Duty: Mobile, Sun 27 Sep 15:00–16:00, Completed (confirmed that day), RM 120.00 + RM 7.20 = RM 127.20; review until Tue 27 Oct. Kairo, Mobile Legends, Fri 25 Sep, Expired.
+- Nothing to do (09): Thu 24 Sep, 13:05 SGT, just after the first hold ran out (only the expired Kairo booking). Brand-new (09) and empty (10): Thu 24 Sep, 11:00 SGT, snapking just signed up.
+- 06 follows one booking, so the dashboard's other bookings got their own states on 06 (kairo-tue, vexa-request, mirae-pending, mirae-confirm, ghostline-review, nullpoint-open) and 07 (mirae-after): copies of existing states with that booking's facts, so every card and row opens its own booking. Their onward links stay inert (only their own steps work), so a walk-through never lands on a different booking.
+
+Shared parts and prototype links
+- New component **PendingSlot** (the dashed "not sent yet" slot, moved out of 06; a `stacked` option for narrow columns) and a **compact** SessionList (rows stack at every width, for the dashboard's side column). Both on the component library page.
+- The mockup harness links every gamer shell: logo and sidebar Dashboard → 09, Browse coaches → 01, My sessions → 10. 05's View session, Back to dashboard and Book another time; 06's My sessions back link, Browse coaches, Book another time with Kairo, Choose another time and View profile; 07's Back to dashboard are linked.
+
+Fixed while checking Phase 3 (23 Oct 2026)
+- 08 coach session ended said "You're paid ₱1,850.00"; it now says ₱1,628.00 (after the 12% commission, as on 06).
+- The component library's Confirm step section still showed the old cancellation rule; it now shows the 23 Oct rule (full refund ₱1,961.00 until 1 hour before; ₱925.00 inside the last hour).
+
+Still open
+- A gamer can respond to a report a coach files against them (USER-FLOW diagram 7), but 06 and 07 only draw the coach responding. Proposed for after checkpoint 4: a gamer "filed against you" state on 06 and a gamer response form on 07; the dashboard then gains a To do card for it.

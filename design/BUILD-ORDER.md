@@ -117,17 +117,22 @@ Pages: [06 Session detail](https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3) (`
 
 ## Phase 3: Gamer home
 
+Pages: [09 Gamer dashboard](https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM) (`design/pages/09-gamer-dashboard.html`) · [10 My sessions](https://claude.ai/artifact/RA5wuSQuWSaw8hcPfsJpet) (`design/pages/10-my-sessions.html`) · frames on the [canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ)
+
 ### 9. Gamer dashboard · L
-`/dashboard` *proposed*.
-- Cards: next upcoming session, awaiting your confirmation (time left), awaiting payment (hold time left), reschedule request waiting on you, reviews you owe, open disputes you've filed, recent session history, quick links (browse coaches, all sessions).
-- States: every card's empty state, brand-new account (all empty), busy account, loading, error.
+`/dashboard` *proposed*. Rules in DECISIONS.md, "Phase 3 decisions".
+- To do (one card per thing waiting on you, soonest deadline first, accent on the first): awaiting payment (hold time left), awaiting your confirmation (time left), reschedule request waiting on you (offered times, time left to reply), reviews you owe. Coming up: next session card, then rows. Problems you've reported (dashed slot for a response not sent yet). Recent sessions, then "All sessions". No quick-links card.
+- States: busy account (Mon 5 Oct, 14:12 SGT), nothing to do (To do and Coming up empty; Thu 24 Sep, 13:05), brand-new account (one block, Browse coaches; Thu 24 Sep, 11:00), loading, error.
+- Every card and row opens its own booking on 06 (or 04, 03, 07): 06 gained kairo-tue, vexa-request, mirae-pending, mirae-confirm, ghostline-review and nullpoint-open, and 07 gained mirae-after, for the dashboard's other bookings.
 
 ### 10. My sessions · S
 `/sessions` (feature list).
-- Plain list: coach, date and time, status, "Reschedule requested" second line.
-- States: list, empty, loading, error.
+- Plain list in two groups, Upcoming (soonest first) and Past (newest first): coach, date and time, status, "Reschedule requested" second line. Past loads 20 at a time ("Load more"; not drawn).
+- States: list (Mon 5 Oct, 14:12), empty (Thu 24 Sep, 11:00), loading, error.
 
-**Checkpoint 4:** gamer side complete.
+Also in Phase 3: PendingSlot component and a compact SessionList (library page); the logo and sidebar link to 09, 01 and 10 on every page; 05, 06 and 07 buttons linked into the prototype; 08 coach payout corrected to ₱1,628.00; the library's Confirm step follows the 23 Oct cancellation rule.
+
+**Checkpoint 4:** gamer side complete. Built and published 23 Oct 2026; waiting for review.
 
 ---
 
