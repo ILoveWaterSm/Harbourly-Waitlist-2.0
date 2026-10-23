@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 My sessions</title>
+<meta name="description" content="Phase 3, page 10: every booking as a plain list, upcoming and past, each row opening its session.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/Countdown.css">
+<link rel="stylesheet" href="../foundations/components/PendingSlot.css">
+<link rel="stylesheet" href="../foundations/components/SessionList.css">
+<link rel="stylesheet" href="../foundations/components/EmptyState.css">
+<link rel="stylesheet" href="../foundations/components/Skeleton.css">
+<link rel="stylesheet" href="../foundations/components/ErrorState.css">
+<style>
+/* Page: My sessions (/sessions) → app/sessions/page.module.css. Layout only.
+   Every booking, in two plain lists: Upcoming (soonest first: awaiting payment, confirmed, in session) and
+   Past (newest first: everything that has ended). The whole row opens session detail. No filters, no amounts.
+   Past shows 20, then "Load more". */
+.pageHead { margin-bottom: var(--space-8); }
+.secHead { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-4); }
+.secCount { font: 400 13.5px/1 var(--font-mono); color: var(--muted); }
+.statusStack { display: inline-block; }
+.allLink { justify-self: start; font-size: 14px; }
+.allLink svg { margin: 0 0 0 6px; }
+.msGroup + .msGroup { margin-top: var(--space-10); }
+.msSkel { display: grid; gap: var(--space-2); }
+.msSkelRow { display: flex; align-items: center; gap: var(--space-4); padding: 14px var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); }
+@container app (max-width: 640px) {
+  .pageHead { margin-bottom: var(--space-6); }
+  .msGroup + .msGroup { margin-top: var(--space-8); }
+}
+</style>
+</head>
+<body>
+<template id="shell-gamer">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody">
+          <nav class="sidebar" aria-label="Main">
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          </nav>
+          <main class="appShellMain"><div class="appShellContent" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="10 My sessions">
+
+  <section data-state="list" data-label="List · Mon 5 Oct, 14:12" data-shell="gamer" data-nav="sessions">
+      <header class="pageHead"><h1>My sessions</h1></header>
+      <section class="msGroup" aria-labelledby="u-h">
+        <div class="secHead"><h2 id="u-h">Upcoming</h2><span class="secCount">4</span></div>
+        <div class="sessionList">
+          <div class="sessionListHead"><span>Coach</span><span>Date and time</span><span>Status</span><span></span></div>
+          <a class="sessionRow" href="#" data-link="06#kairo-tue"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Tue 6 Oct · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#upcoming"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Wed 7 Oct · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#vexa-request"><span class="sessionRowWho"><span class="avatar sm">V</span><span><span class="sessionRowName">Vexa</span><span class="sessionRowGame">Valorant</span></span></span><span class="sessionRowWhen">Thu 8 Oct · 21:00 SGT</span><span class="sessionRowStatus"><span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#awaiting-payment"><span class="sessionRowWho"><span class="avatar sm">V</span><span><span class="sessionRowName">Vexa</span><span class="sessionRowGame">Valorant</span></span></span><span class="sessionRowWhen">Tue 13 Oct · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel action">Awaiting payment</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+        </div>
+      </section>
+      <section class="msGroup" aria-labelledby="p-h">
+        <div class="secHead"><h2 id="p-h">Past</h2><span class="secCount">4</span></div>
+        <div class="sessionList">
+          <div class="sessionListHead"><span>Coach</span><span>Date and time</span><span>Status</span><span></span></div>
+          <a class="sessionRow" href="#" data-link="06#mirae-pending"><span class="sessionRowWho"><span class="avatar sm">M</span><span><span class="sessionRowName">Mirae</span><span class="sessionRowGame">Riftbound</span></span></span><span class="sessionRowWhen">Sat 3 Oct · 18:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel action">Pending confirmation</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#nullpoint-open"><span class="sessionRowWho"><span class="avatar sm">N</span><span><span class="sessionRowName">nullpoint</span><span class="sessionRowGame">Counter-Strike 2</span></span></span><span class="sessionRowWhen">Thu 1 Oct · 19:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel action">Disputed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#ghostline-review"><span class="sessionRowWho"><span class="avatar sm">G</span><span><span class="sessionRowName">Ghostline</span><span class="sessionRowGame">Call of Duty: Mobile</span></span></span><span class="sessionRowWhen">Sun 27 Sep · 15:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Completed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#expired"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Fri 25 Sep · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel ended">Expired</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+        </div>
+      </section>
+  </section>
+
+  <section data-state="empty" data-label="Empty · Thu 24 Sep, 11:00" data-shell="gamer" data-nav="sessions">
+      <header class="pageHead"><h1>My sessions</h1></header>
+      <div class="emptyState"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><p class="emptyStateTitle">No sessions yet</p><p class="emptyStateText">Sessions you book show here, with their status.</p><div class="emptyStateAction"><a class="button primary" href="#" data-link="01#results">Browse coaches</a></div></div>
+  </section>
+
+  <section data-state="loading" data-label="Loading" data-shell="gamer" data-nav="sessions">
+      <header class="pageHead"><h1>My sessions</h1></header>
+      <div class="msSkel" aria-busy="true" aria-label="Loading your sessions"><div style="margin-bottom:var(--space-4)"><span class="skeleton" style="width:120px;height:24px"></span></div><div class="msSkelRow"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="msSkel" style="flex:1.5"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:55%;height:12px"></span></div><div style="flex:1.3"><span class="skeleton" style="width:70%;height:12px"></span></div><div style="flex:1.1"><span class="skeleton" style="width:60%;height:11px"></span></div></div><div class="msSkelRow"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="msSkel" style="flex:1.5"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:55%;height:12px"></span></div><div style="flex:1.3"><span class="skeleton" style="width:70%;height:12px"></span></div><div style="flex:1.1"><span class="skeleton" style="width:60%;height:11px"></span></div></div><div class="msSkelRow"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="msSkel" style="flex:1.5"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:55%;height:12px"></span></div><div style="flex:1.3"><span class="skeleton" style="width:70%;height:12px"></span></div><div style="flex:1.1"><span class="skeleton" style="width:60%;height:11px"></span></div></div><div class="msSkelRow"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="msSkel" style="flex:1.5"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:55%;height:12px"></span></div><div style="flex:1.3"><span class="skeleton" style="width:70%;height:12px"></span></div><div style="flex:1.1"><span class="skeleton" style="width:60%;height:11px"></span></div></div></div>
+  </section>
+
+  <section data-state="error" data-label="Error" data-shell="gamer" data-nav="sessions">
+      <header class="pageHead"><h1>My sessions</h1></header>
+      <div class="errorState" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load your sessions</p><p class="errorStateText">Check your connection and try again. Your bookings and payments aren't affected.</p><div class="errorStateAction"><button class="button secondary" type="button" data-go="list"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Try again</button></div></div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* Mockup behaviour for this page: Try again steps back to the loaded state; hold countdowns tick. */
+(function () {
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-go]');
+    if (go && !go.disabled) { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+  });
+  setInterval(function () {
+    if (document.body.classList.contains('mk-capture')) return;
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      var p = el.textContent.split(':'), s = +p[0] * 60 + +p[1];
+      if (s > 0) { s--; el.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+    });
+  }, 1000);
+})();
+</script>
+</body>
+</html>

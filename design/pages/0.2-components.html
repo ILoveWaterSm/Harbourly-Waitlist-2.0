@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Harbourly components</title>
 <meta name="description" content="Phase 0.2: every shared Harbourly webapp component in every state.">
 <link rel="stylesheet" href="../foundations/tokens.css">
@@ -31,6 +32,7 @@
 <link rel="stylesheet" href="../foundations/components/EmptyState.css">
 <link rel="stylesheet" href="../foundations/components/Skeleton.css">
 <link rel="stylesheet" href="../foundations/components/ErrorState.css">
+<link rel="stylesheet" href="../foundations/components/PendingSlot.css">
 <link rel="stylesheet" href="../foundations/components/OptionCard.css">
 <link rel="stylesheet" href="../foundations/components/SlotPicker.css">
 <link rel="stylesheet" href="../foundations/components/AudioPlayer.css">
@@ -670,6 +672,12 @@
         <a class="sessionRow" href="#"><span class="sessionRowWho"><span class="avatar sm">G</span><span><span class="sessionRowName">Ghostline</span><span class="sessionRowGame">Call of Duty: Mobile</span></span></span><span class="sessionRowWhen">Sun 27 Sep · 15:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Completed</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
         <a class="sessionRow" href="#"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Fri 25 Sep · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel ended">Expired</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
       </div>
+      <h3 style="margin-top:var(--space-8)">Session list · compact</h3>
+      <p>Rows stack at every width, as they do on phones. For narrow columns, like the dashboard's side column (344px).</p>
+      <div class="sessionList compact" style="max-width:344px">
+        <a class="sessionRow" href="#"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Wed 7 Oct · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
+        <a class="sessionRow" href="#"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Fri 25 Sep · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel ended">Expired</span></span><span class="sessionRowGo"><svg class="icon"><use href="#i-chevron-right"/></svg></span></a>
+      </div>
     </div>
   </section>
 
@@ -717,37 +725,37 @@
     </div>
     <div class="lib-specs" style="--lib-min:420px">
       <div class="lib-spec"><span class="lib-cap">Before · on session detail</span>
-        <article class="card"><h3>Need to change something?</h3><p class="cardBody">You can ask for a new time or cancel up to <span class="mono" style="color:var(--ink-soft)">24 hours</span> before the session.</p>
+        <article class="card"><h3>Need to change something?</h3><p class="cardBody">Request a new time until <span class="mono" style="color:var(--ink-soft)">Tue 6 Oct, 20:00 SGT</span>, 24 hours before the session. Cancel for a full refund until <span class="mono" style="color:var(--ink-soft)">Wed 7 Oct, 19:00 SGT</span>.</p>
           <div class="cardActions"><button class="button secondary" type="button">Request a new time</button><button class="button secondary" type="button">Cancel booking</button></div></article></div>
-      <div class="lib-spec"><span class="lib-cap">Cancel · gamer, 24 hours or more ahead</span>
+      <div class="lib-spec"><span class="lib-cap">Cancel · gamer, 1 hour or more before the start</span>
         <div class="confirmStep" role="group" aria-labelledby="cs1">
-          <p class="confirmStepTitle" id="cs1">Cancel your session with Kairo on <span class="mono" style="font-weight:500">Tue 6 Oct</span>?</p>
+          <p class="confirmStepTitle" id="cs1">Cancel your session with Kairo on <span class="mono" style="font-weight:500">Wed 7 Oct</span>?</p>
           <dl class="confirmStepLines">
-            <div class="confirmStepLine"><dt>Kairo's price, refunded</dt><dd>₱1,850.00</dd></div>
-            <div class="confirmStepLine"><dt>Platform fee, not refundable</dt><dd>₱111.00</dd></div>
-            <div class="confirmStepLine total"><dt>You get back</dt><dd>₱1,850.00</dd></div>
+            <div class="confirmStepLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div>
+            <div class="confirmStepLine"><dt>Platform fee</dt><dd>₱111.00</dd></div>
+            <div class="confirmStepLine total"><dt>You get back</dt><dd>₱1,961.00</dd></div>
           </dl>
-          <p class="confirmStepText">Your bank converts the refund to SGD.</p>
+          <p class="confirmStepText">You're cancelling more than 1 hour before the start, so you get everything back. Refunded to the payment method you used; your bank converts it to SGD. Kairo is told straight away.</p>
           <div class="confirmStepActions"><button class="button secondary" type="button">Keep booking</button><button class="button warning" type="button">Cancel booking</button></div>
         </div></div>
-      <div class="lib-spec"><span class="lib-cap">Cancel · within 1 hour of booking</span>
+      <div class="lib-spec"><span class="lib-cap">Cancel · gamer, inside the last hour</span>
         <div class="confirmStep" role="group" aria-labelledby="cs2">
-          <p class="confirmStepTitle" id="cs2">Cancel your session with Vexa on <span class="mono" style="font-weight:500">Thu 8 Oct</span>?</p>
-          <p class="confirmStepText">You booked less than an hour ago, so the platform fee is refunded too.</p>
+          <p class="confirmStepTitle" id="cs2">Cancel your session with Kairo today?</p>
           <dl class="confirmStepLines">
-            <div class="confirmStepLine"><dt>Vexa's price</dt><dd>S$45.00</dd></div>
-            <div class="confirmStepLine"><dt>Platform fee</dt><dd>S$2.70</dd></div>
-            <div class="confirmStepLine total"><dt>You get back</dt><dd>S$47.70</dd></div>
+            <div class="confirmStepLine"><dt>Half of Kairo's price, refunded</dt><dd>₱925.00</dd></div>
+            <div class="confirmStepLine"><dt>Platform fee, not refundable</dt><dd>₱111.00</dd></div>
+            <div class="confirmStepLine total"><dt>You get back</dt><dd>₱925.00</dd></div>
           </dl>
+          <p class="confirmStepText">Refunded to the payment method you used; your bank converts it to SGD. Kairo is told straight away.</p>
           <div class="confirmStepActions"><button class="button secondary" type="button">Keep booking</button><button class="button warning" type="button">Cancel booking</button></div>
         </div></div>
       <div class="lib-spec"><span class="lib-cap">Cancel · working</span>
         <div class="confirmStep" role="group" aria-labelledby="cs3" aria-busy="true">
-          <p class="confirmStepTitle" id="cs3">Cancel your session with Kairo on <span class="mono" style="font-weight:500">Tue 6 Oct</span>?</p>
+          <p class="confirmStepTitle" id="cs3">Cancel your session with Kairo on <span class="mono" style="font-weight:500">Wed 7 Oct</span>?</p>
           <dl class="confirmStepLines">
-            <div class="confirmStepLine"><dt>Kairo's price, refunded</dt><dd>₱1,850.00</dd></div>
-            <div class="confirmStepLine"><dt>Platform fee, not refundable</dt><dd>₱111.00</dd></div>
-            <div class="confirmStepLine total"><dt>You get back</dt><dd>₱1,850.00</dd></div>
+            <div class="confirmStepLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div>
+            <div class="confirmStepLine"><dt>Platform fee</dt><dd>₱111.00</dd></div>
+            <div class="confirmStepLine total"><dt>You get back</dt><dd>₱1,961.00</dd></div>
           </dl>
           <div class="confirmStepActions"><button class="button secondary" type="button" disabled>Keep booking</button><button class="button warning" type="button" aria-busy="true"><span class="buttonSpinner" aria-hidden="true"></span>Cancelling…</button></div>
         </div></div>
@@ -770,8 +778,8 @@
   <section class="lib-sec" data-state="patterns" data-label="Empty, loading, error">
     <div class="lib-sec-head">
       <h2>Empty, loading and error</h2>
-      <p>Every list and card has all three. Empty says what will appear and how to get it. Loading keeps the shape of what's coming. Errors say what failed and offer a retry.</p>
-      <span class="lib-files">EmptyState · Skeleton · ErrorState</span>
+      <p>Every list and card has all three. Empty says what will appear and how to get it. Loading keeps the shape of what's coming. Errors say what failed and offer a retry. A pending slot stands in for something someone hasn't sent yet, so the app's own status text never looks like their words.</p>
+      <span class="lib-files">EmptyState · Skeleton · ErrorState · PendingSlot</span>
     </div>
     <div class="lib-specs" style="--lib-min:400px">
       <div class="lib-spec"><span class="lib-cap">Empty · first use</span>
@@ -796,6 +804,10 @@
         <article class="card"><div class="errorState" style="padding-block:var(--space-2)"><svg class="icon"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load your sessions</p><p class="errorStateText">Check your connection, then try again.</p><div class="errorStateAction"><button class="button secondary" type="button"><svg class="icon"><use href="#i-refresh"/></svg>Try again</button></div></div></article></div>
       <div class="lib-spec"><span class="lib-cap">Error · retrying</span>
         <article class="card"><div class="errorState" style="padding-block:var(--space-2)"><svg class="icon"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load your sessions</p><p class="errorStateText">Check your connection, then try again.</p><div class="errorStateAction"><button class="button secondary" type="button" aria-busy="true"><span class="buttonSpinner" aria-hidden="true"></span>Trying again…</button></div></div></article></div>
+      <div class="lib-spec"><span class="lib-cap">Pending · response not sent yet</span>
+        <div class="pendingSlot" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">No response from Kairo yet</p><p class="pendingSlotText">Kairo can send one response, with evidence, until <span class="mono">Fri 9 Oct, 21:41 SGT</span>. After that, the team decides without it.</p></div><span class="pendingSlotLeft"><span class="countdown">47h 51m</span> left</span></div></div>
+      <div class="lib-spec"><span class="lib-cap">Pending · stacked, for narrow columns</span>
+        <div class="pendingSlot stacked" role="status" style="max-width:304px"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">No response from nullpoint yet</p><p class="pendingSlotText">nullpoint can send one response, with evidence, until <span class="mono">Tue 6 Oct, 18:30 SGT</span>. After that, the team decides without it.</p></div><span class="pendingSlotLeft"><span class="countdown">28h 18m</span> left</span></div></div>
     </div>
   </section>
 

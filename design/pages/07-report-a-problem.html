@@ -179,6 +179,28 @@
       </div>
   </section>
 
+  <section data-state="mirae-after" data-label="Dashboard link · Mirae, after the session" data-shell="focused">
+      <a class="textLink quiet backLink" href="#" data-link="06#mirae-pending"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Report a problem</h1><p class="pageLead">Tell us what went wrong in your session with Mirae. The payment stays held, and the automatic release is paused, until the team decides.</p></div>
+      <div class="rpBody">
+        <div class="rpMain">
+        <form class="card accent rpForm" novalidate onsubmit="return false">
+            <fieldset><legend class="rpLegend">What went wrong?</legend>
+              <div class="optionGroup rpReasons" role="radiogroup"><label class="optionCard"><input class="optionCardInput" type="radio" name="ma"><span class="optionCardBody"><span class="optionCardTitle">Coach didn't show up</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ma"><span class="optionCardBody"><span class="optionCardTitle">Session ended early</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ma"><span class="optionCardBody"><span class="optionCardTitle">Coach was present but didn't coach</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ma"><span class="optionCardBody"><span class="optionCardTitle">Coach behaved inappropriately</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ma"><span class="optionCardBody"><span class="optionCardTitle">Session didn't match the listing</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ma"><span class="optionCardBody"><span class="optionCardTitle">Technical problems stopped the session</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ma"><span class="optionCardBody"><span class="optionCardTitle">Other</span></span></label></div></fieldset><div class="field"><label class="fieldLabel" for="ma-d">What happened?</label><span class="fieldHint">Say what happened and roughly when. Times help the team check the call and the chat.</span>
+              <textarea class="fieldControl" id="ma-d" maxlength="1000" data-counter="ma-d-c" placeholder="For example: the screen share froze at 18:20 and didn't recover."></textarea>
+              <div class="fieldFoot"><span class="fieldCounter" id="ma-d-c"></span></div></div><div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">0 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <div class="uploadThumbs"><button class="uploadAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add file</button></div></div><p class="rpNote"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span>The team can read the session chat, so you don't need screenshots of it.</span></p><div class="rpActions"><button class="button primary" type="submit">Send report</button><a class="textLink quiet" href="#" data-link="06#mirae-pending">Back to session</a></div>
+        </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">M</span><div><span class="rpWhoName">Mirae</span><span class="handle">@mirae</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Riftbound</dd><dt>Date</dt><dd>Sat 3 Oct</dd><dt>Time</dt><dd>18:00–19:00 SGT</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>Mirae is told and can send one response within 48 hours.</span></li><li><span>The team reviews your report, Mirae's response and the session chat.</span></li><li><span>You're both emailed the outcome: a full refund to you, or the payment released to Mirae.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
   <section data-state="gamer-noshow" data-label="Gamer · coach didn't show up" data-shell="focused">
       <a class="textLink quiet backLink" href="#" data-link="06#pending"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
       <div class="pageHead"><h1>Report a no-show</h1><p class="pageLead">Kairo hasn't joined the session that started at <span class="mono">20:00 SGT</span>. Reporting it closes the session for both of you.</p></div>
@@ -316,7 +338,7 @@
         <section class="card accent sentCard" aria-label="Your report">
           <dl class="cardFacts"><dt>Session</dt><dd class="text">Kairo · Mobile Legends</dd><dt>Reason</dt><dd class="text">Technical problems stopped the session</dd><dt>Sent</dt><dd>Wed 7 Oct, 21:41 SGT</dd><dt>Evidence</dt><dd>2 files</dd></dl>
           <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>Kairo can send one response until <span class="mono">Fri 9 Oct, 21:41 SGT</span>.</span></li><li><span>The team reviews your report, Kairo's response and the session chat.</span></li><li><span>You're both emailed the outcome.</span></li></ol></div>
-          <div class="cardActions"><a class="button primary" href="#" data-link="06#disputed-open">View session</a><a class="button secondary" href="#">Back to dashboard</a></div>
+          <div class="cardActions"><a class="button primary" href="#" data-link="06#disputed-open">View session</a><a class="button secondary" href="#" data-link="09#busy">Back to dashboard</a></div>
         </section>
       </div>
   </section>

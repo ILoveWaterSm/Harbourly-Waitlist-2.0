@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="../foundations/components/ChatPanel.css">
 <link rel="stylesheet" href="../foundations/components/Skeleton.css">
 <link rel="stylesheet" href="../foundations/components/ErrorState.css">
+<link rel="stylesheet" href="../foundations/components/PendingSlot.css">
 <style>
 /* Page: Session detail (/sessions/[id], coach view /coach/sessions/[id]) → app/sessions/[id]/page.module.css. Layout only.
    Left column: what to do now (the one accent card) and changes. Right column: the facts, session and payment.
@@ -102,15 +103,6 @@
 .disputeBlock .cardFacts dd.text { font: 400 14.5px/1.4 var(--font-body); color: var(--ink); }
 .disputeQuote { padding: var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); max-width: 68ch; }
 .disputeQuote .by { display: block; margin-top: var(--space-2); font: 400 12px/1.3 var(--font-mono); color: var(--faint); }
-/* A response that hasn't been sent yet: a dashed, empty slot with a status line, so it never reads as the
-   other person's words. Sent responses keep the solid quote box with a "Sent …" line. */
-.disputePending { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: var(--space-1) var(--space-3); align-items: start; padding: 14px var(--space-4); border: 1px dashed var(--line-strong); border-radius: var(--radius-md); }
-.disputePending > svg { width: 18px; height: 18px; margin-top: 2px; color: var(--muted); }
-.disputePendingTitle { font: 600 14.5px/1.45 var(--font-body); color: var(--ink-sub); }
-.disputePendingText { margin-top: 2px; font-size: 13.5px; line-height: 1.55; color: var(--muted); }
-.disputePendingText .mono { color: var(--ink-soft); font-size: 13px; }
-.disputePendingLeft { padding-top: 2px; font-size: 13px; color: var(--muted); white-space: nowrap; }
-.disputePendingLeft .countdown { color: var(--ink-soft); }
 .dispute .uploadThumbs { grid-template-columns: repeat(auto-fill, 168px); }
 .disputeOutcome { display: grid; gap: var(--space-2); }
 .disputeOutcomeTitle { font: 600 16px/1.4 var(--font-body); color: var(--ink); }
@@ -153,8 +145,6 @@
   .sdChatBody { padding: 0 var(--space-5) var(--space-5); }
   .confirmStepActions .button { flex: 1 1 auto; }
   .dispute .uploadThumbs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .disputePending { grid-template-columns: 20px minmax(0, 1fr); }
-  .disputePendingLeft { grid-column: 2; padding-top: var(--space-1); }
   .sdWhen .sdSep { display: none; }
   .sdWhen > span:first-child { flex-basis: 100%; }
 }
@@ -243,7 +233,7 @@
 <div class="mk-frame" data-page="06 Session detail">
 
   <section data-state="upcoming" data-label="Upcoming, more than 24 hours" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -266,7 +256,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -278,7 +268,7 @@
   </section>
 
   <section data-state="cancel-confirm" data-label="Cancel, full refund" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -307,7 +297,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -319,7 +309,7 @@
   </section>
 
   <section data-state="cancel-late" data-label="Cancel inside the last hour" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -348,7 +338,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -360,7 +350,7 @@
   </section>
 
   <section data-state="cancelled" data-label="Cancelled by you" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel ended">Cancelled</span>
         <h1>Session with Kairo</h1>
@@ -371,14 +361,14 @@
           <section class="card sdCard" aria-label="Cancelled">
             <h2 class="cardTitle">You cancelled this session</h2>
             <p class="sdText">Cancelled on <span class="mono">Mon 5 Oct, 18:04 SGT</span>. We've emailed you and Kairo, and the time is free for other gamers again.</p>
-            <div class="sdActions"><a class="button primary" href="#">Book another time with Kairo</a><a class="button secondary" href="#">Browse coaches</a></div>
+            <div class="sdActions"><a class="button primary" href="#" data-link="03#available">Book another time with Kairo</a><a class="button secondary" href="#" data-link="01#results">Browse coaches</a></div>
           </section>
         </div>
         <aside class="sdSide" aria-label="Session details">
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -390,7 +380,7 @@
   </section>
 
   <section data-state="coach-cancelled" data-label="Cancelled by Kairo" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel ended">Cancelled</span>
         <h1>Session with Kairo</h1>
@@ -401,14 +391,14 @@
           <section class="card sdCard" aria-label="Cancelled">
             <h2 class="cardTitle">Kairo cancelled this session</h2>
             <p class="sdText">Kairo cancelled on <span class="mono">Tue 6 Oct, 09:41 SGT</span>. You get a full refund, including the platform fee. Sorry for the change of plans.</p>
-            <div class="sdActions"><a class="button primary" href="#">Browse coaches</a><a class="button secondary" href="#">Book another time with Kairo</a></div>
+            <div class="sdActions"><a class="button primary" href="#" data-link="01#results">Browse coaches</a><a class="button secondary" href="#" data-link="03#available">Book another time with Kairo</a></div>
           </section>
         </div>
         <aside class="sdSide" aria-label="Session details">
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -420,7 +410,7 @@
   </section>
 
   <section data-state="locked" data-label="Upcoming, under 24 hours" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -444,7 +434,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -456,7 +446,7 @@
   </section>
 
   <section data-state="reschedule-form" data-label="Request a new time" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -488,7 +478,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -500,7 +490,7 @@
   </section>
 
   <section data-state="reschedule-waiting" data-label="Waiting on Kairo's reply" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span>
         <h1>Session with Kairo</h1>
@@ -524,7 +514,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -536,7 +526,7 @@
   </section>
 
   <section data-state="reschedule-received" data-label="Kairo asked for a new time" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span>
         <h1>Session with Kairo</h1>
@@ -564,7 +554,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -576,7 +566,7 @@
   </section>
 
   <section data-state="reschedule-keep-or-cancel" data-label="Declined Kairo's times: keep or cancel" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -599,7 +589,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -611,7 +601,7 @@
   </section>
 
   <section data-state="moved" data-label="Moved to a new time" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -635,7 +625,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Fri 9 Oct · 21:00–22:00 SGT<span class="sub">Moved from Wed 7 Oct · 20:00 SGT</span></dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -647,7 +637,7 @@
   </section>
 
   <section data-state="reschedule-declined" data-label="Kairo declined your request" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -671,7 +661,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -683,7 +673,7 @@
   </section>
 
   <section data-state="reschedule-expired" data-label="Your request expired" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -708,7 +698,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -720,7 +710,7 @@
   </section>
 
   <section data-state="join" data-label="Join open" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Confirmed</span>
         <h1>Session with Kairo</h1>
@@ -744,7 +734,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -756,7 +746,7 @@
   </section>
 
   <section data-state="in-session" data-label="In session, you left the call" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">In session</span>
         <h1>Session with Kairo</h1>
@@ -775,7 +765,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -787,7 +777,7 @@
   </section>
 
   <section data-state="pending" data-label="Pending confirmation" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel action">Pending confirmation</span>
         <h1>Session with Kairo</h1>
@@ -824,7 +814,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -836,7 +826,7 @@
   </section>
 
   <section data-state="pending-soon" data-label="Pending, under 24 hours left" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel action">Pending confirmation</span>
         <h1>Session with Kairo</h1>
@@ -873,7 +863,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -885,7 +875,7 @@
   </section>
 
   <section data-state="confirm-step" data-label="Confirm the session" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel action">Pending confirmation</span>
         <h1>Session with Kairo</h1>
@@ -927,7 +917,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -939,7 +929,7 @@
   </section>
 
   <section data-state="completed-review" data-label="Completed, leave a review" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Completed</span>
         <h1>Session with Kairo</h1>
@@ -981,7 +971,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -993,7 +983,7 @@
   </section>
 
   <section data-state="review-posted" data-label="Review posted" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Completed</span>
         <h1>Session with Kairo</h1>
@@ -1005,7 +995,7 @@
             <h2 class="cardTitle" id="rp-h">Your review</h2>
             <ul class="reviewList"><li class="reviewItem"><div class="reviewItemHead"><span class="avatar xs">S</span><span class="reviewItemName">snapking</span><span class="reviewItemStars" role="img" aria-label="5 out of 5"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></span><span class="reviewItemMeta">Mobile Legends · Oct 2026</span></div><p class="reviewItemText">Clear and patient. We went through my replay and Kairo showed exactly where my rotations were late. Already winning more Lord fights.</p></li></ul>
             <p class="sdText">Shown on Kairo's profile. Want to keep working on your rotations?</p>
-            <div class="sdActions"><a class="button primary" href="#">Book another time with Kairo</a><a class="textLink quiet" href="#">View Kairo's profile</a></div>
+            <div class="sdActions"><a class="button primary" href="#" data-link="03#available">Book another time with Kairo</a><a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a></div>
           </section>
           <details class="card sdChat">
             <summary><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span class="sdChatTitle">Session chat</span><span class="sdChatCount">9 messages</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
@@ -1031,7 +1021,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -1043,7 +1033,7 @@
   </section>
 
   <section data-state="disputed-open" data-label="Disputed, waiting for Kairo" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel action">Disputed</span>
         <h1>Session with Kairo</h1>
@@ -1063,7 +1053,7 @@
               </div>
               <div class="disputeBlock">
                 <span class="label">Kairo's response</span>
-                <div class="disputePending" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="disputePendingBody"><p class="disputePendingTitle">No response from Kairo yet</p><p class="disputePendingText">Kairo can send one response, with evidence, until <span class="mono">Fri 9 Oct, 21:41 SGT</span>. After that, the team decides without it.</p></div><span class="disputePendingLeft"><span class="countdown">47h 51m</span> left</span></div>
+                <div class="pendingSlot" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">No response from Kairo yet</p><p class="pendingSlotText">Kairo can send one response, with evidence, until <span class="mono">Fri 9 Oct, 21:41 SGT</span>. After that, the team decides without it.</p></div><span class="pendingSlotLeft"><span class="countdown">47h 51m</span> left</span></div>
               </div>
               <div class="disputeBlock">
                 <span class="label">What happens next</span>
@@ -1075,7 +1065,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -1087,7 +1077,7 @@
   </section>
 
   <section data-state="disputed-review" data-label="Disputed, under review" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel action">Disputed</span>
         <h1>Session with Kairo</h1>
@@ -1115,7 +1105,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -1127,7 +1117,7 @@
   </section>
 
   <section data-state="resolved-refunded" data-label="Resolved, refunded to you" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel ended">Refunded</span>
         <h1>Session with Kairo</h1>
@@ -1153,14 +1143,14 @@
                 <span class="label">Kairo's response</span>
                 <p class="disputeQuote">The share froze a few times on snapking's side, so we carried on by voice and I put my notes in the chat until 21:00. I'm happy to look at the replay again.<span class="by">Sent Thu 8 Oct, 09:12 SGT</span></p><div class="uploadThumbs"><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></div><div class="uploadThumbName">chat-notes-2050.png</div></div></div>
               </div>
-            <div class="sdActions"><a class="button secondary" href="#">Browse coaches</a></div>
+            <div class="sdActions"><a class="button secondary" href="#" data-link="01#results">Browse coaches</a></div>
           </section>
         </div>
         <aside class="sdSide" aria-label="Session details">
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -1172,7 +1162,7 @@
   </section>
 
   <section data-state="resolved-paid" data-label="Resolved, paid to Kairo" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Completed</span>
         <h1>Session with Kairo</h1>
@@ -1205,7 +1195,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -1217,7 +1207,7 @@
   </section>
 
   <section data-state="payment-problem" data-label="Payment problem after completion" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel positive">Completed</span>
         <h1>Session with Kairo</h1>
@@ -1240,7 +1230,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -1252,7 +1242,7 @@
   </section>
 
   <section data-state="awaiting-payment" data-label="Awaiting payment" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel action">Awaiting payment</span>
         <h1>Session with Vexa</h1>
@@ -1264,7 +1254,7 @@
             <h2 class="cardTitle" id="ap-h">Finish paying to book this time</h2>
             <p class="sdText">Vexa's time is held for you until <span class="mono">14:36 SGT</span>. After that it's released, and you won't be charged.</p>
             <div class="holdTimer" role="timer"><span>Your time is held while you pay</span><span class="countdown" data-count="24:12">24:12</span></div>
-            <div class="sdActions"><a class="button primary" href="#" data-link="04#same-currency">Continue to payment</a><a class="textLink quiet" href="#">Choose another time</a></div>
+            <div class="sdActions"><a class="button primary" href="#" data-link="04#same-currency">Continue to payment</a><a class="textLink quiet" href="#" data-link="03#none">Choose another time</a></div>
             <p class="sdHint"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>You'll pay on Stripe's secure page.</span></p>
           </section>
         </div>
@@ -1272,7 +1262,7 @@
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">V</span><div><span class="sdWhoName">Vexa</span><span class="handle">@vexa</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Valorant<span class="rank">Immortal 2</span></dd><dt>Time</dt><dd>Tue 13 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Vexa's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#one-game">View Vexa's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
@@ -1284,7 +1274,7 @@
   </section>
 
   <section data-state="expired" data-label="Expired" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <header class="sdHead">
         <span class="statusLabel ended">Expired</span>
         <h1>Session with Kairo</h1>
@@ -1295,19 +1285,284 @@
           <section class="card sdCard" aria-labelledby="ex-h">
             <h2 class="cardTitle" id="ex-h">This booking wasn't paid in time</h2>
             <p class="sdText">We held this time for you for 30 minutes on Thu 24 Sep, and the time ran out before payment. It was released, and you weren't charged.</p>
-            <div class="sdActions"><a class="button primary" href="#">Choose another time</a></div>
+            <div class="sdActions"><a class="button primary" href="#" data-link="03#available">Choose another time</a></div>
           </section>
         </div>
         <aside class="sdSide" aria-label="Session details">
           <section class="card sdCard sdFacts" aria-label="Session">
             <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
             <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Fri 25 Sep · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
-            <a class="textLink quiet" href="#">View Kairo's profile</a>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
           </section>
           <section class="card sdCard" aria-label="Payment">
             <h2 class="cardTitle">Payment</h2>
             <div style="display:grid;gap:var(--space-3)"><dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>₱111.00</dd></div><div class="priceBreakdownLine total"><dt>Total</dt><dd>₱1,961.00</dd></div></dl></div>
             <p class="sdPayState"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>You weren't charged.</span></p>
+          </section>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="kairo-tue" data-label="Dashboard link · Kairo, Tue 6 Oct, upcoming" data-shell="gamer" data-nav="sessions">
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <header class="sdHead">
+        <span class="statusLabel positive">Confirmed</span>
+        <h1>Session with Kairo</h1>
+        <p class="sdWhen"><span>Mobile Legends</span><span class="sdSep" aria-hidden="true">·</span><span class="mono">Tue 6 Oct · 20:00–21:00 SGT</span></p>
+      </header>
+      <div class="sdBody">
+        <div class="sdMain">
+          <section class="card accent sdCard" aria-label="Join">
+            <h2 class="cardTitle">Join opens 10 minutes before the start</h2>
+            <p class="sdText">You can join from <span class="mono">19:50 SGT</span> on Tue 6 Oct. We'll email you a reminder 24 hours and 1 hour before.</p>
+            <div class="sdActions"><button class="button primary" type="button" disabled>Join session</button><span class="sdActionsMeta">Opens in <span class="countdown">29h 38m</span></span></div>
+            <p class="sdHint"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg><span>Screen sharing needs a computer. On a phone you can talk, chat and watch Kairo's screen.</span></p>
+          </section>
+          <section class="card sdCard" aria-label="Changes">
+            <h2 class="cardTitle">Need to change something?</h2>
+            <p class="sdText">Request a new time until <span class="mono">Mon 5 Oct, 20:00 SGT</span>, 24 hours before the session. Cancel for a full refund until <span class="mono">Tue 6 Oct, 19:00 SGT</span>.</p><div class="sdActions"><button class="button secondary" type="button">Request a new time</button><button class="button secondary" type="button">Cancel booking</button></div>
+          </section>
+        </div>
+        <aside class="sdSide" aria-label="Session details">
+          <section class="card sdCard sdFacts" aria-label="Session">
+            <div class="sdWho"><span class="avatar md">K</span><div><span class="sdWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
+            <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends<span class="rank">Mythical Glory · 85★</span></dd><dt>Time</dt><dd>Tue 6 Oct · 20:00–21:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
+            <a class="textLink quiet" href="#" data-link="02#verified">View Kairo's profile</a>
+          </section>
+          <section class="card sdCard" aria-label="Payment">
+            <h2 class="cardTitle">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)"><dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>₱111.00</dd></div><div class="priceBreakdownLine total"><dt>Paid</dt><dd>₱1,961.00</dd></div></dl><p class="priceBreakdownNote">Charged in Philippine pesos. Your bank converted it to SGD.</p></div>
+            <p class="sdPayState"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Held by Harbourly. Kairo is paid once you confirm the session went ahead.</span></p>
+          </section>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="vexa-request" data-label="Dashboard link · Vexa asked for a new time" data-shell="gamer" data-nav="sessions">
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <header class="sdHead">
+        <span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span>
+        <h1>Session with Vexa</h1>
+        <p class="sdWhen"><span>Valorant</span><span class="sdSep" aria-hidden="true">·</span><span class="mono">Thu 8 Oct · 21:00–22:00 SGT</span></p>
+      </header>
+      <div class="sdBody">
+        <div class="sdMain">
+          <section class="card accent sdCard" aria-labelledby="rr-h">
+            <h2 class="cardTitle" id="rr-h">Vexa asked to move this session</h2>
+            <p class="sdText">Pick one of these times, or decline and keep <span class="mono">Thu 8 Oct · 21:00 SGT</span>.</p>
+            <fieldset class="optionGroup"><legend class="visuallyHidden">Vexa's times</legend>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="rr-vexa"><span class="optionCardBody"><span class="optionCardTitle">Wed 14 Oct</span><span class="optionCardMeta">20:00–21:00 SGT</span></span></label>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="rr-vexa"><span class="optionCardBody"><span class="optionCardTitle">Thu 15 Oct</span><span class="optionCardMeta">21:00–22:00 SGT</span></span></label>
+              <label class="optionCard"><input class="optionCardInput" type="radio" name="rr-vexa"><span class="optionCardBody"><span class="optionCardTitle">Sat 17 Oct</span><span class="optionCardMeta">15:00–16:00 SGT</span></span></label>
+            </fieldset>
+            <div class="holdTimer" role="timer"><span>Reply by <span class="mono">Wed 7 Oct, 10:00 SGT</span>. If you don't, your current time stays.</span><span class="countdown">43h 48m</span></div>
+            <div class="sdActions"><button class="button primary" type="button">Move to this time</button><button class="button secondary" type="button">Decline</button></div>
+          </section>
+          <section class="card sdCard" aria-label="Changes">
+            <h2 class="cardTitle">Need to change something?</h2>
+            <p class="sdText">If none of Vexa's times work, decline them. You can then keep your time, or cancel for a full refund, including the platform fee.</p>
+          </section>
+        </div>
+        <aside class="sdSide" aria-label="Session details">
+          <section class="card sdCard sdFacts" aria-label="Session">
+            <div class="sdWho"><span class="avatar md">V</span><div><span class="sdWhoName">Vexa</span><span class="handle">@vexa</span></div></div>
+            <dl class="cardFacts"><dt>Game</dt><dd class="text">Valorant<span class="rank">Immortal 2</span></dd><dt>Time</dt><dd>Thu 8 Oct · 21:00–22:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
+            <a class="textLink quiet" href="#" data-link="02#one-game">View Vexa's profile</a>
+          </section>
+          <section class="card sdCard" aria-label="Payment">
+            <h2 class="cardTitle">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)"><dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Vexa's price</dt><dd>S$45.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>S$2.70</dd></div><div class="priceBreakdownLine total"><dt>Paid</dt><dd>S$47.70</dd></div></dl></div>
+            <p class="sdPayState"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Held by Harbourly. Vexa is paid once you confirm the session went ahead.</span></p>
+          </section>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="mirae-pending" data-label="Dashboard link · Mirae, pending confirmation" data-shell="gamer" data-nav="sessions">
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <header class="sdHead">
+        <span class="statusLabel action">Pending confirmation</span>
+        <h1>Session with Mirae</h1>
+        <p class="sdWhen"><span>Riftbound</span><span class="sdSep" aria-hidden="true">·</span><span class="mono">Sat 3 Oct · 18:00–19:00 SGT</span></p>
+      </header>
+      <div class="sdBody">
+        <div class="sdMain">
+          <section class="card accent sdCard" aria-labelledby="mirae-pending-h">
+            <h2 class="cardTitle" id="mirae-pending-h">Did the session go ahead?</h2>
+            <p class="sdText">Confirm it and Mirae is paid. If something went wrong, report a problem instead and the payment stays held.</p>
+            <div class="holdTimer" role="timer"><span>Mirae is paid automatically on <span class="mono">Tue 6 Oct, 19:00 SGT</span></span><span class="countdown">28h 48m</span></div><div class="sdActions"><button class="button primary" type="button" data-go="mirae-confirm">Confirm session</button><a class="button secondary" href="#" data-link="07#mirae-after">Report a problem</a></div>
+          </section>
+          <details class="card sdChat">
+            <summary><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span class="sdChatTitle">Session chat</span><span class="sdChatCount">6 messages</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+            <div class="sdChatBody">
+              <p class="chatPanelNote">Saved with this session, read-only. The Harbourly team can read it if a problem is reported.</p>
+              <div class="chatPanel transcript"><ul class="chatMessages">
+<li class="chatSystem">You joined · 17:56</li>
+<li class="chatSystem">Mirae joined · 17:59</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Mirae</span><span class="chatMsgTime">18:00</span></div><p class="chatMsgText">Hi snapking! Have your decklist open? We'll start with your openings.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">18:01</span></div><p class="chatMsgText">Yes, it's the one I sent you last week</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Mirae</span><span class="chatMsgTime">18:14</span></div><p class="chatMsgText">Note 1: mulligan for your two-cost cards. Your first three turns were too slow.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">18:22</span></div><p class="chatMsgText">Makes sense, I keep holding the big cards</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Mirae</span><span class="chatMsgTime">18:47</span></div><p class="chatMsgText">Note 2: count your opponent's resources before you commit. Most of your losses were one turn early.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">18:58</span></div><p class="chatMsgText">Thanks, this was really useful</p></li>
+              </ul></div>
+            </div>
+          </details>
+        </div>
+        <aside class="sdSide" aria-label="Session details">
+          <section class="card sdCard sdFacts" aria-label="Session">
+            <div class="sdWho"><span class="avatar md">M</span><div><span class="sdWhoName">Mirae</span><span class="handle">@mirae</span></div></div>
+            <dl class="cardFacts"><dt>Game</dt><dd class="text">Riftbound<span class="rank">Regional Qualifier · Top 8</span></dd><dt>Time</dt><dd>Sat 3 Oct · 18:00–19:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
+            <a class="textLink quiet" href="#">View Mirae's profile</a>
+          </section>
+          <section class="card sdCard" aria-label="Payment">
+            <h2 class="cardTitle">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)"><dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Mirae's price</dt><dd>S$38.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>S$2.28</dd></div><div class="priceBreakdownLine total"><dt>Paid</dt><dd>S$40.28</dd></div></dl></div>
+            <p class="sdPayState"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Held by Harbourly. Mirae is paid once you confirm the session went ahead.</span></p>
+          </section>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="mirae-confirm" data-label="Dashboard link · Mirae, confirm the session" data-shell="gamer" data-nav="sessions">
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <header class="sdHead">
+        <span class="statusLabel action">Pending confirmation</span>
+        <h1>Session with Mirae</h1>
+        <p class="sdWhen"><span>Riftbound</span><span class="sdSep" aria-hidden="true">·</span><span class="mono">Sat 3 Oct · 18:00–19:00 SGT</span></p>
+      </header>
+      <div class="sdBody">
+        <div class="sdMain">
+          <section class="card accent sdCard" aria-labelledby="mirae-confirm-h">
+            <h2 class="cardTitle" id="mirae-confirm-h">Did the session go ahead?</h2>
+            <p class="sdText">Confirm it and Mirae is paid. If something went wrong, report a problem instead and the payment stays held.</p>
+            <div class="holdTimer" role="timer"><span>Mirae is paid automatically on <span class="mono">Tue 6 Oct, 19:00 SGT</span></span><span class="countdown">28h 48m</span></div>
+            <div class="confirmStep" role="group" aria-label="Confirm the session">
+              <p class="confirmStepTitle">Confirm your session with Mirae went ahead?</p>
+                            <p class="confirmStepText">This releases your payment to Mirae. After this you can only report payment problems, for up to 30 days.</p>
+              <div class="confirmStepActions"><button class="button secondary" type="button" data-go="mirae-pending">Not yet</button><button class="button primary" type="button">Confirm session</button></div>
+            </div>
+          </section>
+          <details class="card sdChat">
+            <summary><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span class="sdChatTitle">Session chat</span><span class="sdChatCount">6 messages</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+            <div class="sdChatBody">
+              <p class="chatPanelNote">Saved with this session, read-only. The Harbourly team can read it if a problem is reported.</p>
+              <div class="chatPanel transcript"><ul class="chatMessages">
+<li class="chatSystem">You joined · 17:56</li>
+<li class="chatSystem">Mirae joined · 17:59</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Mirae</span><span class="chatMsgTime">18:00</span></div><p class="chatMsgText">Hi snapking! Have your decklist open? We'll start with your openings.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">18:01</span></div><p class="chatMsgText">Yes, it's the one I sent you last week</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Mirae</span><span class="chatMsgTime">18:14</span></div><p class="chatMsgText">Note 1: mulligan for your two-cost cards. Your first three turns were too slow.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">18:22</span></div><p class="chatMsgText">Makes sense, I keep holding the big cards</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Mirae</span><span class="chatMsgTime">18:47</span></div><p class="chatMsgText">Note 2: count your opponent's resources before you commit. Most of your losses were one turn early.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">18:58</span></div><p class="chatMsgText">Thanks, this was really useful</p></li>
+              </ul></div>
+            </div>
+          </details>
+        </div>
+        <aside class="sdSide" aria-label="Session details">
+          <section class="card sdCard sdFacts" aria-label="Session">
+            <div class="sdWho"><span class="avatar md">M</span><div><span class="sdWhoName">Mirae</span><span class="handle">@mirae</span></div></div>
+            <dl class="cardFacts"><dt>Game</dt><dd class="text">Riftbound<span class="rank">Regional Qualifier · Top 8</span></dd><dt>Time</dt><dd>Sat 3 Oct · 18:00–19:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
+            <a class="textLink quiet" href="#">View Mirae's profile</a>
+          </section>
+          <section class="card sdCard" aria-label="Payment">
+            <h2 class="cardTitle">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)"><dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Mirae's price</dt><dd>S$38.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>S$2.28</dd></div><div class="priceBreakdownLine total"><dt>Paid</dt><dd>S$40.28</dd></div></dl></div>
+            <p class="sdPayState"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Held by Harbourly. Mirae is paid once you confirm the session went ahead.</span></p>
+          </section>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="ghostline-review" data-label="Dashboard link · Ghostline, leave a review" data-shell="gamer" data-nav="sessions">
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <header class="sdHead">
+        <span class="statusLabel positive">Completed</span>
+        <h1>Session with Ghostline</h1>
+        <p class="sdWhen"><span>Call of Duty: Mobile</span><span class="sdSep" aria-hidden="true">·</span><span class="mono">Sun 27 Sep · 15:00–16:00 SGT</span></p>
+      </header>
+      <div class="sdBody">
+        <div class="sdMain">
+          <section class="card accent sdCard sdReview" aria-labelledby="gr-h">
+            <div><h2 class="cardTitle" id="gr-h">How was your session with Ghostline?</h2>
+            <p class="sdText" style="margin-top:var(--space-2)">Your review helps other gamers choose. It's shown on Ghostline's profile with your username, snapking.</p></div>
+            <fieldset class="ratingInput" data-rating="0"><legend class="fieldLabel">Your rating</legend><div class="ratingInputStars" role="radiogroup" aria-label="Rating out of 5"></div></fieldset>
+            <div class="field"><label class="fieldLabel" for="gr-t">Your review <span class="fieldOptional">(optional)</span></label>
+              <textarea class="fieldControl" id="gr-t" maxlength="500" data-counter="gr-c" placeholder="What did you work on, and did it help?"></textarea>
+              <div class="fieldFoot"><span class="fieldHint">Reviews can't be edited once posted.</span><span class="fieldCounter" id="gr-c"></span></div></div>
+            <div class="sdActions"><button class="button primary" type="button" data-post-review disabled>Post review</button><span class="sdActionsMeta">You can review until <span class="mono">Tue 27 Oct</span>.</span></div>
+          </section>
+          <details class="card sdChat">
+            <summary><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span class="sdChatTitle">Session chat</span><span class="sdChatCount">5 messages</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+            <div class="sdChatBody">
+              <p class="chatPanelNote">Saved with this session, read-only. The Harbourly team can read it if a problem is reported.</p>
+              <div class="chatPanel transcript"><ul class="chatMessages">
+<li class="chatSystem">You joined · 14:57</li>
+<li class="chatSystem">Ghostline joined · 14:58</li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Ghostline</span><span class="chatMsgTime">15:00</span></div><p class="chatMsgText">Hey snapking. Load up the ranked match you mentioned and share it when you're ready.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">15:02</span></div><p class="chatMsgText">Sharing now, it's the Firing Range one</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Ghostline</span><span class="chatMsgTime">15:18</span></div><p class="chatMsgText">Note 1: you're peeking the same angle twice. Reposition after every kill.</p></li>
+<li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Ghostline</span><span class="chatMsgTime">15:41</span></div><p class="chatMsgText">Note 2: hold the hardpoint from the edge, not the centre.</p></li>
+<li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">15:57</span></div><p class="chatMsgText">Great session, thanks</p></li>
+              </ul></div>
+            </div>
+          </details>
+        </div>
+        <aside class="sdSide" aria-label="Session details">
+          <section class="card sdCard sdFacts" aria-label="Session">
+            <div class="sdWho"><span class="avatar md">G</span><div><span class="sdWhoName">Ghostline</span><span class="handle">@ghostline</span></div></div>
+            <dl class="cardFacts"><dt>Game</dt><dd class="text">Call of Duty: Mobile<span class="rank">Legendary · Top 2,000</span></dd><dt>Time</dt><dd>Sun 27 Sep · 15:00–16:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
+            <a class="textLink quiet" href="#">View Ghostline's profile</a>
+          </section>
+          <section class="card sdCard" aria-label="Payment">
+            <h2 class="cardTitle">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)"><dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Ghostline's price</dt><dd>RM 120.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>RM 7.20</dd></div><div class="priceBreakdownLine total"><dt>Paid</dt><dd>RM 127.20</dd></div></dl><p class="priceBreakdownNote">Charged in Malaysian ringgit. Your bank converted it to SGD.</p></div>
+            <p class="sdPayState done"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Released to Ghostline on <span class="mono">Sun 27 Sep</span>.</span></p><p class="sdPayFoot">Something wrong with the payment? You can report it until <span class="mono">Tue 27 Oct</span>. <a class="textLink quiet" href="#">Report a problem</a></p>
+          </section>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="nullpoint-open" data-label="Dashboard link · nullpoint, problem reported" data-shell="gamer" data-nav="sessions">
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <header class="sdHead">
+        <span class="statusLabel action">Disputed</span>
+        <h1>Session with nullpoint</h1>
+        <p class="sdWhen"><span>Counter-Strike 2</span><span class="sdSep" aria-hidden="true">·</span><span class="mono">Thu 1 Oct · 19:00–20:00 SGT</span></p>
+      </header>
+      <div class="sdBody">
+        <div class="sdMain">
+          <section class="card accent sdCard dispute" aria-labelledby="no-h">
+            <div class="sdCardHead"><h2 class="cardTitle" id="no-h">Problem reported</h2><span class="statusLabel action">Open</span></div>
+            <p class="sdText">The payment stays held and the automatic release is paused until the team decides. We've emailed you a copy and told nullpoint.</p>
+            
+              <div class="disputeBlock">
+                <span class="label">Your report</span>
+                <dl class="cardFacts"><dt>Reason</dt><dd class="text">Session ended early</dd><dt>Sent</dt><dd>Sun 4 Oct, 18:30 SGT</dd></dl>
+                <p class="disputeQuote">nullpoint left the call at 19:32 and didn't come back. We'd only gone through the first map of my demo, and I waited in the call until 20:00.</p>
+                <div class="uploadThumbs"><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></div><div class="uploadThumbName">chat-left-1932.png</div></div></div>
+              </div>
+              <div class="disputeBlock">
+                <span class="label">nullpoint's response</span>
+                <div class="pendingSlot" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">No response from nullpoint yet</p><p class="pendingSlotText">nullpoint can send one response, with evidence, until <span class="mono">Tue 6 Oct, 18:30 SGT</span>. After that, the team decides without it.</p></div><span class="pendingSlotLeft"><span class="countdown">28h 18m</span> left</span></div>
+              </div>
+              <div class="disputeBlock">
+                <span class="label">What happens next</span>
+                <ol class="disputeSteps"><li><span>nullpoint can send one response, with evidence.</span></li><li><span>The team reviews your report, nullpoint's response and the session chat.</span></li><li><span>You're both emailed the outcome: a full refund to you, or the payment released to nullpoint.</span></li></ol>
+              </div>
+          </section>
+        </div>
+        <aside class="sdSide" aria-label="Session details">
+          <section class="card sdCard sdFacts" aria-label="Session">
+            <div class="sdWho"><span class="avatar md">N</span><div><span class="sdWhoName">nullpoint <span class="badge newCoach">New coach</span></span><span class="handle">@nullpoint</span></div></div>
+            <dl class="cardFacts"><dt>Game</dt><dd class="text">Counter-Strike 2<span class="rank">Premier 21,450</span></dd><dt>Time</dt><dd>Thu 1 Oct · 19:00–20:00 SGT</dd><dt>Length</dt><dd>60 min, 1-on-1</dd></dl>
+            <a class="textLink quiet" href="#" data-link="02#new-coach">View nullpoint's profile</a>
+          </section>
+          <section class="card sdCard" aria-label="Payment">
+            <h2 class="cardTitle">Payment</h2>
+            <div style="display:grid;gap:var(--space-3)"><dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>nullpoint's price</dt><dd>RM 150.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>RM 9.00</dd></div><div class="priceBreakdownLine total"><dt>Paid</dt><dd>RM 159.00</dd></div></dl><p class="priceBreakdownNote">Charged in Malaysian ringgit. Your bank converted it to SGD.</p></div>
+            <p class="sdPayState"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Held while the problem is looked into. The automatic release is paused.</span></p>
           </section>
         </aside>
       </div>
@@ -1570,7 +1825,7 @@
   </section>
 
   <section data-state="loading" data-label="Loading" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <div class="sdHead" aria-busy="true" aria-label="Loading session"><span class="skeleton" style="width:110px;height:12px"></span><span class="skeleton" style="width:320px;height:32px"></span><span class="skeleton" style="width:260px;height:14px"></span></div>
       <div class="sdBody">
         <div class="sdMain">
@@ -1585,7 +1840,7 @@
   </section>
 
   <section data-state="error" data-label="Error" data-shell="gamer" data-nav="sessions">
-      <a class="textLink quiet backLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
+      <a class="textLink quiet backLink" href="#" data-link="10#list"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>My sessions</a>
       <div class="errorState" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load this session</p><p class="errorStateText">Check your connection and try again. Your booking and payment aren't affected.</p><div class="errorStateAction"><button class="button secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Try again</button></div></div>
   </section>
 
@@ -1622,7 +1877,7 @@
   });
   // Review: Post review needs a rating.
   document.addEventListener('rating:change', function (e) {
-    var b = e.target.closest('[data-state]').querySelector('[data-go="review-posted"]');
+    var b = e.target.closest('[data-state]').querySelector('[data-go="review-posted"], [data-post-review]');
     if (b) b.disabled = !e.detail;
   });
   // Hold countdowns tick in the interactive page (not in captured frames).

@@ -1,4 +1,5 @@
-/* SessionList → SessionList.module.css. Plain rows on --bg-mid; the whole row opens session detail. */
+/* SessionList → SessionList.module.css. Plain rows on --bg-mid; the whole row opens session detail.
+   compact: rows stack (who, when, status) at every width, for narrow columns such as the dashboard's side column. */
 .sessionList { display: grid; gap: var(--space-2); }
 .sessionListHead, .sessionRow {
   display: grid;
@@ -24,6 +25,12 @@
 .sessionRowGo { color: var(--subtle); transition: color .2s; }
 .sessionRowGo svg { width: 18px; height: 18px; display: block; }
 .sessionRow:hover .sessionRowGo, .sessionRow.isHover .sessionRowGo { color: var(--ink); }
+.sessionList.compact .sessionListHead { display: none; }
+.sessionList.compact .sessionRow { grid-template-columns: minmax(0, 1fr) 20px; grid-template-areas: "who go" "when go" "status go"; gap: var(--space-2); }
+.sessionList.compact .sessionRowWho { grid-area: who; }
+.sessionList.compact .sessionRowWhen { grid-area: when; padding-left: 52px; }
+.sessionList.compact .sessionRowStatus { grid-area: status; padding-left: 52px; }
+.sessionList.compact .sessionRowGo { grid-area: go; }
 @container app (max-width: 640px) {
   .sessionListHead { display: none; }
   .sessionRow { grid-template-columns: minmax(0, 1fr) 20px; grid-template-areas: "who go" "when go" "status go"; gap: var(--space-2); }

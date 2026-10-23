@@ -83,9 +83,14 @@ PHASES = [
         ("07", "07 Report a problem", "07-report-a-problem.html", "https://claude.ai/artifact/FLFRVmLwDCbUqCB4p4vbZM"),
         ("08", "08 Live session", "08-live-session.html", "https://claude.ai/artifact/LB4gwSiruwp8qDVRLS27Nt"),
     ]),
+    ("phase3", "Phase 3 · Gamer home", [
+        ("09", "09 Gamer dashboard", "09-gamer-dashboard.html", "https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM"),
+        ("10", "10 My sessions", "10-my-sessions.html", "https://claude.ai/artifact/RA5wuSQuWSaw8hcPfsJpet"),
+    ]),
 ]
 CHECKS = {"phase1": ("check2", "Checkpoint 2: the booking flow end to end, pages 01 to 05."),
-          "phase2": ("check3", "Checkpoint 3: session lifecycle, pages 06 to 08.")}
+          "phase2": ("check3", "Checkpoint 3: session lifecycle, pages 06 to 08."),
+          "phase3": ("check4", "Checkpoint 4: gamer side complete, pages 09 and 10.")}
 for nid, ptitle, pages in PHASES:
     top = end + 600
     N[nid] = {**N.get(nid, {}), "kind": "title1", "maxW": 6130, "text": ptitle, "w": 240, "x": 0, "y": top}

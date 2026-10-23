@@ -26,13 +26,24 @@
       btn.querySelector('use').setAttribute('href', open ? '#i-close' : '#i-menu');
     });
   });
+  // The gamer's shell links, written once here so every page gets them: the sidebar (and burger menu)
+  // Dashboard, Browse coaches and My sessions, and the logo when snapking is logged in.
+  var NAV = { dashboard: '09#busy', browse: '01#results', sessions: '10#list' };
+  Array.prototype.forEach.call(frame.querySelectorAll('[data-nav-key]'), function (a) {
+    if (!a.dataset.link && NAV[a.dataset.navKey]) a.dataset.link = NAV[a.dataset.navKey];
+  });
+  Array.prototype.forEach.call(frame.querySelectorAll('.appShell'), function (shell) {
+    var user = shell.querySelector('.topNavUser'), logo = shell.querySelector('.topNavLogo');
+    if (user && logo && !logo.dataset.link && /^snapking,/.test(user.getAttribute('aria-label') || '')) logo.dataset.link = NAV.dashboard;
+  });
   // Links between mockup pages: data-link="07#gamer-after" opens that page's published mockup at that
   // state (in a new tab); a link to a state on this same page just switches to it.
   var PAGES = {
     "01": "https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC", "02": "https://claude.ai/artifact/GUw5NpQEWds2tvVRkCVH2Y",
     "03": "https://claude.ai/artifact/DoTXw1NFPY7nMf64rrNVV9", "04": "https://claude.ai/artifact/EFj1Br4ak4Xnd7935vocsw",
     "05": "https://claude.ai/artifact/HSpMwJ9o7dDJAEYaDy6wUa", "06": "https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3",
-    "07": "https://claude.ai/artifact/FLFRVmLwDCbUqCB4p4vbZM", "08": "https://claude.ai/artifact/LB4gwSiruwp8qDVRLS27Nt"
+    "07": "https://claude.ai/artifact/FLFRVmLwDCbUqCB4p4vbZM", "08": "https://claude.ai/artifact/LB4gwSiruwp8qDVRLS27Nt",
+    "09": "https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM", "10": "https://claude.ai/artifact/RA5wuSQuWSaw8hcPfsJpet"
   };
   var self = (frame.dataset.page || '').slice(0, 2);
   Array.prototype.forEach.call(frame.querySelectorAll('[data-link]'), function (a) {

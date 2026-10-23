@@ -1,0 +1,17 @@
+/* PendingSlot → PendingSlot.module.css. Something the app is waiting for (a response, a review, a reply)
+   that hasn't been sent yet: a dashed, empty slot with a status line and the time left, so it never reads
+   as the other person's words. Words someone actually sent keep the solid quote box with a "Sent …" line.
+   stacked: the time left drops under the text, for narrow columns (dashboard side column, phones). */
+.pendingSlot { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: var(--space-1) var(--space-3); align-items: start; padding: 14px var(--space-4); border: 1px dashed var(--line-strong); border-radius: var(--radius-md); }
+.pendingSlot > svg { width: 18px; height: 18px; margin-top: 2px; color: var(--muted); }
+.pendingSlotTitle { font: 600 14.5px/1.45 var(--font-body); color: var(--ink-sub); }
+.pendingSlotText { margin-top: 2px; font-size: 13.5px; line-height: 1.55; color: var(--muted); }
+.pendingSlotText .mono { color: var(--ink-soft); font-size: 13px; }
+.pendingSlotLeft { padding-top: 2px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.pendingSlotLeft .countdown { color: var(--ink-soft); }
+.pendingSlot.stacked { grid-template-columns: 20px minmax(0, 1fr); }
+.pendingSlot.stacked .pendingSlotLeft { grid-column: 2; padding-top: var(--space-1); }
+@container app (max-width: 640px) {
+  .pendingSlot { grid-template-columns: 20px minmax(0, 1fr); }
+  .pendingSlotLeft { grid-column: 2; padding-top: var(--space-1); }
+}
