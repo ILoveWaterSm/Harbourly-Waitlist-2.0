@@ -1,6 +1,6 @@
 # Handoff prompt
 
-Paste everything below the line into a new chat. Last updated 23 Oct 2026: checkpoint 3 closed; the 23 Oct policy update is applied to the library and pages 01 to 08 (republished, canvas frames replaced). Phase 3 next, when the owner says go.
+Paste everything below the line into a new chat. Last updated 23 Oct 2026: checkpoint 3 closed; the 23 Oct policy update is applied to the library and pages 01 to 08 (republished, canvas frames replaced) and approved. Phase 3 next.
 
 ---
 
@@ -36,6 +36,18 @@ Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. `main` has the work up to the brows
 - **Link the mockups together.** `data-link="06#pending"` on an `<a>` opens that page's mockup at that state (new tab); `data-go="state"` switches state within the page. The page-to-link table is in `foundations/mockup.js`: add 09 and 10 once published. Then propose (don't just do) giving the existing pages' "Back to dashboard" (05), "My sessions" back links (06, 07) and the sidebar's Dashboard and My sessions links a `data-link` to 09 and 10, and republishing those pages, so the whole prototype can be walked end to end.
 - **One booking story.** The dashboard shows the same cast and bookings as Phases 1 and 2, at one consistent "now" per state, so a reviewer can follow any booking from 09 or 10 into 06 and find it in the matching state.
 
+## The rules 09 and 10 must show the same way 06 does
+
+These were settled on 23 Oct 2026 and are already on 04 to 08; a dashboard card or list row that mentions them must say the same thing.
+
+- **Statuses** (StatusLabel, component library): Awaiting payment, Confirmed (with the amber "Reschedule requested" second line while a request is open), In session, Pending confirmation, Completed, Disputed, Refunded, Cancelled, Expired. Dispute statuses: Open, Under review, Resolved · refunded to gamer, Resolved · paid to coach, Resolved · split 50/50 (an upheld gamer no-show). Green = confirmed, in session, completed; amber = needs action; muted = ended. No red.
+- **Money:** the gamer pays the coach's price plus a 6% platform fee, charged in the coach's currency (Kairo: ₱1,850.00 + ₱111.00 = ₱1,961.00; Vexa: S$45.00 + S$2.70 = S$47.70). Prices shown for browsing are converted to the gamer's currency with "≈" (₱1,850 ≈ S$43). The 12% coach commission never appears on gamer pages.
+- **Cancelling:** a full refund until 1 hour before the start (Kairo's Wed 7 Oct session: until 19:00 SGT); inside the last hour, half the coach's price is refunded (₱925.00) and the platform fee is kept. Coach cancels: full refund. New times can be requested until 24 hours before.
+- **After the session:** Pending confirmation for 72 hours, then it releases automatically (Wed 7 Oct session: Sat 10 Oct, 21:00 SGT). Reviews open for 30 days after completion. Payment problems can be reported up to 30 days after release.
+- **No-shows** are disputes: the gamer reports "Coach didn't show up" from 15 minutes after the start; with no response from the coach in 24 hours, the gamer is refunded in full.
+- **No Verified badge.** Coaches past the New Coach period show no label; nullpoint shows "New coach".
+- **06's facts card has no "Booked" line**, and 06's late-cancel state is set at Wed 7 Oct, 19:20 SGT.
+
 ## Before you build anything
 
 Read everything above, then come back to me with, in one message:
@@ -66,7 +78,7 @@ Build only after I answer. Build each page once, well: render it, look at every 
 
 State ids you can link to (`data-link="NN#id"`):
 - **05:** confirming, confirmed, failed, released.
-- **06 (gamer):** upcoming, cancel-confirm, cancel-free, cancelled, coach-cancelled, locked, reschedule-form, reschedule-waiting, reschedule-received, reschedule-keep-or-cancel, moved, reschedule-declined, reschedule-expired, join, in-session, pending, pending-soon, confirm-step, completed-review, review-posted, disputed-open, disputed-review, resolved-refunded, resolved-paid, payment-problem, awaiting-payment, expired, loading, error. **06 (coach):** coach-upcoming, coach-cancel, coach-request-received, coach-pending, coach-completed, coach-dispute.
+- **06 (gamer):** upcoming, cancel-confirm (full refund), cancel-late (inside the last hour), cancelled, coach-cancelled, locked, reschedule-form, reschedule-waiting, reschedule-received, reschedule-keep-or-cancel, moved, reschedule-declined, reschedule-expired, join, in-session, pending, pending-soon, confirm-step, completed-review, review-posted, disputed-open, disputed-review, resolved-refunded, resolved-paid, payment-problem, awaiting-payment, expired, loading, error. **06 (coach):** coach-upcoming, coach-cancel, coach-request-received, coach-pending, coach-completed, coach-dispute.
 - **07:** gamer-after, gamer-noshow, gamer-payment, coach-after, coach-payment, validation, upload-error, submitted, respond, response-sent.
 - **08:** waiting, no-show, coach-waiting, live, camera, share, banner-10, banner-5, banner-1, end-confirm, end-sent, end-received, reconnecting, other-dropped, blocked, ended, coach-ended.
 
@@ -86,7 +98,8 @@ The files:
 
 - Build a publishable copy: `node design/tools/build.mjs design/pages/<page>.html <outDir>`. It inlines the CSS and JS and copies the logo next to the page.
 - Publish the built file as a private artifact, passing the logo as a supporting file (`files: {"harbourly-logo.png": "<outDir>/harbourly-logo.png"}`). A new page is a new artifact (no `url`; give it an `icon`). To update an existing page, publish to its existing link (`url`) so the link never changes. Add each new page's link to its phase in BUILD-ORDER.md, to the table above and to the page table in `mockup.js`.
-- Publishing over a link this chat hasn't published is refused once with a diff of the live version. If the diff shows only your own edits (it should: these pages only change from the repo), publish the same file again; if that's refused as "identical content", publish it once more and it goes through.
+- Publishing over a link this chat hasn't published is refused once with a diff of the live version. If the diff shows only your own edits (it should: these pages only change from the repo), publish the same file again; if that's refused as "identical content", publish it once more and it goes through. For a very large page (06, about 215 KB) the refusal instead saves the live source and asks you to Read every line of it: first diff it locally against a build of the repo version (strip the platform's wrapper lines), then Read it in chunks of about 450 to 700 lines (25,000 tokens per Read), then publish.
+- Each chat can watch at most 10 artifacts for changes; a "wake subscription not registered" notice after that is harmless.
 - Render the frames: `node design/tools/render.mjs <outDir>/<page>.html <framesDir> <prefix>` (prefix `09`, `10`). It renders every state at 1440 and 390 wide, at 2x, as `<prefix>__<state>__<desktop|phone>.png`. Playwright is installed globally; a test script of your own loads it with `createRequire(import.meta.url)(execSync('npm root -g').toString().trim() + '/playwright')`. Use one to click through every link and state change before publishing.
 - Review renders cheaply: `python3 design/tools/sheet.py out.png <cropHeightCss> <scale> frame1.png frame2.png …` makes a contact sheet.
 - When replacing existing frames, keep the previous renders and run `python3 design/tools/framediff.py <oldDir> <newDir>`; spinners, skeletons and ticking countdowns can differ by a few pixels, which isn't a change.
@@ -95,7 +108,7 @@ The files:
 
 - **Never create a second canvas.** All frames go on https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ.
 - Each frame is one artboard: a `.dc.html` that only shows an uploaded PNG at its true CSS size (PNG pixels ÷ 2). Board titles follow "NN Page · State · Width", e.g. "09 Gamer dashboard · Busy account · Phone". File names are `<prefix>-<state>-<desktop|phone>.dc.html`.
-- Layout: each state is a pair (desktop, then phone 80 px to its right), 200 px between pairs, three pairs per row, 200 px between rows. A `title1` note names the phase and each page, and a green sticky to the left of each page links its interactive version and source file. Phase 1 runs from y = 21,810; Phase 2 from y = 55,895 to about y = 95,540. Phase 3 goes below it.
+- Layout: each state is a pair (desktop, then phone 80 px to its right), 200 px between pairs, three pairs per row, 200 px between rows. A `title1` note names the phase and each page, and a green sticky to the left of each page links its interactive version and source file. Phase 1's title is at y = 21,807; Phase 2's at y = 55,894, and its last row ends at y = 95,578. Phase 3 goes below it (canvas.py places it).
 - For Phase 3: add `("phase3", "Phase 3 · Gamer home", [("09", "09 Gamer dashboard", "09-gamer-dashboard.html", "<url>"), ("10", "10 My sessions", "10-my-sessions.html", "<url>")])` to `PHASES` in `design/tools/canvas.py` and `"phase3": ("check4", "Checkpoint 4: gamer side complete, pages 09 and 10.")` to `CHECKS`, after publishing the pages.
 - To place frames:
   1. Copy the PNGs into a temporary folder **inside the repo** (e.g. `.frames-upload/`; the uploader takes files from the working directory only), upload them as canvas assets in batches of up to 25 (`url` = the canvas, `asset: true`, `file_paths`), and write each `<prefix>__<state>__<width> <asset id>` line into a blobs file. Every frame of a new page must be in the blobs file. Delete the folder afterwards; never commit it.
@@ -155,6 +168,7 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 - **Rank proof check (kept, 23 Oct 2026; may be dropped later):** ranks stay checked against proof screenshots at application and on every rank change, as DECISIONS.md "Ranks" says. "Credentials: optional" on the landing page means the portfolio only. If it's dropped later, this changes in the webapp: 17 Application step 1 loses "proof of your rank" from "What you'll need"; 18 Application step 2 loses the proof images (up to 5), their upload error state, and the rejection reasons about proof ("proof doesn't show the rank claimed", "proof images unclear"); 22 Coach profile settings: "Update rank" goes live at once (no screenshot, no pending state, no old rank held), and "Add a game" may need no proof (then no "under review" listing, also on the coach dashboard, 19); the "Rank update: approved or declined" email goes; DECISIONS.md "Ranks", "Coach location and identity" (what you'll need), "Rejected coach applications" (reason examples) and the Uploads table's rank-proof row change; USER-FLOW.md diagrams 8 (application step 2) and 9 (add a game) change. Pages 01 to 05 don't change. The held-back idea of a "Rank checked by Harbourly" line would then be off the table.
 - **Post-MVP:** several sessions in one checkout, and session packs.
 - **Post-MVP:** importing reviews from Metafy and Fiverr (DECISIONS.md, "Policy update, 23 Oct 2026"); other session lengths and types.
+- **Landing copy (the owner's to change, don't edit it):** two lines in `landing.html`'s FAQ go further than the webapp: it says either side can report a no-show and an unconfirmed report becomes a refund (the webapp keeps no-shows as disputes, and only a coach no-show refunds automatically after 24 hours), and it promises importing reviews from Metafy and Fiverr (post-MVP).
 - **When building:** confirm on a real iPhone that camera photos convert to JPEG on upload.
 - **Before code is built (not before design):** confirm coach launch countries with Stripe and Xendit (including Thailand), pick an exchange-rate source, pick the image moderation service (options in BUILD-ORDER.md), finalise chat retention with the Terms of Service.
 
