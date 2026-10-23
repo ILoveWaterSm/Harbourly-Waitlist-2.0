@@ -1,5 +1,5 @@
 /* StatusLabel → StatusLabel.module.css. Mono label with a coloured dot; no fills, no red.
-   positive = confirmed, in session, completed, verified · action = needs someone to act · ended = finished or neutral */
+   positive = confirmed, in session, completed · action = needs someone to act · ended = finished or neutral */
 .statusLabel {
   display: inline-flex;
   align-items: center;
