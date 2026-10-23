@@ -37,6 +37,10 @@
 <link rel="stylesheet" href="../foundations/components/ReviewItem.css">
 <link rel="stylesheet" href="../foundations/components/PriceBreakdown.css">
 <link rel="stylesheet" href="../foundations/components/Spinner.css">
+<link rel="stylesheet" href="../foundations/components/Gallery.css">
+<link rel="stylesheet" href="../foundations/components/ParticipantTile.css">
+<link rel="stylesheet" href="../foundations/components/CallControls.css">
+<link rel="stylesheet" href="../foundations/components/ChatPanel.css">
 <style>
 /* Layout: a working library. Each section is one component family; each specimen is
    captioned with its state in mono, on the ground it really sits on (page or card). */
@@ -398,11 +402,11 @@
             <div class="fieldPhone"><select class="fieldControl" id="f-cc" aria-label="Country code"><option>+63 PH</option><option>+65 SG</option><option>+60 MY</option></select><input class="fieldControl" id="f-ph" type="tel" inputmode="tel" value="917 482 3301"><button class="button secondary sm" type="button">Send code</button></div></div></div>
         <div class="lib-spec"><span class="lib-cap">2 · Code sent</span>
           <div class="field"><label class="fieldLabel" for="otp1-1">Enter the code we sent to <span class="mono" style="font-weight:500">+63 917 482 3301</span></label>
-            <div class="otpInput" role="group" aria-label="6-digit code"><input class="otpCell" id="otp1-1" value="4" maxlength="1" inputmode="numeric" aria-label="Digit 1"><input class="otpCell" value="8" maxlength="1" inputmode="numeric" aria-label="Digit 2"><input class="otpCell" value="2" maxlength="1" inputmode="numeric" aria-label="Digit 3"><input class="otpCell isFocus" maxlength="1" inputmode="numeric" aria-label="Digit 4"><input class="otpCell" maxlength="1" inputmode="numeric" aria-label="Digit 5"><input class="otpCell" maxlength="1" inputmode="numeric" aria-label="Digit 6"></div>
+            <div class="otpInput" role="group" aria-label="6-digit code"><input autocomplete="one-time-code" pattern="[0-9]*" class="otpCell" id="otp1-1" value="4" maxlength="1" inputmode="numeric" aria-label="Digit 1"><input pattern="[0-9]*" class="otpCell" value="8" maxlength="1" inputmode="numeric" aria-label="Digit 2"><input pattern="[0-9]*" class="otpCell" value="2" maxlength="1" inputmode="numeric" aria-label="Digit 3"><input pattern="[0-9]*" class="otpCell isFocus" maxlength="1" inputmode="numeric" aria-label="Digit 4"><input pattern="[0-9]*" class="otpCell" maxlength="1" inputmode="numeric" aria-label="Digit 5"><input pattern="[0-9]*" class="otpCell" maxlength="1" inputmode="numeric" aria-label="Digit 6"></div>
             <div class="otpMeta"><span>Resend code in <span class="otpTimer" data-resend="42">0:42</span></span><button class="textLink quiet" type="button">Change number</button></div></div></div>
         <div class="lib-spec"><span class="lib-cap">3 · Wrong code</span>
           <div class="field"><label class="fieldLabel" for="otp2-1">Enter the code we sent to <span class="mono" style="font-weight:500">+63 917 482 3301</span></label>
-            <div class="otpInput invalid" role="group" aria-label="6-digit code" aria-describedby="otp2-e"><input class="otpCell" id="otp2-1" value="4" maxlength="1" aria-label="Digit 1"><input class="otpCell" value="8" maxlength="1" aria-label="Digit 2"><input class="otpCell" value="2" maxlength="1" aria-label="Digit 3"><input class="otpCell" value="7" maxlength="1" aria-label="Digit 4"><input class="otpCell" value="1" maxlength="1" aria-label="Digit 5"><input class="otpCell" value="9" maxlength="1" aria-label="Digit 6"></div>
+            <div class="otpInput invalid" role="group" aria-label="6-digit code" aria-describedby="otp2-e"><input autocomplete="one-time-code" pattern="[0-9]*" inputmode="numeric" class="otpCell" id="otp2-1" value="4" maxlength="1" aria-label="Digit 1"><input pattern="[0-9]*" inputmode="numeric" class="otpCell" value="8" maxlength="1" aria-label="Digit 2"><input pattern="[0-9]*" inputmode="numeric" class="otpCell" value="2" maxlength="1" aria-label="Digit 3"><input pattern="[0-9]*" inputmode="numeric" class="otpCell" value="7" maxlength="1" aria-label="Digit 4"><input pattern="[0-9]*" inputmode="numeric" class="otpCell" value="1" maxlength="1" aria-label="Digit 5"><input pattern="[0-9]*" inputmode="numeric" class="otpCell" value="9" maxlength="1" aria-label="Digit 6"></div>
             <span class="fieldError" id="otp2-e"><svg class="icon"><use href="#i-alert-circle"/></svg>That code doesn't match. Check the latest text and try again.</span>
             <div class="otpMeta"><button class="textLink" type="button">Resend code</button></div></div></div>
         <div class="lib-spec"><span class="lib-cap">4 · Verified</span>
@@ -485,12 +489,12 @@
           <div class="lib-li"><span class="statusLabel action">Under review</span><span>The team is looking at it</span></div>
           <div class="lib-li"><span class="statusLabel ended">Resolved · refunded to gamer</span><span>Full refund</span></div>
           <div class="lib-li"><span class="statusLabel ended">Resolved · paid to coach</span><span>Full release</span></div>
+          <div class="lib-li"><span class="statusLabel ended">Resolved · split 50/50</span><span>Gamer didn't show up, upheld</span></div>
         </div>
-        <span class="lib-cap" style="margin-top:var(--space-6)">Badges · right after the coach's name</span>
+        <span class="lib-cap" style="margin-top:var(--space-6)">Badge · right after the coach's name</span>
         <div class="lib-stage">
-          <div class="lib-inline"><span class="lib-name">Vexa</span><span class="badge verified"><svg class="icon"><use href="#i-shield-check"/></svg>Verified</span></div>
           <div class="lib-inline"><span class="lib-name">nullpoint</span><span class="badge newCoach">New coach</span></div>
-          <p style="font-size:13.5px;color:var(--muted)">These are the only two badges. A coach shows one or the other, never both.</p>
+          <p style="font-size:13.5px;color:var(--muted)">The only badge. It shows until the coach completes 5 sessions with no upheld dispute, then nothing takes its place.</p>
         </div></div>
     </div>
   </section>
@@ -599,11 +603,11 @@
       <h3>Coach card</h3>
       <p>One per row. Who they are, then proof they can coach your game, then price and when you can start; the proof and price columns have fixed widths so they line up down the list. The bio shows one line and opens on hover (after a short pause) or keyboard focus. Shows the coach's cheapest game, so the rank and the "from" price belong together; with a game filter set, that game's rank and exact price. On phone the card stacks: identity, two lines of bio, then rank and rating, then price and next free time.</p>
       <div class="lib-specs" style="--lib-min:100%">
-        <div class="lib-spec"><span class="lib-cap">Verified · two games · converted</span>
+        <div class="lib-spec"><span class="lib-cap">Two games · converted</span>
           <ul class="lib-cardlist"><li><a class="coachCard" href="#"><span class="avatar">K</span>
           <div class="coachCardWho">
             <div class="coachCardId">
-              <div class="coachCardName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <div class="coachCardName">Kairo</div>
               <p class="coachCardMeta"><span class="handle">@kairo.gg</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
               <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
             </div>
@@ -612,11 +616,11 @@
           <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Mobile Legends <span class="gameRankMore">+1 game</span></span><span class="gameRankValue">Mythical Glory · 85★</span></div><span class="rating"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>4.9 <span class="ratingCount">(57)</span></span></div>
           <div class="coachCardDecision"><span class="price"><span class="priceFrom">from</span><span class="priceAmount"><span class="priceApprox">≈</span>S$43</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 19:00 SGT</span></p></div>
           <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li></ul></div>
-        <div class="lib-spec"><span class="lib-cap">Verified · one game · hover, bio open</span>
+        <div class="lib-spec"><span class="lib-cap">One game · hover, bio open</span>
           <ul class="lib-cardlist"><li><a class="coachCard isOpen isHover" href="#"><span class="avatar">V</span>
           <div class="coachCardWho">
             <div class="coachCardId">
-              <div class="coachCardName">Vexa <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <div class="coachCardName">Vexa</div>
               <p class="coachCardMeta"><span class="handle">@vexa</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span class="coachCardCountry">Singapore</span></span></p>
               <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Mandarin</span><span class="coachCardSep">·</span><span class="coachCardZone">SGT</span><span class="coachCardLong">, same time as you</span></p>
             </div>
@@ -642,7 +646,7 @@
           <ul class="lib-cardlist"><li><a class="coachCard" href="#"><span class="avatar">K</span>
           <div class="coachCardWho">
             <div class="coachCardId">
-              <div class="coachCardName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></div>
+              <div class="coachCardName">Kairo</div>
               <p class="coachCardMeta"><span class="handle">@kairo.gg</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
               <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
             </div>
@@ -799,8 +803,8 @@
   <section class="lib-sec" data-state="booking" data-label="Booking parts">
     <div class="lib-sec-head">
       <h2>Booking parts</h2>
-      <p>Added in Phase 1 for browsing, profiles and checkout. Choices are whole-card radios, times are chips in day rows that read the same at every width, and the total is always the largest figure in a price breakdown.</p>
-      <span class="lib-files">OptionCard · SlotPicker · AudioPlayer · ReviewItem · PriceBreakdown · Spinner</span>
+      <p>Added in Phase 1 for browsing, profiles and checkout. Choices are whole-card radios, times are chips in day rows that read the same at every width, and the total is always the largest figure in a price breakdown. The gallery holds a coach's showcase: up to 5 images, each shown whole in a 16:9 frame, with an optional caption.</p>
+      <span class="lib-files">OptionCard · SlotPicker · AudioPlayer · ReviewItem · PriceBreakdown · Spinner · Gallery</span>
     </div>
     <div class="lib-specs" style="--lib-min:420px">
       <div class="lib-spec"><span class="lib-cap">Option card · selected, rest, hover</span>
@@ -835,11 +839,57 @@
           <dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Kairo's price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Platform fee (6%)</dt><dd>₱111.00</dd></div><div class="priceBreakdownLine total"><dt>Total</dt><dd>₱1,961.00</dd></div></dl>
           <p class="priceBreakdownNote">Charged in Philippine pesos. Your bank converts <span class="mono">₱1,961.00</span> to SGD.</p>
         </article></div>
+      <div class="lib-spec"><span class="lib-cap">Gallery · five images, second shown, hover on a thumbnail</span>
+        <div class="lib-stage"><div class="gallery" aria-roledescription="carousel" aria-label="Kairo's showcase"><div class="galleryStage"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Image 2</span></span><button class="galleryNav prev" type="button" aria-label="Previous image"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><button class="galleryNav next" type="button" aria-label="Next image"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div><div class="galleryFoot"><p class="galleryCaption">MPL Philippines 2024, with the team as substitute jungler</p><span class="galleryPos">2 / 5</span></div><ul class="galleryThumbs"><li><button class="galleryThumb" type="button" aria-current="false" aria-label="Show image 1"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li><li><button class="galleryThumb" type="button" aria-current="true" aria-label="Show image 2"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li><li><button class="galleryThumb isHover" type="button" aria-current="false" aria-label="Show image 3"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li><li><button class="galleryThumb" type="button" aria-current="false" aria-label="Show image 4"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li><li><button class="galleryThumb" type="button" aria-current="false" aria-label="Show image 5"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span></button></li></ul></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Gallery · one image: no arrows, position or thumbnails</span>
+        <div class="lib-stage"><div class="gallery" aria-label="Vexa's showcase"><div class="galleryStage"><span class="galleryPlaceholder"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Image 1</span></span></div><div class="galleryFoot"><p class="galleryCaption">Immortal 2 at the end of this act</p></div></div>
+          <p style="font-size:13.5px;color:var(--muted)">Images are placeholders until real ones are supplied. With no images, the profile leaves the section out.</p></div></div>
       <div class="lib-spec"><span class="lib-cap">Spinner · and the other Phase 1 additions</span>
         <div class="lib-stage">
           <div class="lib-inline"><span class="spinner" aria-hidden="true"></span><span class="spinner lg" aria-hidden="true"></span></div>
           <p style="font-size:13.5px;color:var(--muted)">For waits with nothing to show yet, like confirming a payment. Also added: a loading variant of the coach card, a fill variant of the code input for narrow cards, a centred narrow content width for focused pages (checkout), and four icons: arrow-left, chevron-left, play, pause.</p>
         </div></div>
+    </div>
+  </section>
+
+  <!-- ===================== SESSION PARTS (added in Phase 2) ===================== -->
+  <section class="lib-sec" data-state="session" data-label="Session parts">
+    <div class="lib-sec-head">
+      <h2>Session parts</h2>
+      <p>Added in Phase 2 for the live session and session detail. Cameras are off by default, so a person is their avatar and name, with a green ring while they speak. Controls are labelled pills, and a control that's off is inverted rather than coloured. Chat carries every sender and time, left-aligned, and is saved with the session. The slot picker can also take up to 3 times, for a reschedule request.</p>
+      <span class="lib-files">ParticipantTile · CallControls · ChatPanel · SlotPicker (up to 3) · Rating.js · Field.js · new icons in icons.js</span>
+    </div>
+    <div class="lib-specs" style="--lib-min:300px">
+      <div class="lib-spec"><span class="lib-cap">Tile · speaking</span><div class="participantTile isSpeaking" style="aspect-ratio:4/3"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · you, muted</span><div class="participantTile" style="aspect-ratio:4/3"><span class="avatar">S</span><span class="participantTileName"><svg class="icon" aria-hidden="true"><use href="#i-mic-off"/></svg>snapking <span class="participantTileYou">You</span></span></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · camera on (marked slot)</span><div class="participantTile" style="aspect-ratio:4/3"><div class="participantTileVideo"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg>Your camera</div><span class="avatar">S</span><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · waiting, with action</span><div class="participantTile isEmpty" style="aspect-ratio:4/3"><span class="avatar">K</span><div class="participantTileNote"><p class="participantTileNoteTitle">Kairo hasn't joined</p><p class="participantTileNoteText">The session started at 20:00. You can keep waiting until 21:00, or report a no-show.</p><a class="button secondary sm" href="#"><svg class="icon" aria-hidden="true"><use href="#i-flag"/></svg>Report a no-show</a></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · lost connection</span><div class="participantTile isEmpty" style="aspect-ratio:4/3"><span class="avatar">K</span><div class="participantTileNote"><p class="participantTileNoteTitle">Kairo lost connection</p><p class="participantTileNoteText">Kairo can rejoin until 21:00 SGT. The session keeps running.</p></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tile · microphone blocked</span><div class="participantTile hasAlert" style="aspect-ratio:4/3"><div style="display:grid;gap:8px;justify-items:center;text-align:center;max-width:30ch"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--amber)"><use href="#i-mic-off"/></svg><p class="participantTileNoteTitle">Your browser blocked the microphone</p><p class="participantTileNoteText">Allow microphone access, then try again.</p></div><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div></div>
+      <div class="lib-spec wide"><span class="lib-cap">Shared screen with the tile strip</span>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 196px;gap:16px;align-items:center;max-width:900px"><div class="sharedScreen" role="img" aria-label="Kairo's shared screen"><span class="sharedScreenWho"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo's screen</span><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Shared screen · Mobile Legends replay</span></div>
+        <div style="display:grid;gap:12px"><div class="participantTile mini"><span class="avatar">S</span><span class="participantTileName">snapking <span class="participantTileYou">You</span></span></div><div class="participantTile mini isSpeaking"><span class="avatar">K</span><span class="participantTileName">Kairo</span></div></div></div></div>
+      <div class="lib-spec wide"><span class="lib-cap">Call controls · default · muted, camera on, the other person sharing · you're sharing</span>
+        <div class="lib-stage" style="padding:0">
+          <div class="callControls"><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Share screen</button><span class="callControlsGap"></span><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button></div>
+          <div class="callControls" style="border-top:1px solid var(--line)"><button class="callControl isOff" type="button" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-mic-off"/></svg>Unmute</button><button class="callControl isActive" type="button" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg>Stop camera</button><button class="callControl" type="button" disabled><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Kairo is sharing</button><span class="callControlsGap"></span><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button></div>
+          <div class="callControls" style="border-top:1px solid var(--line)"><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Mute</button><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-camera-off"/></svg>Start camera</button><button class="callControl isActive" type="button"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg>Stop sharing</button><span class="callControlsGap"></span><button class="callControl" type="button"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg>End session</button></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Call banners in the session bar</span>
+        <div style="display:grid;gap:12px">
+          <div class="callBanner" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="callBannerText">Waiting for Kairo to agree to end</span><button class="button secondary sm" type="button" style="margin-left:auto">Withdraw</button></div>
+          <div class="callBanner" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-call-end"/></svg><span class="callBannerText">Kairo wants to end the session</span><span style="display:flex;gap:8px;margin-left:auto"><button class="button secondary sm" type="button">Keep going</button><button class="button primary sm" type="button">End now</button></span></div>
+        </div></div>
+      <div class="lib-spec"><span class="lib-cap">Chat panel</span><section class="chatPanel" aria-label="Chat" style="height:420px;border-radius:var(--radius-lg);overflow:hidden">
+            <div class="chatPanelHead"><p class="chatPanelTitle"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Chat</p><p class="chatPanelNote">Saved with this session. The Harbourly team can read it if a problem is reported.</p></div>
+            <ul class="chatMessages"><li class="chatSystem">Kairo joined · 19:58</li><li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">19:58</span></div><p class="chatMsgText">Hey snapking! Did you bring the replay from last night?</p></li><li class="chatMsg isYou"><div class="chatMsgHead"><span class="chatMsgName">You</span><span class="chatMsgTime">19:59</span></div><p class="chatMsgText">Yes, the ranked match where we lost the Lord fight at 14 minutes</p></li><li class="chatMsg"><div class="chatMsgHead"><span class="chatMsgName">Kairo</span><span class="chatMsgTime">20:09</span></div><p class="chatMsgText">Note 1: rotate to the Turtle at 2:00, not 2:30.</p></li></ul>
+            <div class="chatComposer"><textarea class="fieldControl" rows="1" placeholder="Message Kairo" aria-label="Message Kairo"></textarea><button class="iconButton" type="button" aria-label="Send"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></button></div>
+          </section></div>
+      <div class="lib-spec"><span class="lib-cap">Slot picker · up to 3 times, all chosen</span>
+        <div class="lib-stage"><div class="slotPicker"><div class="slotPickerHead"><span class="slotPickerRange" style="text-align:left;min-width:0">5–11 Oct</span><span class="slotPickerCount"><b>3</b> of 3 chosen</span></div>
+          <ul class="slotDays"><li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Thu</span><span class="slotDayDate">8 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" disabled>19:00</button><button class="slot" type="button" aria-pressed="true">20:00</button><button class="slot" type="button" aria-pressed="true">21:00</button></div></li>
+          <li class="slotDay"><div class="slotDayLabel"><span class="slotDayName">Sat</span><span class="slotDayDate">10 Oct</span></div><div class="slotDayTimes"><button class="slot" type="button" disabled>14:00</button><button class="slot" type="button" aria-pressed="true">15:00</button><button class="slot" type="button" disabled>16:00</button></div></li></ul></div></div></div>
+      <div class="lib-spec wide"><span class="lib-cap">New icons</span><div class="lib-stage" style="display:flex;flex-wrap:wrap;gap:16px"><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-mic"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">mic</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-mic-off"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">mic-off</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-camera"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">camera</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-camera-off"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">camera-off</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-screen"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">screen</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-chat"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">chat</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-send"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">send</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-call-end"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">call-end</span></span><span style="display:grid;gap:8px;justify-items:center;width:92px;text-align:center"><svg class="icon" aria-hidden="true" style="width:24px;height:24px;color:var(--ink-soft)"><use href="#i-flag"/></svg><span class="mono" style="font-size:11.5px;color:var(--muted)">flag</span></span></div></div>
     </div>
   </section>
 </main>
@@ -854,45 +904,13 @@ function clampBios() { document.querySelectorAll('.coachCardBio').forEach(functi
 document.addEventListener('mk:change', function () { requestAnimationFrame(clampBios); });
 window.addEventListener('resize', clampBios);
 </script>
+<script src="../foundations/components/OtpInput.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/components/Rating.js"></script>
 <script src="../foundations/mockup.js"></script>
 <script>
-/* specimen behaviour: counters, star input, hold countdown, resend timer, mobile menu */
+/* specimen behaviour: hold countdown, resend timer (counters and the star input: Field.js, Rating.js) */
 (function () {
-  document.querySelectorAll('[data-counter]').forEach(function (el) {
-    var out = document.getElementById(el.dataset.counter), max = +el.getAttribute('maxlength');
-    function upd() { out.textContent = el.value.length + ' / ' + max; out.classList.toggle('atLimit', el.value.length >= max); }
-    el.addEventListener('input', upd); upd();
-  });
-
-  var star = '<svg class="icon"><use href="#i-star"/></svg>';
-  document.querySelectorAll('.ratingInput').forEach(function (fs, n) {
-    var wrap = fs.querySelector('.ratingInputStars'), value = +fs.dataset.rating, btns = [];
-    for (var i = 1; i <= 5; i++) {
-      var b = document.createElement('button');
-      b.type = 'button'; b.className = 'ratingStar'; b.setAttribute('role', 'radio');
-      b.setAttribute('aria-label', i + (i === 1 ? ' star' : ' stars')); b.dataset.v = i; b.innerHTML = star;
-      wrap.appendChild(b); btns.push(b);
-    }
-    var label = document.createElement('span'); label.className = 'ratingInputValue'; wrap.appendChild(label);
-    function paint(v) { btns.forEach(function (b) { b.classList.toggle('isOn', +b.dataset.v <= v); }); }
-    function set(v) {
-      value = v; paint(v);
-      btns.forEach(function (b) { b.setAttribute('aria-checked', String(+b.dataset.v === v)); b.tabIndex = (+b.dataset.v === (v || 1)) ? 0 : -1; });
-      label.textContent = v ? v + ' out of 5' : 'Not rated';
-      if (v) fs.classList.remove('invalid');
-    }
-    btns.forEach(function (b) {
-      b.addEventListener('click', function () { set(+b.dataset.v); });
-      b.addEventListener('mouseenter', function () { paint(+b.dataset.v); });
-      b.addEventListener('keydown', function (e) {
-        var d = (e.key === 'ArrowRight' || e.key === 'ArrowUp') ? 1 : (e.key === 'ArrowLeft' || e.key === 'ArrowDown') ? -1 : 0;
-        if (d) { e.preventDefault(); var v = Math.min(5, Math.max(1, (value || 0) + d)); set(v); btns[v - 1].focus(); }
-      });
-    });
-    wrap.addEventListener('mouseleave', function () { paint(value); });
-    set(value);
-  });
-
   function mmss(s) { return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
   var hold = document.querySelector('[data-countdown]'), left = +(hold && hold.dataset.countdown);
   var resend = document.querySelector('[data-resend]'), rleft = +(resend && resend.dataset.resend);

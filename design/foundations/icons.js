@@ -31,7 +31,16 @@
     "chevron-left": '<path d="m15 6-6 6 6 6"/>',
     play: '<path d="M8 5.5v13l10.5-6.5z"/>',
     pause: '<path d="M8.5 5.5v13M15.5 5.5v13"/>',
-    phone: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 17.5h2"/>'
+    phone: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 17.5h2"/>',
+    mic: '<rect x="9" y="3" width="6" height="11.5" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M8.5 21h7"/>',
+    "mic-off": '<path d="M15 10V6a3 3 0 0 0-5.7-1.3M9 9v2.5a3 3 0 0 0 4.7 2.5M5.5 11.5a6.5 6.5 0 0 0 10.4 5.2M18.4 13a6.6 6.6 0 0 0 .1-1.5M12 18v3M8.5 21h7M4 4l16 16"/>',
+    camera: '<rect x="3" y="6.5" width="12.5" height="11" rx="2"/><path d="m15.5 10.5 5-3v9l-5-3"/>',
+    "camera-off": '<path d="M9 6.5h4.5a2 2 0 0 1 2 2v2l5-3v9l-2.5-1.5M15.5 15.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7A2 2 0 0 1 4.6 6.5M3 3l18 18"/>',
+    screen: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8.5 20.5h7M12 17v3.5M12 13.5V8M9.5 10.5 12 8l2.5 2.5"/>',
+    chat: '<path d="M5 4.5h14A1.5 1.5 0 0 1 20.5 6v9.5A1.5 1.5 0 0 1 19 17h-8.5L6 20.5V17H5a1.5 1.5 0 0 1-1.5-1.5V6A1.5 1.5 0 0 1 5 4.5z"/><path d="M8 9h8M8 12.5h5"/>',
+    send: '<path d="M20 4 3.5 10.5l7 3 3 7z"/><path d="m10.5 13.5 4-4"/>',
+    "call-end": '<path d="M3.2 14.2c4.9-4.6 12.7-4.6 17.6 0l-1.9 2.5a1 1 0 0 1-1.3.3l-2.7-1.4a1 1 0 0 1-.5-1v-1.8a12.5 12.5 0 0 0-4.8 0v1.8a1 1 0 0 1-.5 1l-2.7 1.4a1 1 0 0 1-1.3-.3z"/>',
+    flag: '<path d="M5.5 21V4M5.5 4.5h11.5l-2.2 4 2.2 4H5.5"/>'
   };
   var s = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">';
   for (var k in paths) s += '<symbol id="i-' + k + '" viewBox="0 0 24 24">' + paths[k] + '</symbol>';

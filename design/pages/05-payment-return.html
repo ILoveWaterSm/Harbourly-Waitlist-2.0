@@ -47,6 +47,8 @@
 .doneSteps li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--space-3); font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
 .doneSteps svg { width: 18px; height: 18px; margin-top: 2px; color: var(--muted); }
 .doneSteps .mono { color: var(--ink); }
+/* Goes straight back to Pick a slot with the same game chosen: the MVP books one session per checkout. */
+.doneAgain { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--line); font-size: 14.5px; }
 @container app (max-width: 760px) {
   .doneBody { grid-template-columns: minmax(0, 1fr); }
   .doneCard .cardActions .button { flex: 1 1 100%; }
@@ -99,7 +101,7 @@
       </div>
       <div class="doneBody">
         <section class="card accent doneCard" aria-label="Your session">
-          <div class="doneWho"><span class="avatar md">K</span><div><span class="doneWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+          <div class="doneWho"><span class="avatar md">K</span><div><span class="doneWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
           <dl class="cardFacts">
             <dt>Game</dt><dd class="text">Mobile Legends</dd>
             <dt>Time</dt><dd>Wed 7 Oct · 20:00–21:00 SGT</dd>
@@ -107,6 +109,7 @@
             <dt>Paid</dt><dd>₱1,961.00<span class="sub">Held until you confirm the session went ahead.</span></dd>
           </dl>
           <div class="cardActions"><a class="button primary" href="#">View session</a><a class="button secondary" href="#">Back to dashboard</a></div>
+          <p class="doneAgain"><a class="textLink" href="#">Book another time with Kairo</a></p>
         </section>
         <section class="card" aria-labelledby="next-c">
           <h2 class="cardTitle" id="next-c">What happens next</h2>
@@ -114,7 +117,7 @@
             <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>We'll email you a reminder 24 hours and 1 hour before the session.</span></li>
             <li><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg><span>Join session opens at <span class="mono">19:50 SGT</span> on Wed 7 Oct, 10 minutes before the start.</span></li>
             <li><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg><span>After the session, confirm it went ahead and Kairo is paid. If something went wrong, report a problem instead.</span></li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Need to change it? Request a new time or cancel from the session page, up to 24 hours before.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Need to change it? From the session page, request a new time up to 24 hours before, or cancel for a full refund up to 1 hour before.</span></li>
           </ul>
         </section>
       </div>

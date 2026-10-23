@@ -104,7 +104,7 @@ The gamer or coach choice is a routing hint only. Every account can book as a ga
 flowchart TD
   Browse["Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency"] --> Card["Coach card"]
   Browse -->|"Load more"| Browse
-  Card --> Profile["Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, availability preview, voice intro, reviews"]
+  Card --> Profile["Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, showcase images if added, availability preview, voice intro, reviews"]
   Profile --> Own{"Is this your own coach profile?"}
   Own -->|"Yes"| NoBook(["No Book button. This is your profile"])
   Own -->|"No"| Game["Choose a game"]
@@ -123,6 +123,7 @@ flowchart TD
   Hosted --> Back["Back on Harbourly: confirming your payment"]
   Back --> Result{"Payment provider result"}
   Result -->|"Paid"| Confirmed(["Booking confirmed. Emails to both"])
+  Confirmed -->|"Book another time with this coach: same game chosen"| Slot
   Result -->|"Not paid, hold still active"| Failed["Payment didn't go through"]
   Failed --> Summary
   Result -->|"Hold expired"| Expired["This time is no longer held. Email to gamer"]
@@ -138,30 +139,31 @@ flowchart TD
   Confirmed(["Booking confirmed"]) --> Window{"More than 24 hours to go?"}
 
   Window -->|"Yes"| Options["Session detail offers: Request a new time, Cancel booking"]
-  Window -->|"No"| Locked["Time locked. No reschedule. Gamer can't cancel"]
+  Window -->|"No"| Locked["Time locked: no new times. Cancel booking still offered"]
 
-  Options --> Req["Requester offers up to 3 slots from the coach's availability. Slots held"]
+  Options --> Req["Requester offers up to 3 times from the coach's free times, at least 24 hours away, within 4 weeks. Times held"]
+  Req -->|"Requester withdraws"| Stands
   Req --> Other{"Other person responds"}
-  Other -->|"Picks a slot"| Moved(["Booking moved. Emails to both"])
+  Other -->|"Picks a time"| Moved(["Booking moved. Emails to both. Can't be moved again"])
   Other -->|"Declines"| WhoAsked{"Who asked?"}
-  WhoAsked -->|"Gamer"| Stands(["Original time stands"])
+  WhoAsked -->|"Gamer"| Stands(["Original time stands. A new request can be sent while changes are open"])
   WhoAsked -->|"Coach"| GamerChoice{"Gamer chooses"}
   GamerChoice -->|"Keep original time"| Stands
   GamerChoice -->|"Cancel"| FullRefund(["Cancelled. Full refund including platform fee"])
   Other -->|"No reply in 48h, or 12h before start"| Stands
 
-  Options --> CancelWho{"Who cancels?"}
-  CancelWho -->|"Gamer, within 1 hour of booking"| FullRefund
-  CancelWho -->|"Gamer, otherwise"| PartRefund(["Cancelled. Coach price refunded, platform fee kept"])
-  CancelWho -->|"Coach"| CoachCancel(["Cancelled. Full refund to gamer. Recorded against coach"])
-  Locked -->|"Coach can still cancel"| CoachCancel
+  Options --> CancelWho{"Who cancels, and when?"}
+  Locked --> CancelWho
+  CancelWho -->|"Gamer, 1 hour or more before the start"| FullRefund
+  CancelWho -->|"Gamer, inside the last hour"| Split(["Cancelled. Coach's price split 50/50, platform fee kept"])
+  CancelWho -->|"Coach, any time"| CoachCancel(["Cancelled. Full refund to gamer. Recorded against coach"])
 
   Confirmed --> Remind["Reminder emails 24h and 1h before"]
   Remind --> Join(["Join session opens 10 minutes before start"])
   Locked --> Join
 ```
 
-Only one open request per booking, and at most one accepted reschedule per booking. A coach cancelling inside 24 hours counts as a serious incident.
+Only one open request per booking, and at most one accepted reschedule per booking. Cancelling while a request is open cancels the request too. A coach cancelling inside 24 hours counts like a coach no-show (DECISIONS.md, "Coach reliability").
 
 ---
 
@@ -170,18 +172,19 @@ Only one open request per booking, and at most one accepted reschedule per booki
 ```mermaid
 flowchart TD
   Join(["Join session, from 10 minutes before"]) --> Waiting{"Other person here?"}
-  Waiting -->|"No"| Room["Waiting for the other person"]
+  Waiting -->|"No"| Room["Waiting for the other person. Chat open"]
   Room --> Waiting
-  Room -->|"Gamer, 15 minutes after start, coach absent"| NoShow(["Report a no-show: opens a dispute"])
-  Waiting -->|"Yes"| Live["Live: call, chat saved, screen share on computers only"]
+  Room -->|"Gamer, 15 minutes after start, coach absent"| NoShow(["Report a no-show: opens a dispute, session closes for both"])
+  Room -->|"Nobody joins by the scheduled end"| Ended
+  Waiting -->|"Yes"| Live["Live: voice call, optional camera, chat saved, screen share on computers only, one at a time"]
   Live --> Banners["Banners at 10, 5 and 1 minutes before the end"]
-  Live -->|"Disconnected"| Rejoin["Rejoin until the scheduled end"]
+  Live -->|"Disconnected, or Leave"| Rejoin["Rejoin until the scheduled end"]
   Rejoin --> Live
   Live --> EndHow{"How it ends"}
   EndHow -->|"Scheduled end time"| Ended
-  EndHow -->|"Person A: End session, then Confirm"| Ask["Person B sees: A wants to end the session"]
-  Ask -->|"Keep going"| Live
-  Ask -->|"End now"| Ended(["Session ended. Pending confirmation"])
+  EndHow -->|"Person A: End session, then confirm"| Ask["Person B sees: A wants to end the session. A can withdraw"]
+  Ask -->|"Keep going, or A withdraws"| Live
+  Ask -->|"End now"| Ended(["Session ended. Pending confirmation. Gamer: Confirm session or Report a problem"])
 ```
 
 ---
@@ -192,14 +195,16 @@ flowchart TD
 flowchart TD
   Ended(["Pending confirmation, 72 hours"]) --> Emails["Email to gamer: please confirm. Reminder with 24 hours left"]
   Ended --> GamerAct{"What happens"}
-  GamerAct -->|"Gamer confirms"| Done
-  GamerAct -->|"No action for 72 hours"| Done(["Completed. Payment released to coach. Emails"])
+  GamerAct -->|"Gamer confirms, on a confirm step"| Done
+  GamerAct -->|"No action for 72 hours"| Done(["Completed. Payment released to coach, less the 12% commission. Emails"])
   GamerAct -->|"Gamer reports a problem"| Dispute(["Dispute. Auto-release paused"])
   GamerAct -->|"Coach reports a problem"| Dispute
-  Done --> Review["Leave a review: 5 stars, optional text. One per booking"]
-  Review --> Shown(["Shown on the coach profile. Average updated"])
+  Done --> Review["Leave a review within 30 days: 5 stars, optional text up to 500 characters. One per booking, not editable"]
+  Review --> Shown(["Shown on the coach profile with the gamer's username. Average updated"])
   Done --> Later(["Payment problem within 30 days: dispute"])
 ```
+
+Session detail keeps the session chat, read-only, after the session.
 
 ---
 
@@ -207,22 +212,28 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  Start(["Report a problem on session detail"]) --> When{"When?"}
-  When -->|"Before confirmation"| WindowReasons["Reasons for your role: conduct, no-show, ended early, didn't coach, didn't match listing, technical, other"]
+  Start(["Report a problem on session detail, or Report a no-show in the session"]) --> When{"When?"}
+  When -->|"During the session, 15 minutes after start, coach absent (gamer)"| NoShowReason["Coach didn't show up"]
+  When -->|"After the session, before confirmation"| WindowReasons["Reasons for your role: conduct, no-show, ended early, didn't coach, didn't match listing, technical, other"]
   When -->|"Within 30 days after completion"| PayReasons["Payment reasons only: wrong amount, charged twice, refund missing, payout missing or wrong, other"]
+  NoShowReason --> Form
   WindowReasons --> Form
-  PayReasons --> Form["Description and optional evidence"]
-  Form --> Open["Status: Open. Auto-release paused if still in the window"]
-  Open --> Notify["Email to both. The other person can add one response with evidence"]
+  PayReasons --> PayForm["Description and optional evidence"]
+  PayForm --> PayOpen(["Open. Handled between you and Harbourly. Outcome emailed"])
+  Form["Description (required) and optional evidence: up to 5 images or PDFs"] --> Open["Status: Open. Auto-release paused"]
+  Open --> Notify["Email to both. The other person can send one response with evidence within 48 hours"]
+  Notify -->|"Coach no-show, no response in 24 hours"| Refunded
   Notify --> Review["Status: Under review. Team reviews in Supabase"]
   Review --> Outcome{"Outcome"}
   Outcome -->|"Refund"| Refunded(["Resolved: refunded to gamer"])
   Outcome -->|"Release"| Paid(["Resolved: paid to coach"])
-  Refunded --> Email(["Outcome emailed to both"])
+  Outcome -->|"Gamer no-show upheld"| Split(["Resolved: coach's price split 50/50"])
+  Refunded --> Email(["Outcome emailed to both, with an optional note from the team"])
   Paid --> Email
+  Split --> Email
 ```
 
-Always a full refund or a full release. Resolution happens in the Stripe or Xendit dashboard.
+Disputes end in a full refund or a full release, except an upheld gamer no-show, which splits the coach's price 50/50 (23 Oct 2026). The team checks no-shows against the call's join records. Resolution happens in the Stripe or Xendit dashboard. One dispute per booking at a time; a report can't be withdrawn in the MVP.
 
 ---
 
@@ -251,19 +262,20 @@ flowchart TD
   Payout -->|"Couldn't verify"| PayoutFail["Your payout account couldn't be verified. Try again or contact support"]
   PayoutFail --> Payout
   Gates --> PhoneGate["Phone verified"]
-  Gates --> Setup["Profile setup: bio, avatar, banner, languages, availability, price and credentials per game"]
+  Gates --> Setup["Profile setup: bio, avatar, banner, languages, availability, price and credentials per game, showcase (optional)"]
   Setup -->|"Leave and come back"| Setup
   Payout --> AllDone{"All four done?"}
   PhoneGate --> AllDone
   Setup --> AllDone
   AllDone -->|"Yes"| Live(["Live and bookable as a New Coach. Email"])
 
-  Live --> Path{"Path to Verified"}
-  Path -->|"Submit portfolio, passes review"| Verified(["Verified"])
-  Path -->|"5 sessions with no serious incidents"| Verified
+  Live --> NewCoach{"New Coach period"}
+  NewCoach -->|"5 completed sessions, no upheld dispute"| Dropped(["Label stops showing. Email"])
+  NewCoach -->|"Upheld dispute, coach no-show, or coach cancels inside 24 hours"| Reset["Progress back to 0. Email with the reason"]
+  Reset --> NewCoach
 ```
 
-The four conditions to go live: application approved, payout setup complete, phone verified, profile complete.
+The four conditions to go live: application approved, payout setup complete, phone verified, profile complete. There is no Verified badge; a portfolio never shortens the New Coach period. Scamming, predatory or grooming conduct is a permanent ban at any stage.
 
 ---
 
@@ -272,13 +284,14 @@ The four conditions to go live: application approved, payout setup complete, pho
 ```mermaid
 flowchart TD
   CDash(["Coach dashboard"]) --> Settings["Coach profile settings"]
-  Settings --> Bio["Edit bio, avatar, banner, languages"]
+  Settings --> Bio["Edit bio, avatar, banner, languages. Photos checked automatically on upload"]
   Settings --> Avail["Edit weekly availability, in your own time zone"]
-  Settings --> Rates["Edit price per game"]
+  Settings --> Rates["Edit price per game, not below the floor (about S$10)"]
   Settings --> Rank["Update rank: new screenshot, old rank shown until approved"]
   Settings --> AddGame["Add a game: proof, listing under review until approved"]
   Settings --> Voice["Record a voice intro: pending, then approved or declined"]
-  Settings --> Portfolio["Submit portfolio for Verified"]
+  Settings --> Showcase["Showcase: up to 5 images, optional captions. Checked automatically on upload; shown at once if it passes, refused with a reason if not"]
+  Settings --> Portfolio["Submit portfolio: reviewed by hand, shown on your profile if it passes"]
   Settings --> Preview["Preview my public profile"]
   CDash --> PayoutSet["Payout settings: status and link to Stripe or Xendit"]
   CDash --> CSessions["Coach sessions list"]
@@ -293,7 +306,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  Account(["Account settings"]) --> Profile["Name, username, avatar"]
+  Account(["Account settings"]) --> Profile["Name, username, avatar. Photo checked automatically on upload"]
   Account --> EmailChange["Change email: verify the new one, notice to the old one"]
   Account --> Password["Change password"]
   Account --> PhoneChange["Change phone: OTP"]
@@ -322,7 +335,7 @@ stateDiagram-v2
   pending_payment --> expired: 30 minutes, not paid
 
   confirmed --> confirmed: reschedule accepted
-  confirmed --> cancelled: gamer 24h or more ahead, or coach any time
+  confirmed --> cancelled: gamer cancels (full refund, or 50/50 inside the last hour), or coach any time
   confirmed --> in_session: someone joins
   confirmed --> disputed: coach no-show reported
 
@@ -332,14 +345,16 @@ stateDiagram-v2
 
   disputed --> refunded: resolved for gamer
   disputed --> completed: resolved for coach
+  disputed --> split: gamer no-show upheld (50/50)
 
   cancelled --> [*]
+  split --> [*]
   expired --> [*]
   refunded --> [*]
   completed --> [*]
 ```
 
-A reschedule request is shown as a second line on a confirmed booking, not a separate status. A payment dispute after completion is tracked on the dispute record, not as a new booking status.
+A reschedule request is shown as a second line on a confirmed booking, not a separate status. `split` is an upheld gamer no-show (coach's price split 50/50); a late cancellation stays `cancelled`, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.
 
 ---
 
@@ -357,10 +372,16 @@ stateDiagram-v2
 
   state live {
     [*] --> new_coach
-    new_coach --> verified: portfolio passes, or 5 clean sessions
+    new_coach --> new_coach: upheld dispute, coach no-show or late cancel resets progress
+    new_coach --> established: 5 completed sessions, no upheld dispute (label stops showing)
   }
 
+  live --> suspended: team decision after warnings
+  suspended --> live: team lifts it
+  live --> banned: scamming, predatory or grooming conduct
+
   not_eligible --> [*]
+  banned --> [*]
 ```
 
 ---

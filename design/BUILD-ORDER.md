@@ -30,7 +30,7 @@ One page showing every shared component in every state. Introduces:
 - **Buttons:** primary (resting glow, hover halo), secondary outline, text link, icon button; disabled and loading.
 - **Form fields:** text, select, textarea with character counter, checkbox, date of birth, phone with OTP code entry, image upload (single and up to 5), step counter, field error.
 - **Status label:** mono label with coloured dot, for every booking and dispute status.
-- **Badges:** Verified, New Coach.
+- **Badges:** New Coach. (Verified removed on 23 Oct 2026: there is no Verified badge.)
 - **Avatar:** photo, default avatar.
 - **Price:** exact and converted ("≈ S$43 / session", "from S$38").
 - **Rank line, rating display, star rating input.**
@@ -58,54 +58,60 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 2. Coach profile · L
 `/coaches/[username]` *proposed*. Viewable logged out.
-- Avatar, banner, name, Verified or New Coach, country with flag, languages, time zone, bio, per-game sections (rank, credentials, price), availability preview, voice intro, reviews.
+- Avatar, banner, name, New Coach label while new, country with flag, languages, time zone, bio, showcase (up to 5 images with optional captions, straight after About; left out when there are none), per-game sections (rank, credentials, price), availability preview, voice intro, reviews.
+- One column (below 1100px): About, Showcase, Games, Availability, Reviews.
 - "Book a session" in the header; with two or more games, each game section also has "Choose a time", which opens Pick a slot with that game chosen.
-- States: Verified coach, New Coach, one game vs several, no reviews yet, no voice intro, converted price with "Kairo's price is ₱1,850" line, logged out (Book leads to log in), your own profile (no Book button), preview mode (used later by 22), loading, not found.
+- States: established coach (past the New Coach period, no label), New Coach, one game vs several, showcase with several images / one image / none, no reviews yet, no voice intro, converted price with "Kairo's price is ₱1,850" line, logged out (Book leads to log in), your own profile (no Book button), preview mode (used later by 22), loading, not found.
 
 ### 3. Pick a slot · M
 `/coaches/[username]/book` *proposed*.
-- Choose game, then a one-hour slot from weekly availability in your local time.
+- Choose game, then one one-hour slot from weekly availability in your local time (one session per checkout in the MVP).
 - States: slots available, logged out (log in to continue), nothing free this week, slot just taken, returning after log in, phone not verified (verify before continuing).
 
 ### 4. Checkout summary · M
 `/checkout/[bookingId]` *proposed*.
 - Coach price, platform fee, total in the coach's currency, the "your bank converts this" line, cancellation rule, how payment is held, hold countdown (30 minutes).
-- States: same currency, different currency, session in under 24 hours (can't be cancelled or moved), hold nearly expired, hold expired, back after a failed payment.
+- States: same currency, different currency, session in under 24 hours (its time can't be moved; cancellation rule unchanged), hold nearly expired, hold expired, back after a failed payment.
 
 ### 5. Payment return · S
 `/checkout/[bookingId]/return` *proposed*.
-- States: confirming your payment, booking confirmed, payment didn't go through (try again while held), slot no longer held (pick another).
+- States: confirming your payment, booking confirmed (with "Book another time with Kairo": Pick a slot, same game chosen), payment didn't go through (try again while held), slot no longer held (pick another).
 
-**Checkpoint 2:** the booking flow end to end. Built and published 6 Oct 2026; waiting for review.
+**Checkpoint 2:** the booking flow end to end. Built and published 6 Oct 2026; reviewed and closed 16 Oct 2026 (refinements to 01, 02, 03 and 05; 04 unchanged). Updated 23 Oct 2026 for the policy update (no Verified badge on 01 to 05; new cancellation lines on 04 and 05), republished at the same links with frames replaced on the canvas.
 
 ---
 
 ## Phase 2: The session and after
 
+Pages: [06 Session detail](https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3) (`design/pages/06-session-detail.html`) · [07 Report a problem](https://claude.ai/artifact/FLFRVmLwDCbUqCB4p4vbZM) (`design/pages/07-report-a-problem.html`) · [08 Live session](https://claude.ai/artifact/LB4gwSiruwp8qDVRLS27Nt) (`design/pages/08-live-session.html`) · frames on the [canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ)
+
 ### 6. Session detail, gamer and coach · L
-`/sessions/[id]` and `/coach/sessions/[id]` *proposed*. One layout, two role views.
+`/sessions/[id]` and `/coach/sessions/[id]` *proposed*. One layout, two role views: header with status, then what to do now and changes on the left, session facts and payment on the right.
 - **Upcoming, more than 24 hours:** Request a new time, Cancel booking.
-- **Upcoming, under 24 hours:** locked, with the reason; coach can still cancel.
-- **Reschedule:** request form (offer up to 3 slots); waiting on reply; request received (pick a slot or decline); coach's request declined (gamer chooses keep or cancel); expired.
-- **Cancel:** confirm step with exact refund amounts for each case; cancelled.
-- **Join:** opens 10 minutes before; mobile screen-share note.
-- **Pending confirmation:** confirm or report a problem, auto-release countdown (gamer); waiting on gamer (coach).
-- **Completed:** leave a review (5 stars, optional text); review left.
-- **Disputed:** dispute section with status, details, the other person's response, outcome.
-- **Also:** awaiting payment (continue to payment), expired, refunded, loading, error.
+- **Upcoming, under 24 hours:** no new times, with the reason; Cancel booking still offered (full refund until 1 hour before, 50/50 split inside the last hour; coach any time, counted like a no-show inside 24 hours). *(Changed 23 Oct 2026; was locked for the gamer.)*
+- **Reschedule:** request form (offer up to 3 times, at least 24 hours away); waiting on reply (withdraw); request received (pick a time or decline); coach's request declined (gamer chooses keep or cancel with a full refund); declined; expired; moved (can't be moved again).
+- **Cancel:** confirm step with exact refund amounts for each case (full refund until 1 hour before; inside the last hour, half the coach's price; coach cancels: full refund); cancelled by you; cancelled by the coach. *(Changed 23 Oct 2026; was fee kept, or free within 1 hour of booking.)*
+- **Join:** opens 10 minutes before; screen-share note; in session (rejoin).
+- **Pending confirmation:** confirm (confirm step) or report a problem, auto-release countdown, under 24 hours left (gamer); waiting on gamer (coach).
+- **Completed:** leave a review (5 stars, optional text up to 500 characters); review posted; released amount and the gamer's review (coach); session chat, read-only.
+- **Disputed:** dispute section with status, details, the other person's response, outcome (refunded, paid to coach); filed against you, with respond (coach); payment problem after completion.
+- **Coach view:** the coach's payout: price, 12% commission, payout (₱1,850.00 − ₱222.00 = ₱1,628.00); a coach cancellation inside 24 hours counts like a no-show. *(Changed 23 Oct 2026; was the full price and "serious incident".)*
+- **Also changed 23 Oct 2026:** no Verified badge; no "Booked" line; the gamer's confirm step says "This releases your payment to Kairo" (no amount, since the coach's payout is less the commission).
+- **Also:** awaiting payment (continue to payment), expired, loading, error.
 
 ### 7. Report a problem · M
-`/sessions/[id]/report` and `/coach/sessions/[id]/report` *proposed*.
-- Reason list by role and timing (window vs within 30 days after completion), description, optional evidence upload, submitted.
-- Response form for the other person (one response, optional evidence).
-- States: each reason list, validation, upload error, submitted, response sent.
+`/sessions/[id]/report` and `/coach/sessions/[id]/report` *proposed*. Focused layout (top nav, no sidebar).
+- Reason list by role and timing: coach didn't show up (gamer, during the session); the after-session list (gamer, coach); payment reasons within 30 days after completion (gamer, coach). Description (required, up to 1,000 characters), optional evidence (up to 5 images or PDFs), submitted. *(Unchanged on 23 Oct 2026: no-shows stay disputes.)*
+- Response form for the other person (one response within 48 hours, optional evidence); response sent.
+- States: each reason list, validation, upload error, submitted, response form, response sent.
 
 ### 8. Live session · L
-`/sessions/[id]/live` *proposed*. Shared by gamer and coach.
-- Call, chat (saved), screen share on computers.
-- States: waiting for the other person; no-show report available 15 minutes after start (gamer); live; screen share on; mobile (watching only, with note); reminder banners at 10, 5 and 1 minutes; end request sent; end request received (End now, Keep going); reconnecting; camera or microphone blocked; session ended.
+`/sessions/[id]/live` *proposed*. Shared by gamer and coach. Full window: session bar, stage, chat, controls.
+- Voice call (camera optional, off by default), chat (saved), screen share on computers, one at a time.
+- States: waiting for the other person; no-show report available 15 minutes after start (gamer); coach waiting for an absent gamer ("If snapking doesn't join, you can report it after the session. You'd be paid half your price.", changed 23 Oct 2026); live; camera on; screen share on; mobile (watching only, with note); reminder banners at 10, 5 and 1 minutes; end request sent; end request received (End now, Keep going); you're reconnecting; the other person lost connection; microphone or camera blocked; session ended (gamer, coach).
 
-**Checkpoint 3:** session lifecycle.
+
+**Checkpoint 3:** session lifecycle. Built and published 16 Oct 2026; reviewed and closed 21 Oct 2026 (one refinement on 06: a response not sent yet shows as a dashed status slot). Updated 23 Oct 2026 for the policy update (06 cancel states, coach payout, confirm step; 08 coach waiting line; no Verified badge), republished at the same links with frames replaced on the canvas.
 
 ---
 
@@ -187,7 +193,8 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 21. Profile setup · L
 `/coach/setup` *proposed*.
-- Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency, up to 3 credential lines per game.
+- Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency (not below the floor, about S$10: S$10, RM 35, ₱430), up to 3 credential lines per game, showcase (optional: up to 5 images, caption up to 80 characters each).
+- Photo, banner and showcase uploads: checking, passed (live), refused with a reason (automatic check; see DECISIONS.md "Automatic image check").
 - States: each step, saved and resumed, validation, complete (moves to live once payout and phone are done).
 
 **Checkpoint 6:** coach onboarding.
@@ -198,11 +205,12 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 22. Coach profile settings · L
 `/coach/profile` *proposed*.
-- Edit bio, avatar, banner, languages, availability, prices.
+- Edit bio, avatar, banner, languages, availability, prices (not below the floor; booked sessions keep their price). A new photo or banner is checked automatically: checking, live, or refused with a reason (the old one stays until the new one passes).
+- Showcase: add, replace, remove, reorder, edit captions; each image checking, live, or refused with a reason (replaced image stays live until the new one passes); empty (no showcase).
 - Update rank (screenshot, pending, old rank still shown).
 - Add a game (proof, under review).
 - Voice intro (record, pending, approved, declined).
-- Portfolio for Verified (submit, under review, passed, didn't pass).
+- Portfolio (submit, under review, shown on your profile, didn't pass). Never grants a badge.
 - Preview my public profile (opens 2 in preview mode).
 
 ### 23. Coach sessions · S
@@ -218,7 +226,7 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 
 ### 24. Account settings · M
 `/account` *proposed*.
-- Name, username, avatar; change email (verify new, notice to old); change password; change phone (OTP); country, time zone, currency (coach country locked after payout setup).
+- Name, username, avatar (checked automatically: checking, live, refused with a reason; old photo stays until the new one passes); change email (verify new, notice to old); change password; change phone (OTP); country, time zone, currency (coach country locked after payout setup).
 - Delete account: blocked while sessions or disputes are open; confirm step; requested.
 
 ### 25. System pages · S
@@ -240,3 +248,4 @@ Pages: [01 Browse coaches](https://claude.ai/artifact/S2LvRXMYBbk7uq3xjGTfcC) (`
 - Coach launch countries with Stripe and Xendit, including Thailand.
 - Exchange-rate source for converted prices.
 - Chat retention period, alongside the Terms of Service wording.
+- Moderation service for every public image (profile photos, banners, showcase images and captions): a dedicated image-moderation API (cheapest per image, catches nudity, violence and similar) or a vision AI model (also reads text inside images, e.g. contact details or slurs). Both cost a fraction of a cent per image; none is perfect, so uncertain results are refused.

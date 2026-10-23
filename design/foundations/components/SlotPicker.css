@@ -47,3 +47,8 @@
   .slotDayNone { padding-top: 0; }
   .slot { min-height: 44px; flex: 1 0 76px; max-width: calc((100% - 2 * var(--space-2)) / 3); }
 }
+/* Choosing up to 3 times (reschedule request): a count beside the week, and once three are chosen
+   the rest step back until one is unchosen. */
+.slotPickerCount { font: 500 13px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+.slotPickerCount b { font-weight: 500; color: var(--ink); }
+.slot:disabled, .slot:disabled:hover { border-color: var(--line); background: none; color: var(--subtle); cursor: not-allowed; }

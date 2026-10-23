@@ -1,4 +1,4 @@
-/* Badge → Badge.module.css. Only Verified and New Coach; both sit right after the coach's name. */
+/* Badge → Badge.module.css. New Coach only (no Verified badge since 23 Oct 2026); sits right after the coach's name. */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -14,5 +14,4 @@
   vertical-align: middle;
 }
 .badge svg { width: 13px; height: 13px; flex: none; }
-.badge.verified { color: var(--green); border-color: var(--green-line); }
 .badge.newCoach { color: var(--ink-soft); border-color: var(--line-strong); }
