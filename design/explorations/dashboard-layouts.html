@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard layouts</title>
+<meta name="description" content="Exploration: four ways to lay out the gamer dashboard (09), as rough wireframes with the busy account's real content.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<style>
+/* Exploration only: rough wireframes, not the final look. Every option holds the same content as 09's busy account
+   (Mon 5 Oct, 14:12 SGT): four things to do, two sessions coming up, one reported problem, one recent session. */
+.xWrap { display: grid; gap: var(--space-14); max-width: 1240px; margin: 0 auto; padding: var(--space-10) max(16px, env(safe-area-inset-right, 0px)) var(--space-20) max(16px, env(safe-area-inset-left, 0px)); }
+.xHead { display: grid; gap: var(--space-3); max-width: 72ch; }
+.xHead p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+.xOpt { display: grid; gap: var(--space-5); }
+.xOptHead { display: grid; gap: var(--space-2); max-width: 80ch; }
+.xOptHead .eyebrow { color: var(--muted); }
+.xOptHead h2 { font: var(--text-card-title); }
+.xOptHead p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+.xPros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-8); margin: 0; padding: 0; list-style: none; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+.xPros li { display: flex; gap: var(--space-2); }
+.xPros li::before { content: "+"; font-family: var(--font-mono); color: var(--green); }
+.xPros li.con::before { content: "−"; color: var(--amber); }
+.xRec { display: inline-block; justify-self: start; padding: 4px 10px; border: 1px solid var(--green-line); border-radius: var(--radius-pill); font: 500 11px/1.2 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--green); }
+.xBoards { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: var(--space-6); align-items: start; }
+.xCap { margin-bottom: var(--space-2); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+
+/* Wireframe kit */
+.wf { border: 1px solid var(--line-strong); border-radius: var(--radius-lg); background: var(--bg-deep); overflow: hidden; }
+.wfTop { display: flex; justify-content: space-between; align-items: center; height: 36px; padding: 0 var(--space-4); border-bottom: 1px solid var(--line); font: 600 12px/1 var(--font-body); color: var(--faint); }
+.wfBody { display: grid; grid-template-columns: 120px minmax(0, 1fr); min-height: 300px; }
+.wfSide { display: grid; gap: 6px; align-content: start; padding: var(--space-4) var(--space-3); border-right: 1px solid var(--line); }
+.wfSide span { height: 10px; border-radius: 3px; background: var(--fill-subtle); }
+.wfSide span.on { background: var(--green-tint); }
+.wfMain { display: grid; gap: var(--space-4); align-content: start; padding: var(--space-5); min-width: 0; }
+.phone .wfBody { grid-template-columns: minmax(0, 1fr); }
+.phone .wfMain { padding: var(--space-3); gap: var(--space-3); }
+.wfH1 { font: 700 18px/1 var(--font-display); color: var(--ink); }
+.wfSec { display: grid; gap: var(--space-2); }
+.wfSecT { font: 700 13px/1.2 var(--font-display); color: var(--ink-sub); }
+.box { display: grid; gap: 6px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-md); background: var(--surface); min-width: 0; }
+.box.accent { border-top: 2px solid var(--green); }
+.box.quiet { background: none; border-style: dashed; }
+.lab { font: 500 9px/1.2 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+.lab::before { content: "● "; }
+.lab.a { color: var(--amber); } .lab.g { color: var(--green); } .lab.m { color: var(--muted); }
+.lab.note { color: var(--amber); text-transform: none; letter-spacing: 0; font-size: 9.5px; }
+.lab.note::before { content: ""; }
+.ttl { font: 600 12.5px/1.3 var(--font-body); color: var(--ink); }
+.meta { font: 400 10.5px/1.4 var(--font-mono); color: var(--muted); }
+.meta b { font-weight: 500; color: var(--ink-soft); }
+.cd { font: 500 11px/1 var(--font-mono); color: var(--ink); white-space: nowrap; }
+.btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn { padding: 4px 10px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); font: 600 10px/1.2 var(--font-body); color: var(--ink-sub); white-space: nowrap; }
+.btn.p { border-color: var(--green); background: var(--green); color: var(--green-ink); }
+.split { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); }
+.tight { display: grid; gap: 2px; min-width: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chips span { padding: 2px 6px; border: 1px solid var(--line); border-radius: 6px; font: 400 9.5px/1.3 var(--font-mono); color: var(--ink-soft); }
+.rowlist { display: grid; gap: 4px; }
+.r { display: grid; grid-template-columns: 120px minmax(0, 1fr) 170px 64px 120px; gap: var(--space-3); align-items: center; padding: 8px 12px; border-radius: var(--radius-md); background: var(--bg-mid); }
+.r.head { background: none; padding-block: 0; font: 400 8.5px/1 var(--font-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+.r .btns { justify-content: flex-end; }
+.r.open { grid-template-areas: none; border: 1px solid var(--line-strong); }
+.rDetail { grid-column: 2 / -1; display: grid; gap: 6px; }
+.day { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--space-4); padding-top: var(--space-3); border-top: 1px solid var(--line); }
+.day:first-of-type { border-top: 0; padding-top: 0; }
+.dayT { font: 600 11px/1.3 var(--font-mono); color: var(--ink-sub); }
+.dayT small { display: block; font-weight: 400; color: var(--faint); }
+.ev { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: var(--space-3); align-items: center; }
+.ev .t { font: 500 10.5px/1 var(--font-mono); color: var(--muted); }
+.phone .r { grid-template-columns: minmax(0, 1fr) auto; }
+.phone .ev { grid-template-columns: 38px minmax(0, 1fr); }
+.phone .ev .btns { grid-column: 2; }
+.phone .day { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+
+@media (max-width: 980px) {
+  .xBoards { grid-template-columns: minmax(0, 1fr); }
+  .xBoards > .phoneCol { max-width: 300px; }
+  .xPros { grid-template-columns: minmax(0, 1fr); }
+  .desk { overflow-x: auto; }
+  .desk .wf { min-width: 760px; }
+}
+</style>
+</head>
+<body>
+<main class="xWrap">
+  <header class="xHead">
+    <span class="eyebrow">Exploration · 09 Gamer dashboard</span>
+    <h1>Dashboard layouts</h1>
+    <p>Four ways to lay out the same dashboard, as rough wireframes. Each one holds exactly the busy account's content (Mon 5 Oct, 14:12 SGT): four things to do, two sessions coming up, one reported problem and one recent session. None of them uses side-by-side columns of uneven cards. Colours and sizes here are only there to tell parts apart; the chosen layout gets the real components.</p>
+  </header>
+
+  <!-- ===================== A ===================== -->
+  <section class="xOpt" aria-labelledby="a-h">
+    <div class="xOptHead">
+      <span class="eyebrow">Option A</span>
+      <h2 id="a-h">One column, in order of urgency</h2>
+      <span class="xRec">Recommended</span>
+      <p>Every section stacked in one column of fixed width: To do, Coming up, Problems you've reported, Recent sessions. Every card has the same anatomy in the same places: status on top, title, the booking line, the deadline on the right, actions at the bottom. You read it top to bottom like a to-do list.</p>
+    </div>
+    <ul class="xPros">
+      <li>Clearest order: the most urgent thing is always first, then the next</li>
+      <li class="con">Longest page; Coming up sits below the To do cards on a busy day</li>
+      <li>Phone and desktop read the same way, so nothing moves between widths</li>
+      <li class="con">Wide screens leave space on the right (kept for readable line lengths)</li>
+      <li>Keeps every piece of content and every action as it is today</li>
+    </ul>
+    <div class="xBoards">
+      <div class="desk"><p class="xCap">Desktop</p>
+        <div class="wf"><div class="wfTop"><span>Harbourly</span><span>snapking</span></div><div class="wfBody"><div class="wfSide"><span class="on"></span><span></span><span></span></div>
+          <div class="wfMain" style="max-width:620px">
+            <span class="wfH1">Dashboard</span>
+            <div class="wfSec"><span class="wfSecT">To do</span>
+              <div class="box accent"><div class="split"><span class="lab a">Awaiting payment</span><span class="cd">24:12</span></div><span class="ttl">Finish paying to book this time</span><span class="meta">Vexa · Valorant · <b>Tue 13 Oct · 20:00–21:00</b> · <b>S$47.70</b></span><div class="btns"><span class="btn p">Continue to payment</span><span class="btn">Choose another time</span></div></div>
+              <div class="box"><div class="split"><span class="lab a">Pending confirmation</span><span class="cd">28h 48m</span></div><span class="ttl">Did the session go ahead?</span><span class="meta">Mirae · Riftbound · <b>Sat 3 Oct · 18:00–19:00</b> · paid automatically Tue 6 Oct, 19:00</span><div class="btns"><span class="btn">Confirm session</span><span class="btn">Report a problem</span></div></div>
+              <div class="box"><div class="split"><span class="lab g">Confirmed <span class="lab note">· Reschedule requested</span></span><span class="cd">43h 48m</span></div><span class="ttl">Vexa asked to move this session</span><span class="meta">Vexa · Valorant · <b>Thu 8 Oct · 21:00–22:00</b> · reply by Wed 7 Oct, 10:00</span><div class="chips"><span>Wed 14 Oct · 20:00</span><span>Thu 15 Oct · 21:00</span><span>Sat 17 Oct · 15:00</span></div><div class="btns"><span class="btn">View session</span></div></div>
+              <div class="box"><div class="split"><span class="lab g">Completed</span><span class="cd">until Tue 27 Oct</span></div><span class="ttl">How was your session with Ghostline?</span><span class="meta">Ghostline · Call of Duty: Mobile · <b>Sun 27 Sep · 15:00–16:00</b></span><div class="btns"><span class="btn">Leave a review</span></div></div>
+            </div>
+            <div class="wfSec"><span class="wfSecT">Coming up</span>
+              <div class="box"><div class="split"><span class="lab g">Confirmed</span><span class="cd">opens in 29h 38m</span></div><span class="ttl">Join opens 10 minutes before the start</span><span class="meta">Kairo · Mobile Legends · <b>Tue 6 Oct · 20:00–21:00</b></span><div class="btns"><span class="btn">Join session</span><span class="btn">View session</span></div></div>
+              <div class="box quiet"><div class="split"><span class="meta">Kairo · Mobile Legends · <b>Wed 7 Oct · 20:00</b></span><span class="lab g">Confirmed</span></div></div>
+            </div>
+            <div class="wfSec"><span class="wfSecT">Problems you've reported</span>
+              <div class="box"><div class="split"><span class="ttl">Problem reported</span><span class="lab a">Open</span></div><span class="meta">nullpoint · Counter-Strike 2 · <b>Thu 1 Oct · 19:00–20:00</b> · Session ended early</span><div class="box quiet"><span class="meta">No response from nullpoint yet · <b>28h 18m</b> left</span></div><div class="btns"><span class="btn">View session</span></div></div>
+            </div>
+            <div class="wfSec"><span class="wfSecT">Recent sessions</span>
+              <div class="box quiet"><div class="split"><span class="meta">Kairo · Mobile Legends · <b>Fri 25 Sep · 20:00</b></span><span class="lab m">Expired</span></div></div>
+              <span class="meta">All sessions →</span>
+            </div>
+          </div></div></div>
+      </div>
+      <div class="phoneCol"><p class="xCap">Phone</p>
+        <div class="wf phone"><div class="wfTop"><span>Harbourly</span><span>☰</span></div><div class="wfBody"><div class="wfMain">
+          <span class="wfH1">Dashboard</span>
+          <div class="wfSec"><span class="wfSecT">To do</span>
+            <div class="box accent"><div class="split"><span class="lab a">Awaiting payment</span><span class="cd">24:12</span></div><span class="ttl">Finish paying to book this time</span><span class="meta">Vexa · Tue 13 Oct · 20:00</span><div class="btns"><span class="btn p">Continue to payment</span></div></div>
+            <div class="box"><div class="split"><span class="lab a">Pending confirmation</span><span class="cd">28h 48m</span></div><span class="ttl">Did the session go ahead?</span><span class="meta">Mirae · Sat 3 Oct · 18:00</span></div>
+            <div class="box"><div class="split"><span class="lab g">Confirmed</span><span class="cd">43h 48m</span></div><span class="ttl">Vexa asked to move this session</span></div>
+            <div class="box"><span class="lab g">Completed</span><span class="ttl">How was your session with Ghostline?</span></div>
+          </div>
+          <div class="wfSec"><span class="wfSecT">Coming up</span><div class="box"><span class="ttl">Join opens 10 minutes before…</span><span class="meta">Kairo · Tue 6 Oct · 20:00</span></div></div>
+          <div class="wfSec"><span class="wfSecT">Problems you've reported</span><div class="box"><span class="ttl">Problem reported</span></div></div>
+        </div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== B ===================== -->
+  <section class="xOpt" aria-labelledby="b-h">
+    <div class="xOptHead">
+      <span class="eyebrow">Option B</span>
+      <h2 id="b-h">Compact rows, like an inbox</h2>
+      <p>Each section is a list of one-line rows with fixed columns: status, what's needed, the booking, the time left and the action, so everything lines up down the page. The row that needs you first opens out to show its details (the offered times, the confirm text); the others show their details when you open them.</p>
+    </div>
+    <ul class="xPros">
+      <li>Most scannable: the whole dashboard fits on one screen on desktop</li>
+      <li class="con">Some details (offered times, explanations) hide until you open a row</li>
+      <li>Columns line up, so deadlines and actions are always in the same place</li>
+      <li class="con">Rows are tight for two buttons; on phone each row stacks to two lines</li>
+      <li>Reuses the session list's look, so 09 and 10 feel like one family</li>
+    </ul>
+    <div class="xBoards">
+      <div class="desk"><p class="xCap">Desktop</p>
+        <div class="wf"><div class="wfTop"><span>Harbourly</span><span>snapking</span></div><div class="wfBody"><div class="wfSide"><span class="on"></span><span></span><span></span></div>
+          <div class="wfMain">
+            <span class="wfH1">Dashboard</span>
+            <div class="wfSec"><span class="wfSecT">To do</span>
+              <div class="rowlist">
+                <div class="r head"><span>Status</span><span>What's needed</span><span>Session</span><span>Time left</span><span></span></div>
+                <div class="r open" style="border-top:2px solid var(--green)"><span class="lab a">Awaiting payment</span><span class="ttl">Finish paying to book this time</span><span class="meta">Vexa · <b>Tue 13 Oct · 20:00</b></span><span class="cd">24:12</span><div class="btns"><span class="btn p">Continue to payment</span></div>
+                  <div class="rDetail"><span class="meta">Vexa's time is held for you until 14:36 SGT · <b>S$47.70</b> · Choose another time</span></div></div>
+                <div class="r"><span class="lab a">Pending confirmation</span><span class="ttl">Did the session go ahead?</span><span class="meta">Mirae · <b>Sat 3 Oct · 18:00</b></span><span class="cd">28h 48m</span><div class="btns"><span class="btn">Confirm session</span></div></div>
+                <div class="r"><span class="lab a">Reschedule requested</span><span class="ttl">Vexa asked to move this session</span><span class="meta">Vexa · <b>Thu 8 Oct · 21:00</b></span><span class="cd">43h 48m</span><div class="btns"><span class="btn">View session</span></div></div>
+                <div class="r"><span class="lab g">Completed</span><span class="ttl">How was your session with Ghostline?</span><span class="meta">Ghostline · <b>Sun 27 Sep · 15:00</b></span><span class="cd">to 27 Oct</span><div class="btns"><span class="btn">Leave a review</span></div></div>
+              </div></div>
+            <div class="wfSec"><span class="wfSecT">Coming up</span>
+              <div class="rowlist">
+                <div class="r"><span class="lab g">Confirmed</span><span class="ttl">Join opens at 19:50</span><span class="meta">Kairo · <b>Tue 6 Oct · 20:00</b></span><span class="cd">29h 38m</span><div class="btns"><span class="btn">View session</span></div></div>
+                <div class="r"><span class="lab g">Confirmed</span><span class="ttl">Session with Kairo</span><span class="meta">Kairo · <b>Wed 7 Oct · 20:00</b></span><span class="cd"></span><div class="btns"><span class="btn">View session</span></div></div>
+              </div></div>
+            <div class="wfSec"><span class="wfSecT">Problems you've reported</span>
+              <div class="rowlist"><div class="r"><span class="lab a">Open</span><span class="ttl">No response from nullpoint yet</span><span class="meta">nullpoint · <b>Thu 1 Oct · 19:00</b></span><span class="cd">28h 18m</span><div class="btns"><span class="btn">View session</span></div></div></div></div>
+            <div class="wfSec"><span class="wfSecT">Recent sessions</span>
+              <div class="rowlist"><div class="r"><span class="lab m">Expired</span><span class="ttl">Session with Kairo</span><span class="meta">Kairo · <b>Fri 25 Sep · 20:00</b></span><span class="cd"></span><div class="btns"><span class="btn">View session</span></div></div></div>
+              <span class="meta">All sessions →</span></div>
+          </div></div></div>
+      </div>
+      <div class="phoneCol"><p class="xCap">Phone</p>
+        <div class="wf phone"><div class="wfTop"><span>Harbourly</span><span>☰</span></div><div class="wfBody"><div class="wfMain">
+          <span class="wfH1">Dashboard</span>
+          <div class="wfSec"><span class="wfSecT">To do</span><div class="rowlist">
+            <div class="r open" style="border-top:2px solid var(--green)"><div class="tight"><span class="lab a">Awaiting payment</span><span class="ttl">Finish paying to book this time</span><span class="meta">Vexa · Tue 13 Oct · 20:00</span></div><span class="cd">24:12</span><div class="btns" style="grid-column:1/-1;justify-content:flex-start"><span class="btn p">Continue to payment</span></div></div>
+            <div class="r"><div class="tight"><span class="lab a">Pending confirmation</span><span class="ttl">Did the session go ahead?</span></div><span class="cd">28h 48m</span></div>
+            <div class="r"><div class="tight"><span class="lab a">Reschedule requested</span><span class="ttl">Vexa asked to move…</span></div><span class="cd">43h 48m</span></div>
+            <div class="r"><div class="tight"><span class="lab g">Completed</span><span class="ttl">How was your session with…</span></div><span class="cd">27 Oct</span></div>
+          </div></div>
+          <div class="wfSec"><span class="wfSecT">Coming up</span><div class="rowlist"><div class="r"><div class="tight"><span class="ttl">Kairo · Tue 6 Oct · 20:00</span></div><span class="cd">29h 38m</span></div></div></div>
+        </div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== C ===================== -->
+  <section class="xOpt" aria-labelledby="c-h">
+    <div class="xOptHead">
+      <span class="eyebrow">Option C</span>
+      <h2 id="c-h">Agenda by day</h2>
+      <p>One timeline, grouped by day: Today, Tomorrow, then each date, then Later. Deadlines (pay by, confirm by, reply by) and sessions sit together at their time, so the page answers "what happens when". Problems and recent sessions follow under the timeline.</p>
+    </div>
+    <ul class="xPros">
+      <li>Reads like a calendar: the order is simply time</li>
+      <li class="con">Things to do and sessions mix in one list, so "what needs me" is less obvious</li>
+      <li>Shows how close things are to each other (a deadline just before a session)</li>
+      <li class="con">A review due in three weeks sits far down, under Later</li>
+      <li>Good for gamers with many sessions a week</li>
+    </ul>
+    <div class="xBoards">
+      <div class="desk"><p class="xCap">Desktop</p>
+        <div class="wf"><div class="wfTop"><span>Harbourly</span><span>snapking</span></div><div class="wfBody"><div class="wfSide"><span class="on"></span><span></span><span></span></div>
+          <div class="wfMain" style="max-width:700px">
+            <span class="wfH1">Dashboard</span>
+            <div class="wfSec">
+              <div class="day"><span class="dayT">Today<small>Mon 5 Oct</small></span><div class="wfSec">
+                <div class="box accent"><div class="ev"><span class="t">14:36</span><div class="tight"><span class="lab a">Awaiting payment</span><span class="ttl">Finish paying: Vexa, Tue 13 Oct · 20:00 · S$47.70</span></div><span class="cd">24:12</span></div><div class="btns" style="padding-left:56px"><span class="btn p">Continue to payment</span><span class="btn">Choose another time</span></div></div>
+              </div></div>
+              <div class="day"><span class="dayT">Tomorrow<small>Tue 6 Oct</small></span><div class="wfSec">
+                <div class="box"><div class="ev"><span class="t">18:30</span><div class="tight"><span class="lab a">Open</span><span class="ttl">nullpoint's time to respond to your report ends</span></div><span class="cd">28h 18m</span></div></div>
+                <div class="box"><div class="ev"><span class="t">19:00</span><div class="tight"><span class="lab a">Pending confirmation</span><span class="ttl">Confirm Mirae's session, or Mirae is paid automatically</span></div><span class="cd">28h 48m</span></div><div class="btns" style="padding-left:56px"><span class="btn">Confirm session</span><span class="btn">Report a problem</span></div></div>
+                <div class="box"><div class="ev"><span class="t">20:00</span><div class="tight"><span class="lab g">Confirmed</span><span class="ttl">Session with Kairo · Mobile Legends</span></div><span class="cd">join 19:50</span></div></div>
+              </div></div>
+              <div class="day"><span class="dayT">Wed 7 Oct</span><div class="wfSec">
+                <div class="box"><div class="ev"><span class="t">10:00</span><div class="tight"><span class="lab a">Reschedule requested</span><span class="ttl">Reply to Vexa: 3 new times offered for Thu 8 Oct</span></div><span class="cd">43h 48m</span></div></div>
+                <div class="box"><div class="ev"><span class="t">20:00</span><div class="tight"><span class="lab g">Confirmed</span><span class="ttl">Session with Kairo · Mobile Legends</span></div></div></div>
+              </div></div>
+              <div class="day"><span class="dayT">Later</span><div class="wfSec">
+                <div class="box quiet"><div class="ev"><span class="t">Thu 8</span><span class="ttl">Session with Vexa · Valorant · 21:00</span></div></div>
+                <div class="box quiet"><div class="ev"><span class="t">Tue 27</span><span class="ttl">Last day to review Ghostline</span><span class="btn">Leave a review</span></div></div>
+              </div></div>
+            </div>
+            <div class="wfSec"><span class="wfSecT">Recent sessions</span><div class="box quiet"><div class="split"><span class="meta">Kairo · <b>Fri 25 Sep · 20:00</b></span><span class="lab m">Expired</span></div></div></div>
+          </div></div></div>
+      </div>
+      <div class="phoneCol"><p class="xCap">Phone</p>
+        <div class="wf phone"><div class="wfTop"><span>Harbourly</span><span>☰</span></div><div class="wfBody"><div class="wfMain">
+          <span class="wfH1">Dashboard</span>
+          <div class="day"><span class="dayT">Today · Mon 5 Oct</span><div class="box accent"><div class="ev"><span class="t">14:36</span><span class="ttl">Finish paying: Vexa</span></div><div class="btns"><span class="btn p">Continue to payment</span></div></div></div>
+          <div class="day"><span class="dayT">Tomorrow · Tue 6 Oct</span><div class="wfSec"><div class="box"><div class="ev"><span class="t">18:30</span><span class="ttl">nullpoint's response ends</span></div></div><div class="box"><div class="ev"><span class="t">19:00</span><span class="ttl">Confirm Mirae's session</span></div></div><div class="box"><div class="ev"><span class="t">20:00</span><span class="ttl">Session with Kairo</span></div></div></div></div>
+        </div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== D ===================== -->
+  <section class="xOpt" aria-labelledby="d-h">
+    <div class="xOptHead">
+      <span class="eyebrow">Option D</span>
+      <h2 id="d-h">One focus card, then a single list</h2>
+      <p>The one thing that matters most right now gets a full-width card at the top (here, finishing the payment; at session time, Join session). Below it, everything else is one ordered list of plain rows, grouped under small headings, with one action per row.</p>
+    </div>
+    <ul class="xPros">
+      <li>Strongest focus: one obvious next step, then a tidy list</li>
+      <li class="con">The other to-dos get less room than in A (one action each)</li>
+      <li>Calm page with one card, so it never looks crowded</li>
+      <li class="con">Which thing is "the focus" changes, so the top of the page changes often</li>
+      <li>The focus card is also where Join session appears when a session is about to start</li>
+    </ul>
+    <div class="xBoards">
+      <div class="desk"><p class="xCap">Desktop</p>
+        <div class="wf"><div class="wfTop"><span>Harbourly</span><span>snapking</span></div><div class="wfBody"><div class="wfSide"><span class="on"></span><span></span><span></span></div>
+          <div class="wfMain">
+            <span class="wfH1">Dashboard</span>
+            <div class="box accent" style="padding:16px 18px;gap:10px"><div class="split"><span class="lab a">Awaiting payment</span><span class="cd" style="font-size:15px">24:12</span></div><span class="ttl" style="font-size:15px">Finish paying to book this time</span><span class="meta">Vexa · Valorant · <b>Tue 13 Oct · 20:00–21:00</b> · <b>S$47.70</b> · held until 14:36 SGT</span><div class="btns"><span class="btn p">Continue to payment</span><span class="btn">Choose another time</span></div></div>
+            <div class="wfSec"><span class="wfSecT">Also to do</span><div class="rowlist">
+              <div class="r"><span class="lab a">Pending confirmation</span><span class="ttl">Did the session go ahead?</span><span class="meta">Mirae · <b>Sat 3 Oct · 18:00</b></span><span class="cd">28h 48m</span><div class="btns"><span class="btn">Confirm session</span></div></div>
+              <div class="r"><span class="lab a">Reschedule requested</span><span class="ttl">Vexa asked to move this session</span><span class="meta">Vexa · <b>Thu 8 Oct · 21:00</b></span><span class="cd">43h 48m</span><div class="btns"><span class="btn">View session</span></div></div>
+              <div class="r"><span class="lab g">Completed</span><span class="ttl">How was your session with Ghostline?</span><span class="meta">Ghostline · <b>Sun 27 Sep</b></span><span class="cd">to 27 Oct</span><div class="btns"><span class="btn">Leave a review</span></div></div>
+            </div></div>
+            <div class="wfSec"><span class="wfSecT">Coming up</span><div class="rowlist">
+              <div class="r"><span class="lab g">Confirmed</span><span class="ttl">Join opens at 19:50</span><span class="meta">Kairo · <b>Tue 6 Oct · 20:00</b></span><span class="cd">29h 38m</span><div class="btns"><span class="btn">View session</span></div></div>
+              <div class="r"><span class="lab g">Confirmed</span><span class="ttl">Session with Kairo</span><span class="meta">Kairo · <b>Wed 7 Oct · 20:00</b></span><span class="cd"></span><div class="btns"><span class="btn">View session</span></div></div>
+            </div></div>
+            <div class="wfSec"><span class="wfSecT">Problems you've reported</span><div class="rowlist"><div class="r"><span class="lab a">Open</span><span class="ttl">No response from nullpoint yet</span><span class="meta">nullpoint · <b>Thu 1 Oct</b></span><span class="cd">28h 18m</span><div class="btns"><span class="btn">View session</span></div></div></div></div>
+            <div class="wfSec"><span class="wfSecT">Recent sessions</span><div class="rowlist"><div class="r"><span class="lab m">Expired</span><span class="ttl">Session with Kairo</span><span class="meta">Kairo · <b>Fri 25 Sep</b></span><span class="cd"></span><div class="btns"><span class="btn">View session</span></div></div></div><span class="meta">All sessions →</span></div>
+          </div></div></div>
+      </div>
+      <div class="phoneCol"><p class="xCap">Phone</p>
+        <div class="wf phone"><div class="wfTop"><span>Harbourly</span><span>☰</span></div><div class="wfBody"><div class="wfMain">
+          <span class="wfH1">Dashboard</span>
+          <div class="box accent"><div class="split"><span class="lab a">Awaiting payment</span><span class="cd">24:12</span></div><span class="ttl">Finish paying to book this time</span><span class="meta">Vexa · Tue 13 Oct · 20:00 · S$47.70</span><div class="btns"><span class="btn p">Continue to payment</span></div></div>
+          <div class="wfSec"><span class="wfSecT">Also to do</span><div class="rowlist">
+            <div class="r"><div class="tight"><span class="lab a">Pending confirmation</span><span class="ttl">Did the session go ahead?</span></div><span class="cd">28h 48m</span></div>
+            <div class="r"><div class="tight"><span class="lab a">Reschedule requested</span><span class="ttl">Vexa asked to move…</span></div><span class="cd">43h 48m</span></div>
+          </div></div>
+          <div class="wfSec"><span class="wfSecT">Coming up</span><div class="rowlist"><div class="r"><div class="tight"><span class="ttl">Kairo · Tue 6 Oct · 20:00</span></div><span class="cd">29h 38m</span></div></div></div>
+        </div></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
