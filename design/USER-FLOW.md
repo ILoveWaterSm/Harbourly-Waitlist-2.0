@@ -141,11 +141,12 @@ flowchart TD
   Window -->|"Yes"| Options["Session detail offers: Request a new time, Cancel booking"]
   Window -->|"No"| Locked["Time locked: no new times. Cancel booking still offered"]
 
-  Options --> Req["Requester offers up to 3 slots from the coach's availability. Slots held"]
+  Options --> Req["Requester offers up to 3 times from the coach's free times, at least 24 hours away, within 4 weeks. Times held"]
+  Req -->|"Requester withdraws"| Stands
   Req --> Other{"Other person responds"}
-  Other -->|"Picks a slot"| Moved(["Booking moved. Emails to both"])
+  Other -->|"Picks a time"| Moved(["Booking moved. Emails to both. Can't be moved again"])
   Other -->|"Declines"| WhoAsked{"Who asked?"}
-  WhoAsked -->|"Gamer"| Stands(["Original time stands"])
+  WhoAsked -->|"Gamer"| Stands(["Original time stands. A new request can be sent while changes are open"])
   WhoAsked -->|"Coach"| GamerChoice{"Gamer chooses"}
   GamerChoice -->|"Keep original time"| Stands
   GamerChoice -->|"Cancel"| FullRefund(["Cancelled. Full refund including platform fee"])
@@ -162,7 +163,7 @@ flowchart TD
   Locked --> Join
 ```
 
-Only one open request per booking, and at most one accepted reschedule per booking. A coach cancelling inside 24 hours counts like a coach no-show (DECISIONS.md, "Coach reliability").
+Only one open request per booking, and at most one accepted reschedule per booking. Cancelling while a request is open cancels the request too. A coach cancelling inside 24 hours counts like a coach no-show (DECISIONS.md, "Coach reliability").
 
 ---
 
@@ -171,18 +172,19 @@ Only one open request per booking, and at most one accepted reschedule per booki
 ```mermaid
 flowchart TD
   Join(["Join session, from 10 minutes before"]) --> Waiting{"Other person here?"}
-  Waiting -->|"No"| Room["Waiting for the other person"]
+  Waiting -->|"No"| Room["Waiting for the other person. Chat open"]
   Room --> Waiting
   Room -->|"15 minutes after start, other person absent"| NoShow(["Report a no-show: see diagram 7"])
-  Waiting -->|"Yes"| Live["Live: call, chat saved, screen share on computers only"]
+  Room -->|"Nobody joins by the scheduled end"| Ended
+  Waiting -->|"Yes"| Live["Live: voice call, optional camera, chat saved, screen share on computers only, one at a time"]
   Live --> Banners["Banners at 10, 5 and 1 minutes before the end"]
-  Live -->|"Disconnected"| Rejoin["Rejoin until the scheduled end"]
+  Live -->|"Disconnected, or Leave"| Rejoin["Rejoin until the scheduled end"]
   Rejoin --> Live
   Live --> EndHow{"How it ends"}
   EndHow -->|"Scheduled end time"| Ended
-  EndHow -->|"Person A: End session, then Confirm"| Ask["Person B sees: A wants to end the session"]
-  Ask -->|"Keep going"| Live
-  Ask -->|"End now"| Ended(["Session ended. Pending confirmation"])
+  EndHow -->|"Person A: End session, then confirm"| Ask["Person B sees: A wants to end the session. A can withdraw"]
+  Ask -->|"Keep going, or A withdraws"| Live
+  Ask -->|"End now"| Ended(["Session ended. Pending confirmation. Gamer: Confirm session or Report a problem"])
 ```
 
 ---
@@ -193,14 +195,16 @@ flowchart TD
 flowchart TD
   Ended(["Pending confirmation, 72 hours"]) --> Emails["Email to gamer: please confirm. Reminder with 24 hours left"]
   Ended --> GamerAct{"What happens"}
-  GamerAct -->|"Gamer confirms"| Done
-  GamerAct -->|"No action for 72 hours"| Done(["Completed. Payment released to coach. Emails"])
+  GamerAct -->|"Gamer confirms, on a confirm step"| Done
+  GamerAct -->|"No action for 72 hours"| Done(["Completed. Payment released to coach, less the 12% commission. Emails"])
   GamerAct -->|"Gamer reports a problem"| Dispute(["Dispute. Auto-release paused"])
   GamerAct -->|"Coach reports a problem"| Dispute
-  Done --> Review["Leave a review: 5 stars, optional text. One per booking"]
-  Review --> Shown(["Shown on the coach profile. Average updated"])
+  Done --> Review["Leave a review within 30 days: 5 stars, optional text up to 500 characters. One per booking, not editable"]
+  Review --> Shown(["Shown on the coach profile with the gamer's username. Average updated"])
   Done --> Later(["Payment problem within 30 days: dispute"])
 ```
+
+Session detail keeps the session chat, read-only, after the session.
 
 ---
 
@@ -209,17 +213,18 @@ flowchart TD
 ```mermaid
 flowchart TD
   Start(["Report a problem on session detail"]) --> When{"When?"}
-  When -->|"Before confirmation"| WindowReasons["Reasons for your role: conduct, ended early, didn't coach, didn't match listing, technical, other"]
+  When -->|"After the session, before confirmation"| WindowReasons["Reasons for your role: conduct, ended early, didn't coach, didn't match listing, technical, other"]
   When -->|"Within 30 days after completion"| PayReasons["Payment reasons only: wrong amount, charged twice, refund missing, payout missing or wrong, other"]
   WindowReasons --> Form
-  PayReasons --> Form["Description and optional evidence"]
-  Form --> Open["Status: Open. Auto-release paused if still in the window"]
-  Open --> Notify["Email to both. The other person can add one response with evidence"]
+  PayReasons --> PayForm["Description and optional evidence"]
+  PayForm --> PayOpen(["Open. Handled between you and Harbourly. Outcome emailed"])
+  Form["Description (required) and optional evidence: up to 5 images or PDFs"] --> Open["Status: Open. Auto-release paused"]
+  Open --> Notify["Email to both. The other person can send one response with evidence within 48 hours"]
   Notify --> Review["Status: Under review. Team reviews in Supabase"]
   Review --> Outcome{"Outcome"}
   Outcome -->|"Refund"| Refunded(["Resolved: refunded to gamer"])
   Outcome -->|"Release"| Paid(["Resolved: paid to coach"])
-  Refunded --> Email(["Outcome emailed to both"])
+  Refunded --> Email(["Outcome emailed to both, with an optional note from the team"])
   Paid --> Email
 
   NoShow(["Report a no-show: from 15 minutes after the start, while the other person hasn't joined"]) --> NSOpen["No-show reported. Payment stays held. Email to both"]
@@ -230,7 +235,7 @@ flowchart TD
   NSAnswer -->|"Contests"| Review
 ```
 
-Disputes always end in a full refund or a full release. A contested no-show report is decided by the team from the call's join records, by the same two no-show rules. Resolution happens in the Stripe or Xendit dashboard.
+Disputes always end in a full refund or a full release. A contested no-show report is decided by the team from the call's join records, by the same two no-show rules. Resolution happens in the Stripe or Xendit dashboard. One dispute per booking at a time; a report can't be withdrawn in the MVP.
 
 ---
 

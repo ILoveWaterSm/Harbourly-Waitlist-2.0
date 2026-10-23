@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 Report a problem</title>
+<meta name="description" content="Phase 2, page 7: report a problem with a session, or respond to one, with every state.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Flag.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/OptionCard.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/ImageUpload.css">
+<style>
+/* Page: Report a problem (/sessions/[id]/report, coach view /coach/sessions/[id]/report) → page.module.css. Layout only.
+   Focused layout like checkout: top nav, no sidebar. The form is the one accent card; the side card says
+   which session this is about and exactly what happens after sending. */
+.backLink { display: inline-block; margin-bottom: var(--space-5); font-size: 14px; }
+.pageHead { display: grid; gap: var(--space-3); max-width: 64ch; }
+.pageLead { font: var(--text-body); color: var(--muted); }
+.pageLead .mono { color: var(--ink-soft); font-size: 15px; }
+.rpTop { margin-top: var(--space-6); max-width: 640px; }
+.rpBody { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--space-6); align-items: start; margin-top: var(--space-8); }
+.rpMain { display: grid; gap: var(--space-6); min-width: 0; }
+.rpForm { display: grid; gap: var(--space-8); }
+.rpForm fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.rpLegend { display: block; margin-bottom: var(--space-3); padding: 0; font: 600 16px/1.35 var(--font-body); color: var(--ink); }
+.rpReasons .optionCard { min-height: 52px; padding: 13px var(--space-4); }
+.rpReasons .optionCardTitle { font-weight: 500; font-size: 14.5px; }
+.rpReasons.invalid .optionCard { border-color: color-mix(in srgb, var(--amber) 45%, transparent); }
+.rpReasons + .fieldError { margin-top: var(--space-3); }
+.rpFixed { display: grid; gap: 4px; padding: var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); }
+.rpFixed .label { color: var(--faint); }
+.rpFixed span:last-child { font-weight: 600; font-size: 15px; color: var(--ink); }
+.rpForm .field > .fieldLabel { font-size: 16px; }
+.rpForm textarea.fieldControl { min-height: 168px; }
+.rpNote { display: flex; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.rpNote svg { width: 18px; height: 18px; flex: none; color: var(--muted); }
+.rpActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); padding-top: var(--space-6); border-top: 1px solid var(--line); }
+.rpActions .textLink { font-size: 14px; }
+.rpUploadHint .mono { font-size: 12px; color: var(--muted); }
+
+/* The report being answered (response form) */
+.rpReport { display: grid; gap: var(--space-4); }
+.rpReport .cardFacts { margin: 0; }
+.rpReport .cardFacts dd.text { font: 400 14.5px/1.4 var(--font-body); color: var(--ink); }
+.rpQuote { padding: var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+.rpReport .uploadThumbs { grid-template-columns: repeat(auto-fill, 168px); }
+
+/* Side card */
+.rpSide { position: sticky; top: 100px; display: grid; gap: var(--space-5); }
+.rpWho { display: flex; align-items: center; gap: var(--space-3); }
+.rpWhoName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-weight: 600; font-size: 15px; }
+.rpWho .handle { display: block; margin-top: 2px; }
+.rpSide .cardFacts { margin: 0; padding-top: var(--space-4); border-top: 1px solid var(--line); }
+.rpSide .cardFacts dd.text { font: 400 14.5px/1.4 var(--font-body); color: var(--ink); }
+.rpNext { display: grid; gap: var(--space-3); padding-top: var(--space-5); border-top: 1px solid var(--line); }
+.rpNext > .label { color: var(--faint); }
+.rpSteps { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.rpSteps li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: var(--space-2); font-size: 14px; line-height: 1.55; color: var(--ink-soft); counter-increment: step; }
+.rpSteps li::before { content: counter(step, decimal-leading-zero); padding-top: 2px; font: 500 12px/1.4 var(--font-mono); color: var(--green); }
+.rpSteps .mono { color: var(--ink); }
+
+/* Sent */
+.sentHead { display: grid; gap: var(--space-3); max-width: 62ch; justify-items: start; }
+.sentHead p { font: var(--text-body); color: var(--muted); }
+.sentBody { display: grid; grid-template-columns: minmax(0, 560px); margin-top: var(--space-8); }
+.sentCard { display: grid; gap: var(--space-5); }
+.sentCard .cardFacts { margin: 0; }
+.sentCard .cardFacts dd.text { font: 400 14.5px/1.4 var(--font-body); color: var(--ink); }
+.sentCard .cardActions { margin-top: 0; padding-top: var(--space-5); border-top: 1px solid var(--line); }
+
+@container app (max-width: 999px) {
+  .rpBody { grid-template-columns: minmax(0, 1fr); }
+  .rpSide { position: static; }
+}
+@container app (max-width: 640px) {
+  .rpBody { margin-top: var(--space-6); gap: var(--space-5); }
+  .rpForm { gap: var(--space-6); }
+  .rpActions .button { flex: 1 1 100%; }
+  .rpActions .textLink { margin: 0 auto; }
+  .rpReport .uploadThumbs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sentCard .cardActions .button { flex: 1 1 100%; }
+}
+</style>
+</head>
+<body>
+<template id="shell-focused">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-focused-kairo">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="Kairo, account settings"><span class="avatar sm">K</span>Kairo</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">K</span><span><span class="mobileMenuName">Kairo</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="coach-sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="07 Report a problem">
+
+  <section data-state="gamer-after" data-label="Gamer · after the session" data-shell="focused">
+      <a class="textLink quiet backLink" href="#" data-link="06#pending"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Report a problem</h1><p class="pageLead">Tell us what went wrong in your session with Kairo. The payment stays held, and the automatic release is paused, until the team decides.</p></div>
+      <div class="rpBody">
+        <div class="rpMain">
+        <form class="card accent rpForm" novalidate onsubmit="return false">
+            <fieldset><legend class="rpLegend">What went wrong?</legend>
+              <div class="optionGroup rpReasons" role="radiogroup"><label class="optionCard"><input class="optionCardInput" type="radio" name="ga"><span class="optionCardBody"><span class="optionCardTitle">Coach didn't show up</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ga"><span class="optionCardBody"><span class="optionCardTitle">Session ended early</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ga"><span class="optionCardBody"><span class="optionCardTitle">Coach was present but didn't coach</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ga"><span class="optionCardBody"><span class="optionCardTitle">Coach behaved inappropriately</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ga"><span class="optionCardBody"><span class="optionCardTitle">Session didn't match the listing</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ga" checked><span class="optionCardBody"><span class="optionCardTitle">Technical problems stopped the session</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ga"><span class="optionCardBody"><span class="optionCardTitle">Other</span></span></label></div></fieldset><div class="field"><label class="fieldLabel" for="ga-d">What happened?</label><span class="fieldHint">Say what happened and roughly when. Times help the team check the call and the chat.</span>
+              <textarea class="fieldControl" id="ga-d" maxlength="1000" data-counter="ga-d-c" placeholder="For example: the screen share froze at 20:20 and didn't recover.">Kairo's shared screen kept freezing from about 20:20, so I couldn't follow the replay review for most of the session. We both rejoined twice and it didn't help.</textarea>
+              <div class="fieldFoot"><span class="fieldCounter" id="ga-d-c"></span></div></div><div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">2 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <div class="uploadThumbs"><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></div><div class="uploadThumbName">share-freeze-2031.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove share-freeze-2031.png"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></div><div class="uploadThumbName">share-freeze-2044.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove share-freeze-2044.png"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="uploadAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add file</button></div></div><p class="rpNote"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span>The team can read the session chat, so you don't need screenshots of it.</span></p><div class="rpActions"><button class="button primary" type="submit" data-go="submitted">Send report</button><a class="textLink quiet" href="#" data-link="06#pending">Back to session</a></div>
+        </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">K</span><div><span class="rpWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends</dd><dt>Date</dt><dd>Wed 7 Oct</dd><dt>Time</dt><dd>20:00–21:00 SGT</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>Kairo is told and can send one response within 48 hours.</span></li><li><span>The team reviews your report, Kairo's response and the session chat.</span></li><li><span>You're both emailed the outcome: a full refund to you, or the payment released to Kairo.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="gamer-noshow" data-label="Gamer · coach didn't show up" data-shell="focused">
+      <a class="textLink quiet backLink" href="#" data-link="06#pending"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Report a no-show</h1><p class="pageLead">Kairo hasn't joined the session that started at <span class="mono">20:00 SGT</span>. Reporting it closes the session for both of you.</p></div>
+      <div class="rpBody">
+        <div class="rpMain">
+        <form class="card accent rpForm" novalidate onsubmit="return false">
+            <div class="rpFixed"><span class="label">Reason</span><span>Coach didn't show up</span></div><div class="field"><label class="fieldLabel" for="gn-d">What happened?</label><span class="fieldHint">Anything the team should know, like when you joined and any messages you sent.</span>
+              <textarea class="fieldControl" id="gn-d" maxlength="1000" data-counter="gn-d-c" placeholder="For example: I joined at 19:53 and waited.">I joined at 19:53 and waited. Kairo hasn't joined or replied in the chat.</textarea>
+              <div class="fieldFoot"><span class="fieldCounter" id="gn-d-c"></span></div></div><div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">0 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <button class="uploadDrop" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Add screenshots or PDFs</span><span class="uploadDropMeta">JPG, PNG, WebP or PDF · up to 10 MB each</span></span></button></div><div class="rpActions"><button class="button primary" type="submit" data-go="submitted">Report a no-show</button><a class="textLink quiet" href="#" data-link="06#pending">Keep waiting</a></div>
+        </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">K</span><div><span class="rpWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends</dd><dt>Date</dt><dd>Wed 7 Oct</dd><dt>Time</dt><dd>20:00–21:00 SGT</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>The session closes. The payment stays held.</span></li><li><span>Kairo has 24 hours to respond.</span></li><li><span>If Kairo doesn't respond, you're refunded <span class="mono">₱1,961.00</span> in full automatically. If Kairo does, the team decides and emails you both.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="gamer-payment" data-label="Gamer · payment problem" data-shell="focused">
+      <a class="textLink quiet backLink" href="#" data-link="06#pending"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Report a payment problem</h1><p class="pageLead">For problems with what you were charged or refunded. You confirmed this session on Wed 7 Oct, so only payment problems can be reported now, until <span class="mono">Fri 6 Nov</span>.</p></div>
+      <div class="rpBody">
+        <div class="rpMain">
+        <form class="card accent rpForm" novalidate onsubmit="return false">
+            <fieldset><legend class="rpLegend">What went wrong?</legend>
+              <div class="optionGroup rpReasons" role="radiogroup"><label class="optionCard"><input class="optionCardInput" type="radio" name="gp"><span class="optionCardBody"><span class="optionCardTitle">Charged the wrong amount</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gp" checked><span class="optionCardBody"><span class="optionCardTitle">Charged twice</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gp"><span class="optionCardBody"><span class="optionCardTitle">Refund hasn't arrived</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gp"><span class="optionCardBody"><span class="optionCardTitle">Other payment issue</span></span></label></div></fieldset><div class="field"><label class="fieldLabel" for="gp-d">What happened?</label><span class="fieldHint">Say what you expected and what you see, with dates and amounts.</span>
+              <textarea class="fieldControl" id="gp-d" maxlength="1000" data-counter="gp-d-c" placeholder="For example: I was charged ₱1,961.00 twice on 5 Oct.">My card statement shows two charges of ₱1,961.00 on 5 Oct, a minute apart.</textarea>
+              <div class="fieldFoot"><span class="fieldCounter" id="gp-d-c"></span></div></div><div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">1 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <div class="uploadThumbs"><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></div><div class="uploadThumbName">card-statement-oct.pdf</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove card-statement-oct.pdf"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="uploadAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add file</button></div></div><div class="rpActions"><button class="button primary" type="submit" data-go="submitted">Send report</button><a class="textLink quiet" href="#" data-link="06#pending">Back to session</a></div>
+        </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">K</span><div><span class="rpWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends</dd><dt>Date</dt><dd>Wed 7 Oct</dd><dt>Time</dt><dd>20:00–21:00 SGT</dd><dt>Paid</dt><dd>₱1,961.00 · Mon 5 Oct</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>This is between you and Harbourly. Kairo isn't involved.</span></li><li><span>We check the payment with Xendit.</span></li><li><span>We email you what we found and what happens next.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="coach-after" data-label="Coach · after the session" data-shell="focused-kairo">
+      <a class="textLink quiet backLink" href="#" data-link="06#pending"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Report a problem</h1><p class="pageLead">Tell us what went wrong in your session with snapking. Your payment stays held, and the automatic release is paused, until the team decides.</p></div>
+      <div class="rpBody">
+        <div class="rpMain">
+        <form class="card accent rpForm" novalidate onsubmit="return false">
+            <fieldset><legend class="rpLegend">What went wrong?</legend>
+              <div class="optionGroup rpReasons" role="radiogroup"><label class="optionCard"><input class="optionCardInput" type="radio" name="ca"><span class="optionCardBody"><span class="optionCardTitle">Gamer didn't show up</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ca"><span class="optionCardBody"><span class="optionCardTitle">Gamer behaved inappropriately</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ca"><span class="optionCardBody"><span class="optionCardTitle">Gamer left early but the session should still be paid</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="ca"><span class="optionCardBody"><span class="optionCardTitle">Other</span></span></label></div></fieldset><div class="field"><label class="fieldLabel" for="ca-d">What happened?</label><span class="fieldHint">Say what happened and roughly when. Times help the team check the call and the chat.</span>
+              <textarea class="fieldControl" id="ca-d" maxlength="1000" data-counter="ca-d-c" placeholder="For example: snapking left at 20:31 and didn't come back."></textarea>
+              <div class="fieldFoot"><span class="fieldCounter" id="ca-d-c"></span></div></div><div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">0 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <button class="uploadDrop" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Add screenshots or PDFs</span><span class="uploadDropMeta">JPG, PNG, WebP or PDF · up to 10 MB each</span></span></button></div><p class="rpNote"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span>The team can read the session chat, so you don't need screenshots of it.</span></p><div class="rpActions"><button class="button primary" type="submit" data-go="submitted">Send report</button><a class="textLink quiet" href="#" data-link="06#pending">Back to session</a></div>
+        </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">S</span><div><span class="rpWhoName">snapking</span><span class="rpWhoMeta" style="display:flex;gap:6px;align-items:center;margin-top:3px;font-size:13px;color:var(--muted)"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span>Singapore</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends</dd><dt>Date</dt><dd>Wed 7 Oct</dd><dt>Time</dt><dd>20:00–21:00 PHT</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>snapking is told and can send one response within 48 hours.</span></li><li><span>The team reviews your report, snapking's response and the session chat.</span></li><li><span>You're both emailed the outcome: your payment released, or a full refund to snapking.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="coach-payment" data-label="Coach · payment problem" data-shell="focused-kairo">
+      <a class="textLink quiet backLink" href="#" data-link="06#pending"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Report a payment problem</h1><p class="pageLead">For problems with your payout for this session. You can report them until <span class="mono">Fri 6 Nov</span>, 30 days after it was released.</p></div>
+      <div class="rpBody">
+        <div class="rpMain">
+        <form class="card accent rpForm" novalidate onsubmit="return false">
+            <fieldset><legend class="rpLegend">What went wrong?</legend>
+              <div class="optionGroup rpReasons" role="radiogroup"><label class="optionCard"><input class="optionCardInput" type="radio" name="cp" checked><span class="optionCardBody"><span class="optionCardTitle">Payout not received</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="cp"><span class="optionCardBody"><span class="optionCardTitle">Payout amount is wrong</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="cp"><span class="optionCardBody"><span class="optionCardTitle">Other payment issue</span></span></label></div></fieldset><div class="field"><label class="fieldLabel" for="cp-d">What happened?</label><span class="fieldHint">Say what you expected and what you see, with dates and amounts.</span>
+              <textarea class="fieldControl" id="cp-d" maxlength="1000" data-counter="cp-d-c" placeholder="For example: the payout hasn't arrived.">The ₱1,850.00 for this session was released on 7 Oct but hasn't reached my Xendit account.</textarea>
+              <div class="fieldFoot"><span class="fieldCounter" id="cp-d-c"></span></div></div><div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">0 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <button class="uploadDrop" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Add screenshots or PDFs</span><span class="uploadDropMeta">JPG, PNG, WebP or PDF · up to 10 MB each</span></span></button></div><div class="rpActions"><button class="button primary" type="submit" data-go="submitted">Send report</button><a class="textLink quiet" href="#" data-link="06#pending">Back to session</a></div>
+        </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">S</span><div><span class="rpWhoName">snapking</span><span class="rpWhoMeta" style="display:flex;gap:6px;align-items:center;margin-top:3px;font-size:13px;color:var(--muted)"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span>Singapore</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends</dd><dt>Date</dt><dd>Wed 7 Oct</dd><dt>Time</dt><dd>20:00–21:00 PHT</dd><dt>Released</dt><dd>₱1,850.00 · Wed 7 Oct</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>This is between you and Harbourly. snapking isn't involved.</span></li><li><span>We check the payout with Xendit.</span></li><li><span>We email you what we found and what happens next.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="validation" data-label="Validation" data-shell="focused">
+      <a class="textLink quiet backLink" href="#" data-link="06#pending"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Report a problem</h1><p class="pageLead">Tell us what went wrong in your session with Kairo. The payment stays held, and the automatic release is paused, until the team decides.</p></div><div class="rpTop"><div class="notice error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><p class="noticeTitle">Two things to fix before sending</p><p class="noticeText">Choose what went wrong, and describe what happened.</p></div></div></div>
+      <div class="rpBody">
+        <div class="rpMain">
+        <form class="card accent rpForm" novalidate onsubmit="return false">
+            <fieldset><legend class="rpLegend">What went wrong?</legend>
+              <div class="optionGroup rpReasons invalid" role="radiogroup" aria-describedby="gv-e"><label class="optionCard"><input class="optionCardInput" type="radio" name="gv"><span class="optionCardBody"><span class="optionCardTitle">Coach didn't show up</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gv"><span class="optionCardBody"><span class="optionCardTitle">Session ended early</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gv"><span class="optionCardBody"><span class="optionCardTitle">Coach was present but didn't coach</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gv"><span class="optionCardBody"><span class="optionCardTitle">Coach behaved inappropriately</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gv"><span class="optionCardBody"><span class="optionCardTitle">Session didn't match the listing</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gv"><span class="optionCardBody"><span class="optionCardTitle">Technical problems stopped the session</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gv"><span class="optionCardBody"><span class="optionCardTitle">Other</span></span></label></div><span class="fieldError" id="gv-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Choose what went wrong.</span></fieldset><div class="field"><label class="fieldLabel" for="gv-d">What happened?</label><span class="fieldHint">Say what happened and roughly when. Times help the team check the call and the chat.</span>
+              <textarea class="fieldControl" id="gv-d" maxlength="1000" data-counter="gv-d-c" placeholder="For example: the screen share froze at 20:20 and didn't recover." aria-invalid="true" aria-describedby="gv-d-e"></textarea>
+              <div class="fieldFoot"><span class="fieldError" id="gv-d-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Describe what happened, so the team can look into it.</span><span class="fieldCounter" id="gv-d-c"></span></div></div><div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">0 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <button class="uploadDrop" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><span><span class="uploadDropTitle">Add screenshots or PDFs</span><span class="uploadDropMeta">JPG, PNG, WebP or PDF · up to 10 MB each</span></span></button></div><p class="rpNote"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span>The team can read the session chat, so you don't need screenshots of it.</span></p><div class="rpActions"><button class="button primary" type="submit" data-go="submitted">Send report</button><a class="textLink quiet" href="#" data-link="06#pending">Back to session</a></div>
+        </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">K</span><div><span class="rpWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends</dd><dt>Date</dt><dd>Wed 7 Oct</dd><dt>Time</dt><dd>20:00–21:00 SGT</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>Kairo is told and can send one response within 48 hours.</span></li><li><span>The team reviews your report, Kairo's response and the session chat.</span></li><li><span>You're both emailed the outcome: a full refund to you, or the payment released to Kairo.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="upload-error" data-label="Upload error" data-shell="focused">
+      <a class="textLink quiet backLink" href="#" data-link="06#pending"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Report a problem</h1><p class="pageLead">Tell us what went wrong in your session with Kairo. The payment stays held, and the automatic release is paused, until the team decides.</p></div>
+      <div class="rpBody">
+        <div class="rpMain">
+        <form class="card accent rpForm" novalidate onsubmit="return false">
+            <fieldset><legend class="rpLegend">What went wrong?</legend>
+              <div class="optionGroup rpReasons" role="radiogroup"><label class="optionCard"><input class="optionCardInput" type="radio" name="gu"><span class="optionCardBody"><span class="optionCardTitle">Coach didn't show up</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gu"><span class="optionCardBody"><span class="optionCardTitle">Session ended early</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gu"><span class="optionCardBody"><span class="optionCardTitle">Coach was present but didn't coach</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gu"><span class="optionCardBody"><span class="optionCardTitle">Coach behaved inappropriately</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gu"><span class="optionCardBody"><span class="optionCardTitle">Session didn't match the listing</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gu" checked><span class="optionCardBody"><span class="optionCardTitle">Technical problems stopped the session</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="gu"><span class="optionCardBody"><span class="optionCardTitle">Other</span></span></label></div></fieldset><div class="field"><label class="fieldLabel" for="gu-d">What happened?</label><span class="fieldHint">Say what happened and roughly when. Times help the team check the call and the chat.</span>
+              <textarea class="fieldControl" id="gu-d" maxlength="1000" data-counter="gu-d-c" placeholder="For example: the screen share froze at 20:20 and didn't recover.">Kairo's shared screen kept freezing from about 20:20, so I couldn't follow the replay review for most of the session. We both rejoined twice and it didn't help.</textarea>
+              <div class="fieldFoot"><span class="fieldCounter" id="gu-d-c"></span></div></div><div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">1 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <div class="uploadThumbs"><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></div><div class="uploadThumbName">share-freeze-2031.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove share-freeze-2031.png"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="uploadAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add file</button></div><span class="fieldError"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>share-freeze.mov isn't a JPG, PNG, WebP or PDF. For a video, paste a link to it in your description.</span></span><span class="fieldError"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>full-match.png is <span class="mono">14.2 MB</span>. Files can be up to <span class="mono">10 MB</span>.</span></span></div><p class="rpNote"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span>The team can read the session chat, so you don't need screenshots of it.</span></p><div class="rpActions"><button class="button primary" type="submit" data-go="submitted">Send report</button><a class="textLink quiet" href="#" data-link="06#pending">Back to session</a></div>
+        </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">K</span><div><span class="rpWhoName">Kairo <span class="badge verified"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg>Verified</span></span><span class="handle">@kairo.gg</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends</dd><dt>Date</dt><dd>Wed 7 Oct</dd><dt>Time</dt><dd>20:00–21:00 SGT</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>Kairo is told and can send one response within 48 hours.</span></li><li><span>The team reviews your report, Kairo's response and the session chat.</span></li><li><span>You're both emailed the outcome: a full refund to you, or the payment released to Kairo.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="submitted" data-label="Report sent" data-shell="focused">
+      <div class="sentHead"><span class="statusLabel action">Open</span><h1>We've got your report</h1><p>We've emailed you a copy and told Kairo. The payment stays held, and the automatic release is paused.</p></div>
+      <div class="sentBody">
+        <section class="card accent sentCard" aria-label="Your report">
+          <dl class="cardFacts"><dt>Session</dt><dd class="text">Kairo · Mobile Legends</dd><dt>Reason</dt><dd class="text">Technical problems stopped the session</dd><dt>Sent</dt><dd>Wed 7 Oct, 21:41 SGT</dd><dt>Evidence</dt><dd>2 files</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>Kairo can send one response until <span class="mono">Fri 9 Oct, 21:41 SGT</span>.</span></li><li><span>The team reviews your report, Kairo's response and the session chat.</span></li><li><span>You're both emailed the outcome.</span></li></ol></div>
+          <div class="cardActions"><a class="button primary" href="#" data-link="06#disputed-open">View session</a><a class="button secondary" href="#">Back to dashboard</a></div>
+        </section>
+      </div>
+  </section>
+
+  <section data-state="respond" data-label="Coach · respond to a report" data-shell="focused-kairo">
+      <a class="textLink quiet backLink" href="#" data-link="06#coach-dispute"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Respond to snapking's report</h1><p class="pageLead">You can send one response, with evidence if you have it, until <span class="mono">Fri 9 Oct, 21:41 PHT</span>. The team reads both sides and the session chat before deciding.</p></div>
+      <div class="rpBody">
+        <div class="rpMain">
+          <section class="card rpReport" aria-labelledby="rr-h">
+            <h2 class="cardTitle" id="rr-h">snapking's report</h2>
+            <dl class="cardFacts"><dt>Reason</dt><dd class="text">Technical problems stopped the session</dd><dt>Sent</dt><dd>Wed 7 Oct, 21:41 PHT</dd></dl>
+            <p class="rpQuote">Kairo's shared screen kept freezing from about 20:20, so I couldn't follow the replay review for most of the session. We both rejoined twice and it didn't help.</p>
+            <div class="uploadThumbs"><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></div><div class="uploadThumbName">share-freeze-2031.png</div></div><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></div><div class="uploadThumbName">share-freeze-2044.png</div></div></div>
+          </section>
+          <form class="card accent rpForm" novalidate onsubmit="return false">
+            <div class="field"><label class="fieldLabel" for="rs-d">Your response</label><span class="fieldHint">Say what happened from your side. You can only send one response, so include everything.</span>
+              <textarea class="fieldControl" id="rs-d" maxlength="1000" data-counter="rs-d-c" placeholder="What happened from your side?">The share froze a few times on snapking's side, so we carried on by voice and I put my notes in the chat until 21:00. I'm happy to look at the replay again.</textarea>
+              <div class="fieldFoot"><span class="fieldCounter" id="rs-d-c"></span></div></div>
+            <div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">1 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <div class="uploadThumbs"><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></div><div class="uploadThumbName">chat-notes-2050.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove chat-notes-2050.png"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="uploadAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add file</button></div></div>
+            <div class="rpActions"><button class="button primary" type="submit" data-go="response-sent">Send response</button><a class="textLink quiet" href="#" data-link="06#coach-dispute">Back to session</a></div>
+          </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">S</span><div><span class="rpWhoName">snapking</span><span class="rpWhoMeta" style="display:flex;gap:6px;align-items:center;margin-top:3px;font-size:13px;color:var(--muted)"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span>Singapore</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends</dd><dt>Date</dt><dd>Wed 7 Oct</dd><dt>Time</dt><dd>20:00–21:00 PHT</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>Your response goes to the team, and snapking can read it.</span></li><li><span>The team decides and emails you both: your payment released, or a full refund to snapking.</span></li><li><span>Until then, your payment stays held.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="response-sent" data-label="Coach · response sent" data-shell="focused-kairo">
+      <div class="sentHead"><span class="statusLabel action">Open</span><h1>Your response is with the team</h1><p>We've told snapking you've responded. You'll both get an email with the outcome.</p></div>
+      <div class="sentBody">
+        <section class="card accent sentCard" aria-label="Your report">
+          <dl class="cardFacts"><dt>Session</dt><dd class="text">snapking · Mobile Legends</dd><dt>Report</dt><dd class="text">Technical problems stopped the session</dd><dt>Responded</dt><dd>Thu 8 Oct, 09:12 PHT</dd><dt>Evidence</dt><dd>1 file</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>The team reviews the report, your response and the session chat.</span></li><li><span>You're both emailed the outcome: your payment released, or a full refund to snapking.</span></li><li><span>Until then, your payment stays held.</span></li></ol></div>
+          <div class="cardActions"><a class="button primary" href="#" data-link="06#coach-dispute">View session</a><a class="button secondary" href="#">Back to coach dashboard</a></div>
+        </section>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* Mockup behaviour for this page: sending steps to the sent state. */
+document.addEventListener('click', function (e) {
+  var go = e.target.closest('[data-go]');
+  if (go && !go.disabled) { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+});
+</script>
+</body>
+</html>

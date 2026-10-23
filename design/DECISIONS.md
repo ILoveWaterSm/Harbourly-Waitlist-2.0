@@ -407,6 +407,54 @@ Code entry (OtpInput, everywhere a 6-digit code is entered)
 - Mockup behaviour lives in `foundations/components/OtpInput.js`, beside its stylesheet.
 
 
+## Phase 2 decisions (agreed 16 Oct 2026, before Phase 2)
+
+Live session (page 08)
+- Voice call with screen share. Cameras are optional and off by default. With cameras off each person is a tile with their avatar, name and a green ring while they speak. A shared screen takes the stage and the tiles shrink to a strip beside it. Camera video and shared screens are marked empty slots in the mockups (no stock imagery).
+- Full window: no top nav, no sidebar, so the call keeps its space and nothing invites a click away. A slim session bar holds "Session with Kairo · Mobile Legends", the clock (`12:34 / 60:00`) and "Ends 21:00 SGT".
+- "Leave" is separate from "End session". Leave: you can rejoin until the scheduled end. End session: asks the other person (core flow unchanged).
+- Chat: desktop, a 360px column on the right on `--bg-mid`, always open. Phone: the stage on top (16:9), chat fills the space below, controls pinned to the bottom.
+- Chat holds text and links only, no files. It opens when you join, including the waiting state; there is no messaging before the session. A note on the panel: saved with the session, and the Harbourly team can read it if a problem is reported.
+- After the session, session detail shows the chat read-only in a collapsed "Session chat" section.
+- Banners (10, 5 and 1 minutes, and "Kairo wants to end the session"): on desktop in the centre of the session bar, so nothing moves and nothing is covered; on phone in a strip between the stage and the chat.
+- End request: the person who asked sees "Waiting for Kairo to agree" with "Withdraw". The other person's prompt stays until answered; no timeout.
+- One screen share at a time. While the other person shares, your button is disabled and reads "Kairo is sharing". Mockups show the coach sharing a replay. Known MVP limit: Mobile Legends and Call of Duty: Mobile are phone games, so gamers usually can't share live gameplay; coaches review replays or share their own screen.
+- Reconnecting: two states. Yours: the stage dims and controls pause until you're back. Theirs: "Kairo lost connection. They can rejoin until 21:00."
+- No separate device check before joining. If the browser blocks the microphone or camera, a notice sits in place of your tile with how to allow it; you can still listen and chat.
+- No-show: from 15 minutes after the start the gamer's waiting state offers "Report a no-show", which opens Report a problem with that reason already chosen. Once filed, the session closes for both. A coach waiting for an absent gamer sees no button, only "If snapking doesn't join, you're still paid."
+- If nobody joins, the booking moves to Pending confirmation at the scheduled end, as usual.
+- Session ended screen: the gamer gets "Confirm session" (session detail, confirm step open) and "Report a problem"; the coach gets "View session".
+
+Session detail (page 06)
+- Coach view: names the gamer with flag, country and time zone; times in the coach's zone (PHT); shows "Your price ₱1,850.00" and when it's paid, never the gamer's fee or total. Coaches receive their full price. Coach cancel confirm says the gamer is refunded in full; inside 24 hours it adds that it's recorded as a serious incident. Pending confirmation reads "Waiting for snapking to confirm" with the release countdown. Completed shows the released amount and the gamer's review. Disputes: the coach can respond. Coaches never see awaiting-payment or expired bookings.
+- Confirming the session is a confirm step (it releases payment and can't be undone), with the primary button, not amber: "Kairo is paid ₱1,850.00. After this you can only report payment problems."
+- Review: 5 stars, optional text up to 500 characters, not editable, one per booking, open for 30 days after completion, including after a dispute resolved for the coach. "Shown on Kairo's profile with your username."
+- Moved: a session moved by an accepted reschedule shows the new time with "Moved from Wed 7 Oct · 20:00 SGT", and "Request a new time" is replaced by "This session has already been moved once."
+- The requester can withdraw an open request ("Withdraw request"): the held times are released and it doesn't use up the one accepted move. A declined request shows "Kairo declined your request" and the original time stands; a new request can be sent while changes are still open.
+- Offered times: from the coach's free times, at least 24 hours away, within 4 weeks, up to 3, no message. The coach's request form is the same as the gamer's.
+- Cancelling while a request is open is allowed and cancels the request too.
+- The screen-share note ("Screen sharing needs a computer. On a phone you can talk, chat and watch.") sits with the join details at every width.
+- Extra states: In session (you left the call; Join session rejoins) and Pending confirmation with under 24 hours left (amber).
+- No booking reference and no activity history. The session facts include "Booked Mon 5 Oct, 14:12 SGT", because the free-cancel hour depends on it.
+
+Disputes (pages 06 and 07)
+- Reason lists. Gamer: "Coach didn't show up" alone during the session (from 15 minutes after the start); the full window list after the session ends; payment reasons after completion. Coach: the window list after the session ends; payment reasons after completion.
+- Description required, up to 1,000 characters. Evidence optional: up to 5 files, JPG, PNG, WebP or PDF, 10 MB each; the hint says to paste a link for a video clip. A line says the team can read the session chat, so screenshots of it aren't needed.
+- The other person sees the reason, description and evidence, and can send one response (text up to 1,000 characters, up to 5 files) within 48 hours; after that the team decides without it. The filer sees the response.
+- Coach no-show reports: the coach has 24 hours to respond; with no response the gamer is refunded in full automatically (matches the landing page FAQ). Everything else is decided by the team.
+- One dispute per booking at a time; the other person responds rather than filing their own. A payment problem after completion is a separate dispute, handled between that person and Harbourly: the other person isn't asked to respond. A report can't be withdrawn in the MVP.
+- Outcome: an optional one-line note from the team, plus refund timing ("It can take up to 10 working days to show, depending on your bank"). No promise of how long the team takes.
+
+Mockup times (Phase 2)
+- Every state follows the Phase 1 booking: Kairo, Mobile Legends, Wed 7 Oct, 20:00–21:00 SGT, booked Mon 5 Oct at 14:12 SGT. Awaiting payment uses Vexa (Tue 13 Oct, S$47.70); Expired uses Kairo, Fri 25 Sep. The Tue 6 Oct booking stays for the Phase 3 dashboard.
+- "Now" per state: upcoming and cancel Mon 5 Oct 18:00 (free cancel 14:40); reschedule received Tue 6 Oct 09:00; locked Wed 7 Oct 11:00; join 19:52; no-show 20:16; live 20:12 to 20:42; banners 20:50, 20:55, 20:59; ended 21:00; pending 21:20 (releases Sat 10 Oct 21:00); pending under 24 hours Fri 9 Oct 22:00; disputes Wed 7 to Mon 12 Oct; payment problem Thu 15 Oct.
+
+New shared parts for Phase 2: ParticipantTile, CallControls and ChatPanel (page 08); SlotPicker choosing up to 3 times (reschedule request); Rating.js and Field.js (star input and character counter behaviour, moved out of the component library page); icons for microphone, camera, screen share, chat, send and end call.
+
+## Checkpoint 3 refinements (from 18 Oct 2026)
+
+- Session detail, dispute section (06): a response that hasn't been sent yet is shown as a dashed, empty slot with a clock icon, "No response from Kairo yet", the deadline and the time left. It never uses the quote box, which is kept for words someone actually sent (with its "Sent …" line), so the app's own status text can't be mistaken for the other person's response. Applies wherever a pending response, review or reply is shown later (dashboards in Phase 3, coach dashboard in Phase 5).
+
 ## Policy update, 23 Oct 2026 (reconciling the 11 Oct marketing copy)
 
 The marketing copy on `main` (commit `adc8868`, 11 Oct 2026: `landing.html` FAQ and `verification-standard.html`) stated policies that differed from this file. Agreed 23 Oct 2026; the older sections above are corrected to match and point here.

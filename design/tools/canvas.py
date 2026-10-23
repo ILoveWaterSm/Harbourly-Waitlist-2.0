@@ -61,7 +61,7 @@ def place(fname, title, key, x, y):
 # Phase 0, page 0.2: library sections in fixed rows (0.1 Tokens is left as it is)
 lib = dict(labels("0.2-components.html"))
 y = 4123
-for row in [["shell", "buttons", "fields"], ["status", "identity", "cards"], ["notices", "confirm", "patterns"], ["booking"]]:
+for row in [["shell", "buttons", "fields"], ["status", "identity", "cards"], ["notices", "confirm", "patterns"], ["booking", "session"]]:
     tallest = 0
     for i, s in enumerate(row):
         for wn, dx in (("desktop", 0), ("phone", 1520)):
@@ -78,11 +78,20 @@ PHASES = [
         ("04", "04 Checkout summary", "04-checkout-summary.html", "https://claude.ai/artifact/EFj1Br4ak4Xnd7935vocsw"),
         ("05", "05 Payment return", "05-payment-return.html", "https://claude.ai/artifact/HSpMwJ9o7dDJAEYaDy6wUa"),
     ]),
+    ("phase2", "Phase 2 · The session and after", [
+        ("06", "06 Session detail", "06-session-detail.html", "https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3"),
+        ("07", "07 Report a problem", "07-report-a-problem.html", "https://claude.ai/artifact/FLFRVmLwDCbUqCB4p4vbZM"),
+        ("08", "08 Live session", "08-live-session.html", "https://claude.ai/artifact/LB4gwSiruwp8qDVRLS27Nt"),
+    ]),
 ]
+CHECKS = {"phase1": ("check2", "Checkpoint 2: the booking flow end to end, pages 01 to 05."),
+          "phase2": ("check3", "Checkpoint 3: session lifecycle, pages 06 to 08.")}
 for nid, ptitle, pages in PHASES:
     top = end + 600
     N[nid] = {**N.get(nid, {}), "kind": "title1", "maxW": 6130, "text": ptitle, "w": 240, "x": 0, "y": top}
-    if nid == "phase1": N.setdefault("check2", {"fill": "green", "size": 24, "w": 520, "x": -640, "text": "Checkpoint 2: the booking flow end to end, pages 01 to 05."})["y"] = top
+    if nid in CHECKS:
+        cid, ctext = CHECKS[nid]
+        N.setdefault(cid, {"fill": "green", "size": 24, "w": 520, "x": -640, "text": ctext})["y"] = top
     ty = top + 430
     for pp, name, src, url in pages:
         sfx = "p" + nid[-1]

@@ -173,7 +173,7 @@ flowchart TD
 </section>
 <section id="f4" class="flow">
   <h2><span class="n">4</span>Before the session: reminders, rescheduling, cancelling</h2>
-  <p class="note">Only one open request per booking, and at most one accepted reschedule per booking. A coach cancelling inside 24 hours counts like a coach no-show (DECISIONS.md, "Coach reliability").</p>
+  <p class="note">Only one open request per booking, and at most one accepted reschedule per booking. Cancelling while a request is open cancels the request too. A coach cancelling inside 24 hours counts like a coach no-show (DECISIONS.md, "Coach reliability").</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   Confirmed([&quot;Booking confirmed&quot;]) --&gt; Window{&quot;More than 24 hours to go?&quot;}
@@ -181,11 +181,12 @@ flowchart TD
   Window --&gt;|&quot;Yes&quot;| Options[&quot;Session detail offers: Request a new time, Cancel booking&quot;]
   Window --&gt;|&quot;No&quot;| Locked[&quot;Time locked: no new times. Cancel booking still offered&quot;]
 
-  Options --&gt; Req[&quot;Requester offers up to 3 slots from the coach&#x27;s availability. Slots held&quot;]
+  Options --&gt; Req[&quot;Requester offers up to 3 times from the coach&#x27;s free times, at least 24 hours away, within 4 weeks. Times held&quot;]
+  Req --&gt;|&quot;Requester withdraws&quot;| Stands
   Req --&gt; Other{&quot;Other person responds&quot;}
-  Other --&gt;|&quot;Picks a slot&quot;| Moved([&quot;Booking moved. Emails to both&quot;])
+  Other --&gt;|&quot;Picks a time&quot;| Moved([&quot;Booking moved. Emails to both. Can&#x27;t be moved again&quot;])
   Other --&gt;|&quot;Declines&quot;| WhoAsked{&quot;Who asked?&quot;}
-  WhoAsked --&gt;|&quot;Gamer&quot;| Stands([&quot;Original time stands&quot;])
+  WhoAsked --&gt;|&quot;Gamer&quot;| Stands([&quot;Original time stands. A new request can be sent while changes are open&quot;])
   WhoAsked --&gt;|&quot;Coach&quot;| GamerChoice{&quot;Gamer chooses&quot;}
   GamerChoice --&gt;|&quot;Keep original time&quot;| Stands
   GamerChoice --&gt;|&quot;Cancel&quot;| FullRefund([&quot;Cancelled. Full refund including platform fee&quot;])
@@ -208,53 +209,55 @@ flowchart TD
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   Join([&quot;Join session, from 10 minutes before&quot;]) --&gt; Waiting{&quot;Other person here?&quot;}
-  Waiting --&gt;|&quot;No&quot;| Room[&quot;Waiting for the other person&quot;]
+  Waiting --&gt;|&quot;No&quot;| Room[&quot;Waiting for the other person. Chat open&quot;]
   Room --&gt; Waiting
   Room --&gt;|&quot;15 minutes after start, other person absent&quot;| NoShow([&quot;Report a no-show: see diagram 7&quot;])
-  Waiting --&gt;|&quot;Yes&quot;| Live[&quot;Live: call, chat saved, screen share on computers only&quot;]
+  Room --&gt;|&quot;Nobody joins by the scheduled end&quot;| Ended
+  Waiting --&gt;|&quot;Yes&quot;| Live[&quot;Live: voice call, optional camera, chat saved, screen share on computers only, one at a time&quot;]
   Live --&gt; Banners[&quot;Banners at 10, 5 and 1 minutes before the end&quot;]
-  Live --&gt;|&quot;Disconnected&quot;| Rejoin[&quot;Rejoin until the scheduled end&quot;]
+  Live --&gt;|&quot;Disconnected, or Leave&quot;| Rejoin[&quot;Rejoin until the scheduled end&quot;]
   Rejoin --&gt; Live
   Live --&gt; EndHow{&quot;How it ends&quot;}
   EndHow --&gt;|&quot;Scheduled end time&quot;| Ended
-  EndHow --&gt;|&quot;Person A: End session, then Confirm&quot;| Ask[&quot;Person B sees: A wants to end the session&quot;]
-  Ask --&gt;|&quot;Keep going&quot;| Live
-  Ask --&gt;|&quot;End now&quot;| Ended([&quot;Session ended. Pending confirmation&quot;])
+  EndHow --&gt;|&quot;Person A: End session, then confirm&quot;| Ask[&quot;Person B sees: A wants to end the session. A can withdraw&quot;]
+  Ask --&gt;|&quot;Keep going, or A withdraws&quot;| Live
+  Ask --&gt;|&quot;End now&quot;| Ended([&quot;Session ended. Pending confirmation. Gamer: Confirm session or Report a problem&quot;])
 </pre></div>
 </section>
 <section id="f6" class="flow">
   <h2><span class="n">6</span>After the session: confirm, review</h2>
-  
+  <p class="note">Session detail keeps the session chat, read-only, after the session.</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   Ended([&quot;Pending confirmation, 72 hours&quot;]) --&gt; Emails[&quot;Email to gamer: please confirm. Reminder with 24 hours left&quot;]
   Ended --&gt; GamerAct{&quot;What happens&quot;}
-  GamerAct --&gt;|&quot;Gamer confirms&quot;| Done
-  GamerAct --&gt;|&quot;No action for 72 hours&quot;| Done([&quot;Completed. Payment released to coach. Emails&quot;])
+  GamerAct --&gt;|&quot;Gamer confirms, on a confirm step&quot;| Done
+  GamerAct --&gt;|&quot;No action for 72 hours&quot;| Done([&quot;Completed. Payment released to coach, less the 12% commission. Emails&quot;])
   GamerAct --&gt;|&quot;Gamer reports a problem&quot;| Dispute([&quot;Dispute. Auto-release paused&quot;])
   GamerAct --&gt;|&quot;Coach reports a problem&quot;| Dispute
-  Done --&gt; Review[&quot;Leave a review: 5 stars, optional text. One per booking&quot;]
-  Review --&gt; Shown([&quot;Shown on the coach profile. Average updated&quot;])
+  Done --&gt; Review[&quot;Leave a review within 30 days: 5 stars, optional text up to 500 characters. One per booking, not editable&quot;]
+  Review --&gt; Shown([&quot;Shown on the coach profile with the gamer&#x27;s username. Average updated&quot;])
   Done --&gt; Later([&quot;Payment problem within 30 days: dispute&quot;])
 </pre></div>
 </section>
 <section id="f7" class="flow">
   <h2><span class="n">7</span>Disputes and no-show reports</h2>
-  <p class="note">Disputes always end in a full refund or a full release. A contested no-show report is decided by the team from the call's join records, by the same two no-show rules. Resolution happens in the Stripe or Xendit dashboard.</p>
+  <p class="note">Disputes always end in a full refund or a full release. A contested no-show report is decided by the team from the call's join records, by the same two no-show rules. Resolution happens in the Stripe or Xendit dashboard. One dispute per booking at a time; a report can't be withdrawn in the MVP.</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   Start([&quot;Report a problem on session detail&quot;]) --&gt; When{&quot;When?&quot;}
-  When --&gt;|&quot;Before confirmation&quot;| WindowReasons[&quot;Reasons for your role: conduct, ended early, didn&#x27;t coach, didn&#x27;t match listing, technical, other&quot;]
+  When --&gt;|&quot;After the session, before confirmation&quot;| WindowReasons[&quot;Reasons for your role: conduct, ended early, didn&#x27;t coach, didn&#x27;t match listing, technical, other&quot;]
   When --&gt;|&quot;Within 30 days after completion&quot;| PayReasons[&quot;Payment reasons only: wrong amount, charged twice, refund missing, payout missing or wrong, other&quot;]
   WindowReasons --&gt; Form
-  PayReasons --&gt; Form[&quot;Description and optional evidence&quot;]
-  Form --&gt; Open[&quot;Status: Open. Auto-release paused if still in the window&quot;]
-  Open --&gt; Notify[&quot;Email to both. The other person can add one response with evidence&quot;]
+  PayReasons --&gt; PayForm[&quot;Description and optional evidence&quot;]
+  PayForm --&gt; PayOpen([&quot;Open. Handled between you and Harbourly. Outcome emailed&quot;])
+  Form[&quot;Description (required) and optional evidence: up to 5 images or PDFs&quot;] --&gt; Open[&quot;Status: Open. Auto-release paused&quot;]
+  Open --&gt; Notify[&quot;Email to both. The other person can send one response with evidence within 48 hours&quot;]
   Notify --&gt; Review[&quot;Status: Under review. Team reviews in Supabase&quot;]
   Review --&gt; Outcome{&quot;Outcome&quot;}
   Outcome --&gt;|&quot;Refund&quot;| Refunded([&quot;Resolved: refunded to gamer&quot;])
   Outcome --&gt;|&quot;Release&quot;| Paid([&quot;Resolved: paid to coach&quot;])
-  Refunded --&gt; Email([&quot;Outcome emailed to both&quot;])
+  Refunded --&gt; Email([&quot;Outcome emailed to both, with an optional note from the team&quot;])
   Paid --&gt; Email
 
   NoShow([&quot;Report a no-show: from 15 minutes after the start, while the other person hasn&#x27;t joined&quot;]) --&gt; NSOpen[&quot;No-show reported. Payment stays held. Email to both&quot;]
