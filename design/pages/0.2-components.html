@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="../foundations/components/Skeleton.css">
 <link rel="stylesheet" href="../foundations/components/ErrorState.css">
 <link rel="stylesheet" href="../foundations/components/PendingSlot.css">
+<link rel="stylesheet" href="../foundations/components/ScrollArea.css">
 <link rel="stylesheet" href="../foundations/components/OptionCard.css">
 <link rel="stylesheet" href="../foundations/components/SlotPicker.css">
 <link rel="stylesheet" href="../foundations/components/AudioPlayer.css">
@@ -779,7 +780,7 @@
     <div class="lib-sec-head">
       <h2>Empty, loading and error</h2>
       <p>Every list and card has all three. Empty says what will appear and how to get it. Loading keeps the shape of what's coming. Errors say what failed and offer a retry. A pending slot stands in for something someone hasn't sent yet, so the app's own status text never looks like their words.</p>
-      <span class="lib-files">EmptyState · Skeleton · ErrorState · PendingSlot</span>
+      <span class="lib-files">EmptyState · Skeleton · ErrorState · PendingSlot · ScrollArea</span>
     </div>
     <div class="lib-specs" style="--lib-min:400px">
       <div class="lib-spec"><span class="lib-cap">Empty · first use</span>
@@ -806,6 +807,14 @@
         <article class="card"><div class="errorState" style="padding-block:var(--space-2)"><svg class="icon"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load your sessions</p><p class="errorStateText">Check your connection, then try again.</p><div class="errorStateAction"><button class="button secondary" type="button" aria-busy="true"><span class="buttonSpinner" aria-hidden="true"></span>Trying again…</button></div></div></article></div>
       <div class="lib-spec"><span class="lib-cap">Pending · response not sent yet</span>
         <div class="pendingSlot" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">No response from Kairo yet</p><p class="pendingSlotText">Kairo can send one response, with evidence, until <span class="mono">Fri 9 Oct, 21:41 SGT</span>. After that, the team decides without it.</p></div><span class="pendingSlotLeft"><span class="countdown">47h 51m</span> left</span></div></div>
+      <div class="lib-spec"><span class="lib-cap">Scroll area · more below, then scrolled</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+          <div class="card" style="padding:var(--space-4)"><div class="scrollArea canDown" tabindex="0" role="region" aria-label="Example list" style="height:190px;--fade-bottom:40px">
+            <ul style="display:grid;gap:var(--space-3);margin:0;padding:0 var(--space-2) 0 0;list-style:none;font-size:14px;color:var(--ink-soft)"><li>Finish paying to book this time</li><li>Did the session go ahead?</li><li>Vexa asked to move this session</li><li>How was your session with Ghostline?</li><li>Another thing to do</li><li>One more thing to do</li></ul></div></div>
+          <div class="card" style="padding:var(--space-4)"><div class="scrollArea canUp canDown" tabindex="0" role="region" aria-label="Example list, scrolled" style="height:190px;--fade-top:28px;--fade-bottom:40px">
+            <ul style="display:grid;gap:var(--space-3);margin:0;padding:0 var(--space-2) 0 0;list-style:none;font-size:14px;color:var(--ink-soft)"><li>Finish paying to book this time</li><li>Did the session go ahead?</li><li>Vexa asked to move this session</li><li>How was your session with Ghostline?</li><li>Another thing to do</li><li>One more thing to do</li></ul></div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:var(--space-2)">A thin grey thumb that brightens on hover, and a fade at an edge while there's more past it. Shown with the fades forced on; they appear only when the content scrolls.</p></div>
       <div class="lib-spec"><span class="lib-cap">Pending · stacked, for narrow columns</span>
         <div class="pendingSlot stacked" role="status" style="max-width:304px"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">No response from nullpoint yet</p><p class="pendingSlotText">nullpoint can send one response, with evidence, until <span class="mono">Tue 6 Oct, 18:30 SGT</span>. After that, the team decides without it.</p></div><span class="pendingSlotLeft"><span class="countdown">28h 18m</span> left</span></div></div>
     </div>
@@ -919,6 +928,7 @@ window.addEventListener('resize', clampBios);
 <script src="../foundations/components/OtpInput.js"></script>
 <script src="../foundations/components/Field.js"></script>
 <script src="../foundations/components/Rating.js"></script>
+<script src="../foundations/components/ScrollArea.js"></script>
 <script src="../foundations/mockup.js"></script>
 <script>
 /* specimen behaviour: hold countdown, resend timer (counters and the star input: Field.js, Rating.js) */

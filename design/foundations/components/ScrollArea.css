@@ -1,0 +1,28 @@
+/* ScrollArea → ScrollArea.module.css. A region that scrolls on its own inside a fixed-height layout
+   (the dashboard's two columns on desktop). Quiet but findable: a thin 6px thumb with no track and no arrow
+   buttons, grey at rest and brighter on hover or while scrolling, plus a soft fade at an edge whenever there's
+   more content past it (the fade is the cue on systems whose scrollbars hide until you scroll).
+   ScrollArea.js sets canUp / canDown / isScrolling. With nothing to scroll it looks like plain content.
+   Chrome, Edge and Safari use the ::-webkit-scrollbar rules; Firefox gets the standard thin scrollbar. */
+.scrollArea {
+  position: relative;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  --fade-top: 0px;
+  --fade-bottom: 0px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+}
+.scrollArea.canUp { --fade-top: 28px; }
+.scrollArea.canDown { --fade-bottom: 40px; }
+.scrollArea::-webkit-scrollbar { width: 6px; }
+.scrollArea::-webkit-scrollbar-track, .scrollArea::-webkit-scrollbar-corner { background: transparent; }
+.scrollArea::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+.scrollArea::-webkit-scrollbar-thumb { border-radius: var(--radius-pill); background: var(--line-strong); }
+.scrollArea:hover::-webkit-scrollbar-thumb, .scrollArea.isScrolling::-webkit-scrollbar-thumb { background: var(--muted); }
+@supports not selector(::-webkit-scrollbar) {
+  .scrollArea { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+  .scrollArea:hover, .scrollArea.isScrolling { scrollbar-color: var(--muted) transparent; }
+}
+.scrollArea:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; } /* inside, so the edge mask never hides it */
