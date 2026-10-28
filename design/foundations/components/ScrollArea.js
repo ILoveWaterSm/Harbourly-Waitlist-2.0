@@ -5,6 +5,8 @@
     var max = el.scrollHeight - el.clientHeight;
     el.classList.toggle('canUp', max > 1 && el.scrollTop > 1);
     el.classList.toggle('canDown', max > 1 && el.scrollTop < max - 1);
+    // A scrollable region is a keyboard stop only while it actually scrolls; stacked into the page it isn't one.
+    if (max > 1) el.setAttribute('tabindex', '0'); else el.removeAttribute('tabindex');
   }
   var areas = Array.prototype.slice.call(document.querySelectorAll('.scrollArea'));
   areas.forEach(function (el) {
