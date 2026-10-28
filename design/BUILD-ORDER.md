@@ -121,8 +121,8 @@ Pages: [09 Gamer dashboard](https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM) (
 
 ### 9. Gamer dashboard · L
 `/dashboard` *proposed*. Rules in DECISIONS.md, "Phase 3 decisions".
-- To do (one card per thing waiting on you, soonest deadline first, accent on the first): awaiting payment (hold time left), awaiting your confirmation (time left), reschedule request waiting on you (offered times, time left to reply), reviews you owe. Coming up: next session card, then rows. Problems you've reported (dashed slot for a response not sent yet). Recent sessions, then "All sessions". No quick-links card.
-- States: busy account (Mon 5 Oct, 14:12 SGT), nothing to do (To do and Coming up empty; Thu 24 Sep, 13:05), brand-new account (one block, Browse coaches; Thu 24 Sep, 11:00), loading, error.
+- Floating welcome banner (avatar, date, greeting, Browse coaches), then two columns on a full-width page. To do box (3 items in full, soonest deadline first, accent on the box): awaiting payment (hold time left), awaiting your confirmation (time left), reschedule request waiting on you (offered times, time left to reply), reviews you owe; "N more to do · View all" opens the To do page. Coming up: next session block (Join session) then rows. Problems you've reported (dashed slot for a response not sent yet). Recent sessions, then "All sessions". No quick-links card. On desktop the columns scroll separately and the page doesn't; on a phone one page scroll (DECISIONS.md, "Phase 3 decisions").
+- States: busy account (Mon 5 Oct, 14:12 SGT), **todo-all** (the To do page, `/dashboard/to-do`: every item, "← Dashboard"), nothing to do (To do and Coming up empty; Thu 24 Sep, 13:05), brand-new account (one block, Browse coaches; Thu 24 Sep, 11:00), loading, error.
 - Every card and row opens its own booking on 06 (or 04, 03, 07): 06 gained kairo-tue, vexa-request, mirae-pending, mirae-confirm, ghostline-review and nullpoint-open, and 07 gained mirae-after, for the dashboard's other bookings.
 
 ### 10. My sessions · S
@@ -132,7 +132,7 @@ Pages: [09 Gamer dashboard](https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM) (
 
 Also in Phase 3: PendingSlot component and a compact SessionList (library page); the logo and sidebar link to 09, 01 and 10 on every page; 05, 06 and 07 buttons linked into the prototype; 08 coach payout corrected to ₱1,628.00; the library's Confirm step follows the 23 Oct cancellation rule.
 
-**Checkpoint 4:** gamer side complete. Built and published 23 Oct 2026; waiting for review.
+**Checkpoint 4:** gamer side complete. Built and published 23 Oct 2026; 09 redesigned on 28 Oct 2026 (full-width, floating banner, To do box and page, separate column scrolling); waiting for review.
 
 ---
 

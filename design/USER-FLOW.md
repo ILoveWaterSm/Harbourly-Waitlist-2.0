@@ -396,6 +396,7 @@ flowchart LR
 
   subgraph Gamer["Gamer block in the sidebar"]
     GDash["Dashboard /dashboard"]
+    GTodo["To do /dashboard/to-do, opened from the dashboard's View all. Dashboard stays highlighted"]
     GBrowse["Browse coaches /coaches"]
     GSess["My sessions /sessions"]
     GBecome["Become a coach, until a coach record exists"]
@@ -406,6 +407,8 @@ flowchart LR
     CSess["Coach sessions /coach/sessions"]
   end
 
+  GDash -->|"View all, when more than 3 to do"| GTodo
+  GTodo -->|"Back to dashboard"| GDash
   GDash <-->|"Switcher"| CDash
 ```
 

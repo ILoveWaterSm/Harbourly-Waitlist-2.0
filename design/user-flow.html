@@ -173,7 +173,7 @@ flowchart TD
 </section>
 <section id="f4" class="flow">
   <h2><span class="n">4</span>Before the session: reminders, rescheduling, cancelling</h2>
-  <p class="note">Only one open request per booking, and at most one accepted reschedule per booking. Cancelling while a request is open cancels the request too. A coach cancelling inside 24 hours counts like a coach no-show (DECISIONS.md, "Coach reliability").</p>
+  <p class="note">Only one open request per booking, and at most one accepted reschedule per booking. Cancelling while a request is open cancels the request too. A coach cancelling inside 24 hours counts like a coach no-show (DECISIONS.md, &quot;Coach reliability&quot;).</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   Confirmed([&quot;Booking confirmed&quot;]) --&gt; Window{&quot;More than 24 hours to go?&quot;}
@@ -242,7 +242,7 @@ flowchart TD
 </section>
 <section id="f7" class="flow">
   <h2><span class="n">7</span>Disputes</h2>
-  <p class="note">Disputes end in a full refund or a full release, except an upheld gamer no-show, which splits the coach's price 50/50 (23 Oct 2026). The team checks no-shows against the call's join records. Resolution happens in the Stripe or Xendit dashboard. One dispute per booking at a time; a report can't be withdrawn in the MVP.</p>
+  <p class="note">Disputes end in a full refund or a full release, except an upheld gamer no-show, which splits the coach&#x27;s price 50/50 (23 Oct 2026). The team checks no-shows against the call&#x27;s join records. Resolution happens in the Stripe or Xendit dashboard. One dispute per booking at a time; a report can&#x27;t be withdrawn in the MVP.</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   Start([&quot;Report a problem on session detail, or Report a no-show in the session&quot;]) --&gt; When{&quot;When?&quot;}
@@ -329,7 +329,7 @@ flowchart TD
 </section>
 <section id="f10" class="flow">
   <h2><span class="n">10</span>Account</h2>
-  <p class="note">A coach's country can't be changed here once payout setup is done.</p>
+  <p class="note">A coach&#x27;s country can&#x27;t be changed here once payout setup is done.</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   Account([&quot;Account settings&quot;]) --&gt; Profile[&quot;Name, username, avatar. Photo checked automatically on upload&quot;]
@@ -350,7 +350,7 @@ flowchart TD
 </section>
 <section id="f11" class="flow">
   <h2><span class="n">11</span>Booking status lifecycle</h2>
-  <p class="note">A reschedule request is shown as a second line on a confirmed booking, not a separate status. <code>split</code> is an upheld gamer no-show (coach's price split 50/50); a late cancellation stays <code>cancelled</code>, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.</p>
+  <p class="note">A reschedule request is shown as a second line on a confirmed booking, not a separate status. `split` is an upheld gamer no-show (coach&#x27;s price split 50/50); a late cancellation stays `cancelled`, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.</p>
   <div class="diagram"><pre class="mermaid">
 stateDiagram-v2
   [*] --&gt; pending_payment: slot picked
@@ -415,6 +415,7 @@ flowchart LR
 
   subgraph Gamer[&quot;Gamer block in the sidebar&quot;]
     GDash[&quot;Dashboard /dashboard&quot;]
+    GTodo[&quot;To do /dashboard/to-do, opened from the dashboard&#x27;s View all. Dashboard stays highlighted&quot;]
     GBrowse[&quot;Browse coaches /coaches&quot;]
     GSess[&quot;My sessions /sessions&quot;]
     GBecome[&quot;Become a coach, until a coach record exists&quot;]
@@ -425,6 +426,8 @@ flowchart LR
     CSess[&quot;Coach sessions /coach/sessions&quot;]
   end
 
+  GDash --&gt;|&quot;View all, when more than 3 to do&quot;| GTodo
+  GTodo --&gt;|&quot;Back to dashboard&quot;| GDash
   GDash &lt;--&gt;|&quot;Switcher&quot;| CDash
 </pre></div>
 </section>

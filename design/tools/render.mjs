@@ -1,5 +1,7 @@
 // Renders every state of a built page at desktop (1440) and phone (390) width for the canvas.
-// Usage: node design/tools/render.mjs <builtPage.html> <outDir> <framePrefix>
+// Usage: node design/tools/render.mjs <builtPage.html> <outDir> <framePrefix> [windowHeight]
+// windowHeight (default 900) only matters to pages whose layout fits the window (09 switches to one page
+// scroll below 760, so pass 700 to get the whole page in one frame).
 // Google Fonts requests are fetched with curl (which trusts the proxy CA) and handed to the browser.
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
@@ -10,7 +12,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const [, , page, outDir, prefix] = process.argv;
+const [, , page, outDir, prefix, winH = '900'] = process.argv;
 fs.mkdirSync(outDir, { recursive: true });
 const cache = new Map();
 function curl(url) {
@@ -21,7 +23,7 @@ const browser = await chromium.launch();
 const widths = { desktop: 1440, phone: 390 };
 const done = [];
 for (const [wname, w] of Object.entries(widths)) {
-  const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, deviceScaleFactor: 2 });
+  const ctx = await browser.newContext({ viewport: { width: w, height: +winH }, deviceScaleFactor: 2 });
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, async (route) => {
     const url = route.request().url();
     const body = curl(url);

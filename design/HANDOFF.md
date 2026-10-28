@@ -1,6 +1,6 @@
 # Handoff prompt
 
-Paste everything below the line into a new chat. Last updated 23 Oct 2026: Phase 3 (09 Gamer dashboard, 10 My sessions) built and published, frames on the canvas; checkpoint 4 waiting for review. Phase 4 next, after the review.
+Paste everything below the line into a new chat. Last updated 28 Oct 2026: Phase 3 (09 Gamer dashboard, 10 My sessions) built and published, frames on the canvas; 09 was redesigned on 28 Oct (full-width, floating banner, To do box plus To do page, separately scrolling columns, new ScrollArea component, AppShell "wide" option); 10 is still at the old width; checkpoint 4 waiting for review. Phase 4 next, after the review.
 
 ---
 
@@ -85,7 +85,7 @@ State ids you can link to (`data-link="NN#id"`):
 - **06 (gamer):** upcoming, cancel-confirm (full refund), cancel-late (inside the last hour), cancelled, coach-cancelled, locked, reschedule-form, reschedule-waiting, reschedule-received, reschedule-keep-or-cancel, moved, reschedule-declined, reschedule-expired, join, in-session, pending, pending-soon, confirm-step, completed-review, review-posted, disputed-open, disputed-review, resolved-refunded, resolved-paid, payment-problem, awaiting-payment, expired, loading, error. **06 (the dashboard's other bookings, Phase 3):** kairo-tue, vexa-request, mirae-pending, mirae-confirm, ghostline-review, nullpoint-open (their onward links are inert). **06 (coach):** coach-upcoming, coach-cancel, coach-request-received, coach-pending, coach-completed, coach-dispute.
 - **07:** gamer-after, mirae-after (Phase 3), gamer-noshow, gamer-payment, coach-after, coach-payment, validation, upload-error, submitted, respond, response-sent.
 - **08:** waiting, no-show, coach-waiting, live, camera, share, banner-10, banner-5, banner-1, end-confirm, end-sent, end-received, reconnecting, other-dropped, blocked, ended, coach-ended.
-- **09:** busy, quiet (nothing to do), new (brand-new account), loading, error. **10:** list, empty, loading, error.
+- **09:** busy, todo-all (the To do page), quiet (nothing to do), new (brand-new account), loading, error. **10:** list, empty, loading, error.
 
 The files:
 - `design/foundations/tokens.css`: the global stylesheet. Every design-system token by its exact name, plus `--shadow-flat` and `--shadow-cta-rest`, base styles and the webapp type scale.
