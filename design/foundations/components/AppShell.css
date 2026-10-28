@@ -8,6 +8,8 @@
 /* No sidebar (logged out, checkout): content sits centred under the nav; focused flows use the narrow width. */
 .appShellBody.noSidebar .appShellContent { margin-inline: auto; }
 .appShellContent.narrow { max-width: 920px; }
+/* Overview pages (dashboard, sessions list) use the whole width beside the sidebar. */
+.appShellContent.wide { max-width: none; }
 @container app (max-width: 999px) {
   .appShellBody { grid-template-columns: minmax(0, 1fr); }
   .appShellBody > .sidebar { display: none; }

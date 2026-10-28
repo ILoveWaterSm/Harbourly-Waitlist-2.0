@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>09 Gamer dashboard</title>
-<meta name="description" content="Phase 3, page 9: the gamer's home. Things to do and things coming up, each leading to the session it's about.">
+<meta name="description" content="Phase 3, page 9: the gamer's home. A welcome banner, then things to do and things coming up, each leading to the session it's about.">
 <link rel="stylesheet" href="../foundations/tokens.css">
 <link rel="stylesheet" href="../foundations/mockup.css">
 <link rel="stylesheet" href="../foundations/components/Icon.css">
@@ -21,78 +21,145 @@
 <link rel="stylesheet" href="../foundations/components/StatusLabel.css">
 <link rel="stylesheet" href="../foundations/components/Countdown.css">
 <link rel="stylesheet" href="../foundations/components/PendingSlot.css">
+<link rel="stylesheet" href="../foundations/components/ScrollArea.css">
 <link rel="stylesheet" href="../foundations/components/SessionList.css">
 <link rel="stylesheet" href="../foundations/components/EmptyState.css">
 <link rel="stylesheet" href="../foundations/components/Skeleton.css">
 <link rel="stylesheet" href="../foundations/components/ErrorState.css">
 <style>
 /* Page: Gamer dashboard (/dashboard) → app/dashboard/page.module.css. Layout only.
-   A list of things to do and things coming up, not a report. Left: To do (one card per thing waiting on you,
-   soonest deadline first; the first one carries the accent line). Right: Coming up, problems you've
-   reported, then recent sessions. Each booking appears once, in the most urgent place it fits.
-   Below 1100px it's one column in that order. */
-.pageHead { margin-bottom: var(--space-8); }
-.secHead { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-4); }
-.secCount { font: 400 13.5px/1 var(--font-mono); color: var(--muted); }
+   Full width beside the sidebar (AppShell's "wide" option lifts its 1080px cap; 09 and 10 use it).
+   A welcome banner on the page itself, then two columns: the To do box (the accent card; up to 3 items in full,
+   then "N more to do" and View all, which opens the To do page, a state of this page) and a column of Coming up,
+   Problems you've reported and Recent sessions. Each section's title sits above its card.
+   On desktop the page stops scrolling: the columns fill the window under the banner and each scrolls on its own
+   (ScrollArea). When the columns stack (narrower than 1188px) or the window is under 760px tall there is one normal
+   page scroll and no inner scrolling. The space above the banner and the gap below it are equal. */
+.db { container: dash / inline-size; display: grid; gap: var(--space-8); }
+/* The space above the banner is the page's top padding (32px, 24px below 1000px); the gap below it matches. */
+@container app (max-width: 999px) { .db { gap: var(--space-6); } }
 .statusStack { display: inline-block; }
-.allLink { justify-self: start; font-size: 14px; }
-.allLink svg { margin: 0 0 0 6px; }
-.dbBody { display: grid; grid-template-columns: minmax(0, 1fr) 344px; gap: var(--space-10) var(--space-6); align-items: start; }
-.dbMain, .dbSide { display: grid; gap: var(--space-10); min-width: 0; }
-.dbSection { display: grid; gap: var(--space-4); min-width: 0; }
-.dbSection > .secHead { margin-bottom: 0; }
-.dbStack { display: grid; gap: var(--space-4); }
 
-/* Inside cards */
-.dbCard { display: grid; gap: var(--space-4); align-content: start; }
-.dbCardTop { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+/* Welcome banner: on the page, no card. */
+.dbBanner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-4) var(--space-8); align-items: center; }
+.dbBannerAction { justify-self: end; }
+.dbHelloTop { display: flex; align-items: center; gap: var(--space-5); min-width: 0; }
+.dbHelloTop .avatar { --avatar-size: 56px; }
+.dbDate { display: block; margin-bottom: var(--space-2); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.dbHelloTop h1 { font: 700 34px/1.1 var(--font-display); letter-spacing: -.015em; }
+.dbHelloText { grid-column: 1 / -1; max-width: 60ch; font-size: 15.5px; line-height: 1.6; color: var(--muted); }
+
+/* Two columns: To do, and the stacked cards beside it. */
+.dbCols { display: grid; grid-template-columns: minmax(0, 2fr) minmax(360px, 1fr); gap: var(--space-6); align-items: start; min-height: 0; }
+.dbSide { display: grid; gap: var(--space-6); align-content: start; min-width: 0; }
+
+/* The To do box: heading, the items (separated by hairlines), and the "more" line. */
+.dbTodoWrap { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; min-height: 0; }
+.dbTodo { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; padding-bottom: var(--space-5); }
+.dbSection { display: grid; gap: var(--space-3); min-width: 0; }
+.dbItems { display: grid; margin: 0; padding: 0; list-style: none; }
+.dbItem { container: card / inline-size; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5) 0; border-top: 1px solid var(--line); min-width: 0; }
+.dbItem:first-child { border-top: 0; padding-top: 0; }
+.dbTodoMore { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+.dbTodoMore .textLink svg { margin: 0 0 0 6px; }
+
+/* Shared parts of items and cards */
+.dbCard { container: card / inline-size; display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.dbCardHead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
 .dbCardText { display: grid; gap: var(--space-2); }
-.dbText { font-size: 15px; line-height: 1.6; color: var(--muted); max-width: 62ch; }
-.dbText .mono { color: var(--ink-soft); font-size: 14px; }
-.dbWho { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); }
+.dbText { max-width: 64ch; font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+.dbText .mono { color: var(--ink-soft); font-size: 13.5px; }
+.dbWho { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); min-width: 0; }
 .dbWhoText { display: grid; gap: 2px; min-width: 0; }
 .dbWhoName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-weight: 600; font-size: 15px; color: var(--ink); }
 .dbWhoMeta { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-2); font-size: 13.5px; color: var(--muted); }
 .dbWhoMeta .mono { color: var(--ink-soft); font-size: 13px; white-space: nowrap; }
-/* In the narrow side column the date and time take their own line. */
-.dbSide .dbWhoMeta .dbSep { display: none; }
-.dbSide .dbWhoMeta > .mono { flex-basis: 100%; }
 .dbSep { color: var(--subtle); }
 .dbWhoAmount { margin-left: auto; padding-left: var(--space-3); font: 500 14px/1 var(--font-mono); color: var(--ink); white-space: nowrap; }
 .dbActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); }
 .dbActionsMeta { font-size: 13.5px; color: var(--muted); }
-.dbActionsMeta .countdown, .dbActionsMeta .mono { color: var(--ink-soft); }
-.dbCard .holdTimer { font-size: 14px; }
-.dbCard .holdTimer .countdown { font-size: 15px; }
-.dbCard .holdTimer .mono { color: var(--ink-soft); }
+.dbActionsMeta .mono, .dbActionsMeta .countdown { color: var(--ink-soft); }
+.dbNextBlock { display: grid; gap: var(--space-3); padding-bottom: var(--space-4); border-bottom: 1px solid var(--line); }
+.dbItem .holdTimer, .dbCard .holdTimer { font-size: 13.5px; }
+.dbItem .holdTimer .countdown { font-size: 15px; }
+.dbItem .holdTimer .mono { color: var(--ink-soft); }
 .dbCard .cardFacts { margin: 0; }
 .dbCard .cardFacts dd.text { font: 400 14.5px/1.4 var(--font-body); color: var(--ink); }
-
-/* Offered times while a reschedule request waits on you: read only here; you pick on the session page. */
-.dbOffered { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
-.dbOffered li { display: flex; align-items: center; gap: var(--space-3); padding: 10px var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-md); font: var(--text-value); color: var(--ink-soft); }
+.dbOffered { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.dbOffered li { display: flex; align-items: center; gap: var(--space-2); padding: 8px var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-md); color: var(--ink-soft); min-width: 0; }
+.dbOffered li > span { display: grid; gap: 2px; font: var(--text-value); }
+.dbOffered li > span > span:last-child { color: var(--muted); font-size: 12.5px; }
 .dbOffered li svg { width: 16px; height: 16px; flex: none; color: var(--muted); }
-
-/* Empty sections and the brand-new account */
-.dbEmpty .emptyState { padding: 0; }
-.dbWelcome { max-width: 640px; }
-.dbWelcome .emptyState { padding: 0; max-width: 52ch; }
-.dbWelcome .emptyStateTitle { font: var(--text-h3); letter-spacing: -.01em; }
-.dbWelcome .emptyStateText { font-size: 15px; }
-
-/* Loading */
+.allLink { font-size: 14px; }
+.allLink svg { margin: 0 0 0 6px; }
+.dbEmpty .emptyState { padding: var(--space-2) 0 0; }
 .dbSkel { display: grid; gap: var(--space-3); }
 
-@container app (max-width: 1099px) {
-  .dbBody { grid-template-columns: minmax(0, 1fr); }
+/* The To do page (/dashboard/to-do) */
+.backLink { display: inline-block; font-size: 14px; }
+.tdHead { display: grid; gap: var(--space-4); }
+
+/* Wide item: the booking line and the countdown sit side by side, so each item stays low. */
+.dbPair { display: grid; gap: var(--space-3); }
+@container card (min-width: 620px) {
+  .dbPair { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: stretch; }
+  .dbPair .holdTimer { flex-direction: column; align-items: flex-start; justify-content: center; gap: var(--space-1); }
 }
-@container app (max-width: 640px) {
-  .pageHead { margin-bottom: var(--space-6); }
-  .dbBody, .dbMain, .dbSide { gap: var(--space-8); }
-  .dbActions .button { flex: 1 1 auto; }
-  .dbWho { align-items: flex-start; }
+/* In a narrow card the offered times stack, one per line, and the date and time take their own line. */
+@container card (max-width: 519px) {
+  .dbOffered { grid-template-columns: minmax(0, 1fr); }
+  .dbOffered li > span { display: flex; flex-wrap: wrap; column-gap: var(--space-3); }
+}
+@container card (max-width: 460px) {
   .dbWhoMeta .dbSep { display: none; }
   .dbWhoMeta > .mono { flex-basis: 100%; }
+}
+
+/* Desktop with room to spare (the app at least 1188px wide, so the content gets 860px beside the sidebar, and the
+   window at least 760px tall): no page scroll; the columns fill the window and scroll on their own. */
+@media (min-height: 760px) {
+  @container app (min-width: 1188px) {
+    .db.fit { height: calc(100dvh - 76px - var(--space-8) - var(--space-6) - var(--mk-extra, 0px)); margin-bottom: calc(var(--space-6) - var(--space-20)); grid-template-rows: auto minmax(0, 1fr); }
+    .db.fit .dbCols { height: 100%; align-items: stretch; }
+    .db.fit .dbTodoWrap { height: 100%; }
+    .db.fit .dbTodo { flex: 1 1 auto; min-height: 0; }
+    .db.fit .dbTodo > .scrollArea { flex: 1 1 auto; margin-right: calc(-1 * var(--space-4)); padding-right: var(--space-2); }
+    .db.fit .dbSide { height: 100%; padding-right: var(--space-2); }
+  }
+}
+
+/* One page scroll, no inner scrolling at all, whenever the columns stack (phones, tablets, narrow windows)
+   or the window is short: the scroll areas become plain content, with no mask and no scroll containment. */
+@container app (max-width: 1187px) {
+  .db .scrollArea { overflow: visible; overscroll-behavior: auto; -webkit-mask-image: none; mask-image: none; }
+}
+@media (max-height: 759px) {
+  .db .scrollArea { overflow: visible; overscroll-behavior: auto; -webkit-mask-image: none; mask-image: none; }
+}
+
+/* Columns stack when the app is narrower; one page scroll. */
+@container app (max-width: 1187px) {
+  .dbCols { grid-template-columns: minmax(0, 1fr); }
+}
+@container dash (max-width: 1099px) {
+  .dbHelloTop h1 { font-size: 28px; }
+  .dbHelloTop { gap: var(--space-4); }
+  .dbHelloTop .avatar { --avatar-size: 48px; }
+}
+@container dash (max-width: 859px) {
+}
+@container dash (max-width: 639px) {
+  .dbBanner { grid-template-columns: minmax(0, 1fr); }
+  .dbBannerAction { justify-self: start; order: 3; }
+}
+@container dash (max-width: 599px) {
+  .db { gap: var(--space-6); }
+  .dbHelloTop h1 { font-size: 28px; }
+  .dbHelloTop { gap: var(--space-4); }
+  .dbHelloTop .avatar { --avatar-size: 52px; }
+  .dbActions .button { flex: 1 1 auto; }
+  .dbWho { align-items: flex-start; }
+  .dbItem { padding: var(--space-5) 0; }
 }
 </style>
 </head>
@@ -128,7 +195,7 @@
                 <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
               </div>
           </nav>
-          <main class="appShellMain"><div class="appShellContent" data-slot></div></main>
+          <main class="appShellMain"><div class="appShellContent wide" data-slot></div></main>
         </div>
       </div>
     </template>
@@ -136,115 +203,170 @@
 <div class="mk-frame" data-page="09 Gamer dashboard">
 
   <section data-state="busy" data-label="Busy account · Mon 5 Oct, 14:12" data-shell="gamer" data-nav="dashboard">
-      <header class="pageHead"><h1>Dashboard</h1></header>
-      <div class="dbBody">
-        <div class="dbMain">
-          <section class="dbSection" aria-labelledby="h-todo">
-            <div class="secHead"><h2 id="h-todo">To do</h2></div>
-            <div class="dbStack"><article class="card accent dbCard" aria-labelledby="t-pay">
-              <span class="statusLabel action">Awaiting payment</span>
-              <div class="dbCardText"><h3 class="cardTitle" id="t-pay">Finish paying to book this time</h3>
-              <p class="dbText">Vexa's time is held for you until <span class="mono">14:36 SGT</span>. After that it's released, and you won't be charged.</p></div>
-              <div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 13 Oct · 20:00–21:00 SGT</span></span></div><span class="dbWhoAmount">S$47.70</span></div>
-              <div class="holdTimer" role="timer"><span>Your time is held while you pay</span><span class="countdown" data-count="24:12">24:12</span></div>
-              <div class="dbActions"><a class="button primary" href="#" data-link="04#same-currency">Continue to payment</a><a class="textLink quiet" href="#" data-link="03#none">Choose another time</a></div>
-            </article><article class="card dbCard" aria-labelledby="t-confirm">
-              <span class="statusLabel action">Pending confirmation</span>
-              <div class="dbCardText"><h3 class="cardTitle" id="t-confirm">Did the session go ahead?</h3>
-              <p class="dbText">Confirm it and Mirae is paid. If something went wrong, report a problem instead and the payment stays held.</p></div>
-              <div class="dbWho"><span class="avatar sm">M</span><div class="dbWhoText"><span class="dbWhoName">Mirae</span><span class="dbWhoMeta">Riftbound<span class="dbSep" aria-hidden="true">·</span><span class="mono">Sat 3 Oct · 18:00–19:00 SGT</span></span></div></div>
-              <div class="holdTimer" role="timer"><span>Mirae is paid automatically on <span class="mono">Tue 6 Oct, 19:00 SGT</span></span><span class="countdown">28h 48m</span></div>
-              <div class="dbActions"><a class="button secondary" href="#" data-link="06#mirae-confirm">Confirm session</a><a class="button secondary" href="#" data-link="07#mirae-after">Report a problem</a></div>
-            </article><article class="card dbCard" aria-labelledby="t-move">
-              <span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span>
-              <div class="dbCardText"><h3 class="cardTitle" id="t-move">Vexa asked to move this session</h3>
-              <p class="dbText">Pick one of these times, or decline and keep <span class="mono">Thu 8 Oct · 21:00 SGT</span>.</p></div>
-              <div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Thu 8 Oct · 21:00–22:00 SGT</span></span></div></div>
-              <ul class="dbOffered" aria-label="Vexa's times"><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Wed 14 Oct · 20:00–21:00 SGT</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Thu 15 Oct · 21:00–22:00 SGT</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Sat 17 Oct · 15:00–16:00 SGT</span></li></ul>
-              <div class="holdTimer" role="timer"><span>Reply by <span class="mono">Wed 7 Oct, 10:00 SGT</span>. If you don't, your current time stays.</span><span class="countdown">43h 48m</span></div>
-              <div class="dbActions"><a class="button secondary" href="#" data-link="06#vexa-request">View session</a></div>
-            </article><article class="card dbCard" aria-labelledby="t-review">
-              <span class="statusLabel positive">Completed</span>
-              <div class="dbCardText"><h3 class="cardTitle" id="t-review">How was your session with Ghostline?</h3>
-              <p class="dbText">Your review helps other gamers choose. It's shown on Ghostline's profile with your username, snapking.</p></div>
-              <div class="dbWho"><span class="avatar sm">G</span><div class="dbWhoText"><span class="dbWhoName">Ghostline</span><span class="dbWhoMeta">Call of Duty: Mobile<span class="dbSep" aria-hidden="true">·</span><span class="mono">Sun 27 Sep · 15:00–16:00 SGT</span></span></div></div>
-              <div class="dbActions"><a class="button secondary" href="#" data-link="06#ghostline-review">Leave a review</a><span class="dbActionsMeta">You can review until <span class="mono">Tue 27 Oct</span>.</span></div>
-            </article></div>
-          </section>
-        </div>
-        <aside class="dbSide" aria-label="Coming up and history">
-          <section class="dbSection" aria-labelledby="h-next">
-            <div class="secHead"><h2 id="h-next">Coming up</h2></div>
-            <div class="dbStack"><article class="card dbCard" aria-labelledby="t-next">
-              <span class="statusLabel positive">Confirmed</span>
-              <div class="dbCardText"><h3 class="cardTitle" id="t-next">Join opens 10 minutes before the start</h3>
-              <p class="dbText">You can join from <span class="mono">19:50 SGT</span> on Tue 6 Oct. We'll email you a reminder 24 hours and 1 hour before.</p></div>
-              <div class="dbWho"><span class="avatar sm">K</span><div class="dbWhoText"><span class="dbWhoName">Kairo</span><span class="dbWhoMeta">Mobile Legends<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 6 Oct · 20:00–21:00 SGT</span></span></div></div>
-              <div class="dbActions"><button class="button primary" type="button" disabled>Join session</button><span class="dbActionsMeta">Opens in <span class="countdown">29h 38m</span></span><a class="button secondary" href="#" data-link="06#kairo-tue">View session</a></div>
-            </article><div class="sessionList compact"><a class="sessionRow" href="#" data-link="06#upcoming"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Wed 7 Oct · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></div></div>
-          </section>
-          <section class="dbSection" aria-labelledby="h-prob">
-            <div class="secHead"><h2 id="h-prob">Problems you've reported</h2></div>
-            <article class="card dbCard" aria-labelledby="t-problem">
-              <div class="dbCardTop"><h3 class="cardTitle" id="t-problem">Problem reported</h3><span class="statusLabel action">Open</span></div>
-              <div class="dbWho"><span class="avatar sm">N</span><div class="dbWhoText"><span class="dbWhoName">nullpoint <span class="badge newCoach">New coach</span></span><span class="dbWhoMeta">Counter-Strike 2<span class="dbSep" aria-hidden="true">·</span><span class="mono">Thu 1 Oct · 19:00–20:00 SGT</span></span></div></div>
-              <dl class="cardFacts"><dt>Reason</dt><dd class="text">Session ended early</dd><dt>Sent</dt><dd>Sun 4 Oct, 18:30 SGT</dd></dl>
-              <div class="pendingSlot stacked" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">No response from nullpoint yet</p><p class="pendingSlotText">nullpoint can send one response, with evidence, until <span class="mono">Tue 6 Oct, 18:30 SGT</span>. After that, the team decides without it.</p></div><span class="pendingSlotLeft"><span class="countdown">28h 18m</span> left</span></div>
-              <div class="dbActions"><a class="button secondary" href="#" data-link="06#nullpoint-open">View session</a></div>
-            </article>
-          </section>
-          <section class="dbSection" aria-labelledby="h-recent">
-            <div class="secHead"><h2 id="h-recent">Recent sessions</h2></div>
-            <div class="sessionList compact"><a class="sessionRow" href="#" data-link="06#expired"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Fri 25 Sep · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel ended">Expired</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></div><a class="textLink quiet allLink" href="#" data-link="10#list">All sessions<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-          </section>
-        </aside>
+      <div class="db fit">
+          <header class="dbBanner">
+            <div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Monday, 5 October</span><h1>Good afternoon, snapking</h1></div></div>
+            <div class="dbBannerAction"><a class="button secondary" href="#" data-link="01#results">Browse coaches</a></div>
+            
+          </header>
+          <div class="dbCols">
+            <section class="dbTodoWrap" aria-labelledby="h-todo1">
+              <h2 id="h-todo1">To do</h2>
+              <div class="card accent dbTodo">
+                <div class="scrollArea" tabindex="0" role="region" aria-label="To do items"><ul class="dbItems"><li class="dbItem" aria-labelledby="t-pay1">
+                <span class="statusLabel action">Awaiting payment</span>
+                <div class="dbCardText"><h3 class="cardTitle" id="t-pay1">Finish paying to book this time</h3>
+                <p class="dbText">Vexa's time is held for you until <span class="mono">14:36 SGT</span>. After that it's released, and you won't be charged.</p></div>
+                <div class="dbPair"><div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 13 Oct · 20:00–21:00 SGT</span></span></div><span class="dbWhoAmount">S$47.70</span></div>
+                <div class="holdTimer" role="timer"><span>Your time is held while you pay</span><span class="countdown" data-count="24:12">24:12</span></div></div>
+                <div class="dbActions"><a class="button primary" href="#" data-link="04#same-currency">Continue to payment</a><a class="textLink quiet" href="#" data-link="03#none">Choose another time</a></div>
+              </li><li class="dbItem" aria-labelledby="t-confirm1">
+                <span class="statusLabel action">Pending confirmation</span>
+                <div class="dbCardText"><h3 class="cardTitle" id="t-confirm1">Did the session go ahead?</h3>
+                <p class="dbText">Confirm it and Mirae is paid. If something went wrong, report a problem instead and the payment stays held.</p></div>
+                <div class="dbPair"><div class="dbWho"><span class="avatar sm">M</span><div class="dbWhoText"><span class="dbWhoName">Mirae</span><span class="dbWhoMeta">Riftbound<span class="dbSep" aria-hidden="true">·</span><span class="mono">Sat 3 Oct · 18:00–19:00 SGT</span></span></div></div>
+                <div class="holdTimer" role="timer"><span>Mirae is paid automatically on <span class="mono">Tue 6 Oct, 19:00 SGT</span></span><span class="countdown">28h 48m</span></div></div>
+                <div class="dbActions"><a class="button secondary" href="#" data-link="06#mirae-confirm">Confirm session</a><a class="button secondary" href="#" data-link="07#mirae-after">Report a problem</a></div>
+              </li><li class="dbItem" aria-labelledby="t-move1">
+                <span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span>
+                <div class="dbCardText"><h3 class="cardTitle" id="t-move1">Vexa asked to move this session</h3>
+                <p class="dbText">Pick one of these times, or decline and keep <span class="mono">Thu 8 Oct · 21:00 SGT</span>.</p></div>
+                <div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Thu 8 Oct · 21:00–22:00 SGT</span></span></div></div>
+                <ul class="dbOffered" aria-label="Vexa's times"><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Wed 14 Oct</span><span>20:00–21:00 SGT</span></span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Thu 15 Oct</span><span>21:00–22:00 SGT</span></span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Sat 17 Oct</span><span>15:00–16:00 SGT</span></span></li></ul>
+                <div class="holdTimer" role="timer"><span>Reply by <span class="mono">Wed 7 Oct, 10:00 SGT</span>. If you don't, your current time stays.</span><span class="countdown">43h 48m</span></div>
+                <div class="dbActions"><a class="button secondary" href="#" data-link="06#vexa-request">View session</a></div>
+              </li></ul></div>
+                <div class="dbTodoMore"><span>1 more to do</span><a class="textLink" href="#" data-link="09#todo-all">View all<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></div>
+              </div>
+            </section>
+            <div class="dbSide scrollArea" tabindex="0" role="region" aria-label="Coming up, problems and recent sessions"><section class="dbSection" aria-labelledby="t-coming">
+                <h2 id="t-coming">Coming up</h2>
+                <div class="card dbCard">
+                  <div class="dbNextBlock">
+                    <div class="dbWho"><span class="avatar sm">K</span><div class="dbWhoText"><span class="dbWhoName">Kairo</span><span class="dbWhoMeta">Mobile Legends<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 6 Oct · 20:00–21:00 SGT</span></span></div></div>
+                    <p class="dbText">Join opens 10 minutes before the start, at <span class="mono">19:50 SGT</span>.</p>
+                    <div class="dbActions"><button class="button primary sm" type="button" disabled>Join session</button><span class="dbActionsMeta">Opens in <span class="countdown">29h 38m</span></span><a class="button secondary sm" href="#" data-link="06#kairo-tue">View session</a></div>
+                  </div>
+                  <div class="sessionList compact"><a class="sessionRow" href="#" data-link="06#upcoming"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Wed 7 Oct · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></div>
+                </div>
+              </section><section class="dbSection" aria-labelledby="t-problem">
+                <h2 id="t-problem">Problems you've reported</h2>
+                <div class="card dbCard">
+                  <div class="dbCardHead"><span class="statusLabel action">Open</span><span class="dbActionsMeta">Sent <span class="mono">Sun 4 Oct, 18:30 SGT</span></span></div>
+                  <div class="dbWho"><span class="avatar sm">N</span><div class="dbWhoText"><span class="dbWhoName">nullpoint <span class="badge newCoach">New coach</span></span><span class="dbWhoMeta">Counter-Strike 2<span class="dbSep" aria-hidden="true">·</span><span class="mono">Thu 1 Oct · 19:00–20:00 SGT</span></span></div></div>
+                  <dl class="cardFacts"><dt>Reason</dt><dd class="text">Session ended early</dd></dl>
+                  <div class="pendingSlot stacked" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">No response from nullpoint yet</p><p class="pendingSlotText">nullpoint can send one response, with evidence, until <span class="mono">Tue 6 Oct, 18:30 SGT</span>. After that, the team decides without it.</p></div><span class="pendingSlotLeft"><span class="countdown">28h 18m</span> left</span></div>
+                  <div class="dbActions"><a class="button secondary" href="#" data-link="06#nullpoint-open">View session</a></div>
+                </div>
+              </section><section class="dbSection" aria-labelledby="t-recent1">
+                <h2 id="t-recent1">Recent sessions</h2>
+                <div class="card dbCard">
+                  <div class="sessionList compact"><a class="sessionRow" href="#" data-link="06#expired"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Fri 25 Sep · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel ended">Expired</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></div>
+                  <a class="textLink quiet allLink" href="#" data-link="10#list">All sessions<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+                </div>
+              </section></div>
+          </div>
+      </div>
+  </section>
+
+  <section data-state="todo-all" data-label="To do, all items · Mon 5 Oct, 14:12" data-shell="gamer" data-nav="dashboard">
+      <div class="db">
+          <header class="tdHead"><a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a><h1>To do</h1></header>
+          <section class="dbTodoWrap" aria-label="All things to do">
+              
+              <div class="card accent dbTodo">
+                <ul class="dbItems"><li class="dbItem" aria-labelledby="t-pay2">
+                <span class="statusLabel action">Awaiting payment</span>
+                <div class="dbCardText"><h3 class="cardTitle" id="t-pay2">Finish paying to book this time</h3>
+                <p class="dbText">Vexa's time is held for you until <span class="mono">14:36 SGT</span>. After that it's released, and you won't be charged.</p></div>
+                <div class="dbPair"><div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 13 Oct · 20:00–21:00 SGT</span></span></div><span class="dbWhoAmount">S$47.70</span></div>
+                <div class="holdTimer" role="timer"><span>Your time is held while you pay</span><span class="countdown" data-count="24:12">24:12</span></div></div>
+                <div class="dbActions"><a class="button primary" href="#" data-link="04#same-currency">Continue to payment</a><a class="textLink quiet" href="#" data-link="03#none">Choose another time</a></div>
+              </li><li class="dbItem" aria-labelledby="t-confirm2">
+                <span class="statusLabel action">Pending confirmation</span>
+                <div class="dbCardText"><h3 class="cardTitle" id="t-confirm2">Did the session go ahead?</h3>
+                <p class="dbText">Confirm it and Mirae is paid. If something went wrong, report a problem instead and the payment stays held.</p></div>
+                <div class="dbPair"><div class="dbWho"><span class="avatar sm">M</span><div class="dbWhoText"><span class="dbWhoName">Mirae</span><span class="dbWhoMeta">Riftbound<span class="dbSep" aria-hidden="true">·</span><span class="mono">Sat 3 Oct · 18:00–19:00 SGT</span></span></div></div>
+                <div class="holdTimer" role="timer"><span>Mirae is paid automatically on <span class="mono">Tue 6 Oct, 19:00 SGT</span></span><span class="countdown">28h 48m</span></div></div>
+                <div class="dbActions"><a class="button secondary" href="#" data-link="06#mirae-confirm">Confirm session</a><a class="button secondary" href="#" data-link="07#mirae-after">Report a problem</a></div>
+              </li><li class="dbItem" aria-labelledby="t-move2">
+                <span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span>
+                <div class="dbCardText"><h3 class="cardTitle" id="t-move2">Vexa asked to move this session</h3>
+                <p class="dbText">Pick one of these times, or decline and keep <span class="mono">Thu 8 Oct · 21:00 SGT</span>.</p></div>
+                <div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Thu 8 Oct · 21:00–22:00 SGT</span></span></div></div>
+                <ul class="dbOffered" aria-label="Vexa's times"><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Wed 14 Oct</span><span>20:00–21:00 SGT</span></span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Thu 15 Oct</span><span>21:00–22:00 SGT</span></span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Sat 17 Oct</span><span>15:00–16:00 SGT</span></span></li></ul>
+                <div class="holdTimer" role="timer"><span>Reply by <span class="mono">Wed 7 Oct, 10:00 SGT</span>. If you don't, your current time stays.</span><span class="countdown">43h 48m</span></div>
+                <div class="dbActions"><a class="button secondary" href="#" data-link="06#vexa-request">View session</a></div>
+              </li><li class="dbItem" aria-labelledby="t-review2">
+                <span class="statusLabel positive">Completed</span>
+                <div class="dbCardText"><h3 class="cardTitle" id="t-review2">How was your session with Ghostline?</h3>
+                <p class="dbText">Your review helps other gamers choose. It's shown on Ghostline's profile with your username, snapking.</p></div>
+                <div class="dbWho"><span class="avatar sm">G</span><div class="dbWhoText"><span class="dbWhoName">Ghostline</span><span class="dbWhoMeta">Call of Duty: Mobile<span class="dbSep" aria-hidden="true">·</span><span class="mono">Sun 27 Sep · 15:00–16:00 SGT</span></span></div></div>
+                <div class="dbActions"><a class="button secondary" href="#" data-link="06#ghostline-review">Leave a review</a><span class="dbActionsMeta">You can review until <span class="mono">Tue 27 Oct</span>.</span></div>
+              </li></ul>
+                
+              </div>
+            </section>
       </div>
   </section>
 
   <section data-state="quiet" data-label="Nothing to do · Thu 24 Sep, 13:05" data-shell="gamer" data-nav="dashboard">
-      <header class="pageHead"><h1>Dashboard</h1></header>
-      <div class="dbBody">
-        <div class="dbMain">
-          <section class="dbSection" aria-labelledby="q-todo">
-            <div class="secHead"><h2 id="q-todo">To do</h2></div>
-            <div class="card dbEmpty"><div class="emptyState"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><p class="emptyStateTitle">Nothing needs you right now</p><p class="emptyStateText">Payments to finish, new times to answer, sessions to confirm and reviews to leave show here when they're waiting on you.</p></div></div>
-          </section>
-        </div>
-        <aside class="dbSide" aria-label="Coming up and history">
-          <section class="dbSection" aria-labelledby="q-next">
-            <div class="secHead"><h2 id="q-next">Coming up</h2></div>
-            <div class="card dbEmpty"><div class="emptyState"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><p class="emptyStateTitle">No sessions coming up</p><p class="emptyStateText">Find a coach for your game and pick a one-hour time.</p><div class="emptyStateAction"><a class="button primary" href="#" data-link="01#results">Browse coaches</a></div></div></div>
-          </section>
-          <section class="dbSection" aria-labelledby="q-recent">
-            <div class="secHead"><h2 id="q-recent">Recent sessions</h2></div>
-            <div class="sessionList compact"><a class="sessionRow" href="#" data-link="06#expired"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Fri 25 Sep · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel ended">Expired</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></div><a class="textLink quiet allLink" href="#" data-link="10#list">All sessions<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-          </section>
-        </aside>
+      <div class="db">
+          <header class="dbBanner">
+            <div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Thursday, 24 September</span><h1>Good afternoon, snapking</h1></div></div>
+            <div class="dbBannerAction"><a class="button secondary" href="#" data-link="01#results">Browse coaches</a></div>
+            
+          </header>
+          <div class="dbCols">
+            <section class="dbTodoWrap" aria-labelledby="h-todo3">
+              <h2 id="h-todo3">To do</h2>
+              <div class="card accent dbTodo">
+                <div class="dbEmpty"><div class="emptyState"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><p class="emptyStateTitle">Nothing needs you right now</p><p class="emptyStateText">Payments to finish, new times to answer, sessions to confirm and reviews to leave show here when they're waiting on you.</p></div></div>
+                
+              </div>
+            </section>
+            <div class="dbSide scrollArea" tabindex="0" role="region" aria-label="Coming up, problems and recent sessions"><section class="dbSection" aria-labelledby="t-coming2">
+                <h2 id="t-coming2">Coming up</h2>
+                <div class="card dbCard dbEmpty"><div class="emptyState"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><p class="emptyStateTitle">No sessions coming up</p><p class="emptyStateText">Sessions you book show here, with the time to join.</p></div></div>
+              </section><section class="dbSection" aria-labelledby="t-recent2">
+                <h2 id="t-recent2">Recent sessions</h2>
+                <div class="card dbCard">
+                  <div class="sessionList compact"><a class="sessionRow" href="#" data-link="06#expired"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Fri 25 Sep · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel ended">Expired</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></div>
+                  <a class="textLink quiet allLink" href="#" data-link="10#list">All sessions<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+                </div>
+              </section></div>
+          </div>
       </div>
   </section>
 
   <section data-state="new" data-label="Brand-new account · Thu 24 Sep, 11:00" data-shell="gamer" data-nav="dashboard">
-      <header class="pageHead"><h1>Dashboard</h1></header>
-      <div class="card accent dbWelcome"><div class="emptyState"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><p class="emptyStateTitle">Book your first session</p><p class="emptyStateText">Find a coach for your game and pick a one-hour time. Harbourly holds your payment until you confirm the session went ahead. Your sessions, and anything that needs you, show here.</p><div class="emptyStateAction"><a class="button primary" href="#" data-link="01#results">Browse coaches</a></div></div></div>
+      <div class="db">
+          <header class="dbBanner">
+            <div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Thursday, 24 September</span><h1>Welcome to Harbourly, snapking</h1></div></div>
+            <div class="dbBannerAction"><a class="button primary" href="#" data-link="01#results">Browse coaches</a></div>
+            <p class="dbHelloText">Book your first session: find a coach for your game and pick a one-hour time. Harbourly holds your payment until you confirm the session went ahead. Your sessions, and anything that needs you, show here.</p>
+          </header>
+      </div>
   </section>
 
   <section data-state="loading" data-label="Loading" data-shell="gamer" data-nav="dashboard">
-      <header class="pageHead"><h1>Dashboard</h1></header>
-      <div class="dbBody" aria-busy="true" aria-label="Loading your dashboard">
-        <div class="dbMain"><div class="dbSection"><span class="skeleton" style="width:90px;height:24px"></span><div class="dbStack"><div class="card dbSkel"><span class="skeleton" style="width:120px;height:11px"></span><span class="skeleton" style="width:55%;height:19px"></span><span class="skeleton" style="width:85%;height:12px"></span><span style="height:4px"></span><div style="display:flex;gap:12px;align-items:center"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:60%;height:12px"></span></div></div><span style="height:4px"></span><span class="skeleton pill" style="width:170px;height:44px"></span></div><div class="card dbSkel"><span class="skeleton" style="width:120px;height:11px"></span><span class="skeleton" style="width:55%;height:19px"></span><span class="skeleton" style="width:85%;height:12px"></span><span style="height:4px"></span><div style="display:flex;gap:12px;align-items:center"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:60%;height:12px"></span></div></div><span style="height:4px"></span><span class="skeleton pill" style="width:170px;height:44px"></span></div></div></div></div>
-        <div class="dbSide"><div class="dbSection"><span class="skeleton" style="width:150px;height:24px"></span><div class="card dbSkel"><span class="skeleton" style="width:60%;height:19px"></span><span class="skeleton" style="width:100%;height:56px"></span><span class="skeleton" style="width:80%;height:12px"></span><span class="skeleton pill" style="width:140px;height:44px"></span></div></div></div>
+      <div class="db fit">
+          <div class="dbBanner" aria-busy="true" aria-label="Loading your dashboard"><div class="dbHelloTop"><span class="skeleton circle" style="width:56px;height:56px"></span><div class="dbSkel" style="min-width:0;grid-template-columns:minmax(0,1fr)"><span class="skeleton" style="width:140px;height:11px"></span><span class="skeleton" style="width:340px;max-width:100%;height:34px"></span></div></div><span class="skeleton pill" style="width:160px;height:44px"></span></div>
+          <div class="dbCols"><div class="dbTodoWrap"><span class="skeleton" style="width:80px;height:24px"></span><div class="card dbTodo"><div class="dbSkel" style="padding:var(--space-5) 0;border-top:1px solid var(--line)"><span class="skeleton" style="width:120px;height:11px"></span><span class="skeleton" style="width:55%;height:19px"></span><span class="skeleton" style="width:85%;height:12px"></span><div style="display:flex;gap:12px;align-items:center;margin-top:6px"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:60%;height:12px"></span></div></div><span class="skeleton pill" style="width:170px;height:44px"></span></div><div class="dbSkel" style="padding:var(--space-5) 0;border-top:1px solid var(--line)"><span class="skeleton" style="width:120px;height:11px"></span><span class="skeleton" style="width:55%;height:19px"></span><span class="skeleton" style="width:85%;height:12px"></span><div style="display:flex;gap:12px;align-items:center;margin-top:6px"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:60%;height:12px"></span></div></div><span class="skeleton pill" style="width:170px;height:44px"></span></div></div></div><div class="dbSide"><div class="dbSection"><span class="skeleton" style="width:120px;height:24px"></span><div class="card dbSkel"><span class="skeleton" style="width:45%;height:19px"></span><div style="display:flex;gap:12px;align-items:center"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:50%;height:13px"></span><span class="skeleton" style="width:70%;height:12px"></span></div></div></div></div><div class="dbSection"><span class="skeleton" style="width:160px;height:24px"></span><div class="card dbSkel"><span class="skeleton" style="width:45%;height:19px"></span><div style="display:flex;gap:12px;align-items:center"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:50%;height:13px"></span><span class="skeleton" style="width:70%;height:12px"></span></div></div></div></div></div></div>
       </div>
   </section>
 
   <section data-state="error" data-label="Error" data-shell="gamer" data-nav="dashboard">
-      <header class="pageHead"><h1>Dashboard</h1></header>
-      <div class="errorState" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load your dashboard</p><p class="errorStateText">Check your connection and try again. Your bookings and payments aren't affected.</p><div class="errorStateAction"><button class="button secondary" type="button" data-go="busy"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Try again</button></div></div>
+      <div class="db">
+          <div class="errorState" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load your dashboard</p><p class="errorStateText">Check your connection and try again. Your bookings and payments aren't affected.</p><div class="errorStateAction"><button class="button secondary" type="button" data-go="busy"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Try again</button></div></div>
+      </div>
   </section>
 
 </div>
 </div>
 <script src="../foundations/flags.js"></script>
 <script src="../foundations/icons.js"></script>
+<script src="../foundations/components/ScrollArea.js"></script>
 <script src="../foundations/mockup.js"></script>
 <script>
 /* Mockup behaviour for this page: Try again steps back to the loaded state; hold countdowns tick. */
@@ -260,6 +382,19 @@
       if (s > 0) { s--; el.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
     });
   }, 1000);
+})();
+</script>
+<script>
+/* Mockup only: the toolbar and padding the harness adds above and below the app, so the fixed-height dashboard
+   fits the window the way it does in the real app (where there is no toolbar). */
+(function () {
+  var bar = document.querySelector('.mk-bar'), stage = document.querySelector('.mk-stage');
+  function set() {
+    var cs = getComputedStyle(stage);
+    var extra = (bar ? bar.offsetHeight : 0) + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+    document.documentElement.style.setProperty('--mk-extra', extra + 'px');
+  }
+  set(); addEventListener('resize', set); document.addEventListener('mk:change', set);
 })();
 </script>
 </body>
