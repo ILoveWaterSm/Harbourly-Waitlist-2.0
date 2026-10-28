@@ -32,27 +32,33 @@
    A welcome banner on the page itself (its next-session card carries the accent line), then two columns: the To do box and a column of
    Coming up, Problems you've reported and Recent sessions. On desktop the page stops scrolling: the columns fill
    the window under the banner and each scrolls on its own (ScrollArea). Narrower or shorter windows (columns
-   stacked, or under 700px tall) go back to one normal page scroll. */
+   stacked, or under 760px tall) go back to one normal page scroll. */
 .appShellContent.wide { max-width: none; }
 .db { container: dash / inline-size; display: grid; gap: var(--space-6); }
 .statusStack { display: inline-block; }
 
 /* Welcome banner: on the page, no card. */
-.dbBanner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 420px); gap: var(--space-5) var(--space-10); align-items: center; padding-top: var(--space-2); }
-.dbHello { display: grid; gap: var(--space-4); justify-items: start; min-width: 0; }
+.dbBanner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(380px, 480px); gap: var(--space-4) var(--space-8); align-items: center; padding-top: var(--space-2); }
+.dbHello { display: grid; gap: var(--space-3); justify-items: start; min-width: 0; }
 .dbHelloTop { display: flex; align-items: center; gap: var(--space-5); min-width: 0; }
-.dbHelloTop .avatar { --avatar-size: 64px; }
+.dbHelloTop .avatar { --avatar-size: 56px; }
 .dbDate { display: block; margin-bottom: var(--space-2); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
-.dbHello h1 { font: 700 36px/1.1 var(--font-display); letter-spacing: -.015em; }
+.dbHello h1 { font: 700 34px/1.1 var(--font-display); letter-spacing: -.015em; }
 .dbHelloText { max-width: 60ch; font-size: 15.5px; line-height: 1.6; color: var(--muted); }
-.dbNext { display: grid; gap: var(--space-2); padding: var(--space-4) var(--space-5); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-flat); min-width: 0; }
+.dbNext { display: grid; gap: var(--space-1); padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-flat); min-width: 0; }
 .dbNextLabel { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 .dbNextWho { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
-.dbNextName { display: block; font-weight: 600; font-size: 15.5px; color: var(--ink); }
-.dbNextGame { display: block; font-size: 13.5px; color: var(--muted); }
+.dbNextWho > div { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-2); }
+.dbNextName { font-weight: 600; font-size: 15.5px; color: var(--ink); }
+.dbNextGame { font-size: 13.5px; color: var(--muted); }
 .dbNextWhen { font: 500 14px/1.4 var(--font-mono); color: var(--ink); }
 .dbNextMeta { font-size: 13.5px; color: var(--muted); }
 .dbNextMeta .countdown { color: var(--ink-soft); }
+/* Wide: who and when on the left, the two buttons stacked on the right, so the card stays low. */
+.dbNext { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-5); align-items: center; }
+.dbNext > :not(.dbActions) { grid-column: 1; }
+.dbNext > .dbActions { grid-column: 2; grid-row: 1 / span 4; flex-direction: column; align-items: stretch; gap: var(--space-2); }
+.dbNext .dbActions .button { padding-inline: 16px; }
 
 .dbBanner.solo { grid-template-columns: minmax(0, 1fr); }
 
@@ -65,7 +71,7 @@
 .dbTodo { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; padding-bottom: var(--space-5); }
 .dbSection { display: grid; gap: var(--space-3); min-width: 0; }
 .dbItems { display: grid; margin: 0; padding: 0; list-style: none; }
-.dbItem { container: card / inline-size; display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-6) 0; border-top: 1px solid var(--line); min-width: 0; }
+.dbItem { container: card / inline-size; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5) 0; border-top: 1px solid var(--line); min-width: 0; }
 .dbItem:first-child { border-top: 0; padding-top: 0; }
 .dbTodoMore { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
 .dbTodoMore .textLink svg { margin: 0 0 0 6px; }
@@ -91,8 +97,10 @@
 .dbItem .holdTimer .mono { color: var(--ink-soft); }
 .dbCard .cardFacts { margin: 0; }
 .dbCard .cardFacts dd.text { font: 400 14.5px/1.4 var(--font-body); color: var(--ink); }
-.dbOffered { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
-.dbOffered li { display: flex; align-items: center; gap: var(--space-3); padding: 9px var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-md); font: var(--text-value); color: var(--ink-soft); }
+.dbOffered { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.dbOffered li { display: flex; align-items: center; gap: var(--space-2); padding: 8px var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-md); color: var(--ink-soft); min-width: 0; }
+.dbOffered li > span { display: grid; gap: 2px; font: var(--text-value); }
+.dbOffered li > span > span:last-child { color: var(--muted); font-size: 12.5px; }
 .dbOffered li svg { width: 16px; height: 16px; flex: none; color: var(--muted); }
 .allLink { font-size: 14px; }
 .allLink svg { margin: 0 0 0 6px; }
@@ -103,17 +111,27 @@
 .backLink { display: inline-block; font-size: 14px; }
 .tdHead { display: grid; gap: var(--space-4); }
 
-/* In a narrow card the date and time take their own line, so no separator is left hanging. */
+/* Wide item: the booking line and the countdown sit side by side, so each item stays low. */
+.dbPair { display: grid; gap: var(--space-3); }
+@container card (min-width: 620px) {
+  .dbPair { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: stretch; }
+  .dbPair .holdTimer { flex-direction: column; align-items: flex-start; justify-content: center; gap: var(--space-1); }
+}
+/* In a narrow card the offered times stack, one per line, and the date and time take their own line. */
+@container card (max-width: 519px) {
+  .dbOffered { grid-template-columns: minmax(0, 1fr); }
+  .dbOffered li > span { display: flex; flex-wrap: wrap; column-gap: var(--space-3); }
+}
 @container card (max-width: 460px) {
   .dbWhoMeta .dbSep { display: none; }
   .dbWhoMeta > .mono { flex-basis: 100%; }
 }
 
 /* Desktop with room to spare (the app at least 1188px wide, so the content gets 860px beside the sidebar, and the
-   window at least 700px tall): no page scroll; the columns fill the window and scroll on their own. */
-@media (min-height: 700px) {
+   window at least 760px tall): no page scroll; the columns fill the window and scroll on their own. */
+@media (min-height: 760px) {
   @container app (min-width: 1188px) {
-    .db.fit { height: calc(100dvh - 76px - var(--space-8) - var(--space-6) - var(--mk-extra, 0px)); margin-bottom: calc(var(--space-6) - var(--space-20)); grid-template-rows: auto minmax(0, 1fr); }
+    .db.fit { margin-top: calc(-1 * var(--space-3)); height: calc(100dvh - 76px - var(--space-8) + var(--space-3) - var(--space-4) - var(--mk-extra, 0px)); margin-bottom: calc(var(--space-4) - var(--space-20)); grid-template-rows: auto minmax(0, 1fr); }
     .db.fit .dbCols { height: 100%; align-items: stretch; }
     .db.fit .dbTodoWrap { height: 100%; }
     .db.fit .dbTodo { flex: 1 1 auto; min-height: 0; }
@@ -127,7 +145,7 @@
 @container app (max-width: 1187px) {
   .db .scrollArea { overflow: visible; overscroll-behavior: auto; -webkit-mask-image: none; mask-image: none; }
 }
-@media (max-height: 699px) {
+@media (max-height: 759px) {
   .db .scrollArea { overflow: visible; overscroll-behavior: auto; -webkit-mask-image: none; mask-image: none; }
 }
 
@@ -135,11 +153,14 @@
 @container app (max-width: 1187px) {
   .dbCols { grid-template-columns: minmax(0, 1fr); }
 }
+@container dash (max-width: 1099px) {
+  .dbBanner { grid-template-columns: minmax(0, 1fr) 450px; }
+  .dbHello h1 { font-size: 28px; }
+  .dbHelloTop { gap: var(--space-4); }
+  .dbHelloTop .avatar { --avatar-size: 48px; }
+}
 @container dash (max-width: 859px) {
   .dbBanner { grid-template-columns: minmax(0, 1fr); }
-  .dbNext { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-6); }
-  .dbNext > .dbNextLabel, .dbNext > .dbNextWho, .dbNext > .dbNextWhen, .dbNext > .dbNextMeta { grid-column: 1; }
-  .dbNext > .dbActions { grid-column: 2; grid-row: 2 / span 3; align-self: end; }
 }
 @container dash (max-width: 599px) {
   .db { gap: var(--space-6); }
@@ -147,7 +168,7 @@
   .dbHelloTop { gap: var(--space-4); }
   .dbHelloTop .avatar { --avatar-size: 52px; }
   .dbNext { grid-template-columns: minmax(0, 1fr); }
-  .dbNext > .dbActions { grid-column: 1; grid-row: auto; }
+  .dbNext > .dbActions { grid-column: 1; grid-row: auto; flex-direction: row; align-items: center; }
   .dbActions .button { flex: 1 1 auto; }
   .dbWho { align-items: flex-start; }
   .dbItem { padding: var(--space-5) 0; }
@@ -213,22 +234,22 @@
                 <span class="statusLabel action">Awaiting payment</span>
                 <div class="dbCardText"><h3 class="cardTitle" id="t-pay1">Finish paying to book this time</h3>
                 <p class="dbText">Vexa's time is held for you until <span class="mono">14:36 SGT</span>. After that it's released, and you won't be charged.</p></div>
-                <div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 13 Oct · 20:00–21:00 SGT</span></span></div><span class="dbWhoAmount">S$47.70</span></div>
-                <div class="holdTimer" role="timer"><span>Your time is held while you pay</span><span class="countdown" data-count="24:12">24:12</span></div>
+                <div class="dbPair"><div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 13 Oct · 20:00–21:00 SGT</span></span></div><span class="dbWhoAmount">S$47.70</span></div>
+                <div class="holdTimer" role="timer"><span>Your time is held while you pay</span><span class="countdown" data-count="24:12">24:12</span></div></div>
                 <div class="dbActions"><a class="button primary" href="#" data-link="04#same-currency">Continue to payment</a><a class="textLink quiet" href="#" data-link="03#none">Choose another time</a></div>
               </li><li class="dbItem" aria-labelledby="t-confirm1">
                 <span class="statusLabel action">Pending confirmation</span>
                 <div class="dbCardText"><h3 class="cardTitle" id="t-confirm1">Did the session go ahead?</h3>
                 <p class="dbText">Confirm it and Mirae is paid. If something went wrong, report a problem instead and the payment stays held.</p></div>
-                <div class="dbWho"><span class="avatar sm">M</span><div class="dbWhoText"><span class="dbWhoName">Mirae</span><span class="dbWhoMeta">Riftbound<span class="dbSep" aria-hidden="true">·</span><span class="mono">Sat 3 Oct · 18:00–19:00 SGT</span></span></div></div>
-                <div class="holdTimer" role="timer"><span>Mirae is paid automatically on <span class="mono">Tue 6 Oct, 19:00 SGT</span></span><span class="countdown">28h 48m</span></div>
+                <div class="dbPair"><div class="dbWho"><span class="avatar sm">M</span><div class="dbWhoText"><span class="dbWhoName">Mirae</span><span class="dbWhoMeta">Riftbound<span class="dbSep" aria-hidden="true">·</span><span class="mono">Sat 3 Oct · 18:00–19:00 SGT</span></span></div></div>
+                <div class="holdTimer" role="timer"><span>Mirae is paid automatically on <span class="mono">Tue 6 Oct, 19:00 SGT</span></span><span class="countdown">28h 48m</span></div></div>
                 <div class="dbActions"><a class="button secondary" href="#" data-link="06#mirae-confirm">Confirm session</a><a class="button secondary" href="#" data-link="07#mirae-after">Report a problem</a></div>
               </li><li class="dbItem" aria-labelledby="t-move1">
                 <span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span>
                 <div class="dbCardText"><h3 class="cardTitle" id="t-move1">Vexa asked to move this session</h3>
                 <p class="dbText">Pick one of these times, or decline and keep <span class="mono">Thu 8 Oct · 21:00 SGT</span>.</p></div>
                 <div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Thu 8 Oct · 21:00–22:00 SGT</span></span></div></div>
-                <ul class="dbOffered" aria-label="Vexa's times"><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Wed 14 Oct · 20:00–21:00 SGT</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Thu 15 Oct · 21:00–22:00 SGT</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Sat 17 Oct · 15:00–16:00 SGT</span></li></ul>
+                <ul class="dbOffered" aria-label="Vexa's times"><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Wed 14 Oct</span><span>20:00–21:00 SGT</span></span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Thu 15 Oct</span><span>21:00–22:00 SGT</span></span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Sat 17 Oct</span><span>15:00–16:00 SGT</span></span></li></ul>
                 <div class="holdTimer" role="timer"><span>Reply by <span class="mono">Wed 7 Oct, 10:00 SGT</span>. If you don't, your current time stays.</span><span class="countdown">43h 48m</span></div>
                 <div class="dbActions"><a class="button secondary" href="#" data-link="06#vexa-request">View session</a></div>
               </li></ul></div>
@@ -270,22 +291,22 @@
                 <span class="statusLabel action">Awaiting payment</span>
                 <div class="dbCardText"><h3 class="cardTitle" id="t-pay2">Finish paying to book this time</h3>
                 <p class="dbText">Vexa's time is held for you until <span class="mono">14:36 SGT</span>. After that it's released, and you won't be charged.</p></div>
-                <div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 13 Oct · 20:00–21:00 SGT</span></span></div><span class="dbWhoAmount">S$47.70</span></div>
-                <div class="holdTimer" role="timer"><span>Your time is held while you pay</span><span class="countdown" data-count="24:12">24:12</span></div>
+                <div class="dbPair"><div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 13 Oct · 20:00–21:00 SGT</span></span></div><span class="dbWhoAmount">S$47.70</span></div>
+                <div class="holdTimer" role="timer"><span>Your time is held while you pay</span><span class="countdown" data-count="24:12">24:12</span></div></div>
                 <div class="dbActions"><a class="button primary" href="#" data-link="04#same-currency">Continue to payment</a><a class="textLink quiet" href="#" data-link="03#none">Choose another time</a></div>
               </li><li class="dbItem" aria-labelledby="t-confirm2">
                 <span class="statusLabel action">Pending confirmation</span>
                 <div class="dbCardText"><h3 class="cardTitle" id="t-confirm2">Did the session go ahead?</h3>
                 <p class="dbText">Confirm it and Mirae is paid. If something went wrong, report a problem instead and the payment stays held.</p></div>
-                <div class="dbWho"><span class="avatar sm">M</span><div class="dbWhoText"><span class="dbWhoName">Mirae</span><span class="dbWhoMeta">Riftbound<span class="dbSep" aria-hidden="true">·</span><span class="mono">Sat 3 Oct · 18:00–19:00 SGT</span></span></div></div>
-                <div class="holdTimer" role="timer"><span>Mirae is paid automatically on <span class="mono">Tue 6 Oct, 19:00 SGT</span></span><span class="countdown">28h 48m</span></div>
+                <div class="dbPair"><div class="dbWho"><span class="avatar sm">M</span><div class="dbWhoText"><span class="dbWhoName">Mirae</span><span class="dbWhoMeta">Riftbound<span class="dbSep" aria-hidden="true">·</span><span class="mono">Sat 3 Oct · 18:00–19:00 SGT</span></span></div></div>
+                <div class="holdTimer" role="timer"><span>Mirae is paid automatically on <span class="mono">Tue 6 Oct, 19:00 SGT</span></span><span class="countdown">28h 48m</span></div></div>
                 <div class="dbActions"><a class="button secondary" href="#" data-link="06#mirae-confirm">Confirm session</a><a class="button secondary" href="#" data-link="07#mirae-after">Report a problem</a></div>
               </li><li class="dbItem" aria-labelledby="t-move2">
                 <span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span>
                 <div class="dbCardText"><h3 class="cardTitle" id="t-move2">Vexa asked to move this session</h3>
                 <p class="dbText">Pick one of these times, or decline and keep <span class="mono">Thu 8 Oct · 21:00 SGT</span>.</p></div>
                 <div class="dbWho"><span class="avatar sm">V</span><div class="dbWhoText"><span class="dbWhoName">Vexa</span><span class="dbWhoMeta">Valorant<span class="dbSep" aria-hidden="true">·</span><span class="mono">Thu 8 Oct · 21:00–22:00 SGT</span></span></div></div>
-                <ul class="dbOffered" aria-label="Vexa's times"><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Wed 14 Oct · 20:00–21:00 SGT</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Thu 15 Oct · 21:00–22:00 SGT</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Sat 17 Oct · 15:00–16:00 SGT</span></li></ul>
+                <ul class="dbOffered" aria-label="Vexa's times"><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Wed 14 Oct</span><span>20:00–21:00 SGT</span></span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Thu 15 Oct</span><span>21:00–22:00 SGT</span></span></li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span><span>Sat 17 Oct</span><span>15:00–16:00 SGT</span></span></li></ul>
                 <div class="holdTimer" role="timer"><span>Reply by <span class="mono">Wed 7 Oct, 10:00 SGT</span>. If you don't, your current time stays.</span><span class="countdown">43h 48m</span></div>
                 <div class="dbActions"><a class="button secondary" href="#" data-link="06#vexa-request">View session</a></div>
               </li><li class="dbItem" aria-labelledby="t-review2">
