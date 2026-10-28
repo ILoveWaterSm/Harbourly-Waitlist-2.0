@@ -188,6 +188,7 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 - **Gamer response to a coach's report (gap found in Phase 3):** the flow lets a gamer respond to a report a coach files against them, but 06 and 07 only draw the coach responding. Proposed for after checkpoint 4: a gamer "filed against you" state on 06 and a gamer response form on 07; the dashboard (09) then gains a To do card for it. Needs my go-ahead.
 - **04's hold countdown:** 04#same-currency shows 28:41 left; 06 and 09 show 24:12 for the same Vexa hold at 14:12. Left as is (04 shows the hold as first opened).
 - **When building:** confirm on a real iPhone that camera photos convert to JPEG on upload.
+- **Sign-in services (agreed 28 Oct 2026):** Supabase Auth, Resend for auth emails (as Supabase's SMTP) and Twilio Verify for phone codes; details in DECISIONS.md, "Sign-in services". The screens don't change.
 - **Before code is built (not before design):** confirm coach launch countries with Stripe and Xendit (including Thailand), pick an exchange-rate source, pick the image moderation service (options in BUILD-ORDER.md), finalise chat retention with the Terms of Service.
 
 ## Next step

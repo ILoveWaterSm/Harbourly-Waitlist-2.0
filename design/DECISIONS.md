@@ -542,3 +542,14 @@ Fixed while checking Phase 3 (23 Oct 2026)
 
 Still open
 - A gamer can respond to a report a coach files against them (USER-FLOW diagram 7), but 06 and 07 only draw the coach responding. Proposed for after checkpoint 4: a gamer "filed against you" state on 06 and a gamer response form on 07; the dashboard then gains a To do card for it.
+
+## Sign-in services (agreed 28 Oct 2026, before Phase 4 is built)
+
+How pages 11 to 16 work when the app is built. The screens don't change.
+
+- **Supabase Auth** for accounts: email and password, verification and reset links, Google sign-in, and adding a phone to an existing account with a code (page 13).
+- **Resend** sends every auth email (verify, reset, password changed, terms updated) as Supabase's custom SMTP, from Harbourly's own domain (DNS records added in Resend). Supabase's built-in email is for testing only.
+- **Twilio Verify** sends the 6-digit phone codes, through Supabase's phone provider setting. Chosen over plain Twilio SMS for its built-in fraud blocking.
+- **Google sign-in:** a Google Cloud OAuth client (free), set up in Supabase.
+- Recommended with it, to set up when building: Supabase Pro for production (free projects pause after a week without activity; Pro includes leaked-password protection, which the breached-password check on 11 and 15 needs); Cloudflare Turnstile (free) as Supabase's CAPTCHA on sign-up, log in and sending a phone code, against SMS fraud; Resend's paid plan before public launch (the free plan allows 100 emails a day).
+- Supabase settings to match the design: email confirmation required; minimum password length 8; verification links valid 24 hours, reset links 1 hour; PKCE sign-in flow. Rules still to agree in Phase 4 (password rules, code timings) are set here once agreed.

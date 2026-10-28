@@ -251,6 +251,7 @@ Also in Phase 3: PendingSlot component and a compact SessionList (library page);
 ## To confirm before code is built (not before design)
 
 - Coach launch countries with Stripe and Xendit, including Thailand.
+- Sign-in services are chosen (DECISIONS.md, "Sign-in services": Supabase Auth, Resend, Twilio Verify). Before launch: check current Twilio Verify prices for the 10 supported countries, add Resend's domain records, and move to Supabase Pro and Resend's paid plan.
 - Exchange-rate source for converted prices.
 - Chat retention period, alongside the Terms of Service wording.
 - Moderation service for every public image (profile photos, banners, showcase images and captions): a dedicated image-moderation API (cheapest per image, catches nudity, violence and similar) or a vision AI model (also reads text inside images, e.g. contact details or slurs). Both cost a fraction of a cent per image; none is perfect, so uncertain results are refused.
