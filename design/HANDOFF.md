@@ -1,6 +1,6 @@
 # Handoff prompt
 
-Paste everything below the line into a new chat. Last updated 28 Oct 2026: Phases 0 to 3 are built and published (09 Gamer dashboard was redesigned on 28 Oct). The owner has moved on to **Phase 4: Sign up, log in, account access (pages 11 to 16)**; this handoff briefs it.
+Paste everything below the line into a new chat. Last updated 28 Oct 2026 (end of Phase 4): Phases 0 to 4 are built and published. **Checkpoint 5 ("getting in", pages 11 to 16) is waiting for the owner's review.** The Phase 4 brief below is kept as the record of how Phase 4 was briefed; what was decided and built is in DECISIONS.md ("Phase 4 decisions", "Sign-in services") and BUILD-ORDER.md ("Phase 4"). The next phase, after the review, is Phase 5: Becoming a coach (17 to 21).
 
 ---
 
@@ -85,7 +85,13 @@ Build only after I answer. Build each page once, well: render it, look at every 
 | 10 My sessions | https://claude.ai/artifact/RA5wuSQuWSaw8hcPfsJpet | `design/pages/10-my-sessions.html` |
 | Coach card v2 (exploration) | https://claude.ai/artifact/WsAyxiSS39SwGyE3QYp3Xn | `design/explorations/coach-card-v2.html` |
 | User flow | https://claude.ai/artifact/8QiSx8pFYigdVWvUsqqXBm | `design/USER-FLOW.md` (published copy `design/user-flow.html`) |
-| Canvas, "Harbourly webapp" | https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ | Every library section and every Phase 1, 2 and 3 state, desktop and phone (Phase 4 goes below) |
+| 11 Sign up | https://claude.ai/artifact/QkABonvTk67WnzxPHH1rrC | `design/pages/11-sign-up.html` |
+| 12 Verify your email | https://claude.ai/artifact/MmPhavSEmaQbDFcxNtvcG4 | `design/pages/12-verify-your-email.html` |
+| 13 Finish setting up your account | https://claude.ai/artifact/HoUgKYU9pkBwvGxiaCCDZh | `design/pages/13-finish-setting-up.html` |
+| 14 Log in | https://claude.ai/artifact/KFSLVdswwSLN2HGsMyn8ed | `design/pages/14-log-in.html` |
+| 15 Forgot and reset password | https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4 | `design/pages/15-forgot-and-reset-password.html` |
+| 16 Accept updated terms | https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG | `design/pages/16-accept-updated-terms.html` |
+| Canvas, "Harbourly webapp" | https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ | Every library section and every Phase 1 to 4 state, desktop and phone |
 
 State ids you can link to (`data-link="NN#id"`):
 - **05:** confirming, confirmed, failed, released.
@@ -93,10 +99,11 @@ State ids you can link to (`data-link="NN#id"`):
 - **07:** gamer-after, mirae-after (Phase 3), gamer-noshow, gamer-payment, coach-after, coach-payment, validation, upload-error, submitted, respond, response-sent.
 - **08:** waiting, no-show, coach-waiting, live, camera, share, banner-10, banner-5, banner-1, end-confirm, end-sent, end-received, reconnecting, other-dropped, blocked, ended, coach-ended.
 - **09:** busy, todo-all (the To do page), quiet (nothing to do), new (brand-new account), loading, error. **10:** list, empty, loading, error.
+- **11:** form, booking, errors, loading. **12:** sent, resent, expired, verified, verified-other. **13:** form, google, missing, phone, wrong-code, filled, username-taken, coach-unavailable, booking, submitting, under-18, not-available. **14:** form, booking, wrong, too-many, loading. **15:** request, sent, new-password, expired, done. **16:** terms.
 
 The files:
 - `design/foundations/tokens.css`: the global stylesheet. Every design-system token by its exact name, plus `--shadow-flat` and `--shadow-cta-rest`, base styles and the webapp type scale.
-- `design/foundations/components/<Name>.css`: one file per shared component, each lifting straight into `<Name>.module.css`. Every selector starts with the component's root class. Components: AppShell, TopNav, Sidebar, MobileMenu, Button, TextLink, IconButton, Field, Checkbox, OtpInput, ImageUpload, StepCounter, StatusLabel, Badge, Avatar, Flag, Price, GameRank, Rating, Card, CoachCard, SessionList (`compact`: rows stack at every width, added in Phase 3), Notice (with CallBanner), Countdown (with HoldTimer), ConfirmStep, EmptyState, Skeleton, ErrorState, PendingSlot (a response, review or reply not sent yet; `stacked` for narrow columns; added in Phase 3), Icon, OptionCard, SlotPicker (one time, or up to 3), AudioPlayer, ReviewItem, PriceBreakdown, Spinner, Gallery, ParticipantTile, CallControls, ChatPanel. Behaviour files beside them: `OtpInput.js`, `Rating.js` (star input), `Field.js` (character counter). All are shown on the component library page.
+- `design/foundations/components/<Name>.css`: one file per shared component, each lifting straight into `<Name>.module.css`. Every selector starts with the component's root class. Components: AppShell, TopNav (with `gate`: logo and Sign out only), Sidebar, MobileMenu, Button, TextLink, IconButton, Field, Checkbox, OtpInput, ImageUpload, StepCounter, StatusLabel, Badge, Avatar, Flag, Price, GameRank, Rating, Card, CoachCard, SessionList (`compact`: rows stack at every width, added in Phase 3), Notice (with CallBanner), Countdown (with HoldTimer), ConfirmStep, EmptyState, Skeleton, ErrorState, PendingSlot (a response, review or reply not sent yet; `stacked` for narrow columns; added in Phase 3), Icon, OptionCard, SlotPicker (one time, or up to 3), AudioPlayer, ReviewItem, PriceBreakdown, Spinner, Gallery, ParticipantTile, CallControls, ChatPanel, and from Phase 4 GoogleButton (with its "or" row), ResultPanel (a whole-page outcome: icon, title, text, one way on) and Field's password option (Show and Hide) and label row. Behaviour files beside them: `OtpInput.js`, `Rating.js` (star input), `Field.js` (character counter, password Show and Hide). All are shown on the component library page.
 - `design/foundations/icons.js`: the line icon sprite (24px grid, 1.8 stroke). Use `<svg class="icon"><use href="#i-name"/></svg>`. Add new icons in the same style. `design/foundations/flags.js`: simplified country flags (ph, sg, my).
 - `design/foundations/mockup.css` and `mockup.js`: the mockup harness, not product code. Pages put each state in `<section data-state="id" data-label="Label">` inside `<div class="mk-frame" data-page="NN Page">`; the harness builds the state switcher and the desktop/phone toggle. `window.mk.set(stateId, "desktop" | "phone")` switches from script. A state with `data-shell="name"` is wrapped in `<template id="shell-name">` (the app shell, written once per page; copy the gamer shell from 06) and `data-nav="key"` marks the current sidebar link. The harness also wires the burger menu and the `data-link` cross-page links, and gives every gamer shell its links: logo and sidebar Dashboard → 09, Browse coaches → 01, My sessions → 10 (only when snapking is logged in). Use a 2-digit `data-page` name, e.g. `09 Gamer dashboard`.
 - Mockup behaviour (a page's own interactions, like `data-go` steps) goes in a `<script>` in the page; behaviour that belongs to a shared component goes in `foundations/components/<Name>.js`, included before `mockup.js`. `build.mjs` inlines local scripts.
@@ -121,8 +128,8 @@ The files:
 
 - **Never create a second canvas.** All frames go on https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ.
 - Each frame is one artboard: a `.dc.html` that only shows an uploaded PNG at its true CSS size (PNG pixels ÷ 2). Board titles follow "NN Page · State · Width", e.g. "09 Gamer dashboard · Busy account · Phone". File names are `<prefix>-<state>-<desktop|phone>.dc.html`.
-- Layout: each state is a pair (desktop, then phone 80 px to its right), 200 px between pairs, three pairs per row, 200 px between rows. A `title1` note names the phase and each page, and a green sticky to the left of each page links its interactive version and source file. Phase 1's title is at y = 21,807; Phase 2's at y = 56,690; Phase 3's at y = 101,690, and the canvas ends at y = 110,588 (28 Oct 2026). Phase 4 goes below it (canvas.py places it; add it to `PHASES` and `CHECKS` after publishing its pages).
-- For Phase 4: add `("phase4", "Phase 4 · Sign up, log in, account access", [("11", …), …])` to `PHASES` in `design/tools/canvas.py` and `"phase4": ("check5", "Checkpoint 5: getting in, pages 11 to 16.")` to `CHECKS`, after publishing the pages.
+- Layout: each state is a pair (desktop, then phone 80 px to its right), 200 px between pairs, three pairs per row, 200 px between rows. A `title1` note names the phase and each page, and a green sticky to the left of each page links its interactive version and source file. Phase 1's title is at y = 22,971; Phase 2's at y = 57,058; Phase 3's at y = 102,058; Phase 4's at y = 111,188, and the canvas ends at y = 132,376 (28 Oct 2026). A new phase goes below it: add it to `PHASES` and `CHECKS` in canvas.py after publishing its pages.
+- Phase 4 is in `PHASES` and `CHECKS`. For Phase 5 add `("phase5", "Phase 5 · Becoming a coach", [...])` and `"phase5": ("check6", "Checkpoint 6: coach onboarding, pages 17 to 21.")`. The library's "Sign up and log in" section is the `access` row in canvas.py.
 - To place frames:
   1. Copy the PNGs into a temporary folder **inside the repo** (e.g. `.frames-upload/`; the uploader takes files from the working directory only), upload them as canvas assets in batches of up to 25 (`url` = the canvas, `asset: true`, `file_paths`), and write each `<prefix>__<state>__<width> <asset id>` line into a blobs file. Every frame of a new page must be in the blobs file. Delete the folder afterwards; never commit it.
   2. canvas.py reads frames from `<framesDir>/<prefix>/<key>.png`, so put each page's renders in a folder named after its prefix.
@@ -173,7 +180,10 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 ## Open items
 
 - **Avatar and showcase images:** I'll supply fictional avatar and showcase images. Until then, avatars show the default (first letter in Sora) and showcase images are marked empty slots.
-- **Sign-up password (assumed, not confirmed):** email sign-ups enter email and password once, on the sign-up page, and "Finish setting up" doesn't ask again; Google sign-ups never set a password. **Confirm with me in your first message** (Phase 4 is where it matters).
+- **Sign-up password:** confirmed 28 Oct 2026 (DECISIONS.md, "Phase 4 decisions").
+- **Mockup-only hints:** 12 and 15 carry a dashed "Mockup: open the link in the email" line (`.mk-hint` in mockup.css) so the prototype can be walked; it's hidden in canvas renders and isn't part of the design.
+- **03 "Phone not verified" state:** everyone now verifies their phone at sign-up, so this state is an edge case (for example a number removed by support). Kept as built.
+- **Phase 4 walk-through:** 01/02/03 logged out → Log in (14) or Sign up (11) → … → 03 `returning` or 09. Every link and step on 11 to 16 was clicked through (91, none broken) and every state checked at 320, 390, 820, 1024, 1280×720 and 1440 wide.
 - **10 My sessions width (open since 28 Oct 2026):** 09 is full width; 10 still uses the old 1080px cap. Ask me whether to apply AppShell's `wide` option to 10. Don't change it unasked.
 - **Sidebar links for dual-role accounts (open):** the harness wires the sidebar's Dashboard, Browse coaches and My sessions links to snapking's pages on every gamer shell, including Kairo's coach-view shell. Ask me whether to limit the wiring to snapking.
 - **Phase 6:** voice intro length and portfolio format are still to decide.
@@ -193,4 +203,4 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 
 ## Next step
 
-Phase 4. Read everything above, then send me the one message described in "Before you build anything" (understanding, link map, new labels, gaps with recommendations, and one line each on the three open Phase 3 items). Build only after I answer. When the six pages are built, published and on the canvas, stop for **checkpoint 5**, update this handoff, DECISIONS.md, BUILD-ORDER.md and USER-FLOW.md, commit and push, and wait for my review. Don't start Phase 5.
+Checkpoint 5 is waiting for my review of pages 11 to 16. Apply any refinements from the review through the HTML pages (then re-render and replace their frames). Only after I close checkpoint 5: Phase 5, Becoming a coach (17 to 21), briefed the same way (understanding, link map, labels, gaps with recommendations, in one message; build only after I answer). The three Phase 3 open items (10's width, the coach-view sidebar links, the gamer response to a coach's report) are still waiting for my answer.

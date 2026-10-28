@@ -61,7 +61,7 @@ def place(fname, title, key, x, y):
 # Phase 0, page 0.2: library sections in fixed rows (0.1 Tokens is left as it is)
 lib = dict(labels("0.2-components.html"))
 y = 4123
-for row in [["shell", "buttons", "fields"], ["status", "identity", "cards"], ["notices", "confirm", "patterns"], ["booking", "session"]]:
+for row in [["shell", "buttons", "fields"], ["status", "identity", "cards"], ["notices", "confirm", "patterns"], ["booking", "session", "access"]]:
     tallest = 0
     for i, s in enumerate(row):
         for wn, dx in (("desktop", 0), ("phone", 1520)):
@@ -87,10 +87,19 @@ PHASES = [
         ("09", "09 Gamer dashboard", "09-gamer-dashboard.html", "https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM"),
         ("10", "10 My sessions", "10-my-sessions.html", "https://claude.ai/artifact/RA5wuSQuWSaw8hcPfsJpet"),
     ]),
+    ("phase4", "Phase 4 · Sign up, log in, account access", [
+        ("11", "11 Sign up", "11-sign-up.html", "https://claude.ai/artifact/QkABonvTk67WnzxPHH1rrC"),
+        ("12", "12 Verify your email", "12-verify-your-email.html", "https://claude.ai/artifact/MmPhavSEmaQbDFcxNtvcG4"),
+        ("13", "13 Finish setting up your account", "13-finish-setting-up.html", "https://claude.ai/artifact/HoUgKYU9pkBwvGxiaCCDZh"),
+        ("14", "14 Log in", "14-log-in.html", "https://claude.ai/artifact/KFSLVdswwSLN2HGsMyn8ed"),
+        ("15", "15 Forgot and reset password", "15-forgot-and-reset-password.html", "https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4"),
+        ("16", "16 Accept updated terms", "16-accept-updated-terms.html", "https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG"),
+    ]),
 ]
 CHECKS = {"phase1": ("check2", "Checkpoint 2: the booking flow end to end, pages 01 to 05."),
           "phase2": ("check3", "Checkpoint 3: session lifecycle, pages 06 to 08."),
-          "phase3": ("check4", "Checkpoint 4: gamer side complete, pages 09 and 10.")}
+          "phase3": ("check4", "Checkpoint 4: gamer side complete, pages 09 and 10."),
+          "phase4": ("check5", "Checkpoint 5: getting in, pages 11 to 16.")}
 for nid, ptitle, pages in PHASES:
     top = end + 600
     N[nid] = {**N.get(nid, {}), "kind": "title1", "maxW": 6130, "text": ptitle, "w": 240, "x": 0, "y": top}
