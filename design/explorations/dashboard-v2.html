@@ -34,11 +34,13 @@
    the window under the banner and each scrolls on its own (ScrollArea). Narrower or shorter windows (columns
    stacked, or under 760px tall) go back to one normal page scroll. */
 .appShellContent.wide { max-width: none; }
-.db { container: dash / inline-size; display: grid; gap: var(--space-6); }
+.db { container: dash / inline-size; display: grid; gap: var(--space-8); }
+/* The space above the banner is the page's top padding (32px, 24px below 1000px); the gap below it matches. */
+@container app (max-width: 999px) { .db { gap: var(--space-6); } }
 .statusStack { display: inline-block; }
 
 /* Welcome banner: on the page, no card. */
-.dbBanner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-4) var(--space-8); align-items: center; padding-top: var(--space-2); }
+.dbBanner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-4) var(--space-8); align-items: center; }
 .dbBannerAction { justify-self: end; }
 .dbHelloTop { display: flex; align-items: center; gap: var(--space-5); min-width: 0; }
 .dbHelloTop .avatar { --avatar-size: 56px; }
@@ -116,7 +118,7 @@
    window at least 760px tall): no page scroll; the columns fill the window and scroll on their own. */
 @media (min-height: 760px) {
   @container app (min-width: 1188px) {
-    .db.fit { margin-top: calc(-1 * var(--space-3)); height: calc(100dvh - 76px - var(--space-8) + var(--space-3) - var(--space-4) - var(--mk-extra, 0px)); margin-bottom: calc(var(--space-4) - var(--space-20)); grid-template-rows: auto minmax(0, 1fr); }
+    .db.fit { height: calc(100dvh - 76px - var(--space-8) - var(--space-6) - var(--mk-extra, 0px)); margin-bottom: calc(var(--space-6) - var(--space-20)); grid-template-rows: auto minmax(0, 1fr); }
     .db.fit .dbCols { height: 100%; align-items: stretch; }
     .db.fit .dbTodoWrap { height: 100%; }
     .db.fit .dbTodo { flex: 1 1 auto; min-height: 0; }
