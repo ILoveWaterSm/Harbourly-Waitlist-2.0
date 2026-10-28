@@ -38,15 +38,13 @@
 .statusStack { display: inline-block; }
 
 /* Welcome banner: on the page, no card. */
-.dbBanner { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4) var(--space-8); align-items: center; padding-top: var(--space-2); }
-.dbHello { display: grid; gap: var(--space-3); justify-items: start; min-width: 0; }
+.dbBanner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-4) var(--space-8); align-items: center; padding-top: var(--space-2); }
+.dbBannerAction { justify-self: end; }
 .dbHelloTop { display: flex; align-items: center; gap: var(--space-5); min-width: 0; }
 .dbHelloTop .avatar { --avatar-size: 56px; }
 .dbDate { display: block; margin-bottom: var(--space-2); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
-.dbHello h1 { font: 700 34px/1.1 var(--font-display); letter-spacing: -.015em; }
-.dbHelloText { max-width: 60ch; font-size: 15.5px; line-height: 1.6; color: var(--muted); }
-
-.dbBanner.solo { grid-template-columns: minmax(0, 1fr); }
+.dbHelloTop h1 { font: 700 34px/1.1 var(--font-display); letter-spacing: -.015em; }
+.dbHelloText { grid-column: 1 / -1; max-width: 60ch; font-size: 15.5px; line-height: 1.6; color: var(--muted); }
 
 /* Two columns: To do, and the stacked cards beside it. */
 .dbCols { display: grid; grid-template-columns: minmax(0, 2fr) minmax(360px, 1fr); gap: var(--space-6); align-items: start; min-height: 0; }
@@ -141,16 +139,19 @@
   .dbCols { grid-template-columns: minmax(0, 1fr); }
 }
 @container dash (max-width: 1099px) {
-  .dbHello h1 { font-size: 28px; }
+  .dbHelloTop h1 { font-size: 28px; }
   .dbHelloTop { gap: var(--space-4); }
   .dbHelloTop .avatar { --avatar-size: 48px; }
 }
 @container dash (max-width: 859px) {
+}
+@container dash (max-width: 639px) {
   .dbBanner { grid-template-columns: minmax(0, 1fr); }
+  .dbBannerAction { justify-self: start; order: 3; }
 }
 @container dash (max-width: 599px) {
   .db { gap: var(--space-6); }
-  .dbHello h1 { font-size: 28px; }
+  .dbHelloTop h1 { font-size: 28px; }
   .dbHelloTop { gap: var(--space-4); }
   .dbHelloTop .avatar { --avatar-size: 52px; }
   .dbActions .button { flex: 1 1 auto; }
@@ -200,8 +201,9 @@
 
   <section data-state="busy" data-label="Busy account · Mon 5 Oct, 14:12" data-shell="gamer" data-nav="dashboard">
       <div class="db fit">
-          <header class="dbBanner solo">
-            <div class="dbHello"><div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Monday, 5 October</span><h1>Good afternoon, snapking</h1></div></div><div class="dbActions"><a class="button secondary" href="#" data-link="01#results">Browse coaches</a></div></div>
+          <header class="dbBanner">
+            <div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Monday, 5 October</span><h1>Good afternoon, snapking</h1></div></div>
+            <div class="dbBannerAction"><a class="button secondary" href="#" data-link="01#results">Browse coaches</a></div>
             
           </header>
           <div class="dbCols">
@@ -307,8 +309,9 @@
 
   <section data-state="quiet" data-label="Nothing to do · Thu 24 Sep, 13:05" data-shell="gamer" data-nav="dashboard">
       <div class="db">
-          <header class="dbBanner solo">
-            <div class="dbHello"><div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Thursday, 24 September</span><h1>Good afternoon, snapking</h1></div></div><div class="dbActions"><a class="button secondary" href="#" data-link="01#results">Browse coaches</a></div></div>
+          <header class="dbBanner">
+            <div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Thursday, 24 September</span><h1>Good afternoon, snapking</h1></div></div>
+            <div class="dbBannerAction"><a class="button secondary" href="#" data-link="01#results">Browse coaches</a></div>
             
           </header>
           <div class="dbCols">
@@ -335,16 +338,17 @@
 
   <section data-state="new" data-label="Brand-new account · Thu 24 Sep, 11:00" data-shell="gamer" data-nav="dashboard">
       <div class="db">
-          <header class="dbBanner solo">
-            <div class="dbHello"><div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Thursday, 24 September</span><h1>Welcome to Harbourly, snapking</h1></div></div><p class="dbHelloText">Book your first session: find a coach for your game and pick a one-hour time. Harbourly holds your payment until you confirm the session went ahead. Your sessions, and anything that needs you, show here.</p><div class="dbActions"><a class="button primary" href="#" data-link="01#results">Browse coaches</a></div></div>
-            
+          <header class="dbBanner">
+            <div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Thursday, 24 September</span><h1>Welcome to Harbourly, snapking</h1></div></div>
+            <div class="dbBannerAction"><a class="button primary" href="#" data-link="01#results">Browse coaches</a></div>
+            <p class="dbHelloText">Book your first session: find a coach for your game and pick a one-hour time. Harbourly holds your payment until you confirm the session went ahead. Your sessions, and anything that needs you, show here.</p>
           </header>
       </div>
   </section>
 
   <section data-state="loading" data-label="Loading" data-shell="gamer" data-nav="dashboard">
       <div class="db fit">
-          <div class="dbBanner" aria-busy="true" aria-label="Loading your dashboard"><div class="dbHello"><div class="dbHelloTop"><span class="skeleton circle" style="width:72px;height:72px"></span><div class="dbSkel" style="min-width:260px"><span class="skeleton" style="width:140px;height:11px"></span><span class="skeleton" style="width:340px;height:34px"></span></div></div><span class="skeleton pill" style="width:160px;height:44px"></span></div></div>
+          <div class="dbBanner" aria-busy="true" aria-label="Loading your dashboard"><div class="dbHelloTop"><span class="skeleton circle" style="width:56px;height:56px"></span><div class="dbSkel" style="min-width:260px"><span class="skeleton" style="width:140px;height:11px"></span><span class="skeleton" style="width:340px;height:34px"></span></div></div><span class="skeleton pill" style="width:160px;height:44px"></span></div>
           <div class="dbCols"><div class="dbTodoWrap"><span class="skeleton" style="width:80px;height:24px"></span><div class="card dbTodo"><div class="dbSkel" style="padding:var(--space-5) 0;border-top:1px solid var(--line)"><span class="skeleton" style="width:120px;height:11px"></span><span class="skeleton" style="width:55%;height:19px"></span><span class="skeleton" style="width:85%;height:12px"></span><div style="display:flex;gap:12px;align-items:center;margin-top:6px"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:60%;height:12px"></span></div></div><span class="skeleton pill" style="width:170px;height:44px"></span></div><div class="dbSkel" style="padding:var(--space-5) 0;border-top:1px solid var(--line)"><span class="skeleton" style="width:120px;height:11px"></span><span class="skeleton" style="width:55%;height:19px"></span><span class="skeleton" style="width:85%;height:12px"></span><div style="display:flex;gap:12px;align-items:center;margin-top:6px"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:60%;height:12px"></span></div></div><span class="skeleton pill" style="width:170px;height:44px"></span></div></div></div><div class="dbSide"><div class="dbSection"><span class="skeleton" style="width:120px;height:24px"></span><div class="card dbSkel"><span class="skeleton" style="width:45%;height:19px"></span><div style="display:flex;gap:12px;align-items:center"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:50%;height:13px"></span><span class="skeleton" style="width:70%;height:12px"></span></div></div></div></div><div class="dbSection"><span class="skeleton" style="width:160px;height:24px"></span><div class="card dbSkel"><span class="skeleton" style="width:45%;height:19px"></span><div style="display:flex;gap:12px;align-items:center"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:50%;height:13px"></span><span class="skeleton" style="width:70%;height:12px"></span></div></div></div></div></div></div>
       </div>
   </section>
