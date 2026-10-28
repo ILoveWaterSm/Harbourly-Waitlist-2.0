@@ -38,27 +38,13 @@
 .statusStack { display: inline-block; }
 
 /* Welcome banner: on the page, no card. */
-.dbBanner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(380px, 480px); gap: var(--space-4) var(--space-8); align-items: center; padding-top: var(--space-2); }
+.dbBanner { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4) var(--space-8); align-items: center; padding-top: var(--space-2); }
 .dbHello { display: grid; gap: var(--space-3); justify-items: start; min-width: 0; }
 .dbHelloTop { display: flex; align-items: center; gap: var(--space-5); min-width: 0; }
 .dbHelloTop .avatar { --avatar-size: 56px; }
 .dbDate { display: block; margin-bottom: var(--space-2); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 .dbHello h1 { font: 700 34px/1.1 var(--font-display); letter-spacing: -.015em; }
 .dbHelloText { max-width: 60ch; font-size: 15.5px; line-height: 1.6; color: var(--muted); }
-.dbNext { display: grid; gap: var(--space-1); padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-flat); min-width: 0; }
-.dbNextLabel { font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
-.dbNextWho { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
-.dbNextWho > div { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-2); }
-.dbNextName { font-weight: 600; font-size: 15.5px; color: var(--ink); }
-.dbNextGame { font-size: 13.5px; color: var(--muted); }
-.dbNextWhen { font: 500 14px/1.4 var(--font-mono); color: var(--ink); }
-.dbNextMeta { font-size: 13.5px; color: var(--muted); }
-.dbNextMeta .countdown { color: var(--ink-soft); }
-/* Wide: who and when on the left, the two buttons stacked on the right, so the card stays low. */
-.dbNext { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-5); align-items: center; }
-.dbNext > :not(.dbActions) { grid-column: 1; }
-.dbNext > .dbActions { grid-column: 2; grid-row: 1 / span 4; flex-direction: column; align-items: stretch; gap: var(--space-2); }
-.dbNext .dbActions .button { padding-inline: 16px; }
 
 .dbBanner.solo { grid-template-columns: minmax(0, 1fr); }
 
@@ -91,7 +77,8 @@
 .dbWhoAmount { margin-left: auto; padding-left: var(--space-3); font: 500 14px/1 var(--font-mono); color: var(--ink); white-space: nowrap; }
 .dbActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); }
 .dbActionsMeta { font-size: 13.5px; color: var(--muted); }
-.dbActionsMeta .mono { color: var(--ink-soft); }
+.dbActionsMeta .mono, .dbActionsMeta .countdown { color: var(--ink-soft); }
+.dbNextBlock { display: grid; gap: var(--space-3); padding-bottom: var(--space-4); border-bottom: 1px solid var(--line); }
 .dbItem .holdTimer, .dbCard .holdTimer { font-size: 13.5px; }
 .dbItem .holdTimer .countdown { font-size: 15px; }
 .dbItem .holdTimer .mono { color: var(--ink-soft); }
@@ -154,7 +141,6 @@
   .dbCols { grid-template-columns: minmax(0, 1fr); }
 }
 @container dash (max-width: 1099px) {
-  .dbBanner { grid-template-columns: minmax(0, 1fr) 450px; }
   .dbHello h1 { font-size: 28px; }
   .dbHelloTop { gap: var(--space-4); }
   .dbHelloTop .avatar { --avatar-size: 48px; }
@@ -167,8 +153,6 @@
   .dbHello h1 { font-size: 28px; }
   .dbHelloTop { gap: var(--space-4); }
   .dbHelloTop .avatar { --avatar-size: 52px; }
-  .dbNext { grid-template-columns: minmax(0, 1fr); }
-  .dbNext > .dbActions { grid-column: 1; grid-row: auto; flex-direction: row; align-items: center; }
   .dbActions .button { flex: 1 1 auto; }
   .dbWho { align-items: flex-start; }
   .dbItem { padding: var(--space-5) 0; }
@@ -216,20 +200,14 @@
 
   <section data-state="busy" data-label="Busy account · Mon 5 Oct, 14:12" data-shell="gamer" data-nav="dashboard">
       <div class="db fit">
-          <header class="dbBanner">
+          <header class="dbBanner solo">
             <div class="dbHello"><div class="dbHelloTop"><span class="avatar">S</span><div><span class="dbDate">Monday, 5 October</span><h1>Good afternoon, snapking</h1></div></div><div class="dbActions"><a class="button secondary" href="#" data-link="01#results">Browse coaches</a></div></div>
-            <section class="card accent dbNext" aria-label="Next session">
-              <span class="dbNextLabel">Next session</span>
-              <div class="dbNextWho"><span class="avatar sm">K</span><div><span class="dbNextName">Kairo</span><span class="dbNextGame">Mobile Legends</span></div></div>
-              <span class="dbNextWhen">Tue 6 Oct · 20:00–21:00 SGT</span>
-              <span class="dbNextMeta">Join opens at <span class="mono">19:50 SGT</span>, in <span class="countdown">29h 38m</span></span>
-              <div class="dbActions"><button class="button primary sm" type="button" disabled>Join session</button><a class="button secondary sm" href="#" data-link="06#kairo-tue">View session</a></div>
-            </section>
+            
           </header>
           <div class="dbCols">
             <section class="dbTodoWrap" aria-labelledby="h-todo1">
               <h2 id="h-todo1">To do</h2>
-              <div class="card dbTodo">
+              <div class="card accent dbTodo">
                 <div class="scrollArea" tabindex="0" role="region" aria-label="To do items"><ul class="dbItems"><li class="dbItem" aria-labelledby="t-pay1">
                 <span class="statusLabel action">Awaiting payment</span>
                 <div class="dbCardText"><h3 class="cardTitle" id="t-pay1">Finish paying to book this time</h3>
@@ -259,6 +237,11 @@
             <div class="dbSide scrollArea" tabindex="0" role="region" aria-label="Coming up, problems and recent sessions"><section class="dbSection" aria-labelledby="t-coming">
                 <h2 id="t-coming">Coming up</h2>
                 <div class="card dbCard">
+                  <div class="dbNextBlock">
+                    <div class="dbWho"><span class="avatar sm">K</span><div class="dbWhoText"><span class="dbWhoName">Kairo</span><span class="dbWhoMeta">Mobile Legends<span class="dbSep" aria-hidden="true">·</span><span class="mono">Tue 6 Oct · 20:00–21:00 SGT</span></span></div></div>
+                    <p class="dbText">Join opens 10 minutes before the start, at <span class="mono">19:50 SGT</span>.</p>
+                    <div class="dbActions"><button class="button primary sm" type="button" disabled>Join session</button><span class="dbActionsMeta">Opens in <span class="countdown">29h 38m</span></span><a class="button secondary sm" href="#" data-link="06#kairo-tue">View session</a></div>
+                  </div>
                   <div class="sessionList compact"><a class="sessionRow" href="#" data-link="06#upcoming"><span class="sessionRowWho"><span class="avatar sm">K</span><span><span class="sessionRowName">Kairo</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Wed 7 Oct · 20:00 SGT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></div>
                 </div>
               </section><section class="dbSection" aria-labelledby="t-problem">
@@ -331,7 +314,7 @@
           <div class="dbCols">
             <section class="dbTodoWrap" aria-labelledby="h-todo3">
               <h2 id="h-todo3">To do</h2>
-              <div class="card dbTodo">
+              <div class="card accent dbTodo">
                 <div class="dbEmpty"><div class="emptyState"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><p class="emptyStateTitle">Nothing needs you right now</p><p class="emptyStateText">Payments to finish, new times to answer, sessions to confirm and reviews to leave show here when they're waiting on you.</p></div></div>
                 
               </div>
@@ -361,7 +344,7 @@
 
   <section data-state="loading" data-label="Loading" data-shell="gamer" data-nav="dashboard">
       <div class="db fit">
-          <div class="dbBanner" aria-busy="true" aria-label="Loading your dashboard"><div class="dbHello"><div class="dbHelloTop"><span class="skeleton circle" style="width:72px;height:72px"></span><div class="dbSkel" style="min-width:260px"><span class="skeleton" style="width:140px;height:11px"></span><span class="skeleton" style="width:340px;height:34px"></span></div></div><span class="skeleton pill" style="width:160px;height:44px"></span></div><div class="card dbNext"><span class="skeleton" style="width:90px;height:11px"></span><span class="skeleton" style="width:70%;height:14px"></span><span class="skeleton" style="width:80%;height:12px"></span><span class="skeleton pill" style="width:150px;height:38px"></span></div></div>
+          <div class="dbBanner" aria-busy="true" aria-label="Loading your dashboard"><div class="dbHello"><div class="dbHelloTop"><span class="skeleton circle" style="width:72px;height:72px"></span><div class="dbSkel" style="min-width:260px"><span class="skeleton" style="width:140px;height:11px"></span><span class="skeleton" style="width:340px;height:34px"></span></div></div><span class="skeleton pill" style="width:160px;height:44px"></span></div></div>
           <div class="dbCols"><div class="dbTodoWrap"><span class="skeleton" style="width:80px;height:24px"></span><div class="card dbTodo"><div class="dbSkel" style="padding:var(--space-5) 0;border-top:1px solid var(--line)"><span class="skeleton" style="width:120px;height:11px"></span><span class="skeleton" style="width:55%;height:19px"></span><span class="skeleton" style="width:85%;height:12px"></span><div style="display:flex;gap:12px;align-items:center;margin-top:6px"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:60%;height:12px"></span></div></div><span class="skeleton pill" style="width:170px;height:44px"></span></div><div class="dbSkel" style="padding:var(--space-5) 0;border-top:1px solid var(--line)"><span class="skeleton" style="width:120px;height:11px"></span><span class="skeleton" style="width:55%;height:19px"></span><span class="skeleton" style="width:85%;height:12px"></span><div style="display:flex;gap:12px;align-items:center;margin-top:6px"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:60%;height:12px"></span></div></div><span class="skeleton pill" style="width:170px;height:44px"></span></div></div></div><div class="dbSide"><div class="dbSection"><span class="skeleton" style="width:120px;height:24px"></span><div class="card dbSkel"><span class="skeleton" style="width:45%;height:19px"></span><div style="display:flex;gap:12px;align-items:center"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:50%;height:13px"></span><span class="skeleton" style="width:70%;height:12px"></span></div></div></div></div><div class="dbSection"><span class="skeleton" style="width:160px;height:24px"></span><div class="card dbSkel"><span class="skeleton" style="width:45%;height:19px"></span><div style="display:flex;gap:12px;align-items:center"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="dbSkel" style="flex:1"><span class="skeleton" style="width:50%;height:13px"></span><span class="skeleton" style="width:70%;height:12px"></span></div></div></div></div></div></div>
       </div>
   </section>
