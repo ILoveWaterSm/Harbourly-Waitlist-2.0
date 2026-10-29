@@ -140,11 +140,11 @@ Also in Phase 3: PendingSlot component and a compact SessionList (library page);
 
 Pages: [11 Sign up](https://claude.ai/artifact/QkABonvTk67WnzxPHH1rrC) (`design/pages/11-sign-up.html`) · [12 Verify your email](https://claude.ai/artifact/MmPhavSEmaQbDFcxNtvcG4) (`design/pages/12-verify-your-email.html`) · [13 Finish setting up your account](https://claude.ai/artifact/HoUgKYU9pkBwvGxiaCCDZh) (`design/pages/13-finish-setting-up.html`) · [14 Log in](https://claude.ai/artifact/KFSLVdswwSLN2HGsMyn8ed) (`design/pages/14-log-in.html`) · [15 Forgot and reset password](https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4) (`design/pages/15-forgot-and-reset-password.html`) · [16 Accept updated terms](https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG) (`design/pages/16-accept-updated-terms.html`) · frames on the [canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ)
 
-Rules in DECISIONS.md, "Phase 4 decisions" and "Sign-in services". One centred column (440px; 13 600px, 16 560px) under the top nav, no sidebar. 11, 14 and 15 use the logged-out nav; 12, 13 and 16 the gate nav (logo, Sign out).
+Rules in DECISIONS.md, "Phase 4 decisions" and "Sign-in services". 11, 14 and 15 use a split layout (form left, animated brand panel right, panel hidden below 1000px; DECISIONS.md, "Sign up and log in layout"); 12, 13 and 16 a centred column (440px; 13 600px, 16 560px). No sidebar. 11, 14 and 15 use the logged-out nav; 12, 13 and 16 the gate nav (logo, Sign out).
 
 ### 11. Sign up · S
 `/signup` *proposed*.
-- Continue with Google, "or", email, password (Show), Create account. "Already have an account? Log in".
+- Log in | Sign up tabs, "Create your account", Continue with Google, "or", email, password (Show), Create account.
 - States: `form`, `booking` (came from 03: "Sign up to book with Kairo"), `errors` (email format, breached password), `loading` ("Creating your account…"). No "email already used" state: no screen says whether an email has an account.
 
 ### 12. Verify your email · S
@@ -158,7 +158,7 @@ Rules in DECISIONS.md, "Phase 4 decisions" and "Sign-in services". One centred c
 
 ### 14. Log in · S
 `/login` *proposed*.
-- Continue with Google, "or", email, password (Show) with "Forgot password?", Log in. "New to Harbourly? Sign up".
+- Log in | Sign up tabs, Continue with Google, "or", email, password (Show) with "Forgot password?", Log in.
 - States: `form` (→ 09 `busy`), `booking` ("Log in to book with Kairo" → 03 `returning`), `wrong` (wrong details), `too-many` (wait 15 minutes), `loading`.
 
 ### 15. Forgot and reset password · S
@@ -171,7 +171,7 @@ Rules in DECISIONS.md, "Phase 4 decisions" and "Sign-in services". One centred c
 
 Also in Phase 4: new shared parts on the component library ("Sign up and log in": Field password and label row, GoogleButton, ResultPanel, TopNav gate, icons mail and globe; the phone field's code select is wider so "+65 SG" fits; logged-out Log in and Sign up fit at 320px); 01, 02 and 03's logged-out Log in and Sign up open 14 and 11, and 03's "Log in to continue" and "Sign up" open 14 and 11 with the booking; USER-FLOW diagram 2 updated (sign-up from a booking, email verified check, Google with no account, blocked screens keep nothing).
 
-**Checkpoint 5:** getting in. Built and published 28 Oct 2026; waiting for review.
+**Checkpoint 5:** getting in. Built and published 28 Oct 2026. 29 Oct 2026: 11, 14 and 15 moved to the split layout with tabs (new Tabs and AuthLayout components); waiting for review.
 
 ---
 

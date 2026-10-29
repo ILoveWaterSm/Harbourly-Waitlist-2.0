@@ -611,3 +611,14 @@ New shared parts for Phase 4: Field `password` (Show and Hide, in Field.js) and 
 
 Elsewhere
 - 03's "Verify your phone to book" state can't normally be reached now (everyone verifies at sign-up). Kept as an edge case, for example a number removed by support.
+
+## Sign up and log in layout (agreed 29 Oct 2026, after Phase 4 was built)
+
+Replaces the centred single column on 11 Sign up, 14 Log in and 15 Forgot and reset password. Exploration: `design/explorations/auth-split.html`.
+
+- **Split layout (AuthLayout component):** the form on the left, a brand panel on the right, half each, under the logged-out top nav (unchanged: logo, Log in, Sign up). Below 1000px the panel is hidden and only the form shows.
+- **Brand panel:** the Harbourly mark centred on `--bg-deep`, over the landing page's faint 80px line grid, with a soft green glow behind it that slowly brightens and dims (9 seconds) and the mark floating up and down 8px (6 seconds). No text. Built in CSS; still for reduced motion. **Exception:** the grid and breathing glow otherwise stay on marketing pages ("Visual rules"); this panel is the one webapp place they appear, as the doorway between the two.
+- **Tabs (Tabs component):** "Log in | Sign up" as a pill switch above the form on 11 and 14; the selected tab is raised with the green glow. Switching happens in place, with no page load; the address changes between /login and /signup, and a typed email and the booking context carry over. The "Already have an account? Log in" and "New to Harbourly? Sign up" lines are removed. 15 has no tabs (its "← Log in" back link stays).
+- **Sign up title:** "Create your account" (was "Create your Harbourly account").
+- 12, 13 and 16 keep the centred column and the gate nav.
+- For the build: the mark is a 256px PNG, slightly soft at 200px on sharp screens; supply a larger PNG (about 512px) or a vector.

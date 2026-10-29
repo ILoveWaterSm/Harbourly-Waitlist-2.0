@@ -46,6 +46,8 @@
 <link rel="stylesheet" href="../foundations/components/ChatPanel.css">
 <link rel="stylesheet" href="../foundations/components/GoogleButton.css">
 <link rel="stylesheet" href="../foundations/components/ResultPanel.css">
+<link rel="stylesheet" href="../foundations/components/Tabs.css">
+<link rel="stylesheet" href="../foundations/components/AuthLayout.css">
 <style>
 /* Layout: a working library. Each section is one component family; each specimen is
    captioned with its state in mono, on the ground it really sits on (page or card). */
@@ -919,8 +921,8 @@
   <section class="lib-sec" data-state="access" data-label="Sign up and log in">
     <div class="lib-sec-head">
       <h2>Sign up and log in</h2>
-      <p>Added in Phase 4 for pages 11 to 16. Passwords can be shown with a plain "Show" word rather than an eye icon. Google sits above the email form with an "or" between them; its full-colour mark is required by Google, the one other place colours outside the palette appear after flags. A whole-page outcome (check your email, a link that expired, a blocked sign-up) is a result panel with one way on. People who are signed in but not through the door yet (verify email, finish setting up, accept updated terms) get the gate top bar: the logo and Sign out, nothing else to wander into.</p>
-      <span class="lib-files">Field (password, label row) · Field.js · GoogleButton · ResultPanel · TopNav (gate) · new icons in icons.js</span>
+      <p>Added in Phase 4 for pages 11 to 16. Passwords can be shown with a plain "Show" word rather than an eye icon. Google sits above the email form with an "or" between them; its full-colour mark is required by Google, the one other place colours outside the palette appear after flags. A whole-page outcome (check your email, a link that expired, a blocked sign-up) is a result panel with one way on. People who are signed in but not through the door yet (verify email, finish setting up, accept updated terms) get the gate top bar: the logo and Sign out, nothing else to wander into. Sign up, Log in and Forgot password sit in a split layout: the form on the left, a quiet brand panel on the right (the landing page's grid and slow breathing glow, with the mark floating gently), hidden below 1000px. Tabs switch between Log in and Sign up in place.</p>
+      <span class="lib-files">Field (password, label row) · Field.js · GoogleButton · ResultPanel · TopNav (gate) · Tabs · AuthLayout · new icons in icons.js</span>
     </div>
     <div class="lib-specs" style="--lib-min:340px">
       <div class="lib-spec"><span class="lib-cap">Password · new, with hint</span>
@@ -939,6 +941,10 @@
         <div class="lib-stage"><div class="resultPanel" style="padding-top:0"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><h3 class="pageTitle" style="font:var(--text-kpi)">Check your email</h3><p class="resultPanelText">We've sent a link to <b>snapking@example.com</b>. Open it to verify your email.</p><p class="resultPanelNote">Resend email in <span class="countdown">0:42</span></p><div class="resultPanelActions"><a class="textLink quiet" href="#">Use a different email</a></div></div></div></div>
       <div class="lib-spec"><span class="lib-cap">Result panel · done</span>
         <div class="lib-stage"><div class="resultPanel" style="padding-top:0"><svg class="icon positive" aria-hidden="true"><use href="#i-check"/></svg><h3 class="pageTitle" style="font:var(--text-kpi)">Your email is verified</h3><p class="resultPanelText">Next, add a few details to finish setting up your account.</p><div class="resultPanelActions"><a class="button primary" href="#">Continue</a></div></div></div></div>
+      <div class="lib-spec"><span class="lib-cap">Tabs · Log in | Sign up</span>
+        <div class="lib-stage"><div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="false">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="true">Sign up</a></div></div></div>
+      <div class="lib-spec wide"><span class="lib-cap">Auth layout · brand panel (right half, hidden below 1000px)</span>
+        <div class="authLayoutArt" aria-hidden="true" style="position:relative;top:auto;height:380px;min-height:0;margin:0"><span class="authLayoutGrid"></span><span class="authLayoutGlow"></span><img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="" style="width:160px;height:160px"></div></div>
       <div class="lib-spec wide"><span class="lib-cap">Top bar · gate (signed in, not through the door yet)</span>
         <div class="lib-shell" style="--shell-h:200px">
           <div class="appShell">

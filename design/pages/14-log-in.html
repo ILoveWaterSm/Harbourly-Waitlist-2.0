@@ -17,6 +17,8 @@
 <link rel="stylesheet" href="../foundations/components/Avatar.css">
 <link rel="stylesheet" href="../foundations/components/Field.css">
 <link rel="stylesheet" href="../foundations/components/GoogleButton.css">
+<link rel="stylesheet" href="../foundations/components/Tabs.css">
+<link rel="stylesheet" href="../foundations/components/AuthLayout.css">
 <style>
 /* Page: Log in (/login) → app/login/page.module.css. Layout only. */
 .auth { display: grid; gap: var(--space-6); width: 100%; max-width: 440px; margin-inline: auto; padding-top: var(--space-6); }
@@ -35,10 +37,11 @@
 @container app (max-width: 640px) {
   .auth { padding-top: var(--space-2); gap: var(--space-5); }
 }
+.authLayoutSide .auth { padding-top: 0; }
 </style>
 </head>
 <body>
-<template id="shell-guest">
+<template id="shell-split">
       <div class="appShell">
         <header class="topNav">
           <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
@@ -47,16 +50,17 @@
             <a class="button primary" href="#" data-link="11#form">Sign up</a>
           </div>
         </header>
-        <div class="appShellBody noSidebar">
-          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
-        </div>
+        <div data-slot></div>
       </div>
     </template>
 <div class="mk-stage">
 <div class="mk-frame" data-page="14 Log in">
 
-  <section data-state="form" data-label="Log in" data-shell="guest">
+  <section data-state="form" data-label="Log in" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutSide">
       <div class="auth">
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#form">Sign up</a></div>
         <div class="authHead"><h1>Log in</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             
@@ -67,11 +71,20 @@
             <div class="field"><div class="fieldLabelRow"><label class="fieldLabel" for="li-pw-f">Password</label><a class="textLink quiet" href="#" data-link="15#request">Forgot password?</a></div><div class="fieldPassword"><input class="fieldControl" id="li-pw-f" type="password" autocomplete="current-password"><button class="fieldReveal" type="button" aria-controls="li-pw-f" aria-pressed="false" aria-label="Show password">Show</button></div></div>
             <a class="button primary block" href="#" data-link="09#busy">Log in</a>
         </form>
-        <p class="authAlt">New to Harbourly? <a class="textLink" href="#" data-link="11#form">Sign up</a></p>
+      </div>
+        </div>
+        <aside class="authLayoutArt" aria-hidden="true">
+          <span class="authLayoutGrid"></span>
+          <span class="authLayoutGlow"></span>
+          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
       </div>
   </section>
-  <section data-state="booking" data-label="Log in to book with Kairo" data-shell="guest">
+  <section data-state="booking" data-label="Log in to book with Kairo" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutSide">
       <div class="auth">
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#booking">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#booking">Sign up</a></div>
         <div class="authHead"><h1>Log in</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             <div class="authContext">
@@ -85,11 +98,20 @@
             <div class="field"><div class="fieldLabelRow"><label class="fieldLabel" for="li-pw-b">Password</label><a class="textLink quiet" href="#" data-link="15#request">Forgot password?</a></div><div class="fieldPassword"><input class="fieldControl" id="li-pw-b" type="password" autocomplete="current-password"><button class="fieldReveal" type="button" aria-controls="li-pw-b" aria-pressed="false" aria-label="Show password">Show</button></div></div>
             <a class="button primary block" href="#" data-link="03#returning">Log in</a>
         </form>
-        <p class="authAlt">New to Harbourly? <a class="textLink" href="#" data-link="11#booking">Sign up</a></p>
+      </div>
+        </div>
+        <aside class="authLayoutArt" aria-hidden="true">
+          <span class="authLayoutGrid"></span>
+          <span class="authLayoutGlow"></span>
+          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
       </div>
   </section>
-  <section data-state="wrong" data-label="Wrong details" data-shell="guest">
+  <section data-state="wrong" data-label="Wrong details" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutSide">
       <div class="auth">
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#form">Sign up</a></div>
         <div class="authHead"><h1>Log in</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             
@@ -100,11 +122,20 @@
             <div class="field"><div class="fieldLabelRow"><label class="fieldLabel" for="li-pw-w">Password</label><a class="textLink quiet" href="#" data-link="15#request">Forgot password?</a></div><div class="fieldPassword"><input class="fieldControl" id="li-pw-w" type="password" autocomplete="current-password"><button class="fieldReveal" type="button" aria-controls="li-pw-w" aria-pressed="false" aria-label="Show password">Show</button></div></div>
             <a class="button primary block" href="#" data-link="09#busy">Log in</a>
         </form>
-        <p class="authAlt">New to Harbourly? <a class="textLink" href="#" data-link="11#form">Sign up</a></p>
+      </div>
+        </div>
+        <aside class="authLayoutArt" aria-hidden="true">
+          <span class="authLayoutGrid"></span>
+          <span class="authLayoutGlow"></span>
+          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
       </div>
   </section>
-  <section data-state="too-many" data-label="Too many tries" data-shell="guest">
+  <section data-state="too-many" data-label="Too many tries" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutSide">
       <div class="auth">
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#form">Sign up</a></div>
         <div class="authHead"><h1>Log in</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             
@@ -115,11 +146,20 @@
             <div class="field"><div class="fieldLabelRow"><label class="fieldLabel" for="li-pw-m">Password</label><a class="textLink quiet" href="#" data-link="15#request">Forgot password?</a></div><div class="fieldPassword"><input class="fieldControl" id="li-pw-m" type="password" autocomplete="current-password"><button class="fieldReveal" type="button" aria-controls="li-pw-m" aria-pressed="false" aria-label="Show password">Show</button></div></div>
             <button class="button primary block" type="submit" disabled>Log in</button>
         </form>
-        <p class="authAlt">New to Harbourly? <a class="textLink" href="#" data-link="11#form">Sign up</a></p>
+      </div>
+        </div>
+        <aside class="authLayoutArt" aria-hidden="true">
+          <span class="authLayoutGrid"></span>
+          <span class="authLayoutGlow"></span>
+          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
       </div>
   </section>
-  <section data-state="loading" data-label="Logging in" data-shell="guest">
+  <section data-state="loading" data-label="Logging in" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutSide">
       <div class="auth">
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#form">Sign up</a></div>
         <div class="authHead"><h1>Log in</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             
@@ -130,7 +170,13 @@
             <div class="field"><div class="fieldLabelRow"><label class="fieldLabel" for="li-pw-l">Password</label><a class="textLink quiet" href="#" data-link="15#request">Forgot password?</a></div><div class="fieldPassword"><input class="fieldControl" id="li-pw-l" type="password" autocomplete="current-password" value="harbour-tide-42" disabled><button class="fieldReveal" type="button" aria-controls="li-pw-l" aria-pressed="false" aria-label="Show password">Show</button></div></div>
             <button class="button primary block" type="submit" aria-busy="true" disabled><span class="buttonSpinner" aria-hidden="true"></span>Logging in…</button>
         </form>
-        <p class="authAlt">New to Harbourly? <a class="textLink" href="#" data-link="11#form">Sign up</a></p>
+      </div>
+        </div>
+        <aside class="authLayoutArt" aria-hidden="true">
+          <span class="authLayoutGrid"></span>
+          <span class="authLayoutGlow"></span>
+          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
       </div>
   </section>
 

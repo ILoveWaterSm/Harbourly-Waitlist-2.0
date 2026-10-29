@@ -17,6 +17,8 @@
 <link rel="stylesheet" href="../foundations/components/Avatar.css">
 <link rel="stylesheet" href="../foundations/components/Field.css">
 <link rel="stylesheet" href="../foundations/components/GoogleButton.css">
+<link rel="stylesheet" href="../foundations/components/Tabs.css">
+<link rel="stylesheet" href="../foundations/components/AuthLayout.css">
 <style>
 /* Page: Sign up (/signup) → app/signup/page.module.css. Layout only. */
 .auth { display: grid; gap: var(--space-6); width: 100%; max-width: 440px; margin-inline: auto; padding-top: var(--space-6); }
@@ -35,10 +37,11 @@
 @container app (max-width: 640px) {
   .auth { padding-top: var(--space-2); gap: var(--space-5); }
 }
+.authLayoutSide .auth { padding-top: 0; }
 </style>
 </head>
 <body>
-<template id="shell-guest">
+<template id="shell-split">
       <div class="appShell">
         <header class="topNav">
           <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
@@ -47,17 +50,18 @@
             <a class="button primary" href="#" data-link="11#form">Sign up</a>
           </div>
         </header>
-        <div class="appShellBody noSidebar">
-          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
-        </div>
+        <div data-slot></div>
       </div>
     </template>
 <div class="mk-stage">
 <div class="mk-frame" data-page="11 Sign up">
 
-  <section data-state="form" data-label="Sign up" data-shell="guest">
+  <section data-state="form" data-label="Sign up" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutSide">
       <div class="auth">
-        <div class="authHead"><h1>Create your Harbourly account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="11#form">Sign up</a></div>
+        <div class="authHead"><h1>Create your account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
         <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
             
             <a class="button secondary block googleButton" href="#" data-link="13#google"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</a>
@@ -66,12 +70,21 @@
             <div class="field"><label class="fieldLabel" for="su-pw-f">Password</label><span class="fieldHint" id="su-pw-f-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="su-pw-f" type="password" autocomplete="new-password" aria-describedby="su-pw-f-h"><button class="fieldReveal" type="button" aria-controls="su-pw-f" aria-pressed="false" aria-label="Show password">Show</button></div></div>
             <a class="button primary block" href="#" data-link="12#sent">Create account</a>
         </form>
-        <p class="authAlt">Already have an account? <a class="textLink" href="#" data-link="14#form">Log in</a></p>
+      </div>
+        </div>
+        <aside class="authLayoutArt" aria-hidden="true">
+          <span class="authLayoutGrid"></span>
+          <span class="authLayoutGlow"></span>
+          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
       </div>
   </section>
-  <section data-state="booking" data-label="From a booking" data-shell="guest">
+  <section data-state="booking" data-label="From a booking" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutSide">
       <div class="auth">
-        <div class="authHead"><h1>Create your Harbourly account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="14#booking">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="11#booking">Sign up</a></div>
+        <div class="authHead"><h1>Create your account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
         <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
             <div class="authContext">
               <div class="cardInset authContextBox"><span class="avatar sm">K</span><div><p class="authContextTitle">Sign up to book with Kairo</p><p class="authContextMeta">Mobile Legends<span class="mono">Wed 7 Oct · 20:00–21:00 SGT</span></p></div></div>
@@ -83,12 +96,21 @@
             <div class="field"><label class="fieldLabel" for="su-pw-b">Password</label><span class="fieldHint" id="su-pw-b-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="su-pw-b" type="password" autocomplete="new-password" aria-describedby="su-pw-b-h"><button class="fieldReveal" type="button" aria-controls="su-pw-b" aria-pressed="false" aria-label="Show password">Show</button></div></div>
             <a class="button primary block" href="#" data-link="12#sent">Create account</a>
         </form>
-        <p class="authAlt">Already have an account? <a class="textLink" href="#" data-link="14#booking">Log in</a></p>
+      </div>
+        </div>
+        <aside class="authLayoutArt" aria-hidden="true">
+          <span class="authLayoutGrid"></span>
+          <span class="authLayoutGlow"></span>
+          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
       </div>
   </section>
-  <section data-state="errors" data-label="Errors" data-shell="guest">
+  <section data-state="errors" data-label="Errors" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutSide">
       <div class="auth">
-        <div class="authHead"><h1>Create your Harbourly account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="11#form">Sign up</a></div>
+        <div class="authHead"><h1>Create your account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
         <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
             
             <a class="button secondary block googleButton" href="#" data-link="13#google"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</a>
@@ -97,12 +119,21 @@
             <div class="field"><label class="fieldLabel" for="su-pw-e">Password</label><span class="fieldHint" id="su-pw-e-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="su-pw-e" type="password" autocomplete="new-password" value="password1" aria-describedby="su-pw-e-h su-pw-e-e" aria-invalid="true"><button class="fieldReveal" type="button" aria-controls="su-pw-e" aria-pressed="false" aria-label="Show password">Show</button></div><span class="fieldError" id="su-pw-e-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>This password has shown up in a data breach, so it isn't safe to use. Choose another.</span></div>
             <a class="button primary block" href="#" data-link="12#sent">Create account</a>
         </form>
-        <p class="authAlt">Already have an account? <a class="textLink" href="#" data-link="14#form">Log in</a></p>
+      </div>
+        </div>
+        <aside class="authLayoutArt" aria-hidden="true">
+          <span class="authLayoutGrid"></span>
+          <span class="authLayoutGlow"></span>
+          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
       </div>
   </section>
-  <section data-state="loading" data-label="Creating your account" data-shell="guest">
+  <section data-state="loading" data-label="Creating your account" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutSide">
       <div class="auth">
-        <div class="authHead"><h1>Create your Harbourly account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="11#form">Sign up</a></div>
+        <div class="authHead"><h1>Create your account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
         <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
             
             <button class="button secondary block googleButton" type="button" disabled><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button>
@@ -111,7 +142,13 @@
             <div class="field"><label class="fieldLabel" for="su-pw-l">Password</label><span class="fieldHint" id="su-pw-l-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="su-pw-l" type="password" autocomplete="new-password" value="harbour-tide-42" aria-describedby="su-pw-l-h" disabled><button class="fieldReveal" type="button" aria-controls="su-pw-l" aria-pressed="false" aria-label="Show password">Show</button></div></div>
             <button class="button primary block" type="submit" aria-busy="true" disabled><span class="buttonSpinner" aria-hidden="true"></span>Creating your account…</button>
         </form>
-        <p class="authAlt">Already have an account? <a class="textLink" href="#" data-link="14#form">Log in</a></p>
+      </div>
+        </div>
+        <aside class="authLayoutArt" aria-hidden="true">
+          <span class="authLayoutGrid"></span>
+          <span class="authLayoutGlow"></span>
+          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
       </div>
   </section>
 
