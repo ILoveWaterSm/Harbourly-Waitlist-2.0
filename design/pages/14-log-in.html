@@ -38,6 +38,14 @@
   .auth { padding-top: var(--space-2); gap: var(--space-5); }
 }
 .authLayoutSide .auth { padding-top: 0; }
+/* More room between the tabs, the title and the form card (29 Oct 2026). */
+.authLayoutSide .auth { gap: 0; }
+.authLayoutSide .tabs { margin-bottom: var(--space-10); }
+.authLayoutSide .authHead + .authCard { margin-top: var(--space-8); }
+@container app (max-width: 999px) {
+  .authLayoutSide .tabs { margin-bottom: var(--space-8); }
+  .authLayoutSide .authHead + .authCard { margin-top: var(--space-6); }
+}
 </style>
 </head>
 <body>
