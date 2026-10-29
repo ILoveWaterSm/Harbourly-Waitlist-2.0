@@ -2,7 +2,8 @@
    a full-height brand panel on the left carries the logo (top left, to the marketing home) over the landing hero's ground
    (a faint 80px grid and a slow breathing green glow) with the Harbourly mark floating gently; the form sits on the
    right, half each. The grid and glow appear only here in the webapp (DECISIONS.md, "Sign up and log in layout").
-   Below 1000px the panel is hidden and the logo sits above the form. Motion stops for reduced motion. */
+   A quiet "Back to home" link sits top right of the form side. Below 1000px the panel is hidden and the logo and
+   "Back to home" share a row above the form. Motion stops for reduced motion. */
 .authLayout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 100vh; }
 .authLayoutArt { position: relative; overflow: hidden; background: var(--bg-deep); box-shadow: inset -1px 0 0 var(--line); }
 .authLayoutGrid { position: absolute; inset: 0; opacity: .7; background-image: linear-gradient(color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px); background-size: 80px 80px; background-position: center top; -webkit-mask-image: radial-gradient(ellipse at 50% 50vh, #000 25%, transparent 75%); mask-image: radial-gradient(ellipse at 50% 50vh, #000 25%, transparent 75%); }
@@ -12,7 +13,11 @@
 .authLayoutLogo img { display: block; height: 42px; width: auto; }
 .authLayoutGlow { position: absolute; left: 50%; top: 50%; width: min(620px, 90%); aspect-ratio: 1; transform: translate(-50%, -50%); background: radial-gradient(closest-side, color-mix(in srgb, var(--green) 22%, transparent), transparent 70%); filter: blur(30px); animation: authLayoutBreathe 9s ease-in-out infinite; pointer-events: none; }
 .authLayoutMark { position: relative; width: 200px; height: 200px; filter: drop-shadow(0 28px 36px #00000099); animation: authLayoutFloat 6s ease-in-out infinite; }
-.authLayoutSide { display: grid; align-content: center; justify-items: center; min-width: 0; padding: var(--space-14) var(--space-8); }
+.authLayoutSide { position: relative; display: grid; align-content: center; justify-items: center; min-width: 0; padding: 104px var(--space-8); }
+/* Top row of the form side: "Back to home" on the right, level with the logo on the panel (logo 32px down, 42px tall).
+   On narrow screens the same row also carries the logo, on the left. */
+.authLayoutTop { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: flex-end; height: 106px; padding: 0 var(--space-10); }
+.authLayoutBack { font-size: 14.5px; }
 /* The logo above the form only shows when the panel is hidden. */
 .authLayoutTopLogo { display: none; }
 @keyframes authLayoutBreathe { 0%, 100% { opacity: .7; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } }
@@ -21,7 +26,8 @@
   .authLayout { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .authLayoutArt { display: none; }
   .authLayoutSide { align-content: start; justify-items: stretch; padding: 0 var(--space-4) var(--space-14); }
-  .authLayoutTopLogo { display: flex; align-items: center; justify-self: start; height: 68px; margin-bottom: var(--space-4); }
+  .authLayoutTop { position: static; justify-content: space-between; gap: var(--space-4); height: 68px; padding: 0; margin-bottom: var(--space-4); }
+  .authLayoutTopLogo { display: flex; align-items: center; }
   .authLayoutTopLogo img { display: block; height: 36px; width: auto; }
   .authLayoutSide > .auth { justify-self: center; }
 }
