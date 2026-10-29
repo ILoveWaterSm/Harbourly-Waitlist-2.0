@@ -43,13 +43,6 @@
 <body>
 <template id="shell-split">
       <div class="appShell">
-        <header class="topNav">
-          <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
-          <div class="topNavRight">
-            <a class="button secondary" href="#" data-link="14#form">Log in</a>
-            <a class="button primary" href="#" data-link="11#form">Sign up</a>
-          </div>
-        </header>
         <div data-slot></div>
       </div>
     </template>
@@ -58,10 +51,19 @@
 
   <section data-state="form" data-label="Log in" data-shell="split">
       <div class="authLayout">
+        <div class="authLayoutArt">
+          <span class="authLayoutGrid" aria-hidden="true"></span>
+          <div class="authLayoutStage">
+            <a class="authLayoutLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <span class="authLayoutGlow" aria-hidden="true"></span>
+            <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="" aria-hidden="true">
+          </div>
+        </div>
         <div class="authLayoutSide">
+          <a class="authLayoutTopLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
       <div class="auth">
         <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#form">Sign up</a></div>
-        <div class="authHead"><h1>Log in</h1></div>
+        <div class="authHead"><h1>Welcome back</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             
             
@@ -73,19 +75,23 @@
         </form>
       </div>
         </div>
-        <aside class="authLayoutArt" aria-hidden="true">
-          <span class="authLayoutGrid"></span>
-          <span class="authLayoutGlow"></span>
-          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
-        </aside>
       </div>
   </section>
   <section data-state="booking" data-label="Log in to book with Kairo" data-shell="split">
       <div class="authLayout">
+        <div class="authLayoutArt">
+          <span class="authLayoutGrid" aria-hidden="true"></span>
+          <div class="authLayoutStage">
+            <a class="authLayoutLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <span class="authLayoutGlow" aria-hidden="true"></span>
+            <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="" aria-hidden="true">
+          </div>
+        </div>
         <div class="authLayoutSide">
+          <a class="authLayoutTopLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
       <div class="auth">
         <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#booking">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#booking">Sign up</a></div>
-        <div class="authHead"><h1>Log in</h1></div>
+        <div class="authHead"><h1>Welcome back</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             <div class="authContext">
               <div class="cardInset authContextBox"><span class="avatar sm">K</span><div><p class="authContextTitle">Log in to book with Kairo</p><p class="authContextMeta">Mobile Legends<span class="mono">Wed 7 Oct · 20:00–21:00 SGT</span></p></div></div>
@@ -100,19 +106,23 @@
         </form>
       </div>
         </div>
-        <aside class="authLayoutArt" aria-hidden="true">
-          <span class="authLayoutGrid"></span>
-          <span class="authLayoutGlow"></span>
-          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
-        </aside>
       </div>
   </section>
   <section data-state="wrong" data-label="Wrong details" data-shell="split">
       <div class="authLayout">
+        <div class="authLayoutArt">
+          <span class="authLayoutGrid" aria-hidden="true"></span>
+          <div class="authLayoutStage">
+            <a class="authLayoutLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <span class="authLayoutGlow" aria-hidden="true"></span>
+            <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="" aria-hidden="true">
+          </div>
+        </div>
         <div class="authLayoutSide">
+          <a class="authLayoutTopLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
       <div class="auth">
         <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#form">Sign up</a></div>
-        <div class="authHead"><h1>Log in</h1></div>
+        <div class="authHead"><h1>Welcome back</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             
             <div class="notice error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><div><p class="noticeTitle">That email and password don't match.</p><p class="noticeText">Try again, or <a class="textLink" href="#" data-link="15#request">reset your password</a>.</p></div></div>
@@ -124,19 +134,23 @@
         </form>
       </div>
         </div>
-        <aside class="authLayoutArt" aria-hidden="true">
-          <span class="authLayoutGrid"></span>
-          <span class="authLayoutGlow"></span>
-          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
-        </aside>
       </div>
   </section>
   <section data-state="too-many" data-label="Too many tries" data-shell="split">
       <div class="authLayout">
+        <div class="authLayoutArt">
+          <span class="authLayoutGrid" aria-hidden="true"></span>
+          <div class="authLayoutStage">
+            <a class="authLayoutLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <span class="authLayoutGlow" aria-hidden="true"></span>
+            <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="" aria-hidden="true">
+          </div>
+        </div>
         <div class="authLayoutSide">
+          <a class="authLayoutTopLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
       <div class="auth">
         <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#form">Sign up</a></div>
-        <div class="authHead"><h1>Log in</h1></div>
+        <div class="authHead"><h1>Welcome back</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             
             <div class="notice error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><div><p class="noticeTitle">Too many tries.</p><p class="noticeText">Wait 15 minutes, or <a class="textLink" href="#" data-link="15#request">reset your password</a>.</p></div></div>
@@ -148,19 +162,23 @@
         </form>
       </div>
         </div>
-        <aside class="authLayoutArt" aria-hidden="true">
-          <span class="authLayoutGrid"></span>
-          <span class="authLayoutGlow"></span>
-          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
-        </aside>
       </div>
   </section>
   <section data-state="loading" data-label="Logging in" data-shell="split">
       <div class="authLayout">
+        <div class="authLayoutArt">
+          <span class="authLayoutGrid" aria-hidden="true"></span>
+          <div class="authLayoutStage">
+            <a class="authLayoutLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <span class="authLayoutGlow" aria-hidden="true"></span>
+            <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="" aria-hidden="true">
+          </div>
+        </div>
         <div class="authLayoutSide">
+          <a class="authLayoutTopLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
       <div class="auth">
         <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="11#form">Sign up</a></div>
-        <div class="authHead"><h1>Log in</h1></div>
+        <div class="authHead"><h1>Welcome back</h1></div>
         <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
             
             
@@ -172,11 +190,6 @@
         </form>
       </div>
         </div>
-        <aside class="authLayoutArt" aria-hidden="true">
-          <span class="authLayoutGrid"></span>
-          <span class="authLayoutGlow"></span>
-          <img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
-        </aside>
       </div>
   </section>
 

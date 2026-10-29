@@ -1,17 +1,30 @@
-/* AuthLayout → AuthLayout.module.css. The logged-out entry pages (Sign up, Log in, Forgot password): the form on the
-   left, a quiet brand panel on the right, half each. The panel borrows the landing hero's ground (a faint 80px grid and
-   a slow breathing green glow) with the Harbourly mark floating gently: the one place in the webapp that grid and glow
-   appear (DECISIONS.md, "Sign up and log in layout"). Below 1000px only the form shows. Motion stops for reduced motion. */
-.authLayout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: calc(100vh - 76px); }
-.authLayoutSide { display: grid; align-content: center; justify-items: center; min-width: 0; padding: var(--space-10) var(--space-8) var(--space-14); }
-.authLayoutArt { position: sticky; top: 100px; align-self: start; display: grid; place-items: center; height: calc(100vh - 124px); min-height: 520px; margin: var(--space-6) var(--space-6) var(--space-6) 0; overflow: hidden; border-radius: var(--radius-xl); background: var(--bg-deep); box-shadow: inset 0 0 0 1px var(--line); }
-.authLayoutGrid { position: absolute; inset: 0; opacity: .7; background-image: linear-gradient(color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px); background-size: 80px 80px; background-position: center center; -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%); mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%); }
-.authLayoutGlow { position: absolute; left: 50%; top: 50%; width: min(620px, 90%); aspect-ratio: 1; transform: translate(-50%, -50%); background: radial-gradient(closest-side, color-mix(in srgb, var(--green) 22%, transparent), transparent 70%); filter: blur(30px); animation: authLayoutBreathe 9s ease-in-out infinite; }
+/* AuthLayout → AuthLayout.module.css. The logged-out entry pages (Sign up, Log in, Forgot password) have no top nav:
+   a full-height brand panel on the left carries the logo (top left, to the marketing home) over the landing hero's ground
+   (a faint 80px grid and a slow breathing green glow) with the Harbourly mark floating gently; the form sits on the
+   right, half each. The grid and glow appear only here in the webapp (DECISIONS.md, "Sign up and log in layout").
+   Below 1000px the panel is hidden and the logo sits above the form. Motion stops for reduced motion. */
+.authLayout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 100vh; }
+.authLayoutArt { position: relative; overflow: hidden; background: var(--bg-deep); box-shadow: inset -1px 0 0 var(--line); }
+.authLayoutGrid { position: absolute; inset: 0; opacity: .7; background-image: linear-gradient(color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px); background-size: 80px 80px; background-position: center top; -webkit-mask-image: radial-gradient(ellipse at 50% 50vh, #000 25%, transparent 75%); mask-image: radial-gradient(ellipse at 50% 50vh, #000 25%, transparent 75%); }
+/* The stage stays in view while a long form scrolls: logo top left, mark centred in the window. */
+.authLayoutStage { position: sticky; top: 0; display: grid; place-items: center; height: 100vh; min-height: 560px; }
+.authLayoutLogo { position: absolute; top: var(--space-8); left: var(--space-10); display: block; border-radius: var(--radius-md); }
+.authLayoutLogo img { display: block; height: 42px; width: auto; }
+.authLayoutGlow { position: absolute; left: 50%; top: 50%; width: min(620px, 90%); aspect-ratio: 1; transform: translate(-50%, -50%); background: radial-gradient(closest-side, color-mix(in srgb, var(--green) 22%, transparent), transparent 70%); filter: blur(30px); animation: authLayoutBreathe 9s ease-in-out infinite; pointer-events: none; }
 .authLayoutMark { position: relative; width: 200px; height: 200px; filter: drop-shadow(0 28px 36px #00000099); animation: authLayoutFloat 6s ease-in-out infinite; }
+.authLayoutSide { display: grid; align-content: center; justify-items: center; min-width: 0; padding: var(--space-14) var(--space-8); }
+/* The logo above the form only shows when the panel is hidden. */
+.authLayoutTopLogo { display: none; }
 @keyframes authLayoutBreathe { 0%, 100% { opacity: .7; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } }
 @keyframes authLayoutFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @container app (max-width: 999px) {
   .authLayout { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .authLayoutArt { display: none; }
-  .authLayoutSide { align-content: start; padding: var(--space-6) var(--space-4) var(--space-14); }
+  .authLayoutSide { align-content: start; justify-items: stretch; padding: 0 var(--space-4) var(--space-14); }
+  .authLayoutTopLogo { display: flex; align-items: center; justify-self: start; height: 68px; margin-bottom: var(--space-4); }
+  .authLayoutTopLogo img { display: block; height: 36px; width: auto; }
+  .authLayoutSide > .auth { justify-self: center; }
+}
+@container app (max-width: 400px) {
+  .authLayoutTopLogo img { height: 32px; }
 }

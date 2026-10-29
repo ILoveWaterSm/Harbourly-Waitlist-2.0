@@ -573,7 +573,7 @@ Verify your email (12)
 - Logging in with an email that was never verified sends a new link and shows 12 (`resent`). Added to USER-FLOW diagram 2.
 
 Navigation on these pages
-- Sign up, Log in and Forgot password (11, 14, 15) use the logged-out top nav.
+- Sign up, Log in and Forgot password (11, 14, 15) have no top nav since 29 Oct 2026 (see "Sign up and log in layout").
 - Verify your email, Finish setting up and Accept updated terms (12, 13, 16) use the **gate** nav (TopNav `gate`): the logo, not a link (every other page would send them back here), and Sign out, visible at every width; no burger, no sidebar. The two blocked screens on 13 show the logo only, as a link to the marketing home (they're signed out by then). 12 `verified-other` uses the logged-out nav.
 
 Finish setting up (13)
@@ -616,9 +616,9 @@ Elsewhere
 
 Replaces the centred single column on 11 Sign up, 14 Log in and 15 Forgot and reset password. Exploration: `design/explorations/auth-split.html`.
 
-- **Split layout (AuthLayout component):** the form on the left, a brand panel on the right, half each, under the logged-out top nav (unchanged: logo, Log in, Sign up). Below 1000px the panel is hidden and only the form shows.
+- **Split layout (AuthLayout component):** a full-height brand panel on the left, the form on the right, half each. **No top nav** on these pages: the Log in and Sign up buttons would only repeat the tabs. The Harbourly logo sits top left on the panel and goes to the marketing home. Below 1000px the panel is hidden and the logo sits above the form, where the nav would be. (Revised 29 Oct 2026: the first version had the panel on the right as a rounded box under the top nav.)
 - **Brand panel:** the Harbourly mark centred on `--bg-deep`, over the landing page's faint 80px line grid, with a soft green glow behind it that slowly brightens and dims (9 seconds) and the mark floating up and down 8px (6 seconds). No text. Built in CSS; still for reduced motion. **Exception:** the grid and breathing glow otherwise stay on marketing pages ("Visual rules"); this panel is the one webapp place they appear, as the doorway between the two.
 - **Tabs (Tabs component):** "Log in | Sign up" as a pill switch above the form on 11 and 14; the selected tab is raised with the green glow. Switching happens in place, with no page load; the address changes between /login and /signup, and a typed email and the booking context carry over. The "Already have an account? Log in" and "New to Harbourly? Sign up" lines are removed. 15 has no tabs (its "← Log in" back link stays).
-- **Sign up title:** "Create your account" (was "Create your Harbourly account").
+- **Titles:** Sign up "Create your account" (was "Create your Harbourly account"); Log in "Welcome back" (was "Log in"; the tab and the button keep "Log in").
 - 12, 13 and 16 keep the centred column and the gate nav.
 - For the build: the mark is a 256px PNG, slightly soft at 200px on sharp screens; supply a larger PNG (about 512px) or a vector.
