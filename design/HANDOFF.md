@@ -182,6 +182,7 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 - **Avatar and showcase images:** I'll supply fictional avatar and showcase images. Until then, avatars show the default (first letter in Sora) and showcase images are marked empty slots.
 - **Sign-up password:** confirmed 28 Oct 2026 (DECISIONS.md, "Phase 4 decisions").
 - **Mockup-only hints:** 12 and 15 carry a dashed "Mockup: open the link in the email" line (`.mk-hint` in mockup.css) so the prototype can be walked; it's hidden in canvas renders and isn't part of the design.
+- **13's coach choice (for Phase 5):** in the mockup, Finish setting up goes to 09 whichever role is chosen. When 17 Coach application step 1 is built, point 13's Finish setting up at 17 when "coach" is chosen with a coach country (Singapore, Malaysia, Philippines); gamers and coaches in other countries keep going to 09 `new`.
 - **03 "Phone not verified" state:** everyone now verifies their phone at sign-up, so this state is an edge case (for example a number removed by support). Kept as built.
 - **Phase 4 walk-through:** 01/02/03 logged out → Log in (14) or Sign up (11) → … → 03 `returning` or 09. Every link and step on 11 to 16 was clicked through (91, none broken) and every state checked at 320, 390, 820, 1024, 1280×720 and 1440 wide.
 - **10 My sessions width (open since 28 Oct 2026):** 09 is full width; 10 still uses the old 1080px cap. Ask me whether to apply AppShell's `wide` option to 10. Don't change it unasked.
