@@ -1,6 +1,6 @@
 # Handoff prompt
 
-Paste everything below the line into a new chat. Last updated 28 Oct 2026 (end of Phase 4): Phases 0 to 4 are built and published. **Checkpoint 5 ("getting in", pages 11 to 16) is waiting for the owner's review.** On 29 Oct 2026 Sign up, Log in and Forgot password moved to a split layout with Log in | Sign up tabs, no top nav, and a full-height animated brand panel on the left carrying the logo and, since 30 Oct 2026, the landing headline "Find the coach you can actually trust." with its subtext (DECISIONS.md, "Sign up and log in layout"). The Phase 4 brief below is kept as the record of how Phase 4 was briefed; what was decided and built is in DECISIONS.md ("Phase 4 decisions", "Sign-in services") and BUILD-ORDER.md ("Phase 4"). The next phase, after the review, is Phase 5: Becoming a coach (17 to 21).
+Paste everything below the line into a new chat. Last updated 28 Oct 2026 (end of Phase 4): Phases 0 to 4 are built and published. **Checkpoint 5 ("getting in", pages 11 to 16) was closed on 30 Oct 2026.** 10 My sessions is now full width, and the prototype's sidebar links are wired only for snapking (DECISIONS.md, "Checkpoint 5 outcomes"). On 29 Oct 2026 Sign up, Log in and Forgot password moved to a split layout with Log in | Sign up tabs, no top nav, and a full-height animated brand panel on the left carrying the logo and, since 30 Oct 2026, the landing headline "Find the coach you can actually trust." with its subtext (DECISIONS.md, "Sign up and log in layout"). The Phase 4 brief below is kept as the record of how Phase 4 was briefed; what was decided and built is in DECISIONS.md ("Phase 4 decisions", "Sign-in services") and BUILD-ORDER.md ("Phase 4"). The next phase, after the review, is Phase 5: Becoming a coach (17 to 21).
 
 ---
 
@@ -185,8 +185,6 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 - **13's coach choice (for Phase 5):** in the mockup, Finish setting up goes to 09 whichever role is chosen. When 17 Coach application step 1 is built, point 13's Finish setting up at 17 when "coach" is chosen with a coach country (Singapore, Malaysia, Philippines); gamers and coaches in other countries keep going to 09 `new`.
 - **03 "Phone not verified" state:** everyone now verifies their phone at sign-up, so this state is an edge case (for example a number removed by support). Kept as built.
 - **Phase 4 walk-through:** 01/02/03 logged out → Log in (14) or Sign up (11) → … → 03 `returning` or 09. Every link and step on 11 to 16 was clicked through (91, none broken) and every state checked at 320, 390, 820, 1024, 1280×720 and 1440 wide.
-- **10 My sessions width (open since 28 Oct 2026):** 09 is full width; 10 still uses the old 1080px cap. Ask me whether to apply AppShell's `wide` option to 10. Don't change it unasked.
-- **Sidebar links for dual-role accounts (open):** the harness wires the sidebar's Dashboard, Browse coaches and My sessions links to snapking's pages on every gamer shell, including Kairo's coach-view shell. Ask me whether to limit the wiring to snapking.
 - **Phase 6:** voice intro length and portfolio format are still to decide.
 - **Languages field:** design it in profile setup (21) and coach profile settings (22).
 - **Logged-out currency (assumed, not confirmed):** logged-out visitors see SGD in the mockups; how their currency is chosen is still to decide.
@@ -204,4 +202,4 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 
 ## Next step
 
-Checkpoint 5 is waiting for my review of pages 11 to 16. Apply any refinements from the review through the HTML pages (then re-render and replace their frames). Only after I close checkpoint 5: Phase 5, Becoming a coach (17 to 21), briefed the same way (understanding, link map, labels, gaps with recommendations, in one message; build only after I answer). The three Phase 3 open items (10's width, the coach-view sidebar links, the gamer response to a coach's report) are still waiting for my answer.
+Checkpoint 5 is closed. Next: the approved gamer response to a coach's report (06, 07, a To do card on 09), planned in one message first; then Phase 5, Becoming a coach (17 to 21), briefed the same way (understanding, link map, labels, gaps with recommendations, in one message; build only after I answer).

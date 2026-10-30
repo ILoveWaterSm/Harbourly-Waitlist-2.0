@@ -27,14 +27,16 @@
     });
   });
   // The gamer's shell links, written once here so every page gets them: the sidebar (and burger menu)
-  // Dashboard, Browse coaches and My sessions, and the logo when snapking is logged in.
+  // Dashboard, Browse coaches and My sessions, and the logo. Only on shells where snapking is logged in: they open
+  // snapking's pages, so other people's shells (Kairo's coach views) keep their links inert until their pages exist.
   var NAV = { dashboard: '09#busy', browse: '01#results', sessions: '10#list' };
-  Array.prototype.forEach.call(frame.querySelectorAll('[data-nav-key]'), function (a) {
-    if (!a.dataset.link && NAV[a.dataset.navKey]) a.dataset.link = NAV[a.dataset.navKey];
-  });
   Array.prototype.forEach.call(frame.querySelectorAll('.appShell'), function (shell) {
     var user = shell.querySelector('.topNavUser'), logo = shell.querySelector('.topNavLogo');
-    if (user && logo && !logo.dataset.link && /^snapking,/.test(user.getAttribute('aria-label') || '')) logo.dataset.link = NAV.dashboard;
+    if (!user || !/^snapking,/.test(user.getAttribute('aria-label') || '')) return;
+    Array.prototype.forEach.call(shell.querySelectorAll('[data-nav-key]'), function (a) {
+      if (!a.dataset.link && NAV[a.dataset.navKey]) a.dataset.link = NAV[a.dataset.navKey];
+    });
+    if (logo && !logo.dataset.link) logo.dataset.link = NAV.dashboard;
   });
   // Links between mockup pages: data-link="07#gamer-after" opens that page's published mockup at that
   // state (in a new tab); a link to a state on this same page just switches to it.

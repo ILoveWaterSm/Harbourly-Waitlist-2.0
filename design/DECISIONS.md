@@ -540,8 +540,8 @@ Fixed while checking Phase 3 (23 Oct 2026)
 - 08 coach session ended said "You're paid ₱1,850.00"; it now says ₱1,628.00 (after the 12% commission, as on 06).
 - The component library's Confirm step section still showed the old cancellation rule; it now shows the 23 Oct rule (full refund ₱1,961.00 until 1 hour before; ₱925.00 inside the last hour).
 
-Still open
-- A gamer can respond to a report a coach files against them (USER-FLOW diagram 7), but 06 and 07 only draw the coach responding. Proposed for after checkpoint 4: a gamer "filed against you" state on 06 and a gamer response form on 07; the dashboard then gains a To do card for it.
+Still open (approved 30 Oct 2026, see "Checkpoint 5 outcomes")
+- A gamer can respond to a report a coach files against them (USER-FLOW diagram 7), but 06 and 07 only draw the coach responding. Approved: a gamer "filed against you" state on 06, a gamer response form on 07, and a To do card on 09.
 
 ## Sign-in services (agreed 28 Oct 2026, before Phase 4 is built)
 
@@ -625,3 +625,12 @@ Replaces the centred single column on 11 Sign up, 14 Log in and 15 Forgot and re
 - **Spacing on 11 and 14:** 40px between the tabs and the title, 32px between the title and the form card (32px and 24px below 1000px), so the column uses the window height calmly.
 - 12, 13 and 16 keep the centred column and the gate nav.
 - For the build: the mark is a 256px PNG, slightly soft at 200px on sharp screens; supply a larger PNG (about 512px) or a vector.
+
+## Checkpoint 5 outcomes (closed 30 Oct 2026)
+
+- Checkpoint 5 ("getting in", pages 11 to 16) is closed, with the refinements above (split layout, tabs, no top nav on 11, 14 and 15, Back to home, the panel headline).
+- Phase 3 items settled the same day:
+  - **10 My sessions** uses AppShell's `wide` option, full width beside the sidebar like 09.
+  - **Sidebar links in the prototype** (Dashboard, Browse coaches, My sessions, and the logo) are wired only on shells where snapking is logged in. Kairo's coach-view shells (02, 06, 07, 08) keep them inert until the coach pages exist.
+  - **A gamer responding to a coach's report:** approved; designed in its own round (06, 07 and a To do card on 09).
+

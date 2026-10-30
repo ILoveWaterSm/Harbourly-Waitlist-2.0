@@ -127,7 +127,7 @@ Pages: [09 Gamer dashboard](https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM) (
 
 ### 10. My sessions · S
 `/sessions` (feature list).
-- Plain list in two groups, Upcoming (soonest first) and Past (newest first): coach, date and time, status, "Reschedule requested" second line. Past loads 20 at a time ("Load more"; not drawn).
+- Full width beside the sidebar, like 09 (AppShell `wide`, since 30 Oct 2026). Plain list in two groups, Upcoming (soonest first) and Past (newest first): coach, date and time, status, "Reschedule requested" second line. Past loads 20 at a time ("Load more"; not drawn).
 - States: list (Mon 5 Oct, 14:12), empty (Thu 24 Sep, 11:00), loading, error.
 
 Also in Phase 3: PendingSlot component and a compact SessionList (library page); the logo and sidebar link to 09, 01 and 10 on every page; 05, 06 and 07 buttons linked into the prototype; 08 coach payout corrected to ₱1,628.00; the library's Confirm step follows the 23 Oct cancellation rule.
@@ -171,7 +171,7 @@ Rules in DECISIONS.md, "Phase 4 decisions" and "Sign-in services". 11, 14 and 15
 
 Also in Phase 4: new shared parts on the component library ("Sign up and log in": Field password and label row, GoogleButton, ResultPanel, TopNav gate, icons mail and globe; the phone field's code select is wider so "+65 SG" fits; logged-out Log in and Sign up fit at 320px); 01, 02 and 03's logged-out Log in and Sign up open 14 and 11, and 03's "Log in to continue" and "Sign up" open 14 and 11 with the booking; USER-FLOW diagram 2 updated (sign-up from a booking, email verified check, Google with no account, blocked screens keep nothing).
 
-**Checkpoint 5:** getting in. Built and published 28 Oct 2026. 29 Oct 2026: 11, 14 and 15 moved to the split layout with tabs and no top nav (new Tabs and AuthLayout components); waiting for review.
+**Checkpoint 5:** getting in. Built and published 28 Oct 2026. 29 and 30 Oct 2026: 11, 14 and 15 moved to the split layout with tabs, no top nav, Back to home and the panel headline (new Tabs and AuthLayout components). Reviewed and closed 30 Oct 2026.
 
 ---
 
