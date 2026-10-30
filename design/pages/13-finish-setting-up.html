@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13 Finish setting up your account</title>
+<meta name="description" content="Phase 4, page 13: the second sign-up step (name, username, date of birth, country, phone with code, gamer or coach, terms), with every branch.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/Checkbox.css">
+<link rel="stylesheet" href="../foundations/components/OtpInput.css">
+<link rel="stylesheet" href="../foundations/components/OptionCard.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/GoogleButton.css">
+<link rel="stylesheet" href="../foundations/components/ResultPanel.css">
+<style>
+/* Page: Finish setting up your account (/signup/details) → app/signup/details/page.module.css. Layout only. */
+.auth { display: grid; gap: var(--space-6); width: 100%; max-width: 440px; margin-inline: auto; padding-top: var(--space-6); }
+.authHead { display: grid; gap: var(--space-3); }
+.authLead { font: var(--text-body); color: var(--muted); }
+.authCard { display: grid; gap: var(--space-5); }
+.authAlt { font-size: 14.5px; color: var(--muted); }
+.authContext { display: grid; gap: var(--space-3); padding-bottom: var(--space-5); border-bottom: 1px solid var(--line); }
+.authContextBox { display: flex; align-items: center; gap: var(--space-3); }
+.authContextTitle { font-weight: 600; font-size: 15px; line-height: 1.4; color: var(--ink); }
+.authContextMeta { margin-top: 2px; font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
+.authContextMeta .mono { display: block; margin-top: 2px; font-size: 13px; }
+.authContextNote { display: flex; gap: var(--space-2); font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.authContextNote svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+.backLink { justify-self: start; font-size: 14px; }
+@container app (max-width: 640px) {
+  .auth { padding-top: var(--space-2); gap: var(--space-5); }
+}
+.auth.setup { max-width: 600px; }
+.auth.setup > .resultPanel { padding-top: 0; }
+.setupAccount { display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: center; gap: var(--space-2) var(--space-3); font-size: 14.5px; line-height: 1.45; color: var(--muted); }
+.setupAccount > span { overflow-wrap: anywhere; }
+.setupAccount .statusLabel { grid-column: 2; }
+.setupAccount b { font-weight: 600; color: var(--ink); }
+.setupAccount > svg { width: 18px; height: 18px; flex: none; color: var(--muted); }
+.setupCard { display: grid; gap: 0; padding: 0; }
+.setupCard > .notice { margin: var(--space-6) var(--space-6) 0; }
+.setupPart { display: grid; gap: var(--space-5); padding: var(--space-6); }
+.setupPart + .setupPart { border-top: 1px solid var(--line); }
+.setupPartHead { display: grid; gap: var(--space-1); }
+.setupPartHint { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.setupDob { margin: 0; padding: 0; border: 0; min-width: 0; }
+.setupDob legend { padding: 0; margin-bottom: var(--space-2); }
+.setupDob .fieldHint { margin-bottom: var(--space-1); }
+.setupDob .fieldError { margin-top: var(--space-1); }
+.setupOtp { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); min-width: 0; }
+.setupOtp .otpInput { flex: 1 1 240px; max-width: 328px; min-width: 0; }
+.setupPhoneDone { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); min-height: 48px; }
+.setupPhoneDone .mono { font-size: 15px; color: var(--ink); }
+.setupFinish { gap: var(--space-5); }
+.setupPart [hidden] { display: none; }
+@container app (max-width: 640px) {
+  .setupCard > .notice { margin: var(--space-5) var(--space-5) 0; }
+  .setupPart { padding: var(--space-5); }
+  .setupSubmit .button { width: 100%; }
+}
+</style>
+</head>
+<body>
+<template id="shell-gate">
+      <div class="appShell">
+        <header class="topNav gate">
+          <span class="topNavLogo"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></span>
+          <div class="topNavRight">
+            <button class="topNavSignOut" type="button">Sign out</button>
+          </div>
+        </header>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-bare">
+      <div class="appShell">
+        <header class="topNav gate">
+          <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+        </header>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="13 Finish setting up your account">
+
+  <section data-state="form" data-label="Email sign-up · empty" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Signing up as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            
+            <section class="setupPart" aria-labelledby="p1-f">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-f">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-f">First name</label><input class="fieldControl" id="fn-f" type="text" autocomplete="given-name"></div><div class="field"><label class="fieldLabel" for="ln-f">Last name</label><input class="fieldControl" id="ln-f" type="text" autocomplete="family-name"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-f">Username</label><span class="fieldHint" id="un-f-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-f" type="text" autocomplete="off" placeholder="e.g. snapking" aria-describedby="un-f-h" autocapitalize="none" spellcheck="false" maxlength="20"></div>
+              <fieldset class="field setupDob" aria-describedby="dob-f-h"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-f-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-f">Day</label><input class="fieldControl" id="dd-f" inputmode="numeric" autocomplete="bday-day" maxlength="2" placeholder="DD"></div>
+                  <div><label class="fieldSublabel" for="mm-f">Month</label><select class="fieldControl" id="mm-f" autocomplete="bday-month"><option value="" selected>Month</option><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-f">Year</label><input class="fieldControl" id="yy-f" inputmode="numeric" autocomplete="bday-year" maxlength="4" placeholder="YYYY"></div>
+                </div></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-f">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-f">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-f">Country</label><span class="fieldHint" id="co-f-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-f" autocomplete="country-name" aria-describedby="co-f-h"><option value="" selected>Choose your country</option><option>Brunei</option><option>Cambodia</option><option>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select></div>
+              <div class="field" data-phone-entry><label class="fieldLabel" for="ph-f">Phone number</label><span class="fieldHint" id="ph-f-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-f" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="9123 4567" aria-describedby="ph-f-h"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-f">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-f">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-f" value="gamer" checked><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-f" value="coach"><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox"><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label></div>
+              <div class="setupSubmit"><button class="button primary" type="submit" data-go="missing">Finish setting up</button></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="google" data-label="Google sign-up · name filled in" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Signed up with Google as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            
+            <section class="setupPart" aria-labelledby="p1-g">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-g">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-g">First name</label><input class="fieldControl" id="fn-g" type="text" autocomplete="given-name" value="Ryan"></div><div class="field"><label class="fieldLabel" for="ln-g">Last name</label><input class="fieldControl" id="ln-g" type="text" autocomplete="family-name" value="Tan"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-g">Username</label><span class="fieldHint" id="un-g-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-g" type="text" autocomplete="off" placeholder="e.g. snapking" aria-describedby="un-g-h" autocapitalize="none" spellcheck="false" maxlength="20"></div>
+              <fieldset class="field setupDob" aria-describedby="dob-g-h"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-g-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-g">Day</label><input class="fieldControl" id="dd-g" inputmode="numeric" autocomplete="bday-day" maxlength="2" placeholder="DD"></div>
+                  <div><label class="fieldSublabel" for="mm-g">Month</label><select class="fieldControl" id="mm-g" autocomplete="bday-month"><option value="" selected>Month</option><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-g">Year</label><input class="fieldControl" id="yy-g" inputmode="numeric" autocomplete="bday-year" maxlength="4" placeholder="YYYY"></div>
+                </div></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-g">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-g">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-g">Country</label><span class="fieldHint" id="co-g-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-g" autocomplete="country-name" aria-describedby="co-g-h"><option value="" selected>Choose your country</option><option>Brunei</option><option>Cambodia</option><option>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select></div>
+              <div class="field" data-phone-entry><label class="fieldLabel" for="ph-g">Phone number</label><span class="fieldHint" id="ph-g-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-g" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="9123 4567" aria-describedby="ph-g-h"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-g">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-g">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-g" value="gamer" checked><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-g" value="coach"><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox"><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label></div>
+              <div class="setupSubmit"><button class="button primary" type="submit" data-go="missing">Finish setting up</button></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="missing" data-label="Details missing" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Signed up with Google as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            <div class="notice error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><div><p class="noticeTitle">A few details are missing</p><p class="noticeText">Check the fields marked below, then press Finish setting up again.</p></div></div>
+            <section class="setupPart" aria-labelledby="p1-m">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-m">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-m">First name</label><input class="fieldControl" id="fn-m" type="text" autocomplete="given-name" value="Ryan"></div><div class="field"><label class="fieldLabel" for="ln-m">Last name</label><input class="fieldControl" id="ln-m" type="text" autocomplete="family-name" value="Tan"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-m">Username</label><span class="fieldHint" id="un-m-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-m" type="text" autocomplete="off" placeholder="e.g. snapking" aria-describedby="un-m-h un-m-e" aria-invalid="true" autocapitalize="none" spellcheck="false" maxlength="20"><span class="fieldError" id="un-m-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Choose a username.</span></div>
+              <fieldset class="field setupDob" aria-describedby="dob-m-h dob-m-e"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-m-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-m">Day</label><input class="fieldControl" id="dd-m" inputmode="numeric" autocomplete="bday-day" maxlength="2" placeholder="DD" aria-invalid="true"></div>
+                  <div><label class="fieldSublabel" for="mm-m">Month</label><select class="fieldControl" id="mm-m" autocomplete="bday-month" aria-invalid="true"><option value="" selected>Month</option><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-m">Year</label><input class="fieldControl" id="yy-m" inputmode="numeric" autocomplete="bday-year" maxlength="4" placeholder="YYYY" aria-invalid="true"></div>
+                </div><span class="fieldError" id="dob-m-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Enter your date of birth.</span></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-m">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-m">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-m">Country</label><span class="fieldHint" id="co-m-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-m" autocomplete="country-name" aria-describedby="co-m-h co-m-e" aria-invalid="true"><option value="" selected>Choose your country</option><option>Brunei</option><option>Cambodia</option><option>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select><span class="fieldError" id="co-m-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Choose your country.</span></div>
+              <div class="field" data-phone-entry><label class="fieldLabel" for="ph-m">Phone number</label><span class="fieldHint" id="ph-m-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-m" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="9123 4567" aria-describedby="ph-m-h ph-m-e" aria-invalid="true"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div><span class="fieldError" id="ph-m-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Verify your phone number to continue.</span></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-m">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-m">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-m" value="gamer" checked><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-m" value="coach"><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true" aria-describedby="tc-m-e"><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label><span class="fieldError" id="tc-m-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Accept the terms to continue.</span></div>
+              <div class="setupSubmit"><button class="button primary" type="submit" data-go="missing">Finish setting up</button></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="phone" data-label="Code sent" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Signing up as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            
+            <section class="setupPart" aria-labelledby="p1-p">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-p">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-p">First name</label><input class="fieldControl" id="fn-p" type="text" autocomplete="given-name" value="Ryan"></div><div class="field"><label class="fieldLabel" for="ln-p">Last name</label><input class="fieldControl" id="ln-p" type="text" autocomplete="family-name" value="Tan"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-p">Username</label><span class="fieldHint" id="un-p-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-p" type="text" autocomplete="off" value="snapking" aria-describedby="un-p-h" autocapitalize="none" spellcheck="false" maxlength="20"></div>
+              <fieldset class="field setupDob" aria-describedby="dob-p-h"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-p-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-p">Day</label><input class="fieldControl" id="dd-p" inputmode="numeric" autocomplete="bday-day" maxlength="2" value="14"></div>
+                  <div><label class="fieldSublabel" for="mm-p">Month</label><select class="fieldControl" id="mm-p" autocomplete="bday-month"><option value="">Month</option><option>January</option><option>February</option><option selected>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-p">Year</label><input class="fieldControl" id="yy-p" inputmode="numeric" autocomplete="bday-year" maxlength="4" value="1999"></div>
+                </div></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-p">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-p">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-p">Country</label><span class="fieldHint" id="co-p-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-p" autocomplete="country-name" aria-describedby="co-p-h"><option value="">Choose your country</option><option>Brunei</option><option>Cambodia</option><option>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option selected>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select></div>
+              <div class="field" data-phone-entry hidden><label class="fieldLabel" for="ph-p">Phone number</label><span class="fieldHint" id="ph-p-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-p" type="tel" inputmode="tel" autocomplete="tel-national" value="9182 4567" aria-describedby="ph-p-h"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div></div>
+              <div class="field" data-phone-code><label class="fieldLabel" for="otp-p">Enter the code we sent to <span class="mono" style="font-weight:500">+65 9182 4567</span></label>
+                <span class="fieldHint">It works for 10 minutes.</span>
+                <div class="setupOtp"><div class="otpInput fill" role="group" aria-label="6-digit code"><input class="otpCell" id="otp-p" autocomplete="one-time-code" pattern="[0-9]*" inputmode="numeric" maxlength="1" value="4" aria-label="Digit 1"><input class="otpCell" pattern="[0-9]*" inputmode="numeric" maxlength="1" value="8" aria-label="Digit 2"><input class="otpCell isFocus" pattern="[0-9]*" inputmode="numeric" maxlength="1" aria-label="Digit 3"><input class="otpCell" pattern="[0-9]*" inputmode="numeric" maxlength="1" aria-label="Digit 4"><input class="otpCell" pattern="[0-9]*" inputmode="numeric" maxlength="1" aria-label="Digit 5"><input class="otpCell" pattern="[0-9]*" inputmode="numeric" maxlength="1" aria-label="Digit 6"></div><button class="button secondary sm" type="button" data-go="filled">Verify</button></div>
+                <div class="otpMeta"><span>Resend code in <span class="otpTimer">0:42</span></span><button class="textLink quiet" type="button" data-change-number>Change number</button></div></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-p">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-p">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-p" value="gamer" checked><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-p" value="coach"><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox"><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label></div>
+              <div class="setupSubmit"><button class="button primary" type="submit">Finish setting up</button></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="wrong-code" data-label="Wrong code" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Signing up as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            
+            <section class="setupPart" aria-labelledby="p1-w">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-w">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-w">First name</label><input class="fieldControl" id="fn-w" type="text" autocomplete="given-name" value="Ryan"></div><div class="field"><label class="fieldLabel" for="ln-w">Last name</label><input class="fieldControl" id="ln-w" type="text" autocomplete="family-name" value="Tan"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-w">Username</label><span class="fieldHint" id="un-w-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-w" type="text" autocomplete="off" value="snapking" aria-describedby="un-w-h" autocapitalize="none" spellcheck="false" maxlength="20"></div>
+              <fieldset class="field setupDob" aria-describedby="dob-w-h"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-w-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-w">Day</label><input class="fieldControl" id="dd-w" inputmode="numeric" autocomplete="bday-day" maxlength="2" value="14"></div>
+                  <div><label class="fieldSublabel" for="mm-w">Month</label><select class="fieldControl" id="mm-w" autocomplete="bday-month"><option value="">Month</option><option>January</option><option>February</option><option selected>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-w">Year</label><input class="fieldControl" id="yy-w" inputmode="numeric" autocomplete="bday-year" maxlength="4" value="1999"></div>
+                </div></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-w">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-w">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-w">Country</label><span class="fieldHint" id="co-w-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-w" autocomplete="country-name" aria-describedby="co-w-h"><option value="">Choose your country</option><option>Brunei</option><option>Cambodia</option><option>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option selected>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select></div>
+              <div class="field" data-phone-entry hidden><label class="fieldLabel" for="ph-w">Phone number</label><span class="fieldHint" id="ph-w-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-w" type="tel" inputmode="tel" autocomplete="tel-national" value="9182 4567" aria-describedby="ph-w-h"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div></div>
+              <div class="field" data-phone-code><label class="fieldLabel" for="otp-w">Enter the code we sent to <span class="mono" style="font-weight:500">+65 9182 4567</span></label>
+                <span class="fieldHint">It works for 10 minutes.</span>
+                <div class="setupOtp"><div class="otpInput fill invalid" role="group" aria-label="6-digit code" aria-describedby="otp-w-e"><input class="otpCell" id="otp-w" autocomplete="one-time-code" pattern="[0-9]*" inputmode="numeric" maxlength="1" value="4" aria-label="Digit 1"><input class="otpCell" pattern="[0-9]*" inputmode="numeric" maxlength="1" value="8" aria-label="Digit 2"><input class="otpCell" pattern="[0-9]*" inputmode="numeric" maxlength="1" value="2" aria-label="Digit 3"><input class="otpCell" pattern="[0-9]*" inputmode="numeric" maxlength="1" value="7" aria-label="Digit 4"><input class="otpCell" pattern="[0-9]*" inputmode="numeric" maxlength="1" value="1" aria-label="Digit 5"><input class="otpCell" pattern="[0-9]*" inputmode="numeric" maxlength="1" value="9" aria-label="Digit 6"></div><button class="button secondary sm" type="button" data-go="filled">Verify</button></div><span class="fieldError" id="otp-w-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>That code doesn't match. Check the latest text and try again.</span>
+                <div class="otpMeta"><button class="textLink" type="button" data-go="phone">Resend code</button><button class="textLink quiet" type="button" data-change-number>Change number</button></div></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-w">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-w">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-w" value="gamer" checked><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-w" value="coach"><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox"><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label></div>
+              <div class="setupSubmit"><button class="button primary" type="submit">Finish setting up</button></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="filled" data-label="Ready to finish" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Signing up as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            
+            <section class="setupPart" aria-labelledby="p1-r">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-r">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-r">First name</label><input class="fieldControl" id="fn-r" type="text" autocomplete="given-name" value="Ryan"></div><div class="field"><label class="fieldLabel" for="ln-r">Last name</label><input class="fieldControl" id="ln-r" type="text" autocomplete="family-name" value="Tan"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-r">Username</label><span class="fieldHint" id="un-r-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-r" type="text" autocomplete="off" value="snapking" aria-describedby="un-r-h" autocapitalize="none" spellcheck="false" maxlength="20"></div>
+              <fieldset class="field setupDob" aria-describedby="dob-r-h"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-r-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-r">Day</label><input class="fieldControl" id="dd-r" inputmode="numeric" autocomplete="bday-day" maxlength="2" value="14"></div>
+                  <div><label class="fieldSublabel" for="mm-r">Month</label><select class="fieldControl" id="mm-r" autocomplete="bday-month"><option value="">Month</option><option>January</option><option>February</option><option selected>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-r">Year</label><input class="fieldControl" id="yy-r" inputmode="numeric" autocomplete="bday-year" maxlength="4" value="1999"></div>
+                </div></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-r">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-r">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-r">Country</label><span class="fieldHint" id="co-r-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-r" autocomplete="country-name" aria-describedby="co-r-h"><option value="">Choose your country</option><option>Brunei</option><option>Cambodia</option><option>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option selected>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select></div>
+              <div class="field" data-phone-entry hidden><label class="fieldLabel" for="ph-r">Phone number</label><span class="fieldHint" id="ph-r-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-r" type="tel" inputmode="tel" autocomplete="tel-national" value="9182 4567" aria-describedby="ph-r-h"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div></div>
+              <div class="field" data-phone-code><span class="fieldLabel">Phone number</span>
+                <div class="setupPhoneDone"><span class="mono">+65 9182 4567</span><span class="statusLabel positive">Verified</span><button class="textLink quiet" type="button" data-change-number>Change</button></div></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-r">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-r">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-r" value="gamer" checked><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-r" value="coach"><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label></div>
+              <div class="setupSubmit"><a class="button primary" href="#" data-link="09#new">Finish setting up</a></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="username-taken" data-label="Username taken" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Signing up as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            
+            <section class="setupPart" aria-labelledby="p1-u">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-u">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-u">First name</label><input class="fieldControl" id="fn-u" type="text" autocomplete="given-name" value="Ryan"></div><div class="field"><label class="fieldLabel" for="ln-u">Last name</label><input class="fieldControl" id="ln-u" type="text" autocomplete="family-name" value="Tan"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-u">Username</label><span class="fieldHint" id="un-u-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-u" type="text" autocomplete="off" value="snap" aria-describedby="un-u-h un-u-e" aria-invalid="true" autocapitalize="none" spellcheck="false" maxlength="20"><span class="fieldError" id="un-u-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>That username is taken. Try another.</span></div>
+              <fieldset class="field setupDob" aria-describedby="dob-u-h"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-u-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-u">Day</label><input class="fieldControl" id="dd-u" inputmode="numeric" autocomplete="bday-day" maxlength="2" value="14"></div>
+                  <div><label class="fieldSublabel" for="mm-u">Month</label><select class="fieldControl" id="mm-u" autocomplete="bday-month"><option value="">Month</option><option>January</option><option>February</option><option selected>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-u">Year</label><input class="fieldControl" id="yy-u" inputmode="numeric" autocomplete="bday-year" maxlength="4" value="1999"></div>
+                </div></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-u">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-u">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-u">Country</label><span class="fieldHint" id="co-u-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-u" autocomplete="country-name" aria-describedby="co-u-h"><option value="">Choose your country</option><option>Brunei</option><option>Cambodia</option><option>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option selected>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select></div>
+              <div class="field" data-phone-entry hidden><label class="fieldLabel" for="ph-u">Phone number</label><span class="fieldHint" id="ph-u-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-u" type="tel" inputmode="tel" autocomplete="tel-national" value="9182 4567" aria-describedby="ph-u-h"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div></div>
+              <div class="field" data-phone-code><span class="fieldLabel">Phone number</span>
+                <div class="setupPhoneDone"><span class="mono">+65 9182 4567</span><span class="statusLabel positive">Verified</span><button class="textLink quiet" type="button" data-change-number>Change</button></div></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-u">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-u">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-u" value="gamer" checked><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-u" value="coach"><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label></div>
+              <div class="setupSubmit"><button class="button primary" type="submit">Finish setting up</button></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="coach-unavailable" data-label="Coach in an unsupported country" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Signing up as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            
+            <section class="setupPart" aria-labelledby="p1-c">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-c">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-c">First name</label><input class="fieldControl" id="fn-c" type="text" autocomplete="given-name" value="Ryan"></div><div class="field"><label class="fieldLabel" for="ln-c">Last name</label><input class="fieldControl" id="ln-c" type="text" autocomplete="family-name" value="Tan"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-c">Username</label><span class="fieldHint" id="un-c-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-c" type="text" autocomplete="off" value="snapking" aria-describedby="un-c-h" autocapitalize="none" spellcheck="false" maxlength="20"></div>
+              <fieldset class="field setupDob" aria-describedby="dob-c-h"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-c-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-c">Day</label><input class="fieldControl" id="dd-c" inputmode="numeric" autocomplete="bday-day" maxlength="2" value="14"></div>
+                  <div><label class="fieldSublabel" for="mm-c">Month</label><select class="fieldControl" id="mm-c" autocomplete="bday-month"><option value="">Month</option><option>January</option><option>February</option><option selected>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-c">Year</label><input class="fieldControl" id="yy-c" inputmode="numeric" autocomplete="bday-year" maxlength="4" value="1999"></div>
+                </div></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-c">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-c">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-c">Country</label><span class="fieldHint" id="co-c-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-c" autocomplete="country-name" aria-describedby="co-c-h"><option value="">Choose your country</option><option>Brunei</option><option>Cambodia</option><option selected>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select></div>
+              <div class="field" data-phone-entry hidden><label class="fieldLabel" for="ph-c">Phone number</label><span class="fieldHint" id="ph-c-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-c" type="tel" inputmode="tel" autocomplete="tel-national" value="9182 4567" aria-describedby="ph-c-h"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div></div>
+              <div class="field" data-phone-code><span class="fieldLabel">Phone number</span>
+                <div class="setupPhoneDone"><span class="mono">+65 9182 4567</span><span class="statusLabel positive">Verified</span><button class="textLink quiet" type="button" data-change-number>Change</button></div></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-c">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-c">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-c" value="gamer"><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-c" value="coach" checked><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              <div class="notice" role="status"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div><p class="noticeTitle">Coaching isn't available in Indonesia yet. You can still book sessions as a gamer.</p><p class="noticeText">Coaching is open in Singapore, Malaysia and the Philippines for now. When you finish setting up, we'll take you to your dashboard.</p></div></div>
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label></div>
+              <div class="setupSubmit"><a class="button primary" href="#" data-link="09#new">Finish setting up</a></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="booking" data-label="From a booking" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Signing up as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            <div class="notice" role="status"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><div><p class="noticeTitle">After this, we'll take you back to your time with Kairo</p><p class="noticeText">Mobile Legends, <span class="mono" style="color:var(--ink-soft)">Wed 7 Oct · 20:00 SGT</span>.</p></div></div>
+            <section class="setupPart" aria-labelledby="p1-b">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-b">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-b">First name</label><input class="fieldControl" id="fn-b" type="text" autocomplete="given-name" value="Ryan"></div><div class="field"><label class="fieldLabel" for="ln-b">Last name</label><input class="fieldControl" id="ln-b" type="text" autocomplete="family-name" value="Tan"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-b">Username</label><span class="fieldHint" id="un-b-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-b" type="text" autocomplete="off" value="snapking" aria-describedby="un-b-h" autocapitalize="none" spellcheck="false" maxlength="20"></div>
+              <fieldset class="field setupDob" aria-describedby="dob-b-h"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-b-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-b">Day</label><input class="fieldControl" id="dd-b" inputmode="numeric" autocomplete="bday-day" maxlength="2" value="14"></div>
+                  <div><label class="fieldSublabel" for="mm-b">Month</label><select class="fieldControl" id="mm-b" autocomplete="bday-month"><option value="">Month</option><option>January</option><option>February</option><option selected>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-b">Year</label><input class="fieldControl" id="yy-b" inputmode="numeric" autocomplete="bday-year" maxlength="4" value="1999"></div>
+                </div></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-b">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-b">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-b">Country</label><span class="fieldHint" id="co-b-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-b" autocomplete="country-name" aria-describedby="co-b-h"><option value="">Choose your country</option><option>Brunei</option><option>Cambodia</option><option>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option selected>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select></div>
+              <div class="field" data-phone-entry hidden><label class="fieldLabel" for="ph-b">Phone number</label><span class="fieldHint" id="ph-b-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-b" type="tel" inputmode="tel" autocomplete="tel-national" value="9182 4567" aria-describedby="ph-b-h"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div></div>
+              <div class="field" data-phone-code><span class="fieldLabel">Phone number</span>
+                <div class="setupPhoneDone"><span class="mono">+65 9182 4567</span><span class="statusLabel positive">Verified</span><button class="textLink quiet" type="button" data-change-number>Change</button></div></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-b">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-b">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-b" value="gamer" checked><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-b" value="coach"><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label></div>
+              <div class="setupSubmit"><a class="button primary" href="#" data-link="03#returning">Finish setting up</a></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="submitting" data-label="Setting up your account" data-shell="gate">
+      <div class="auth setup">
+        <div class="authHead"><h1>Finish setting up your account</h1><p class="authLead">A few details, asked once. Coaches and other gamers only ever see your username.</p><p class="setupAccount"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Signing up as <b>snapking@example.com</b></span><span class="statusLabel positive">Email verified</span></p></div>
+        <form class="card accent setupCard" aria-label="Finish setting up your account" novalidate onsubmit="return false">
+            
+            <section class="setupPart" aria-labelledby="p1-s">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p1-s">About you</h2><p class="setupPartHint">Your name is kept private.</p></div>
+              <div class="fieldPair"><div class="field"><label class="fieldLabel" for="fn-s">First name</label><input class="fieldControl" id="fn-s" type="text" autocomplete="given-name" value="Ryan"></div><div class="field"><label class="fieldLabel" for="ln-s">Last name</label><input class="fieldControl" id="ln-s" type="text" autocomplete="family-name" value="Tan"></div></div>
+              <div class="field"><label class="fieldLabel" for="un-s">Username</label><span class="fieldHint" id="un-s-h">3 to 20 letters, numbers, dots or underscores. Shown as your @handle.</span><input class="fieldControl" id="un-s" type="text" autocomplete="off" value="snapking" aria-describedby="un-s-h" autocapitalize="none" spellcheck="false" maxlength="20"></div>
+              <fieldset class="field setupDob" aria-describedby="dob-s-h"><legend class="fieldLabel">Date of birth</legend><span class="fieldHint" id="dob-s-h">Harbourly is for people 18 and over.</span>
+                <div class="fieldDob">
+                  <div><label class="fieldSublabel" for="dd-s">Day</label><input class="fieldControl" id="dd-s" inputmode="numeric" autocomplete="bday-day" maxlength="2" value="14"></div>
+                  <div><label class="fieldSublabel" for="mm-s">Month</label><select class="fieldControl" id="mm-s" autocomplete="bday-month"><option value="">Month</option><option>January</option><option>February</option><option selected>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+                  <div><label class="fieldSublabel" for="yy-s">Year</label><input class="fieldControl" id="yy-s" inputmode="numeric" autocomplete="bday-year" maxlength="4" value="1999"></div>
+                </div></fieldset>
+            </section>
+            <section class="setupPart" aria-labelledby="p2-s">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p2-s">Where you are</h2></div>
+              <div class="field"><label class="fieldLabel" for="co-s">Country</label><span class="fieldHint" id="co-s-h">Sets the currency prices are shown in.</span><select class="fieldControl" id="co-s" autocomplete="country-name" aria-describedby="co-s-h"><option value="">Choose your country</option><option>Brunei</option><option>Cambodia</option><option>Indonesia</option><option>Laos</option><option>Malaysia</option><option>Myanmar</option><option>Philippines</option><option selected>Singapore</option><option>Thailand</option><option>Vietnam</option><option>Somewhere else</option></select></div>
+              <div class="field" data-phone-entry hidden><label class="fieldLabel" for="ph-s">Phone number</label><span class="fieldHint" id="ph-s-h">So coaches and Harbourly can reach you about sessions. We'll text you a code to check it's yours.</span>
+                <div class="fieldPhone"><select class="fieldControl" aria-label="Country code" autocomplete="tel-country-code"><option>+673 BN</option><option>+855 KH</option><option>+62 ID</option><option>+856 LA</option><option>+60 MY</option><option>+95 MM</option><option>+63 PH</option><option selected>+65 SG</option><option>+66 TH</option><option>+84 VN</option><option disabled>──────</option><option>+61 AU</option><option>+86 CN</option><option>+91 IN</option><option>+81 JP</option><option>+82 KR</option><option>+44 GB</option><option>+1 US</option></select><input class="fieldControl" id="ph-s" type="tel" inputmode="tel" autocomplete="tel-national" value="9182 4567" aria-describedby="ph-s-h"><button class="button secondary sm" type="button" data-go="phone">Send code</button></div></div>
+              <div class="field" data-phone-code><span class="fieldLabel">Phone number</span>
+                <div class="setupPhoneDone"><span class="mono">+65 9182 4567</span><span class="statusLabel positive">Verified</span><button class="textLink quiet" type="button" data-change-number>Change</button></div></div>
+            </section>
+            <section class="setupPart" aria-labelledby="p3-s">
+              <div class="setupPartHead"><h2 class="cardTitle" id="p3-s">How you'll use Harbourly</h2><p class="setupPartHint">This only decides where we take you next. Every account can book sessions.</p></div>
+              <fieldset class="optionGroup"><legend class="visuallyHidden">How you'll use Harbourly</legend><label class="optionCard"><input class="optionCardInput" type="radio" name="role-s" value="gamer" checked><span class="optionCardBody"><span class="optionCardTitle">I want to book sessions</span></span></label><label class="optionCard"><input class="optionCardInput" type="radio" name="role-s" value="coach"><span class="optionCardBody"><span class="optionCardTitle">I want to coach, and book sessions too</span></span></label></fieldset>
+              
+            </section>
+            <div class="setupPart setupFinish">
+              <div class="field"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked><span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></label></div>
+              <div class="setupSubmit"><button class="button primary" type="submit" aria-busy="true" disabled><span class="buttonSpinner" aria-hidden="true"></span>Setting up your account…</button></div>
+            </div>
+        </form>
+      </div>
+  </section>
+  <section data-state="under-18" data-label="Under 18 · blocked" data-shell="bare">
+      <div class="auth setup">
+        <div class="resultPanel" role="alert">
+          <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+          <h1>You need to be 18 or older to use Harbourly</h1>
+          <p class="resultPanelText">Harbourly is for people 18 and over, so we can't create your account. We haven't kept your details.</p>
+          <div class="resultPanelActions"><a class="button primary" href="#">Go to the home page</a></div>
+        </div>
+      </div>
+  </section>
+  <section data-state="not-available" data-label="Country not supported · blocked" data-shell="bare">
+      <div class="auth setup">
+        <div class="resultPanel" role="alert">
+          <svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg>
+          <h1>Harbourly isn't available in your country yet</h1>
+          <p class="resultPanelText">For now Harbourly is open in Brunei, Cambodia, Indonesia, Laos, Malaysia, Myanmar, the Philippines, Singapore, Thailand and Vietnam, so we can't create your account. We haven't kept your details.</p>
+          <div class="resultPanelActions"><a class="button primary" href="#">Go to the home page</a></div>
+        </div>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/components/OtpInput.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>// Steps inside this page (data-go) switch state in place.
+document.addEventListener('click', function (e) {
+  var go = e.target.closest('[data-go]');
+  if (go && !go.disabled) { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+});
+// Change number: the code entry goes back to the number, kept as typed.
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-change-number]'); if (!b) return;
+  var part = b.closest('.setupPart');
+  part.querySelector('[data-phone-code]').hidden = true;
+  part.querySelector('[data-phone-entry]').hidden = false;
+});
+document.addEventListener('mk:change', function () {
+  document.querySelectorAll('[data-phone-code]').forEach(function (c) { c.hidden = false; c.closest('.setupPart').querySelector('[data-phone-entry]').hidden = true; });
+});
+</script>
+</body>
+</html>

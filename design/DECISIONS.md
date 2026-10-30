@@ -542,3 +542,85 @@ Fixed while checking Phase 3 (23 Oct 2026)
 
 Still open
 - A gamer can respond to a report a coach files against them (USER-FLOW diagram 7), but 06 and 07 only draw the coach responding. Proposed for after checkpoint 4: a gamer "filed against you" state on 06 and a gamer response form on 07; the dashboard then gains a To do card for it.
+
+## Sign-in services (agreed 28 Oct 2026, before Phase 4 is built)
+
+How pages 11 to 16 work when the app is built. The screens don't change.
+
+- **Supabase Auth** for accounts: email and password, verification and reset links, Google sign-in, and adding a phone to an existing account with a code (page 13).
+- **Resend** sends every auth email (verify, reset, password changed, terms updated) as Supabase's custom SMTP, from Harbourly's own domain (DNS records added in Resend). Supabase's built-in email is for testing only.
+- **Twilio Verify** sends the 6-digit phone codes, through Supabase's phone provider setting. Chosen over plain Twilio SMS for its built-in fraud blocking.
+- **Google sign-in:** a Google Cloud OAuth client (free), set up in Supabase.
+- Recommended with it, to set up when building: Supabase Pro for production (free projects pause after a week without activity; Pro includes leaked-password protection, which the breached-password check on 11 and 15 needs); Cloudflare Turnstile (free) as Supabase's CAPTCHA on sign-up, log in and sending a phone code, against SMS fraud; Resend's paid plan before public launch (the free plan allows 100 emails a day).
+- Supabase settings to match the design: email confirmation required; minimum password length 8; verification links valid 24 hours, reset links 1 hour; PKCE sign-in flow. Rules still to agree in Phase 4 (password rules, code timings) are set here once agreed.
+
+## Phase 4 decisions (agreed 28 Oct 2026, before Phase 4)
+
+Every recommendation in the Phase 4 brief was taken (gaps G1 to G26). Pages 11 to 16.
+
+Accounts and passwords
+- Email sign-ups set their password once, on Sign up (11). Finish setting up (13) never asks for one. Google accounts have no password (setting one later belongs to Account settings, 24).
+- Password: at least 8 characters, no rules about character types, checked against known-breached passwords. A plain hint ("At least 8 characters. Don't reuse a password from another site."), no strength meter. Errors: "Use at least 8 characters." and "This password has shown up in a data breach, so it isn't safe to use. Choose another."
+- No screen reveals whether an email has an account. Sign up always goes on to "Check your email"; if the address already has an account, that email says so and offers log in or a password reset instead of a verify link. (Replaces 11's "email already used" state.) Log in's wrong details: "That email and password don't match. Try again, or reset your password." Forgot password: "If that email has an account, we've sent a link."
+- The terms checkbox is on 13 only, as the flow has it.
+- Repeated wrong logins: after 10 tries, "Too many tries. Wait 15 minutes, or reset your password." (14 `too-many`).
+
+Verify your email (12)
+- The link works for 24 hours; only the latest link works; resend unlocks after 60 seconds. It opens "Your email is verified" with one button, Continue, to 13 (it doesn't move on by itself).
+- Opened on another device or browser: the email is still verified, but that browser isn't logged in, so the button is Log in (12 `verified-other`); after log in the setup check sends them to 13. The original tab moves on to 13 by itself when they come back to it (behaviour, not a state).
+- Google sign-ups never see 12: Google has already checked the email.
+- "Use a different email" discards the unverified account and returns to Sign up.
+- Logging in with an email that was never verified sends a new link and shows 12 (`resent`). Added to USER-FLOW diagram 2.
+
+Navigation on these pages
+- Sign up, Log in and Forgot password (11, 14, 15) have no top nav since 29 Oct 2026 (see "Sign up and log in layout").
+- Verify your email, Finish setting up and Accept updated terms (12, 13, 16) use the **gate** nav (TopNav `gate`): the logo, not a link (every other page would send them back here), and Sign out, visible at every width; no burger, no sidebar. The two blocked screens on 13 show the logo only, as a link to the marketing home (they're signed out by then). 12 `verified-other` uses the logged-out nav.
+
+Finish setting up (13)
+- Order: about you (first name, last name, username, date of birth), where you are (country, then phone, so the dialling code follows the country), how you'll use Harbourly (gamer or coach), terms, Finish setting up.
+- First and last name are private (Harbourly only; coaches and other gamers see the username). From Google they're filled in, editable.
+- Country: the 10 supported countries in alphabetical order, then "Somewhere else", which leads to the blocked state. No location detection in the MVP (VPNs and travel make it unreliable). Country sets the currency; the time zone comes from the device; both can be changed in Account settings (24).
+- Coach countries: Singapore, Malaysia and the Philippines. Thailand counts as not yet until Stripe confirms. When "coach" and a country outside that list are both chosen, a notice shows at once, before submitting: "Coaching isn't available in Indonesia yet. You can still book sessions as a gamer." Finish setting up then goes to the dashboard.
+- Date of birth: the library's three fields. The checks run on submit in the flow's order (age, then country). A blocked screen replaces the form; the account and everything entered are deleted and they're signed out ("We haven't kept your details."); one action, Go to the home page. No way back to the form: someone who mistyped signs up again.
+- Phone code: 6 digits, valid 10 minutes, resend after 60 seconds, a Verify button (no automatic submit), 5 wrong codes cancel the code ("Too many tries. Send a new code."). The rest of the form stays as typed and editable while the code is open. Submitting without a verified phone: "Verify your phone number to continue." Dialling codes: every country, the 10 supported first. One account per phone number ("That number is already on another Harbourly account. Use a different number.").
+- Username: 3 to 20 characters, lowercase letters, numbers, dots and underscores; starts with a letter or number, doesn't end with a dot; unique ignoring case; checked when the field is left; no suggestions; changeable later in Account settings (24).
+- The role choice is two option cards, "I want to book sessions" and "I want to coach, and book sessions too", with "This only decides where we take you next. Every account can book sessions."
+
+The booking hand-off
+- Signing up from a booking returns to it, like logging in: 03's "New to Harbourly? Sign up" opens 11 with the booking shown; after 13 they go back to 03's returning state, whatever they chose as their role ("Become a coach" stays in the sidebar). Added to USER-FLOW diagram 2.
+- Sign up and Log in show the booking in a small inset at the top of the form card: Kairo's avatar, "Sign up to book with Kairo" or "Log in to book with Kairo", "Mobile Legends · Wed 7 Oct · 20:00–21:00 SGT", and 03's line "We'll bring you back to this time. It's held once you continue to checkout." 13 shows a notice that it will take them back.
+
+Log in, Google and password reset
+- Continue with Google (the same label on 11 and 14): an account that hasn't finished setup goes to 13; a Google address with no account creates one and goes to 13; a Google address that already has a password account logs into it. A password tried on a Google-only account gets the usual wrong-details message, and a reset email tells them they log in with Google.
+- Reset links work for 1 hour. Saving a new password logs out other devices and sends the "Password changed" email; the page then offers Log in (the flow returns to log in rather than signing them in).
+- Google sign-in cancelled or failed isn't drawn.
+
+Accept updated terms (16)
+- "We've updated our Terms of Service", the update date, up to 3 plain points on what changed (written by the team for each update), "Read the full Terms of Service", and one button, Accept and continue, with the line "By pressing Accept and continue, you agree to the Terms of Service updated on Thu 1 Oct 2026." No checkbox. The only other way out is Sign out. After accepting: back to the booking step if they came from one, otherwise the dashboard.
+- The mockup's points are the 23 Oct 2026 policy (cancelling, fees, gamer no-shows), dated Thu 1 Oct 2026 so they fit before the Mon 5 Oct story. Terms links in the mockups are inert: the repo's `terms-of-service.html` is the waitlist-era terms.
+
+Labels (new, used the same on every page)
+- Create account · Continue with Google · Log in · Forgot password? · Send reset link · Save new password · Send a new link · Resend email · Use a different email · Continue · Send code · Verify · Resend code · Change number · Finish setting up · Go to the home page · Accept and continue · Sign out. Loading: "Creating your account…", "Logging in…", "Setting up your account…".
+
+Mockup data and times
+- snapking: Ryan Tan, born 14 Mar 1999, snapking@example.com, +65 9182 4567 (03 shows it as "+65 •••• 4567"), Singapore, gamer only.
+- Sign-up journey: Thu 24 Sep 2026, 10:52 to 11:00 SGT, ending on 09's new-account state. Log in, Forgot password and Accept updated terms: Mon 5 Oct 2026, 14:11 SGT, a minute before 03's booking and hold at 14:12. The what-if states change only the deciding field: under 18 (born 2 May 2010), Somewhere else, coach in Indonesia, username "snap" taken. The booking variants of 11 and 13 show the same Kairo choice as 03.
+- Emails (verify, reset, password changed, terms updated) aren't drawn as pages.
+
+New shared parts for Phase 4: Field `password` (Show and Hide, in Field.js) and a label row for a link beside a label; GoogleButton (with the "or" divider; Google's full-colour mark is the second exception to the palette, after flags); ResultPanel (05's result layout as a component: icon, title, text, actions); TopNav `gate`; icons `mail` and `globe`. All on the component library page, section "Sign up and log in".
+
+Elsewhere
+- 03's "Verify your phone to book" state can't normally be reached now (everyone verifies at sign-up). Kept as an edge case, for example a number removed by support.
+
+## Sign up and log in layout (agreed 29 Oct 2026, after Phase 4 was built)
+
+Replaces the centred single column on 11 Sign up, 14 Log in and 15 Forgot and reset password. Exploration: `design/explorations/auth-split.html`.
+
+- **Split layout (AuthLayout component):** a full-height brand panel on the left, the form on the right, half each. **No top nav** on these pages: the Log in and Sign up buttons would only repeat the tabs. The Harbourly logo sits top left on the panel and goes to the marketing home. Below 1000px the panel is hidden and the logo sits above the form, where the nav would be. (Revised 29 Oct 2026: the first version had the panel on the right as a rounded box under the top nav.)
+- **Brand panel:** the Harbourly mark centred on `--bg-deep`, over the landing page's faint 80px line grid, with a soft green glow behind it that slowly brightens and dims (9 seconds) and the mark floating up and down 8px (6 seconds). No text. Built in CSS; still for reduced motion. **Exception:** the grid and breathing glow otherwise stay on marketing pages ("Visual rules"); this panel is the one webapp place they appear, as the doorway between the two.
+- **Tabs (Tabs component):** "Log in | Sign up" as a pill switch above the form on 11 and 14; the selected tab is raised with the green glow. Switching happens in place, with no page load; the address changes between /login and /signup, and a typed email and the booking context carry over. The "Already have an account? Log in" and "New to Harbourly? Sign up" lines are removed. 15 has no tabs (its "← Log in" back link stays).
+- **Titles:** Sign up "Create your account" (was "Create your Harbourly account"); Log in "Welcome back" (was "Log in"; the tab and the button keep "Log in").
+- **Back to home (11 and 14):** a quiet "‹ Back to home" text link at the top right of the form side, level with the logo on the panel; on narrow screens it shares the top row with the logo, on the right. It goes to the marketing home, like the logo. 15 keeps its "← Log in" back link instead.
+- **Spacing on 11 and 14:** 40px between the tabs and the title, 32px between the title and the form card (32px and 24px below 1000px), so the column uses the window height calmly.
+- 12, 13 and 16 keep the centred column and the gate nav.
+- For the build: the mark is a 256px PNG, slightly soft at 200px on sharp screens; supply a larger PNG (about 512px) or a vector.
