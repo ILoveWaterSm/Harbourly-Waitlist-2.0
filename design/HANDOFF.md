@@ -1,6 +1,6 @@
 # Handoff prompt
 
-Paste everything below the line into a new chat. Last updated 28 Oct 2026 (end of Phase 4): Phases 0 to 4 are built and published. **Checkpoint 5 ("getting in", pages 11 to 16) is waiting for the owner's review.** On 29 Oct 2026 Sign up, Log in and Forgot password moved to a split layout with Log in | Sign up tabs, no top nav, and a full-height animated brand panel on the left carrying the logo (DECISIONS.md, "Sign up and log in layout"). The Phase 4 brief below is kept as the record of how Phase 4 was briefed; what was decided and built is in DECISIONS.md ("Phase 4 decisions", "Sign-in services") and BUILD-ORDER.md ("Phase 4"). The next phase, after the review, is Phase 5: Becoming a coach (17 to 21).
+Paste everything below the line into a new chat. Last updated 28 Oct 2026 (end of Phase 4): Phases 0 to 4 are built and published. **Checkpoint 5 ("getting in", pages 11 to 16) is waiting for the owner's review.** On 29 Oct 2026 Sign up, Log in and Forgot password moved to a split layout with Log in | Sign up tabs, no top nav, and a full-height animated brand panel on the left carrying the logo and, since 30 Oct 2026, the landing headline "Find the coach you can actually trust." with its subtext (DECISIONS.md, "Sign up and log in layout"). The Phase 4 brief below is kept as the record of how Phase 4 was briefed; what was decided and built is in DECISIONS.md ("Phase 4 decisions", "Sign-in services") and BUILD-ORDER.md ("Phase 4"). The next phase, after the review, is Phase 5: Becoming a coach (17 to 21).
 
 ---
 

@@ -2,17 +2,26 @@
    a full-height brand panel on the left carries the logo (top left, to the marketing home) over the landing hero's ground
    (a faint 80px grid and a slow breathing green glow) with the Harbourly mark floating gently; the form sits on the
    right, half each. The grid and glow appear only here in the webapp (DECISIONS.md, "Sign up and log in layout").
+   The panel reads top to bottom: logo, the mark, then the landing hero's headline and subtext anchored bottom left.
    A quiet "Back to home" link sits top right of the form side. Below 1000px the panel is hidden and the logo and
    "Back to home" share a row above the form. Motion stops for reduced motion. */
 .authLayout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 100vh; }
 .authLayoutArt { position: relative; overflow: hidden; background: var(--bg-deep); box-shadow: inset -1px 0 0 var(--line); }
 .authLayoutGrid { position: absolute; inset: 0; opacity: .7; background-image: linear-gradient(color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px); background-size: 80px 80px; background-position: center top; -webkit-mask-image: radial-gradient(ellipse at 50% 50vh, #000 25%, transparent 75%); mask-image: radial-gradient(ellipse at 50% 50vh, #000 25%, transparent 75%); }
-/* The stage stays in view while a long form scrolls: logo top left, mark centred in the window. */
-.authLayoutStage { position: sticky; top: 0; display: grid; place-items: center; height: 100vh; min-height: 560px; }
-.authLayoutLogo { position: absolute; top: var(--space-8); left: var(--space-10); display: block; border-radius: var(--radius-md); }
+/* The stage stays in view while a long form scrolls. Logo top left, the mark with its glow in the open middle, the message
+   at the bottom on the logo's left edge. */
+.authLayoutStage { position: sticky; top: 0; display: flex; flex-direction: column; height: 100vh; min-height: 600px; padding: var(--space-8) var(--space-10) var(--space-14); }
+.authLayoutLogo { position: relative; align-self: flex-start; display: block; border-radius: var(--radius-md); }
+.authLayoutVisual { position: relative; flex: 1; display: grid; place-items: center; min-height: 240px; }
+/* The landing hero's headline and subtext: Sora 800, tight tracking, "trust." in green with its glow. */
+.authLayoutCopy { position: relative; display: grid; gap: var(--space-5); max-width: 34rem; }
+.authLayoutHeadline { font: 800 clamp(40px, 4cqi, 60px)/.95 var(--font-display); letter-spacing: -.04em; color: var(--ink); }
+.authLayoutHeadline span { display: block; }
+.authLayoutTrust { color: var(--green); text-shadow: 0 0 34px color-mix(in srgb, var(--green) 60%, transparent); }
+.authLayoutSub { max-width: 30em; font-size: 17px; line-height: 1.6; color: var(--ink-sub); text-wrap: balance; }
 .authLayoutLogo img { display: block; height: 42px; width: auto; }
 .authLayoutGlow { position: absolute; left: 50%; top: 50%; width: min(620px, 90%); aspect-ratio: 1; transform: translate(-50%, -50%); background: radial-gradient(closest-side, color-mix(in srgb, var(--green) 22%, transparent), transparent 70%); filter: blur(30px); animation: authLayoutBreathe 9s ease-in-out infinite; pointer-events: none; }
-.authLayoutMark { position: relative; width: 200px; height: 200px; filter: drop-shadow(0 28px 36px #00000099); animation: authLayoutFloat 6s ease-in-out infinite; }
+.authLayoutMark { position: relative; width: 168px; height: 168px; filter: drop-shadow(0 28px 36px #00000099); animation: authLayoutFloat 6s ease-in-out infinite; }
 .authLayoutSide { position: relative; display: grid; align-content: center; justify-items: center; min-width: 0; padding: 104px var(--space-8); }
 /* Top row of the form side: "Back to home" on the right, level with the logo on the panel (logo 32px down, 42px tall).
    On narrow screens the same row also carries the logo, on the left. */
