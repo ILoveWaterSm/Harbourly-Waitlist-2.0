@@ -383,6 +383,45 @@
       </div>
   </section>
 
+  <section data-state="gamer-respond" data-label="Gamer · respond to Kairo's report" data-shell="focused">
+      <a class="textLink quiet backLink" href="#" data-link="06#reported"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to session</a>
+      <div class="pageHead"><h1>Respond to Kairo's report</h1><p class="pageLead">You can send one response, with evidence if you have it, until <span class="mono">Fri 9 Oct, 21:20 SGT</span>. The team reads both sides, the call's join records and the session chat before deciding.</p></div>
+      <div class="rpBody">
+        <div class="rpMain">
+          <section class="card rpReport" aria-labelledby="gr-h">
+            <h2 class="cardTitle" id="gr-h">Kairo's report</h2>
+            <dl class="cardFacts"><dt>Reason</dt><dd class="text">Gamer didn't show up</dd><dt>Sent</dt><dd>Wed 7 Oct, 21:20 SGT</dd></dl>
+            <p class="rpQuote">I was in the session from 19:55 and waited until 21:00. snapking never joined and didn't reply in the chat.</p>
+          </section>
+          <form class="card accent rpForm" novalidate onsubmit="return false">
+            <div class="field"><label class="fieldLabel" for="gs-d">Your response</label><span class="fieldHint">Say what happened from your side. You can only send one response, so include everything.</span>
+              <textarea class="fieldControl" id="gs-d" maxlength="1000" data-counter="gs-d-c" placeholder="What happened from your side?">I joined at 20:04 and waited in the call until 20:30, but Kairo never came in. I sent two messages in the session chat, at 20:10 and 20:21.</textarea>
+              <div class="fieldFoot"><span class="fieldCounter" id="gs-d-c"></span></div></div>
+            <div class="field imageUpload"><div class="fieldFoot"><span class="fieldLabel">Evidence <span class="fieldOptional">(optional)</span></span><span class="uploadCount">1 / 5</span></div>
+              <span class="fieldHint rpUploadHint">Up to 5 files. <span class="mono">JPG, PNG, WebP or PDF · up to 10 MB each</span>. For a video clip, paste a link in your description.</span>
+              <div class="uploadThumbs"><div class="uploadThumb"><div class="uploadThumbPreview"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></div><div class="uploadThumbName">session-chat-2021.png</div><button class="iconButton sm uploadThumbRemove" type="button" aria-label="Remove session-chat-2021.png"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="uploadAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add file</button></div></div>
+            <div class="rpActions"><button class="button primary" type="submit" data-go="gamer-response-sent">Send response</button><a class="textLink quiet" href="#" data-link="06#reported">Back to session</a></div>
+          </form>
+        </div>
+        <aside class="card rpSide" aria-label="About this report">
+          <div class="rpWho"><span class="avatar sm">K</span><div><span class="rpWhoName">Kairo</span><span class="handle">@kairo.gg</span></div></div>
+          <dl class="cardFacts"><dt>Game</dt><dd class="text">Mobile Legends</dd><dt>Date</dt><dd>Wed 7 Oct</dd><dt>Time</dt><dd>20:00–21:00 SGT</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>Your response goes to the team, and Kairo can read it.</span></li><li><span>The team checks the call's join records and decides: half Kairo's price refunded to you if it agrees you didn't join, a full refund if Kairo didn't, or the payment released to Kairo.</span></li><li><span>Until then, the payment stays held.</span></li></ol></div>
+        </aside>
+      </div>
+  </section>
+
+  <section data-state="gamer-response-sent" data-label="Gamer · response sent" data-shell="focused">
+      <div class="sentHead"><span class="statusLabel action">Under review</span><h1>Your response is with the team</h1><p>We've told Kairo you've responded. You'll both get an email with the outcome.</p></div>
+      <div class="sentBody">
+        <section class="card accent sentCard" aria-label="Your response">
+          <dl class="cardFacts"><dt>Session</dt><dd class="text">Kairo · Mobile Legends</dd><dt>Report</dt><dd class="text">Gamer didn't show up</dd><dt>Responded</dt><dd>Thu 8 Oct, 09:15 SGT</dd><dt>Evidence</dt><dd>1 file</dd></dl>
+          <div class="rpNext"><span class="label">What happens next</span><ol class="rpSteps"><li><span>The team checks the call's join records, Kairo's report, your response and the session chat.</span></li><li><span>You're both emailed the outcome: half Kairo's price refunded to you, a full refund, or the payment released to Kairo.</span></li><li><span>Until then, the payment stays held.</span></li></ol></div>
+          <div class="cardActions"><a class="button primary" href="#" data-link="06#reported-responded">View session</a><a class="button secondary" href="#" data-link="09#reported">Back to dashboard</a></div>
+        </section>
+      </div>
+  </section>
+
 </div>
 </div>
 <script src="../foundations/flags.js"></script>

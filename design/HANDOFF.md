@@ -95,10 +95,10 @@ Build only after I answer. Build each page once, well: render it, look at every 
 
 State ids you can link to (`data-link="NN#id"`):
 - **05:** confirming, confirmed, failed, released.
-- **06 (gamer):** upcoming, cancel-confirm (full refund), cancel-late (inside the last hour), cancelled, coach-cancelled, locked, reschedule-form, reschedule-waiting, reschedule-received, reschedule-keep-or-cancel, moved, reschedule-declined, reschedule-expired, join, in-session, pending, pending-soon, confirm-step, completed-review, review-posted, disputed-open, disputed-review, resolved-refunded, resolved-paid, payment-problem, awaiting-payment, expired, loading, error. **06 (the dashboard's other bookings, Phase 3):** kairo-tue, vexa-request, mirae-pending, mirae-confirm, ghostline-review, nullpoint-open (their onward links are inert). **06 (coach):** coach-upcoming, coach-cancel, coach-request-received, coach-pending, coach-completed, coach-dispute.
-- **07:** gamer-after, mirae-after (Phase 3), gamer-noshow, gamer-payment, coach-after, coach-payment, validation, upload-error, submitted, respond, response-sent.
+- **06 (gamer):** upcoming, cancel-confirm (full refund), cancel-late (inside the last hour), cancelled, coach-cancelled, locked, reschedule-form, reschedule-waiting, reschedule-received, reschedule-keep-or-cancel, moved, reschedule-declined, reschedule-expired, join, in-session, pending, pending-soon, confirm-step, completed-review, review-posted, disputed-open, disputed-review, resolved-refunded, resolved-paid, payment-problem, awaiting-payment, expired, loading, error, reported (Kairo reported a problem, respond), reported-responded. **06 (the dashboard's other bookings, Phase 3):** kairo-tue, vexa-request, mirae-pending, mirae-confirm, ghostline-review, nullpoint-open (their onward links are inert). **06 (coach):** coach-upcoming, coach-cancel, coach-request-received, coach-pending, coach-completed, coach-dispute.
+- **07:** gamer-after, mirae-after (Phase 3), gamer-noshow, gamer-payment, coach-after, coach-payment, validation, upload-error, submitted, respond, response-sent, gamer-respond, gamer-response-sent.
 - **08:** waiting, no-show, coach-waiting, live, camera, share, banner-10, banner-5, banner-1, end-confirm, end-sent, end-received, reconnecting, other-dropped, blocked, ended, coach-ended.
-- **09:** busy, todo-all (the To do page), quiet (nothing to do), new (brand-new account), loading, error. **10:** list, empty, loading, error.
+- **09:** busy, todo-all (the To do page), reported (Kairo reported a problem, Thu 8 Oct), quiet (nothing to do), new (brand-new account), loading, error. **10:** list, empty, loading, error.
 - **11:** form, booking, errors, loading. **12:** sent, resent, expired, verified, verified-other. **13:** form, google, missing, phone, wrong-code, filled, username-taken, coach-unavailable, booking, submitting, under-18, not-available. **14:** form, booking, wrong, too-many, loading. **15:** request, sent, new-password, expired, done. **16:** terms.
 
 The files:
@@ -194,7 +194,7 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 - **Post-MVP:** several sessions in one checkout, and session packs.
 - **Post-MVP:** importing reviews from Metafy and Fiverr (DECISIONS.md, "Policy update, 23 Oct 2026"); other session lengths and types.
 - **Landing copy (the owner's to change, don't edit it):** two lines in `landing.html`'s FAQ go further than the webapp: it says either side can report a no-show and an unconfirmed report becomes a refund (the webapp keeps no-shows as disputes, and only a coach no-show refunds automatically after 24 hours), and it promises importing reviews from Metafy and Fiverr (post-MVP).
-- **Gamer response to a coach's report (gap found in Phase 3):** the flow lets a gamer respond to a report a coach files against them, but 06 and 07 only draw the coach responding. Proposed for after checkpoint 4: a gamer "filed against you" state on 06 and a gamer response form on 07; the dashboard (09) then gains a To do card for it. Needs my go-ahead.
+- **Gamer response to a coach's report:** designed 30 Oct 2026 (DECISIONS.md, "Gamer response to a coach's report").
 - **04's hold countdown:** 04#same-currency shows 28:41 left; 06 and 09 show 24:12 for the same Vexa hold at 14:12. Left as is (04 shows the hold as first opened).
 - **When building:** confirm on a real iPhone that camera photos convert to JPEG on upload.
 - **Sign-in services (agreed 28 Oct 2026):** Supabase Auth, Resend for auth emails (as Supabase's SMTP) and Twilio Verify for phone codes; details in DECISIONS.md, "Sign-in services". The screens don't change.
@@ -202,4 +202,4 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 
 ## Next step
 
-Checkpoint 5 is closed. Next: the approved gamer response to a coach's report (06, 07, a To do card on 09), planned in one message first; then Phase 5, Becoming a coach (17 to 21), briefed the same way (understanding, link map, labels, gaps with recommendations, in one message; build only after I answer).
+Checkpoint 5 is closed. Next: Phase 5, Becoming a coach (17 to 21), briefed the same way (understanding, link map, labels, gaps with recommendations, in one message; build only after I answer).

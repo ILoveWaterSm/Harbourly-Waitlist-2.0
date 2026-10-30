@@ -94,7 +94,7 @@ Pages: [06 Session detail](https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3) (`
 - **Join:** opens 10 minutes before; screen-share note; in session (rejoin).
 - **Pending confirmation:** confirm (confirm step) or report a problem, auto-release countdown, under 24 hours left (gamer); waiting on gamer (coach).
 - **Completed:** leave a review (5 stars, optional text up to 500 characters); review posted; released amount and the gamer's review (coach); session chat, read-only.
-- **Disputed:** dispute section with status, details, the other person's response, outcome (refunded, paid to coach); filed against you, with respond (coach); payment problem after completion.
+- **Disputed:** dispute section with status, details, the other person's response, outcome (refunded, paid to coach); filed against you, with respond (coach; and, since 30 Oct 2026, the gamer: `reported`, `reported-responded`); payment problem after completion.
 - **Coach view:** the coach's payout: price, 12% commission, payout (₱1,850.00 − ₱222.00 = ₱1,628.00); a coach cancellation inside 24 hours counts like a no-show. *(Changed 23 Oct 2026; was the full price and "serious incident".)*
 - **Also changed 23 Oct 2026:** no Verified badge; no "Booked" line; the gamer's confirm step says "This releases your payment to Kairo" (no amount, since the coach's payout is less the commission).
 - **Also:** awaiting payment (continue to payment), expired, loading, error.
@@ -102,7 +102,7 @@ Pages: [06 Session detail](https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3) (`
 ### 7. Report a problem · M
 `/sessions/[id]/report` and `/coach/sessions/[id]/report` *proposed*. Focused layout (top nav, no sidebar).
 - Reason list by role and timing: coach didn't show up (gamer, during the session); the after-session list (gamer, coach); payment reasons within 30 days after completion (gamer, coach). Description (required, up to 1,000 characters), optional evidence (up to 5 images or PDFs), submitted. *(Unchanged on 23 Oct 2026: no-shows stay disputes.)*
-- Response form for the other person (one response within 48 hours, optional evidence); response sent.
+- Response form for the other person (one response within 48 hours, optional evidence); response sent. Both roles: coach (`respond`, `response-sent`) and, since 30 Oct 2026, gamer (`gamer-respond`, `gamer-response-sent`).
 - States: each reason list, validation, upload error, submitted, response form, response sent.
 
 ### 8. Live session · L
@@ -122,7 +122,7 @@ Pages: [09 Gamer dashboard](https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM) (
 ### 9. Gamer dashboard · L
 `/dashboard` *proposed*. Rules in DECISIONS.md, "Phase 3 decisions".
 - Floating welcome banner (avatar, date, greeting, Browse coaches), then two columns on a full-width page. To do box (3 items in full, soonest deadline first, accent on the box): awaiting payment (hold time left), awaiting your confirmation (time left), reschedule request waiting on you (offered times, time left to reply), reviews you owe; "N more to do · View all" opens the To do page. Coming up: next session block (Join session) then rows. Problems you've reported (dashed slot for a response not sent yet). Recent sessions, then "All sessions". No quick-links card. On desktop the columns scroll separately and the page doesn't; on a phone one page scroll (DECISIONS.md, "Phase 3 decisions").
-- States: busy account (Mon 5 Oct, 14:12 SGT), **todo-all** (the To do page, `/dashboard/to-do`: every item, "← Dashboard"), nothing to do (To do and Coming up empty; Thu 24 Sep, 13:05), brand-new account (one block, Browse coaches; Thu 24 Sep, 11:00), loading, error.
+- States: busy account (Mon 5 Oct, 14:12 SGT), **todo-all** (the To do page, `/dashboard/to-do`: every item, "← Dashboard"), nothing to do (To do and Coming up empty; Thu 24 Sep, 13:05), brand-new account (one block, Browse coaches; Thu 24 Sep, 11:00), **reported** (Kairo reported a problem first in To do; Thu 8 Oct, 09:00; added 30 Oct 2026), loading, error.
 - Every card and row opens its own booking on 06 (or 04, 03, 07): 06 gained kairo-tue, vexa-request, mirae-pending, mirae-confirm, ghostline-review and nullpoint-open, and 07 gained mirae-after, for the dashboard's other bookings.
 
 ### 10. My sessions · S

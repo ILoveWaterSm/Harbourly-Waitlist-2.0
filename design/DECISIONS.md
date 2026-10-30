@@ -634,3 +634,13 @@ Replaces the centred single column on 11 Sign up, 14 Log in and 15 Forgot and re
   - **Sidebar links in the prototype** (Dashboard, Browse coaches, My sessions, and the logo) are wired only on shells where snapking is logged in. Kairo's coach-view shells (02, 06, 07, 08) keep them inert until the coach pages exist.
   - **A gamer responding to a coach's report:** approved; designed in its own round (06, 07 and a To do card on 09).
 
+## Gamer response to a coach's report (agreed 30 Oct 2026)
+
+Fills the gap found in Phase 3 (USER-FLOW diagram 7: the other person can send one response). Mirrors the coach's existing respond states with the roles swapped.
+
+- **Story:** the Wed 7 Oct Kairo booking. Kairo reports "Gamer didn't show up" on Wed 7 Oct, 21:20 SGT ("I was in the session from 19:55 and waited until 21:00. snapking never joined and didn't reply in the chat."). snapking can respond until Fri 9 Oct, 21:20 SGT (48 hours). Screens set on Thu 8 Oct, 09:00 SGT (36h 20m left); snapking responds at 09:15 ("I joined at 20:04 and waited in the call until 20:30, but Kairo never came in…", with a screenshot of the session chat).
+- **Outcomes, as the screens say them:** half Kairo's price (₱925.00) refunded to snapking if the team agrees snapking didn't join (the 50/50 split); a full refund (₱1,961.00) if it finds Kairo didn't join; otherwise the payment is released to Kairo. The team checks the call's join records.
+- **06 Session detail:** `reported` ("Problem reported by Kairo", Open; Kairo's report quoted; "Your response" as the dashed PendingSlot, "You haven't responded yet", deadline and time left; Respond to Kairo's report) and `reported-responded` (Under review; snapking's response quoted with "Sent Thu 8 Oct, 09:15 SGT").
+- **07 Report a problem:** `gamer-respond` (Kairo's report, your response up to 1,000 characters, evidence up to 5 files, Send response) and `gamer-response-sent` (Under review, View session, Back to dashboard).
+- **09 Dashboard:** a new state `reported` on Thu 8 Oct, 09:00: "Kairo reported a problem" first in To do, with the primary Respond to Kairo's report and the time left. The rest follows from the bookings by then: snapking confirmed the Tue 6 Kairo session that evening and Mirae was paid automatically on Tue 6, so both are reviews to leave (with Ghostline's; 3 reviews, so "1 more to do"); Vexa's reschedule request ran out on Wed 7, 10:00 and the Thu 8 Oct 21:00 session keeps its time (Coming up, Join opens 20:50); Vexa's Tue 13 Oct hold ran out unpaid (Recent, Expired); nullpoint's dispute is Under review. Links without a matching state (Mirae's and Kairo's reviews, Vexa's session, nullpoint's session, View all) stay inert, as with the other time-shifted states.
+
