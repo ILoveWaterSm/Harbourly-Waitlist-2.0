@@ -11,6 +11,7 @@ Status key: **Open** · **Closed** (answered) · **Info** (recorded, no decision
 ## Blocking gaps
 
 ### G-001 · Seed cast is incomplete · Blocks M1 (seed), M2
+- **Status:** **Closed 30 Oct 2026** (DECISIONS.md "Build decisions"): drafted in `build/CAST-ADDITIONS.md`; seeded once you approve the draft.
 - **Where:** 01 `results` ("19 coaches", "Showing 12 of 19"); DECISIONS "Phase 1 decisions" (cast additions); 02 reviews.
 - **What:** Only 12 of the 19 browse coaches exist (Kairo, Vexa, nullpoint, Mirae, Ghostline, Lumen, Pallas, Marlowe, Kestrel, Tidewalker, Rook, Hanabi). The 7 coaches behind "Load more" have no names, games, ranks, prices or bios. Ratings such as Kairo 4.9 (57), Vexa 4.8 (32), Tidewalker 4.8 (41) need that many reviews, each from a gamer account, but only 5 reviews per coach (with reviewer handles) are drawn. Ratings must come from real review rows, not a stored number.
 - **Why:** The brief says "use the existing cast only" and "never add data". Without 7 more coaches and the filler reviews, 01's load-more state and every rating on 01 and 02 can't be reproduced.
@@ -39,6 +40,7 @@ Status key: **Open** · **Closed** (answered) · **Info** (recorded, no decision
 - **Alt:** Cards only for launch (simplest, lowest risk).
 
 ### G-005 · Booking lifecycle (diagram 11) is missing edges the other diagrams need · Blocks M1 (status machine), M5, M7
+- **Status:** **Closed 30 Oct 2026**: the three transitions are in diagram 11 (USER-FLOW.md, `user-flow.html` regenerated); cancelling closes at the start time for both people.
 - **Where:** USER-FLOW diagram 11 against diagrams 4 and 5; 06 `join` (offers Cancel booking while join is open); 08 `no-show` (the gamer is already in the call).
 - **What:**
   1. **Nobody joins:** diagram 5 sends "nobody joins by the scheduled end" to Ended (pending confirmation), but diagram 11 only has `in_session → pending_confirmation`. Missing: `confirmed → pending_confirmation`.
@@ -125,6 +127,7 @@ Status key: **Open** · **Closed** (answered) · **Info** (recorded, no decision
 - **Alt:** Leave (a)–(c) to the team by hand.
 
 ### G-018 · Prices in whole units, and rounding · Blocks M1 (money module)
+- **Status:** **Closed 30 Oct 2026**: whole-unit prices (DECISIONS.md "Build decisions"; BUILD-ORDER 21 and 22 updated).
 - **Where:** DECISIONS "Fees", "Cancellation" (6%, 12%, half of the price).
 - **What:** No rounding rule is written. With prices in whole currency units (S$45, RM 150, ₱1,850, as every mockup shows) every fee, commission and half comes out exact to the cent.
 - **Rec:** Coach prices are whole units only (no cents). The money module still rounds half up to the minor unit if a rate ever changes, and every booking stores its computed amounts.
@@ -164,6 +167,7 @@ Status key: **Open** · **Closed** (answered) · **Info** (recorded, no decision
 - **Rec:** Hidden from browse until the provider clears it; existing bookings go ahead; releases retry until the account works; coach dashboard shows the existing "couldn't be verified" state.
 
 ### G-025 · Overlaps and holds · M4 (schema in M1)
+- **Status:** **Closed 30 Oct 2026**: one session at a time per person, in either role; holds and offers stand.
 - **What:** Undefined: a coach editing availability while a hold or reschedule offer is open; a dual-role person booked as a gamer at a time they're bookable as a coach; a gamer booking two coaches at the same time.
 - **Rec:** Holds and offered times stand once made. One person can't be in two sessions at once, in either role (enforced in the database alongside the coach-level rule).
 - **Alt:** Only the coach-level rule (a gamer may double-book themselves).

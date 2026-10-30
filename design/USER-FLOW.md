@@ -344,7 +344,10 @@ stateDiagram-v2
   confirmed --> cancelled: gamer cancels (full refund, or 50/50 inside the last hour), or coach any time
   confirmed --> in_session: someone joins
   confirmed --> disputed: coach no-show reported
+  confirmed --> pending_confirmation: nobody joins by the scheduled end
 
+  in_session --> cancelled: before the start (someone joined early)
+  in_session --> disputed: coach no-show reported from the waiting room
   in_session --> pending_confirmation: session ends
   pending_confirmation --> completed: gamer confirms, or 72 hours pass
   pending_confirmation --> disputed: either party reports a problem
@@ -360,7 +363,7 @@ stateDiagram-v2
   completed --> [*]
 ```
 
-A reschedule request is shown as a second line on a confirmed booking, not a separate status. `split` is an upheld gamer no-show (coach's price split 50/50); a late cancellation stays `cancelled`, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.
+A reschedule request is shown as a second line on a confirmed booking, not a separate status. Cancelling (by either person) closes at the start time; after that a missing coach is reported as a no-show (30 Oct 2026, DECISIONS.md "Build decisions"). `split` is an upheld gamer no-show (coach's price split 50/50); a late cancellation stays `cancelled`, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.
 
 ---
 

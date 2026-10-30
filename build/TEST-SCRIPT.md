@@ -26,7 +26,7 @@ The acceptance script for every milestone. You follow it by hand; the Playwright
 | Mirae `@mirae` | coach | Singapore | Riftbound S$38, Valorant S$40 |
 | Ghostline `@ghostline` | coach | Malaysia | Call of Duty: Mobile RM 120 |
 | Lumen, Pallas, Marlowe, Kestrel, Tidewalker, Rook, Hanabi | coaches | as DECISIONS | browse filler |
-| 7 more filler coaches, filler reviewers | | | pending approval (G-001) |
+| 7 more filler coaches (Juniper, Wren, Solstice, Orrin, Brightwater, Cobalt, Ferro), filler reviewers | coaches, gamers | `build/CAST-ADDITIONS.md` | pending your approval of the draft (G-001) |
 
 ## Seed scenarios
 
@@ -683,9 +683,9 @@ Every allowed transition is reached by a scenario above; every forbidden one is 
 | T-11.14 | disputed → refunded | team / job (coach no-show 24 h) | T-7.05, T-7.08 |
 | T-11.15 | disputed → completed | team | T-7.06 |
 | T-11.16 | disputed → split | team | T-7.07 |
-| T-11.17 | confirmed → pending_confirmation (nobody joined) | job | T-5.05 · **proposed, G-005** |
-| T-11.18 | in_session → disputed (coach no-show from the waiting room) | gamer | T-5.04 · **proposed, G-005** |
-| T-11.19 | in_session → cancelled (before the start) | gamer, coach | T-4.13 step 3 · **proposed, G-005** |
+| T-11.17 | confirmed → pending_confirmation (nobody joined) | job | T-5.05 |
+| T-11.18 | in_session → disputed (coach no-show from the waiting room) | gamer | T-5.04 |
+| T-11.19 | in_session → cancelled (before the start) | gamer, coach | T-4.13 step 3 |
 | T-11.F | Every other pair, every wrong actor, every client-side status write | — | Unit and RLS tests: rejected, nothing written |
 
 ## Diagram 12 · Coach status lifecycle
@@ -802,5 +802,4 @@ Edges are written `From → To`. Every node appears in at least one edge.
 | Gamer responds to a coach's report | Not designed | G-006 |
 | 06 coach-side states beyond the six drawn, and the split outcome | Not designed | G-007 |
 | Pages 17–25 screens | Not designed | G-057, G-008 |
-| Proposed booking transitions T-11.17–T-11.19 | Need your approval | G-005 |
 | Late and duplicate payments T-3.21 | Need your approval | G-017 |

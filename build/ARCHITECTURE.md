@@ -102,7 +102,7 @@ Both machines are Postgres functions — the single place a status changes, used
 - Side effects that leave the database (Stripe/Xendit calls, Resend) run in the **outbox worker** after commit, each with an idempotency key. If one fails it retries with backoff and alerts after 5 attempts.
 - `web/domain/status/` holds the same transition tables as TypeScript constants (for types and the UI's "what can I do now" logic); a test compares them to the SQL table so they can't drift.
 
-### 3.1 Booking (diagram 11, plus G-005 proposals marked †)
+### 3.1 Booking (diagram 11, including the three G-005 transitions agreed 30 Oct 2026, marked †)
 
 | From | To | Who | Condition | Side effects | Emails |
 |---|---|---|---|---|---|
@@ -188,7 +188,7 @@ Terminal: cancelled, expired, refunded, split, completed. Payment problems after
 
 ## 5. Timed jobs
 
-**(proposed, E-4)** Supabase `pg_cron` calls `/api/jobs/tick` every minute through `pg_net`, with a secret header. The tick:
+**(agreed, E-4)** Supabase `pg_cron` calls `/api/jobs/tick` every minute through `pg_net`, with a secret header. The tick:
 
 1. Reads the time from the clock (section 6).
 2. Runs each **sweep**: a query for rows whose deadline has passed and whose status says the work isn't done, processed with `FOR UPDATE SKIP LOCKED` in small batches, each through the transition function. Sweeps are naturally idempotent: a row already moved is no longer selected.
@@ -272,7 +272,7 @@ Alternatives considered: Vercel Cron (minute schedules need Pro and add another 
 - **Worked examples as tests:** ₱1,850.00 + ₱111.00 = ₱1,961.00; payout ₱1,850.00 − ₱222.00 = ₱1,628.00; late cancel ₱925.00 back, coach ₱925.00 − ₱111.00 = ₱814.00; Vexa S$45.00 + S$2.70 = S$47.70, payout S$39.60, late S$22.50 / S$19.80; Mirae S$40.28; nullpoint RM 159.00; Ghostline RM 127.20; floors S$10, RM 35, ₱430. Property tests: refund + payout + platform share always equals the amount charged.
 
 Money moves:
-- **Stripe** (SG, MY coaches) **(proposed, E-12)**: Connect Express accounts; Checkout Session on the platform in the coach's currency with `expires_at` = hold end and metadata `booking_id`; "separate charges and transfers": at completion a Transfer of `payout_minor` with `source_transaction`; refunds on the platform charge. Fees: Harbourly keeps 6% + 12%, and pays processing (including on coach cancels).
+- **Stripe** (SG, MY coaches) **(agreed in principle, E-12; G-002)**: Connect Express accounts; Checkout Session on the platform in the coach's currency with `expires_at` = hold end and metadata `booking_id`; "separate charges and transfers": at completion a Transfer of `payout_minor` with `source_transaction`; refunds on the platform charge. Fees: Harbourly keeps 6% + 12%, and pays processing (including on coach cancels).
 - **Xendit** (PH coaches): xenPlatform MANAGED sub-accounts; an Invoice (30-minute duration) on the platform; at completion a transfer of `payout_minor` to the sub-account; refunds through the Refund API (G-003).
 - Both behind one `PaymentProvider` interface (`createCheckout`, `getCheckoutStatus`, `expireCheckout`, `refund`, `transfer`, `verifyWebhook`, `onboardingLink`, `dashboardLink`), with a third **simulated** implementation for development (section 10).
 - Webhooks: signature verified (Stripe signing secret; Xendit callback token), stored in `webhook_events` by unique event id first, then processed; a replay is a no-op. "Paid" is only ever the provider's word.
@@ -364,7 +364,7 @@ All under `/dev`, compiled only when `NODE_ENV !== 'production'` **and** `VERCEL
 |---|---|---|---|---|
 | Local | `pnpm dev` in `web/` | Supabase CLI (Docker), `app.env = dev` | simulated | dev outbox; Supabase test OTPs |
 | Preview | Vercel preview deploys of the branch (separate Vercel project, root `web/`) | one hosted **staging** Supabase project, `app.env = preview` | Stripe and Xendit test mode | dev outbox (no real sends); real Twilio only to allow-listed test numbers |
-| Production | `app.harbourly.gg` **(proposed, E-1)**, only when you say launch | Supabase Pro project, no `dev` schema | live keys, only when you say | Resend live, Twilio live |
+| Production | `app.harbourly.gg` (domain proposed; E-1 agreed), only when you say launch | Supabase Pro project, no `dev` schema | live keys, only when you say | Resend live, Twilio live |
 
 - Secrets only in environment variables (Vercel and Supabase); `web/.env.example` lists every one with a comment; nothing secret committed.
 - Migrations applied by the Supabase CLI from CI to staging; to production only with your approval.

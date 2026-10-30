@@ -204,7 +204,7 @@ Also in Phase 4: new shared parts on the component library ("Sign up and log in"
 
 ### 21. Profile setup · L
 `/coach/setup` *proposed*.
-- Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency (not below the floor, about S$10: S$10, RM 35, ₱430), up to 3 credential lines per game, showcase (optional: up to 5 images, caption up to 80 characters each).
+- Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency, in whole units (not below the floor, about S$10: S$10, RM 35, ₱430; DECISIONS.md "Build decisions", G-018), up to 3 credential lines per game, showcase (optional: up to 5 images, caption up to 80 characters each).
 - Photo, banner and showcase uploads: checking, passed (live), refused with a reason (automatic check; see DECISIONS.md "Automatic image check").
 - States: each step, saved and resumed, validation, complete (moves to live once payout and phone are done).
 
@@ -216,7 +216,7 @@ Also in Phase 4: new shared parts on the component library ("Sign up and log in"
 
 ### 22. Coach profile settings · L
 `/coach/profile` *proposed*.
-- Edit bio, avatar, banner, languages, availability, prices (not below the floor; booked sessions keep their price). A new photo or banner is checked automatically: checking, live, or refused with a reason (the old one stays until the new one passes).
+- Edit bio, avatar, banner, languages, availability, prices (whole units, not below the floor; booked sessions keep their price). A new photo or banner is checked automatically: checking, live, or refused with a reason (the old one stays until the new one passes).
 - Showcase: add, replace, remove, reorder, edit captions; each image checking, live, or refused with a reason (replaced image stays live until the new one passes); empty (no showcase).
 - Update rank (screenshot, pending, old rank still shown).
 - Add a game (proof, under review).

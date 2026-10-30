@@ -356,7 +356,7 @@ flowchart TD
 </section>
 <section id="f11" class="flow">
   <h2><span class="n">11</span>Booking status lifecycle</h2>
-  <p class="note">A reschedule request is shown as a second line on a confirmed booking, not a separate status. `split` is an upheld gamer no-show (coach&#x27;s price split 50/50); a late cancellation stays `cancelled`, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.</p>
+  <p class="note">A reschedule request is shown as a second line on a confirmed booking, not a separate status. Cancelling (by either person) closes at the start time; after that a missing coach is reported as a no-show (30 Oct 2026, DECISIONS.md &quot;Build decisions&quot;). `split` is an upheld gamer no-show (coach&#x27;s price split 50/50); a late cancellation stays `cancelled`, with its refund amount on the record. A payment dispute after completion is tracked on the dispute record, not as a new booking status.</p>
   <div class="diagram"><pre class="mermaid">
 stateDiagram-v2
   [*] --&gt; pending_payment: slot picked
@@ -367,7 +367,10 @@ stateDiagram-v2
   confirmed --&gt; cancelled: gamer cancels (full refund, or 50/50 inside the last hour), or coach any time
   confirmed --&gt; in_session: someone joins
   confirmed --&gt; disputed: coach no-show reported
+  confirmed --&gt; pending_confirmation: nobody joins by the scheduled end
 
+  in_session --&gt; cancelled: before the start (someone joined early)
+  in_session --&gt; disputed: coach no-show reported from the waiting room
   in_session --&gt; pending_confirmation: session ends
   pending_confirmation --&gt; completed: gamer confirms, or 72 hours pass
   pending_confirmation --&gt; disputed: either party reports a problem

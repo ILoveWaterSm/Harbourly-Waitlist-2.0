@@ -95,7 +95,7 @@ Answers go into `design/DECISIONS.md` under "Build decisions".
 | E-1 | Where the app lives | **Agreed 30 Oct 2026:** this repo, `web/` folder, its own Vercel project (DECISIONS.md, "Build decisions"). Domain still proposed: `app.harbourly.gg` | The waitlist site and its Vercel project stay untouched. |
 | E-2 | Call provider for 08 | LiveKit Cloud (Singapore region) | Voice, optional camera, screen share and signed join/leave webhooks in one SDK, with server-side control of who may share. |
 | E-3 | Chat storage | Postgres table + Supabase Realtime | Chat is saved, covered by RLS and readable by the team in Supabase without a second system. |
-| E-4 | Timed jobs | Supabase pg_cron calls a per-minute tick; idempotent sweeps + outbox | Minute precision for the 30-minute hold, no extra vendor, safe to run twice. |
+| E-4 | Timed jobs | **Agreed 30 Oct 2026.** Supabase pg_cron calls a per-minute tick; idempotent sweeps + outbox | Minute precision for the 30-minute hold, no extra vendor, safe to run twice. |
 | E-5 | Exchange rates | Open Exchange Rates, daily | Covers all 10 currencies; display only, so daily is enough. |
 | E-6 | Image moderation | Claude (Haiku) vision, refuse when unsure | Also reads text inside images and checks captions in the same call. Alt: AWS Rekognition plus a separate text check. |
 | E-7 | Error monitoring | Sentry | Best Next.js support; PII scrubbing. |
@@ -103,23 +103,24 @@ Answers go into `design/DECISIONS.md` under "Build decisions".
 | E-9 | Tests | Vitest, Playwright, pgTAP | Unit, end-to-end with the script's IDs, and RLS proven in the database. |
 | E-10 | Rate limiting | Postgres-backed counters | No extra vendor; per-email and per-IP for log in, codes and resets. |
 | E-11 | Auth emails | Supabase Send Email hook → our templates → Resend (G-014) | Makes the agreed email behaviours possible and shows them in the dev outbox. |
-| E-12 | Payment model | Stripe Connect Express with separate charges and transfers; Xendit xenPlatform MANAGED sub-accounts (G-002, G-003) | Holds the gamer's money on the platform until release, then pays the coach their payout. |
-| E-13 | Status machines | Postgres functions shared by app, jobs, webhooks and team; side effects via the outbox | One transition path for everyone, including team actions in Supabase. |
-| E-14 | Seed data | Named scenarios per mockup state, loaded with the dev clock (G-044) | Reproduces every mockup exactly without forcing one timeline. |
+| E-12 | Payment model | **Agreed 30 Oct 2026.** Stripe Connect Express with separate charges and transfers; Xendit xenPlatform MANAGED sub-accounts (G-002, G-003) | Holds the gamer's money on the platform until release, then pays the coach their payout. |
+| E-13 | Status machines | **Agreed 30 Oct 2026.** Postgres functions shared by app, jobs, webhooks and team; side effects via the outbox | One transition path for everyone, including team actions in Supabase. |
+| E-14 | Seed data | **Agreed 30 Oct 2026.** Named scenarios per mockup state, loaded with the dev clock (G-044) | Reproduces every mockup exactly without forcing one timeline. |
 | E-15 | Package manager and runtime | pnpm, Node 22 | Fast installs; matches Vercel. |
-| G-001 | Missing 7 coaches and filler reviews | I draft them; you approve | Needed to reproduce 01 and every rating. |
-| G-005 | Booking lifecycle edges | Add the three edges | The flow's own paths otherwise fail. |
+| G-001 | Missing 7 coaches and filler reviews | **Agreed:** drafted in `build/CAST-ADDITIONS.md`, waiting for your approval | Needed to reproduce 01 and every rating. |
+| G-005 | Booking lifecycle edges | **Agreed:** three edges added to diagram 11 | The flow's own paths otherwise fail. |
 | G-006, G-007 | Undesigned 06/07 states | Design chat draws them | They carry money and trust copy. |
 | G-008 | System pages | Plain now, awaiting design | Needed from M3. |
 | G-009 | Webapp Terms and Privacy | You provide; published on the marketing site | 13 and 16 need a real, versioned document. |
 | G-010 – G-013 | Currencies, logged-out viewers, zone labels, whose zone | As recommended in GAPS.md | Browse can't be built for non-SGD viewers without them. |
 | G-014 – G-016 | Auth emails, CAPTCHA, email copy | Send Email hook; invisible Turnstile; I draft copy | Agreed behaviours need them. |
 | G-017 | Late, duplicate, charged-back payments | Automatic refunds; flag chargebacks | Nobody pays for a time they don't get. |
-| G-018 | Whole-unit prices | Yes | Every amount is then exact. |
+| G-018 | Whole-unit prices | **Agreed** | Every amount is then exact. |
 | G-019 – G-021 | Under review trigger; payment-problem outcomes; coach record at sign-up | As recommended | Needed to code M3 and M6. |
-| G-025 | Person can't be in two sessions | Yes | Protects coaches who also book as gamers. |
+| G-025 | Person can't be in two sessions | **Agreed** | Protects coaches who also book as gamers. |
 
 ## What I need before M1
 
-1. Your answers to E-4, E-12 (at least in principle), E-13, E-14, and gaps G-001, G-005, G-018, G-025 (the rest can come at later checkpoints).
-2. A Supabase **staging** project for previews (or your go-ahead for me to create it with the connected Supabase account), and a Vercel project for `web/` (root directory `web`). Local work uses the Supabase CLI.
+1. Your approval of `build/CAST-ADDITIONS.md` (G-001).
+2. A Supabase **staging** project for previews (or your go-ahead for me to create it with the connected Supabase account). Local work uses the Supabase CLI.
+3. A Vercel project for `web/` (root directory `web`); it can be created once `web/` is pushed.
