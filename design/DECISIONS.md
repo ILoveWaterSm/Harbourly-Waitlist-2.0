@@ -624,3 +624,9 @@ Replaces the centred single column on 11 Sign up, 14 Log in and 15 Forgot and re
 - **Spacing on 11 and 14:** 40px between the tabs and the title, 32px between the title and the form card (32px and 24px below 1000px), so the column uses the window height calmly.
 - 12, 13 and 16 keep the centred column and the gate nav.
 - For the build: the mark is a 256px PNG, slightly soft at 200px on sharp screens; supply a larger PNG (about 512px) or a vector.
+
+## Build decisions
+
+Answers to the build plan (`build/MILESTONES.md`, section E, and `build/GAPS.md`), recorded as the owner approves them.
+
+- **E-1 · Where the app lives (agreed 30 Oct 2026):** the app is built in this repo, in a `web/` folder beside `design/`, with the database in `supabase/` and the build plan in `build/`. It deploys as its own Vercel project (root directory `web`), separate from the waitlist site's Vercel project, so the two deploy independently and the waitlist files are never touched. Still to confirm: the app's domain (proposed `app.harbourly.gg`), and whether the waitlist project should skip builds when only `web/`, `design/`, `build/` or `supabase/` change (a Vercel setting on the live site, only if the owner asks).

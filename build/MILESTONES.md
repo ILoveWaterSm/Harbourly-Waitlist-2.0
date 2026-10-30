@@ -92,7 +92,7 @@ Answers go into `design/DECISIONS.md` under "Build decisions".
 
 | # | Decision | Recommendation | Why |
 |---|---|---|---|
-| E-1 | Where the app lives | `web/` folder, its own Vercel project, at `app.harbourly.gg` | The waitlist site and its Vercel project stay untouched. |
+| E-1 | Where the app lives | **Agreed 30 Oct 2026:** this repo, `web/` folder, its own Vercel project (DECISIONS.md, "Build decisions"). Domain still proposed: `app.harbourly.gg` | The waitlist site and its Vercel project stay untouched. |
 | E-2 | Call provider for 08 | LiveKit Cloud (Singapore region) | Voice, optional camera, screen share and signed join/leave webhooks in one SDK, with server-side control of who may share. |
 | E-3 | Chat storage | Postgres table + Supabase Realtime | Chat is saved, covered by RLS and readable by the team in Supabase without a second system. |
 | E-4 | Timed jobs | Supabase pg_cron calls a per-minute tick; idempotent sweeps + outbox | Minute precision for the 30-minute hold, no extra vendor, safe to run twice. |
@@ -121,6 +121,5 @@ Answers go into `design/DECISIONS.md` under "Build decisions".
 
 ## What I need before M1
 
-1. Your answers to E-1, E-4, E-12 (at least in principle), E-13, E-14, and gaps G-001, G-005, G-018, G-025 (the rest can come at later checkpoints).
+1. Your answers to E-4, E-12 (at least in principle), E-13, E-14, and gaps G-001, G-005, G-018, G-025 (the rest can come at later checkpoints).
 2. A Supabase **staging** project for previews (or your go-ahead for me to create it with the connected Supabase account), and a Vercel project for `web/` (root directory `web`). Local work uses the Supabase CLI.
-3. Confirmation that I may add `web/`, `supabase/` and `build/` to this repo without touching the waitlist files.
