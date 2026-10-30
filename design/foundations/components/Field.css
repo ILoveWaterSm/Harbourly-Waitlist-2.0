@@ -44,11 +44,33 @@ textarea.fieldControl { min-height: 128px; resize: vertical; line-height: 1.55; 
 
 .fieldPair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
 .fieldDob { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr) minmax(0, 1.3fr); gap: var(--space-3); }
-.fieldPhone { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: var(--space-3); align-items: center; }
+.fieldPhone { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: var(--space-3); align-items: center; }
 .fieldPhone > :nth-child(3) { grid-column: 1 / -1; justify-self: start; }
 .fieldSublabel { display: block; margin-bottom: 6px; font: var(--text-label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 
+/* Label row: a link beside the label, e.g. "Forgot password?" on log in. */
+.fieldLabelRow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--space-1) var(--space-3); }
+.fieldLabelRow .textLink { font-size: 14px; }
+
+/* Password: a Show / Hide text button inside the input (Field.js). A word, not an eye icon, so it reads plainly. */
+.fieldPassword { position: relative; }
+.fieldPassword .fieldControl { padding-right: 84px; }
+.fieldReveal {
+  position: absolute; top: 2px; right: 2px;
+  min-width: 68px; height: 44px;
+  padding: 0 var(--space-3);
+  border: 0; border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  font: 600 14px/1 var(--font-body);
+  cursor: pointer;
+  transition: color .2s, background-color .2s;
+}
+.fieldReveal:hover { color: var(--ink); background: var(--fill-subtle); }
+.fieldReveal:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.fieldControl:disabled + .fieldReveal { color: var(--faint); cursor: not-allowed; background: none; }
+
 @container app (max-width: 640px) {
   .fieldPair { grid-template-columns: minmax(0, 1fr); }
-  .fieldPhone { grid-template-columns: 112px minmax(0, 1fr); }
+  .fieldPhone { grid-template-columns: 124px minmax(0, 1fr); }
 }

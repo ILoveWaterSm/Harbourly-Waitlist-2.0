@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11 Sign up</title>
+<meta name="description" content="Phase 4, page 11: create an account with email and password or Google, with every state.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/GoogleButton.css">
+<link rel="stylesheet" href="../foundations/components/Tabs.css">
+<link rel="stylesheet" href="../foundations/components/AuthLayout.css">
+<style>
+/* Page: Sign up (/signup) → app/signup/page.module.css. Layout only. */
+.auth { display: grid; gap: var(--space-6); width: 100%; max-width: 440px; margin-inline: auto; padding-top: var(--space-6); }
+.authHead { display: grid; gap: var(--space-3); }
+.authLead { font: var(--text-body); color: var(--muted); }
+.authCard { display: grid; gap: var(--space-5); }
+.authAlt { font-size: 14.5px; color: var(--muted); }
+.authContext { display: grid; gap: var(--space-3); padding-bottom: var(--space-5); border-bottom: 1px solid var(--line); }
+.authContextBox { display: flex; align-items: center; gap: var(--space-3); }
+.authContextTitle { font-weight: 600; font-size: 15px; line-height: 1.4; color: var(--ink); }
+.authContextMeta { margin-top: 2px; font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
+.authContextMeta .mono { display: block; margin-top: 2px; font-size: 13px; }
+.authContextNote { display: flex; gap: var(--space-2); font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.authContextNote svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+.backLink { justify-self: start; font-size: 14px; }
+@container app (max-width: 640px) {
+  .auth { padding-top: var(--space-2); gap: var(--space-5); }
+}
+.authLayoutSide .auth { padding-top: 0; }
+/* More room between the tabs, the title and the form card (29 Oct 2026). */
+.authLayoutSide .auth { gap: 0; }
+.authLayoutSide .tabs { margin-bottom: var(--space-10); }
+.authLayoutSide .authHead + .authCard { margin-top: var(--space-8); }
+@container app (max-width: 999px) {
+  .authLayoutSide .tabs { margin-bottom: var(--space-8); }
+  .authLayoutSide .authHead + .authCard { margin-top: var(--space-6); }
+}
+</style>
+</head>
+<body>
+<template id="shell-split">
+      <div class="appShell">
+        <div data-slot></div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="11 Sign up">
+
+  <section data-state="form" data-label="Sign up" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutArt">
+          <span class="authLayoutGrid" aria-hidden="true"></span>
+          <div class="authLayoutStage">
+            <a class="authLayoutLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <div class="authLayoutVisual" aria-hidden="true"><span class="authLayoutGlow"></span><img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt=""></div>
+            <div class="authLayoutCopy">
+              <p class="authLayoutHeadline"><span>Find the coach</span><span>you can actually</span><span class="authLayoutTrust">trust.</span></p>
+              <p class="authLayoutSub">A place for gamers who want to grow and coaches who want to teach.</p>
+            </div>
+          </div>
+        </div>
+        <div class="authLayoutSide">
+          <div class="authLayoutTop"><a class="authLayoutTopLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a><a class="textLink quiet authLayoutBack" href="#"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>Back to home</a></div>
+      <div class="auth">
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="11#form">Sign up</a></div>
+        <div class="authHead"><h1>Create your account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+        <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
+            
+            <a class="button secondary block googleButton" href="#" data-link="13#google"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</a>
+            <div class="googleButtonOr" aria-hidden="true">or</div>
+            <div class="field"><label class="fieldLabel" for="su-email-f">Email</label><input class="fieldControl" id="su-email-f" type="email" autocomplete="email" inputmode="email" placeholder="name@example.com" autocapitalize="none" spellcheck="false"></div>
+            <div class="field"><label class="fieldLabel" for="su-pw-f">Password</label><span class="fieldHint" id="su-pw-f-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="su-pw-f" type="password" autocomplete="new-password" aria-describedby="su-pw-f-h"><button class="fieldReveal" type="button" aria-controls="su-pw-f" aria-pressed="false" aria-label="Show password">Show</button></div></div>
+            <a class="button primary block" href="#" data-link="12#sent">Create account</a>
+        </form>
+      </div>
+        </div>
+      </div>
+  </section>
+  <section data-state="booking" data-label="From a booking" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutArt">
+          <span class="authLayoutGrid" aria-hidden="true"></span>
+          <div class="authLayoutStage">
+            <a class="authLayoutLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <div class="authLayoutVisual" aria-hidden="true"><span class="authLayoutGlow"></span><img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt=""></div>
+            <div class="authLayoutCopy">
+              <p class="authLayoutHeadline"><span>Find the coach</span><span>you can actually</span><span class="authLayoutTrust">trust.</span></p>
+              <p class="authLayoutSub">A place for gamers who want to grow and coaches who want to teach.</p>
+            </div>
+          </div>
+        </div>
+        <div class="authLayoutSide">
+          <div class="authLayoutTop"><a class="authLayoutTopLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a><a class="textLink quiet authLayoutBack" href="#"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>Back to home</a></div>
+      <div class="auth">
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="14#booking">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="11#booking">Sign up</a></div>
+        <div class="authHead"><h1>Create your account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+        <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
+            <div class="authContext">
+              <div class="cardInset authContextBox"><span class="avatar sm">K</span><div><p class="authContextTitle">Sign up to book with Kairo</p><p class="authContextMeta">Mobile Legends<span class="mono">Wed 7 Oct · 20:00–21:00 SGT</span></p></div></div>
+              <p class="authContextNote"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>We'll bring you back to this time. It's held once you continue to checkout.</span></p>
+            </div>
+            <a class="button secondary block googleButton" href="#" data-link="13#booking"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</a>
+            <div class="googleButtonOr" aria-hidden="true">or</div>
+            <div class="field"><label class="fieldLabel" for="su-email-b">Email</label><input class="fieldControl" id="su-email-b" type="email" autocomplete="email" inputmode="email" placeholder="name@example.com" autocapitalize="none" spellcheck="false"></div>
+            <div class="field"><label class="fieldLabel" for="su-pw-b">Password</label><span class="fieldHint" id="su-pw-b-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="su-pw-b" type="password" autocomplete="new-password" aria-describedby="su-pw-b-h"><button class="fieldReveal" type="button" aria-controls="su-pw-b" aria-pressed="false" aria-label="Show password">Show</button></div></div>
+            <a class="button primary block" href="#" data-link="12#sent">Create account</a>
+        </form>
+      </div>
+        </div>
+      </div>
+  </section>
+  <section data-state="errors" data-label="Errors" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutArt">
+          <span class="authLayoutGrid" aria-hidden="true"></span>
+          <div class="authLayoutStage">
+            <a class="authLayoutLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <div class="authLayoutVisual" aria-hidden="true"><span class="authLayoutGlow"></span><img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt=""></div>
+            <div class="authLayoutCopy">
+              <p class="authLayoutHeadline"><span>Find the coach</span><span>you can actually</span><span class="authLayoutTrust">trust.</span></p>
+              <p class="authLayoutSub">A place for gamers who want to grow and coaches who want to teach.</p>
+            </div>
+          </div>
+        </div>
+        <div class="authLayoutSide">
+          <div class="authLayoutTop"><a class="authLayoutTopLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a><a class="textLink quiet authLayoutBack" href="#"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>Back to home</a></div>
+      <div class="auth">
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="11#form">Sign up</a></div>
+        <div class="authHead"><h1>Create your account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+        <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
+            
+            <a class="button secondary block googleButton" href="#" data-link="13#google"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</a>
+            <div class="googleButtonOr" aria-hidden="true">or</div>
+            <div class="field"><label class="fieldLabel" for="su-email-e">Email</label><input class="fieldControl" id="su-email-e" type="email" autocomplete="email" inputmode="email" value="snapking@example" aria-describedby="su-email-e-e" aria-invalid="true" autocapitalize="none" spellcheck="false"><span class="fieldError" id="su-email-e-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Enter an email address like name@example.com.</span></div>
+            <div class="field"><label class="fieldLabel" for="su-pw-e">Password</label><span class="fieldHint" id="su-pw-e-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="su-pw-e" type="password" autocomplete="new-password" value="password1" aria-describedby="su-pw-e-h su-pw-e-e" aria-invalid="true"><button class="fieldReveal" type="button" aria-controls="su-pw-e" aria-pressed="false" aria-label="Show password">Show</button></div><span class="fieldError" id="su-pw-e-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>This password has shown up in a data breach, so it isn't safe to use. Choose another.</span></div>
+            <a class="button primary block" href="#" data-link="12#sent">Create account</a>
+        </form>
+      </div>
+        </div>
+      </div>
+  </section>
+  <section data-state="loading" data-label="Creating your account" data-shell="split">
+      <div class="authLayout">
+        <div class="authLayoutArt">
+          <span class="authLayoutGrid" aria-hidden="true"></span>
+          <div class="authLayoutStage">
+            <a class="authLayoutLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+            <div class="authLayoutVisual" aria-hidden="true"><span class="authLayoutGlow"></span><img class="authLayoutMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt=""></div>
+            <div class="authLayoutCopy">
+              <p class="authLayoutHeadline"><span>Find the coach</span><span>you can actually</span><span class="authLayoutTrust">trust.</span></p>
+              <p class="authLayoutSub">A place for gamers who want to grow and coaches who want to teach.</p>
+            </div>
+          </div>
+        </div>
+        <div class="authLayoutSide">
+          <div class="authLayoutTop"><a class="authLayoutTopLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a><a class="textLink quiet authLayoutBack" href="#"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>Back to home</a></div>
+      <div class="auth">
+        <div class="tabs" role="tablist" aria-label="Log in or sign up"><a class="tabsItem" role="tab" href="#" aria-selected="false" data-link="14#form">Log in</a><a class="tabsItem" role="tab" href="#" aria-selected="true" data-link="11#form">Sign up</a></div>
+        <div class="authHead"><h1>Create your account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+        <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
+            
+            <button class="button secondary block googleButton" type="button" disabled><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button>
+            <div class="googleButtonOr" aria-hidden="true">or</div>
+            <div class="field"><label class="fieldLabel" for="su-email-l">Email</label><input class="fieldControl" id="su-email-l" type="email" autocomplete="email" inputmode="email" value="snapking@example.com" autocapitalize="none" spellcheck="false" disabled></div>
+            <div class="field"><label class="fieldLabel" for="su-pw-l">Password</label><span class="fieldHint" id="su-pw-l-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="su-pw-l" type="password" autocomplete="new-password" value="harbour-tide-42" aria-describedby="su-pw-l-h" disabled><button class="fieldReveal" type="button" aria-controls="su-pw-l" aria-pressed="false" aria-label="Show password">Show</button></div></div>
+            <button class="button primary block" type="submit" aria-busy="true" disabled><span class="buttonSpinner" aria-hidden="true"></span>Creating your account…</button>
+        </form>
+      </div>
+        </div>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>// Steps inside this page (data-go) switch state in place.
+document.addEventListener('click', function (e) {
+  var go = e.target.closest('[data-go]');
+  if (go && !go.disabled) { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+});
+</script>
+</body>
+</html>

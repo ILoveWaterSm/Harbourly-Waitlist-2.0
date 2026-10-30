@@ -99,39 +99,45 @@ flowchart TD
 </section>
 <section id="f2" class="flow">
   <h2><span class="n">2</span>Sign up and log in</h2>
-  <p class="note">The gamer or coach choice is a routing hint only. Every account can book as a gamer.</p>
+  <p class="note">The gamer or coach choice is a routing hint only. Every account can book as a gamer. No screen says whether an email has an account: sign-up always continues to &quot;Check your email&quot;, and the email itself tells an existing account holder to log in. Coaching is open in Singapore, Malaysia and the Philippines (Thailand once Stripe confirms). Rules in DECISIONS.md, &quot;Phase 4 decisions&quot; (28 Oct 2026).</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   Start([&quot;Sign up&quot;]) --&gt; Method{&quot;Method&quot;}
   Method --&gt;|&quot;Email and password&quot;| Email[&quot;Enter email and password&quot;]
-  Email --&gt; Verify[&quot;Verify your email&quot;]
+  Email --&gt; Verify[&quot;Verify your email: link works 24 hours, resend&quot;]
+  Verify --&gt;|&quot;Link opened on another device: log in&quot;| Login
   Verify --&gt; Details
   Method --&gt;|&quot;Google&quot;| Details[&quot;Finish setting up your account&quot;]
 
-  Details --&gt; Fields[&quot;First name, last name, username, date of birth, phone with OTP, country, gamer or coach, accept terms&quot;]
+  Details --&gt; Fields[&quot;First name, last name, username, date of birth, country, phone with OTP, gamer or coach, accept terms&quot;]
   Fields --&gt; Age{&quot;18 or older?&quot;}
-  Age --&gt;|&quot;No&quot;| Under18([&quot;You need to be 18 or older to use Harbourly&quot;])
+  Age --&gt;|&quot;No&quot;| Under18([&quot;You need to be 18 or older to use Harbourly. Account deleted, nothing kept&quot;])
   Age --&gt;|&quot;Yes&quot;| Country{&quot;Country supported?&quot;}
-  Country --&gt;|&quot;No&quot;| NotAvail([&quot;Harbourly isn&#x27;t available in your country yet&quot;])
-  Country --&gt;|&quot;Yes&quot;| Role{&quot;Chose coach?&quot;}
+  Country --&gt;|&quot;No&quot;| NotAvail([&quot;Harbourly isn&#x27;t available in your country yet. Account deleted, nothing kept&quot;])
+  Country --&gt;|&quot;Yes&quot;| SBooking{&quot;Came from a booking?&quot;}
+  SBooking --&gt;|&quot;Yes&quot;| BackToSlot
+  SBooking --&gt;|&quot;No&quot;| Role{&quot;Chose coach?&quot;}
   Role --&gt;|&quot;No&quot;| GDash([&quot;Gamer dashboard&quot;])
   Role --&gt;|&quot;Yes&quot;| CoachCountry{&quot;Coach country supported?&quot;}
-  CoachCountry --&gt;|&quot;No&quot;| NoCoach[&quot;Coaching isn&#x27;t available in your country yet. You can still book as a gamer&quot;]
+  CoachCountry --&gt;|&quot;No, shown before submitting&quot;| NoCoach[&quot;Coaching isn&#x27;t available in your country yet. You can still book as a gamer&quot;]
   NoCoach --&gt; GDash
   CoachCountry --&gt;|&quot;Yes&quot;| AppIntro([&quot;Coach application, step 1&quot;])
 
   Login([&quot;Log in&quot;]) --&gt; LMethod{&quot;Method&quot;}
   LMethod --&gt;|&quot;Email and password&quot;| Creds[&quot;Email and password&quot;]
-  LMethod --&gt;|&quot;Google&quot;| Google[&quot;Google&quot;]
+  LMethod --&gt;|&quot;Google, no account yet: creates one&quot;| Google[&quot;Google&quot;]
+  Creds --&gt;|&quot;Wrong details: try again. Too many tries: wait 15 minutes&quot;| Creds
   Creds --&gt;|&quot;Forgot password&quot;| Forgot[&quot;Forgot password&quot;]
-  Forgot --&gt; ResetEmail[&quot;Reset email sent&quot;]
-  ResetEmail --&gt; Reset[&quot;Set a new password&quot;]
+  Forgot --&gt; ResetEmail[&quot;Reset email sent, if the email has an account. Link works 1 hour&quot;]
+  ResetEmail --&gt; Reset[&quot;Set a new password. Other devices logged out&quot;]
   Reset --&gt; Login
-  Creds --&gt; Checks
+  Creds --&gt; EmailOK{&quot;Email verified?&quot;}
+  EmailOK --&gt;|&quot;No: a new link is sent&quot;| Verify
+  EmailOK --&gt;|&quot;Yes&quot;| Checks
   Google --&gt; Checks{&quot;Setup finished?&quot;}
   Checks --&gt;|&quot;No&quot;| Details
   Checks --&gt;|&quot;Yes&quot;| Terms{&quot;Latest terms accepted?&quot;}
-  Terms --&gt;|&quot;No&quot;| AcceptTerms[&quot;Accept the updated terms&quot;]
+  Terms --&gt;|&quot;No&quot;| AcceptTerms[&quot;Accept the updated terms, or sign out&quot;]
   AcceptTerms --&gt; Return
   Terms --&gt;|&quot;Yes&quot;| Return{&quot;Came from a booking?&quot;}
   Return --&gt;|&quot;Yes&quot;| BackToSlot([&quot;Back to the same booking step&quot;])
