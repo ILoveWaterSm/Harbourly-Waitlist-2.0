@@ -138,34 +138,40 @@ Also in Phase 3: PendingSlot component and a compact SessionList (library page);
 
 ## Phase 4: Sign up, log in, account access
 
+Pages: [11 Sign up](https://claude.ai/artifact/QkABonvTk67WnzxPHH1rrC) (`design/pages/11-sign-up.html`) · [12 Verify your email](https://claude.ai/artifact/MmPhavSEmaQbDFcxNtvcG4) (`design/pages/12-verify-your-email.html`) · [13 Finish setting up your account](https://claude.ai/artifact/HoUgKYU9pkBwvGxiaCCDZh) (`design/pages/13-finish-setting-up.html`) · [14 Log in](https://claude.ai/artifact/KFSLVdswwSLN2HGsMyn8ed) (`design/pages/14-log-in.html`) · [15 Forgot and reset password](https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4) (`design/pages/15-forgot-and-reset-password.html`) · [16 Accept updated terms](https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG) (`design/pages/16-accept-updated-terms.html`) · frames on the [canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ)
+
+Rules in DECISIONS.md, "Phase 4 decisions" and "Sign-in services". 11, 14 and 15 use a split layout with no top nav (full-height animated brand panel left with the logo, form right; panel hidden below 1000px, logo above the form; DECISIONS.md, "Sign up and log in layout"); 12, 13 and 16 a centred column (440px; 13 600px, 16 560px). No sidebar. 11, 14 and 15 use the logged-out nav; 12, 13 and 16 the gate nav (logo, Sign out).
+
 ### 11. Sign up · S
 `/signup` *proposed*.
-- Email and password, or Google.
-- States: errors (email already used, weak password), loading.
+- Log in | Sign up tabs, "Create your account", Continue with Google, "or", email, password (Show), Create account.
+- States: `form`, `booking` (came from 03: "Sign up to book with Kairo"), `errors` (email format, breached password), `loading` ("Creating your account…"). No "email already used" state: no screen says whether an email has an account.
 
 ### 12. Verify your email · S
 `/verify-email` *proposed*.
-- States: sent, resend, link expired, verified.
+- States: `sent` (resend timer), `resent`, `expired` (Send a new link), `verified` (Continue to 13), `verified-other` (opened on another device: Log in).
 
 ### 13. Finish setting up your account · M
 `/signup/details` *proposed*.
-- First name, last name, username, date of birth, phone with OTP on the same page, country, gamer or coach, terms checkbox.
-- States: OTP sent, wrong code, resend timer, verified; username taken; under 18 (blocked); country not supported (blocked); coaching not available in your country (continue as gamer); submitting.
+- About you (first name, last name, username, date of birth), where you are (country, phone with code on the same page), how you'll use Harbourly (gamer or coach), terms, Finish setting up.
+- States: `form` (email sign-up), `google` (name filled in), `missing` (details missing), `phone` (code sent, resend timer), `wrong-code`, `filled` (phone verified; Finish setting up → 09 `new`), `username-taken`, `coach-unavailable` (Indonesia: notice before submitting, then 09 `new`), `booking` (back to 03 `returning`), `submitting`, `under-18` (blocked), `not-available` (blocked).
 
 ### 14. Log in · S
 `/login` *proposed*.
-- Email and password, or Google.
-- States: wrong details, "log in to book with Kairo" context, loading.
+- Log in | Sign up tabs, "Welcome back", Continue with Google, "or", email, password (Show) with "Forgot password?", Log in.
+- States: `form` (→ 09 `busy`), `booking` ("Log in to book with Kairo" → 03 `returning`), `wrong` (wrong details), `too-many` (wait 15 minutes), `loading`.
 
 ### 15. Forgot and reset password · S
 `/forgot-password`, `/reset-password` *proposed*.
-- States: email sent, link expired, new password set.
+- States: `request`, `sent` ("If that email has an account…"), `new-password`, `expired`, `done` (Log in).
 
 ### 16. Accept updated terms · S
 `/terms/accept` *proposed*.
-- Blocking screen before continuing.
+- Blocking screen: what's changed (3 points), the update date, Read the full Terms of Service, Accept and continue, or sign out. State: `terms`.
 
-**Checkpoint 5:** getting in.
+Also in Phase 4: new shared parts on the component library ("Sign up and log in": Field password and label row, GoogleButton, ResultPanel, TopNav gate, icons mail and globe; the phone field's code select is wider so "+65 SG" fits; logged-out Log in and Sign up fit at 320px); 01, 02 and 03's logged-out Log in and Sign up open 14 and 11, and 03's "Log in to continue" and "Sign up" open 14 and 11 with the booking; USER-FLOW diagram 2 updated (sign-up from a booking, email verified check, Google with no account, blocked screens keep nothing).
+
+**Checkpoint 5:** getting in. Built and published 28 Oct 2026. 29 Oct 2026: 11, 14 and 15 moved to the split layout with tabs and no top nav (new Tabs and AuthLayout components); waiting for review.
 
 ---
 
@@ -251,6 +257,7 @@ Also in Phase 3: PendingSlot component and a compact SessionList (library page);
 ## To confirm before code is built (not before design)
 
 - Coach launch countries with Stripe and Xendit, including Thailand.
+- Sign-in services are chosen (DECISIONS.md, "Sign-in services": Supabase Auth, Resend, Twilio Verify). Before launch: check current Twilio Verify prices for the 10 supported countries, add Resend's domain records, and move to Supabase Pro and Resend's paid plan.
 - Exchange-rate source for converted prices.
 - Chat retention period, alongside the Terms of Service wording.
 - Moderation service for every public image (profile photos, banners, showcase images and captions): a dedicated image-moderation API (cheapest per image, catches nudity, violence and similar) or a vision AI model (also reads text inside images, e.g. contact details or slurs). Both cost a fraction of a cent per image; none is perfect, so uncertain results are refused.

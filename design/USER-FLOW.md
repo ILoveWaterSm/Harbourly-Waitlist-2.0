@@ -60,41 +60,47 @@ flowchart TD
 flowchart TD
   Start(["Sign up"]) --> Method{"Method"}
   Method -->|"Email and password"| Email["Enter email and password"]
-  Email --> Verify["Verify your email"]
+  Email --> Verify["Verify your email: link works 24 hours, resend"]
+  Verify -->|"Link opened on another device: log in"| Login
   Verify --> Details
   Method -->|"Google"| Details["Finish setting up your account"]
 
-  Details --> Fields["First name, last name, username, date of birth, phone with OTP, country, gamer or coach, accept terms"]
+  Details --> Fields["First name, last name, username, date of birth, country, phone with OTP, gamer or coach, accept terms"]
   Fields --> Age{"18 or older?"}
-  Age -->|"No"| Under18(["You need to be 18 or older to use Harbourly"])
+  Age -->|"No"| Under18(["You need to be 18 or older to use Harbourly. Account deleted, nothing kept"])
   Age -->|"Yes"| Country{"Country supported?"}
-  Country -->|"No"| NotAvail(["Harbourly isn't available in your country yet"])
-  Country -->|"Yes"| Role{"Chose coach?"}
+  Country -->|"No"| NotAvail(["Harbourly isn't available in your country yet. Account deleted, nothing kept"])
+  Country -->|"Yes"| SBooking{"Came from a booking?"}
+  SBooking -->|"Yes"| BackToSlot
+  SBooking -->|"No"| Role{"Chose coach?"}
   Role -->|"No"| GDash(["Gamer dashboard"])
   Role -->|"Yes"| CoachCountry{"Coach country supported?"}
-  CoachCountry -->|"No"| NoCoach["Coaching isn't available in your country yet. You can still book as a gamer"]
+  CoachCountry -->|"No, shown before submitting"| NoCoach["Coaching isn't available in your country yet. You can still book as a gamer"]
   NoCoach --> GDash
   CoachCountry -->|"Yes"| AppIntro(["Coach application, step 1"])
 
   Login(["Log in"]) --> LMethod{"Method"}
   LMethod -->|"Email and password"| Creds["Email and password"]
-  LMethod -->|"Google"| Google["Google"]
+  LMethod -->|"Google, no account yet: creates one"| Google["Google"]
+  Creds -->|"Wrong details: try again. Too many tries: wait 15 minutes"| Creds
   Creds -->|"Forgot password"| Forgot["Forgot password"]
-  Forgot --> ResetEmail["Reset email sent"]
-  ResetEmail --> Reset["Set a new password"]
+  Forgot --> ResetEmail["Reset email sent, if the email has an account. Link works 1 hour"]
+  ResetEmail --> Reset["Set a new password. Other devices logged out"]
   Reset --> Login
-  Creds --> Checks
+  Creds --> EmailOK{"Email verified?"}
+  EmailOK -->|"No: a new link is sent"| Verify
+  EmailOK -->|"Yes"| Checks
   Google --> Checks{"Setup finished?"}
   Checks -->|"No"| Details
   Checks -->|"Yes"| Terms{"Latest terms accepted?"}
-  Terms -->|"No"| AcceptTerms["Accept the updated terms"]
+  Terms -->|"No"| AcceptTerms["Accept the updated terms, or sign out"]
   AcceptTerms --> Return
   Terms -->|"Yes"| Return{"Came from a booking?"}
   Return -->|"Yes"| BackToSlot(["Back to the same booking step"])
   Return -->|"No"| GDash
 ```
 
-The gamer or coach choice is a routing hint only. Every account can book as a gamer.
+The gamer or coach choice is a routing hint only. Every account can book as a gamer. No screen says whether an email has an account: sign-up always continues to "Check your email", and the email itself tells an existing account holder to log in. Coaching is open in Singapore, Malaysia and the Philippines (Thailand once Stripe confirms). Rules in DECISIONS.md, "Phase 4 decisions" (28 Oct 2026).
 
 ---
 

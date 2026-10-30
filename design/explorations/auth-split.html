@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign up split</title>
+<meta name="description" content="Exploration: Sign up and Log in as a 50/50 split with a Log in / Sign up tab switch and a quiet animated brand panel.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/GoogleButton.css">
+<style>
+/* Exploration: Sign up and Log in as a 50/50 split with tabs (11, 14). If approved, the panel and tabs become shared components. */
+.auth { display: grid; gap: var(--space-6); width: 100%; max-width: 440px; margin-inline: auto; padding-top: var(--space-6); }
+.authHead { display: grid; gap: var(--space-3); }
+.authLead { font: var(--text-body); color: var(--muted); }
+.authCard { display: grid; gap: var(--space-5); }
+.authAlt { font-size: 14.5px; color: var(--muted); }
+.authContext { display: grid; gap: var(--space-3); padding-bottom: var(--space-5); border-bottom: 1px solid var(--line); }
+.authContextBox { display: flex; align-items: center; gap: var(--space-3); }
+.authContextTitle { font-weight: 600; font-size: 15px; line-height: 1.4; color: var(--ink); }
+.authContextMeta { margin-top: 2px; font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
+.authContextMeta .mono { display: block; margin-top: 2px; font-size: 13px; }
+.authContextNote { display: flex; gap: var(--space-2); font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.authContextNote svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+.backLink { justify-self: start; font-size: 14px; }
+@container app (max-width: 640px) {
+  .auth { padding-top: var(--space-2); gap: var(--space-5); }
+}
+/* Split: the form on the left, a quiet brand panel on the right. Below 1000px only the form shows. */
+.authSplit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: calc(100vh - 76px); }
+.authSide { display: grid; align-content: center; justify-items: center; padding: var(--space-10) var(--space-8) var(--space-14); }
+.authSide .auth { padding-top: 0; }
+
+/* Tabs: a pill switch between Log in and Sign up; the active tab carries the green glow, as tabs do on the landing page. */
+.authTabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); background: var(--bg-mid); }
+.authTab { display: grid; place-items: center; min-height: 44px; border-radius: var(--radius-pill); color: var(--muted); font: 600 15px/1 var(--font-body); text-decoration: none; transition: color .2s, background-color .2s, box-shadow .2s; }
+.authTab:hover { color: var(--ink); }
+.authTab[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1px var(--green-line), 0 0 22px -8px var(--green-glow); }
+
+/* Brand panel: the landing hero's ground (faint 80px grid, slow breathing green glow) with the Harbourly mark floating gently. */
+.authArt { position: sticky; top: 100px; align-self: start; height: calc(100vh - 124px); min-height: 520px; margin: var(--space-6) var(--space-6) var(--space-6) 0; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-xl); background: var(--bg-deep); box-shadow: inset 0 0 0 1px var(--line); }
+.authArtGrid { position: absolute; inset: 0; opacity: .7; background-image: linear-gradient(color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--muted) 14%, transparent) 1px, transparent 1px); background-size: 80px 80px; background-position: center center; -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%); mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%); }
+.authArtGlow { position: absolute; left: 50%; top: 50%; width: min(620px, 90%); aspect-ratio: 1; transform: translate(-50%, -50%); background: radial-gradient(closest-side, color-mix(in srgb, var(--green) 22%, transparent), transparent 70%); filter: blur(30px); animation: authBreathe 9s ease-in-out infinite; }
+.authArtMark { position: relative; width: 200px; height: 200px; filter: drop-shadow(0 28px 36px #00000099); animation: authFloat 6s ease-in-out infinite; }
+@keyframes authBreathe { 0%, 100% { opacity: .7; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } }
+@keyframes authFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+@container app (max-width: 999px) {
+  .authSplit { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .authArt { display: none; }
+  .authSide { align-content: start; padding: var(--space-6) var(--space-4) var(--space-14); }
+}
+</style>
+</head>
+<body>
+<template id="shell-split">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="button secondary" href="#" data-link="14#form">Log in</a>
+            <a class="button primary" href="#" data-link="11#form">Sign up</a>
+          </div>
+        </header>
+        <div data-slot></div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="11 and 14 split (exploration)">
+
+  <section data-state="signup" data-label="Sign up tab" data-shell="split">
+      <div class="authSplit">
+        <div class="authSide">
+          <div class="auth">
+            <div class="authTabs" role="tablist" aria-label="Log in or sign up"><a class="authTab" role="tab" href="#" aria-selected="false" data-go="login">Log in</a><a class="authTab" role="tab" href="#" aria-selected="true" data-go="signup">Sign up</a></div>
+            <div class="authHead"><h1>Create your Harbourly account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+            <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
+              
+              <a class="button secondary block googleButton" href="#" data-link="13#google"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</a>
+            <div class="googleButtonOr" aria-hidden="true">or</div>
+              <div class="field"><label class="fieldLabel" for="x-email-s">Email</label><input class="fieldControl" id="x-email-s" type="email" autocomplete="email" inputmode="email" placeholder="name@example.com" autocapitalize="none" spellcheck="false"></div>
+              <div class="field"><label class="fieldLabel" for="x-pw-s">Password</label><span class="fieldHint" id="x-pw-s-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="x-pw-s" type="password" autocomplete="new-password" aria-describedby="x-pw-s-h"><button class="fieldReveal" type="button" aria-controls="x-pw-s" aria-pressed="false" aria-label="Show password">Show</button></div></div>
+              <a class="button primary block" href="#">Create account</a>
+            </form>
+          </div>
+        </div>
+        <aside class="authArt" aria-hidden="true">
+          <span class="authArtGrid"></span>
+          <span class="authArtGlow"></span>
+          <img class="authArtMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
+      </div>
+  </section>
+  <section data-state="login" data-label="Log in tab" data-shell="split">
+      <div class="authSplit">
+        <div class="authSide">
+          <div class="auth">
+            <div class="authTabs" role="tablist" aria-label="Log in or sign up"><a class="authTab" role="tab" href="#" aria-selected="true" data-go="login">Log in</a><a class="authTab" role="tab" href="#" aria-selected="false" data-go="signup">Sign up</a></div>
+            <div class="authHead"><h1>Log in</h1></div>
+            <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
+              
+              <a class="button secondary block googleButton" href="#" data-link="09#busy"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</a>
+            <div class="googleButtonOr" aria-hidden="true">or</div>
+              <div class="field"><label class="fieldLabel" for="x-lemail-l">Email</label><input class="fieldControl" id="x-lemail-l" type="email" autocomplete="username" inputmode="email" placeholder="name@example.com" autocapitalize="none" spellcheck="false"></div>
+              <div class="field"><div class="fieldLabelRow"><label class="fieldLabel" for="x-lpw-l">Password</label><a class="textLink quiet" href="#">Forgot password?</a></div><div class="fieldPassword"><input class="fieldControl" id="x-lpw-l" type="password" autocomplete="current-password"><button class="fieldReveal" type="button" aria-controls="x-lpw-l" aria-pressed="false" aria-label="Show password">Show</button></div></div>
+              <a class="button primary block" href="#">Log in</a>
+            </form>
+          </div>
+        </div>
+        <aside class="authArt" aria-hidden="true">
+          <span class="authArtGrid"></span>
+          <span class="authArtGlow"></span>
+          <img class="authArtMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
+      </div>
+  </section>
+  <section data-state="signup-booking" data-label="Sign up · from a booking" data-shell="split">
+      <div class="authSplit">
+        <div class="authSide">
+          <div class="auth">
+            <div class="authTabs" role="tablist" aria-label="Log in or sign up"><a class="authTab" role="tab" href="#" aria-selected="false" data-go="login-booking">Log in</a><a class="authTab" role="tab" href="#" aria-selected="true" data-go="signup-booking">Sign up</a></div>
+            <div class="authHead"><h1>Create your Harbourly account</h1><p class="authLead">Start with your email and a password. Then we'll ask a few details and check your phone.</p></div>
+            <form class="card accent authCard" aria-label="Sign up" novalidate onsubmit="return false">
+              <div class="authContext">
+              <div class="cardInset authContextBox"><span class="avatar sm">K</span><div><p class="authContextTitle">Sign up to book with Kairo</p><p class="authContextMeta">Mobile Legends<span class="mono">Wed 7 Oct · 20:00–21:00 SGT</span></p></div></div>
+              <p class="authContextNote"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>We'll bring you back to this time. It's held once you continue to checkout.</span></p>
+            </div>
+              <a class="button secondary block googleButton" href="#" data-link="13#google"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</a>
+            <div class="googleButtonOr" aria-hidden="true">or</div>
+              <div class="field"><label class="fieldLabel" for="x-email-sb">Email</label><input class="fieldControl" id="x-email-sb" type="email" autocomplete="email" inputmode="email" placeholder="name@example.com" autocapitalize="none" spellcheck="false"></div>
+              <div class="field"><label class="fieldLabel" for="x-pw-sb">Password</label><span class="fieldHint" id="x-pw-sb-h">At least 8 characters. Don't reuse a password from another site.</span><div class="fieldPassword"><input class="fieldControl" id="x-pw-sb" type="password" autocomplete="new-password" aria-describedby="x-pw-sb-h"><button class="fieldReveal" type="button" aria-controls="x-pw-sb" aria-pressed="false" aria-label="Show password">Show</button></div></div>
+              <a class="button primary block" href="#">Create account</a>
+            </form>
+          </div>
+        </div>
+        <aside class="authArt" aria-hidden="true">
+          <span class="authArtGrid"></span>
+          <span class="authArtGlow"></span>
+          <img class="authArtMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
+      </div>
+  </section>
+  <section data-state="login-booking" data-label="Log in · from a booking" data-shell="split">
+      <div class="authSplit">
+        <div class="authSide">
+          <div class="auth">
+            <div class="authTabs" role="tablist" aria-label="Log in or sign up"><a class="authTab" role="tab" href="#" aria-selected="true" data-go="login-booking">Log in</a><a class="authTab" role="tab" href="#" aria-selected="false" data-go="signup-booking">Sign up</a></div>
+            <div class="authHead"><h1>Log in</h1></div>
+            <form class="card accent authCard" aria-label="Log in" novalidate onsubmit="return false">
+              <div class="authContext">
+              <div class="cardInset authContextBox"><span class="avatar sm">K</span><div><p class="authContextTitle">Log in to book with Kairo</p><p class="authContextMeta">Mobile Legends<span class="mono">Wed 7 Oct · 20:00–21:00 SGT</span></p></div></div>
+              <p class="authContextNote"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><span>We'll bring you back to this time. It's held once you continue to checkout.</span></p>
+            </div>
+              <a class="button secondary block googleButton" href="#" data-link="09#busy"><svg class="googleButtonMark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</a>
+            <div class="googleButtonOr" aria-hidden="true">or</div>
+              <div class="field"><label class="fieldLabel" for="x-lemail-lb">Email</label><input class="fieldControl" id="x-lemail-lb" type="email" autocomplete="username" inputmode="email" placeholder="name@example.com" autocapitalize="none" spellcheck="false"></div>
+              <div class="field"><div class="fieldLabelRow"><label class="fieldLabel" for="x-lpw-lb">Password</label><a class="textLink quiet" href="#">Forgot password?</a></div><div class="fieldPassword"><input class="fieldControl" id="x-lpw-lb" type="password" autocomplete="current-password"><button class="fieldReveal" type="button" aria-controls="x-lpw-lb" aria-pressed="false" aria-label="Show password">Show</button></div></div>
+              <a class="button primary block" href="#">Log in</a>
+            </form>
+          </div>
+        </div>
+        <aside class="authArt" aria-hidden="true">
+          <span class="authArtGrid"></span>
+          <span class="authArtGlow"></span>
+          <img class="authArtMark" src="../../design-system/assets/Brand/harbourly-mark.png" alt="">
+        </aside>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>// Steps inside this page (data-go) switch state in place.
+document.addEventListener('click', function (e) {
+  var go = e.target.closest('[data-go]');
+  if (go && !go.disabled) { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+});
+</script>
+</body>
+</html>

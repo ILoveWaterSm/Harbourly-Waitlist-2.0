@@ -49,7 +49,21 @@
   .topNav .topNavMenu svg { width: 22px; height: 22px; }
   .topNavRight { gap: var(--space-2); }
 }
+/* Gate: signed in but not through the door yet (verify email, finish setting up, accept updated terms).
+   Logo and Sign out only; every other page would send them back here, so the logo isn't a link
+   and there's no menu. Sign out stays visible at every width. */
+.topNav.gate .topNavSignOut { border: 1px solid var(--line-strong); color: var(--ink); }
+.topNav.gate .topNavSignOut:hover { border-color: var(--green-line); }
+@container app (max-width: 999px) {
+  .topNav.gate { padding-right: var(--space-4); }
+  .topNav.gate .topNavSignOut { display: block; min-height: 44px; padding: 0 var(--space-5); font-size: 15px; }
+}
 @container app (max-width: 400px) {
   .topNavLogo img { height: 32px; }
   .topNav { padding-right: var(--space-4); }
+}
+/* Very narrow phones (320px): the logged-out Log in and Sign up buttons get a little smaller so both fit beside the logo. */
+@container app (max-width: 360px) {
+  .topNavRight .button { padding: 10px 14px; font-size: 14px; }
+  .topNavRight { gap: 6px; }
 }

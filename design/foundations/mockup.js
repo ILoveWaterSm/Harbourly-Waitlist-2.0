@@ -43,7 +43,10 @@
     "03": "https://claude.ai/artifact/DoTXw1NFPY7nMf64rrNVV9", "04": "https://claude.ai/artifact/EFj1Br4ak4Xnd7935vocsw",
     "05": "https://claude.ai/artifact/HSpMwJ9o7dDJAEYaDy6wUa", "06": "https://claude.ai/artifact/SrzfjqhYzD4E93omQNB7R3",
     "07": "https://claude.ai/artifact/FLFRVmLwDCbUqCB4p4vbZM", "08": "https://claude.ai/artifact/LB4gwSiruwp8qDVRLS27Nt",
-    "09": "https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM", "10": "https://claude.ai/artifact/RA5wuSQuWSaw8hcPfsJpet"
+    "09": "https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM", "10": "https://claude.ai/artifact/RA5wuSQuWSaw8hcPfsJpet",
+    "11": "https://claude.ai/artifact/QkABonvTk67WnzxPHH1rrC", "12": "https://claude.ai/artifact/MmPhavSEmaQbDFcxNtvcG4",
+    "13": "https://claude.ai/artifact/HoUgKYU9pkBwvGxiaCCDZh", "14": "https://claude.ai/artifact/KFSLVdswwSLN2HGsMyn8ed",
+    "15": "https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4", "16": "https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG"
   };
   var self = (frame.dataset.page || '').slice(0, 2);
   Array.prototype.forEach.call(frame.querySelectorAll('[data-link]'), function (a) {
