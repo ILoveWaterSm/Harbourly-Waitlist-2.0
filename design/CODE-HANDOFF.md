@@ -1,6 +1,14 @@
 # Code handoff prompt
 
-Paste everything below the line into a new chat that has this repository attached. Written 29 Oct 2026. At that point `main` holds all design work: Phases 0 to 3 designed (pages 0.1 to 10), and Phases 4 to 7 (pages 11 to 25) not designed yet. The design chat may keep designing later phases in parallel. When it publishes new pages, tell the build chat which branch they're on.
+Paste everything below the line into a new chat that has this repository attached. Updated 30 Oct 2026.
+
+Where the design is:
+- Phases 0 to 4 are designed: pages 0.1 to 16, including sign up and log in.
+- Phases 5 to 7 (pages 17 to 25) are not designed yet.
+- `main` only has the design up to Phase 3.
+- Branch `claude/eloquent-turing-p7r99f` has everything: `main`, Phase 4 (merged from `claude/serene-feynman-pavlc0`) and this prompt.
+
+The design chat may keep designing later phases in parallel. When it publishes new pages, tell the build chat which branch they're on.
 
 Connect these to the new chat if you can: Supabase, Resend, Twilio, GitHub. Have test-mode Stripe and Xendit accounts ready. The build chat will ask for keys when it needs them.
 
@@ -24,11 +32,12 @@ You think like an owner: your aim is a product that real gamers and coaches trus
 
 Gamers browse identity-checked coaches, book and pay for one-hour 1-on-1 sessions, and hold the session in the app: voice call, chat and screen share. Afterwards the gamer confirms the session and leaves a review. Payment is held until the session is confirmed, or until 72 hours pass. Coaches apply, are reviewed by the team, set up payouts with identity checks, build a profile and go live. The brand is built on trust, so every screen should feel calm, precise and dependable.
 
-## Your mission, and the three rules that matter most
+## Your mission, and the four rules that matter most
 
-1. **The user flow is the contract.** `design/USER-FLOW.md` defines what exists and how a person moves through the product. Every route, button, link, redirect, email and status change you build must map to a node or edge in that flow. Nothing in the flow may be left unbuilt. Nothing outside it may be added without the owner's approval.
-2. **Gaps come first.** If the flow, the decisions or the mockups are missing something, contradict each other, or don't say what happens in a case you have to code, don't guess. Record it, explain why it matters, give your recommendation with the alternatives, and ask. Keep building only the parts the gap doesn't affect.
-3. **Plan every step of the user flow before you build.** Before you write any app code, turn the whole user flow into a numbered, step-by-step test script that the owner will follow by hand to test the product (details in "Step 1" below). Each milestone you build then makes a named set of those scenarios testable, and the owner tests them before you move on.
+1. **The designed pages are the UI, not inspiration.** Each page in `design/pages/` was built in the target structure on purpose: shared component CSS in `design/foundations/components/`, and page CSS marked with its destination file (e.g. `→ app/signup/page.module.css`). Build every designed page from its own artefact: its markup structure, class names, CSS, copy, icons, spacing, breakpoints and behaviour. Don't redesign it, "improve" it or swap in other components. Before a page counts as done, each of its states must pass a screenshot check against the mockup (see "Building from the design artefacts").
+2. **The user flow is the contract.** `design/USER-FLOW.md` defines what exists and how a person moves through the product. Every route, button, link, redirect, email and status change you build must map to a node or edge in that flow. Nothing in the flow may be left unbuilt. Nothing outside it may be added without the owner's approval.
+3. **Gaps come first.** If the flow, the decisions or the mockups are missing something, contradict each other, or don't say what happens in a case you have to code, don't guess. Record it, explain why it matters, give your recommendation with the alternatives, and ask. Keep building only the parts the gap doesn't affect.
+4. **Plan every step of the user flow before you build.** Before you write any app code, turn the whole user flow into a numbered, step-by-step test script that the owner will follow by hand to test the product (details in "Step 1" below). Each milestone you build then makes a named set of those scenarios testable, and the owner tests them before you move on.
 
 Money, statuses, time limits and permissions must be correct. Build each part once, properly, rather than quickly and then again.
 
@@ -39,8 +48,8 @@ When two sources disagree, the higher one wins. Raise the conflict either way.
 1. `design/DECISIONS.md`: every agreed product decision (newest at the bottom; later sections override earlier ones, e.g. "Policy update, 23 Oct 2026"). It is the source of truth for behaviour, rules, numbers and fixed copy.
 2. `design/USER-FLOW.md`: the MVP user flow in 13 Mermaid diagrams. It covers the whole product map, sign-up and log-in, booking, the time before a session, the session itself, the time after it, disputes, the coach journey, managing a live coach profile, account, the booking status lifecycle (diagram 11), the coach status lifecycle (diagram 12), and navigation with dual-role routing (diagram 13).
 3. `design/BUILD-ORDER.md`: all 25 pages with their routes and every state each page must show.
-4. `design/pages/*.html`: the designed pages. They are interactive mockups with a state switcher and a desktop/phone toggle, and they are the visual and copy source of truth for every state they draw. Open them in a browser through Playwright and walk every state.
-5. `design/foundations/`: `tokens.css`, one CSS file per shared component (written to lift straight into `<Name>.module.css`), the behaviour files `OtpInput.js`, `Rating.js`, `Field.js` and `ScrollArea.js`, plus `icons.js` (the SVG sprite) and `flags.js`. The library page is `design/pages/0.2-components.html`.
+4. `design/pages/*.html`: the designed pages. They are interactive mockups with a state switcher and a desktop/phone toggle, and they are **the UI you build**: the source of truth for the markup, styling, copy and states of every page they draw. Open them in a browser through Playwright and walk every state.
+5. `design/foundations/`: `tokens.css`, one CSS file per shared component (written to lift straight into `<Name>.module.css`), the behaviour files `OtpInput.js`, `Rating.js`, `Field.js` and `ScrollArea.js`, plus `icons.js` (the SVG sprite) and `flags.js`. The library page, `design/pages/0.2-components.html`, shows every component in every state.
 6. `design/HANDOFF.md`: the design handoff. Use it for the cast of fictional users, the mockup "now" times, the visual rules, the copy rules and the **Open items** list. Many open items affect code.
 7. `design-system/`: brand tokens and the brand README.
 
@@ -64,8 +73,16 @@ Designed (build these to match the mockups exactly):
 | 08 Live session | `/sessions/[id]/live` | `design/pages/08-live-session.html` |
 | 09 Gamer dashboard and To do page | `/dashboard`, `/dashboard/to-do` | `design/pages/09-gamer-dashboard.html` |
 | 10 My sessions | `/sessions` | `design/pages/10-my-sessions.html` |
+| 11 Sign up | `/signup` | `design/pages/11-sign-up.html` |
+| 12 Verify your email | `/verify-email` | `design/pages/12-verify-your-email.html` |
+| 13 Finish setting up your account | `/signup/details` | `design/pages/13-finish-setting-up.html` |
+| 14 Log in | `/login` | `design/pages/14-log-in.html` |
+| 15 Forgot and reset password | `/forgot-password`, `/reset-password` | `design/pages/15-forgot-and-reset-password.html` |
+| 16 Accept updated terms | `/terms/accept` | `design/pages/16-accept-updated-terms.html` |
 
-Not designed yet: 11 to 16 (sign up, verify email, finish setting up, log in, forgot and reset password, accept updated terms), 17 to 21 (coach application, coach dashboard, payout setup, profile setup), 22 and 23 (coach profile settings, coach sessions), and 24 and 25 (account settings, system pages). `BUILD-ORDER.md` lists their states, and the flow defines their behaviour.
+The design for Phase 4 (11 to 16) was finished on 29 Oct 2026 (split layout with tabs on 11, 14 and 15) and is waiting for the owner's checkpoint 5 review. Build it as it stands. If the review changes it, the owner will name the branch.
+
+Not designed yet: 17 to 21 (coach application, coach dashboard, payout setup, profile setup), 22 and 23 (coach profile settings, coach sessions), and 24 and 25 (account settings, system pages). `BUILD-ORDER.md` lists their states, and the flow defines their behaviour.
 
 For pages that aren't designed:
 - You may build their **data, server logic, rules and tests** from the flow and the decisions.
@@ -81,11 +98,18 @@ For pages that aren't designed:
 - Supabase for Postgres, Auth and Storage. The team runs reviews, disputes and suspensions directly in Supabase. There is **no admin UI in the MVP**.
 - Payments and payouts: Stripe for coaches in Singapore and Malaysia, Xendit for coaches in the Philippines. Gamers pay on the provider's hosted page in the **coach's** currency.
 - Email through Resend, already used by the waitlist.
+- Sign-in services, agreed 28 Oct 2026 (`DECISIONS.md`, "Sign-in services"):
+  - Supabase Auth for email and password, Google sign-in, verification and reset links, and phone codes.
+  - Resend as Supabase's custom SMTP for every auth email.
+  - Twilio Verify for the 6-digit phone codes.
+  - A Google Cloud OAuth client.
+  - Cloudflare Turnstile as the CAPTCHA.
+  - Supabase Pro in production, which includes leaked-password protection.
+  - Use the Supabase settings that section lists.
 
 **Propose in your plan, with one recommendation each (the owner decides):**
 - Where the app lives in the repo. I recommend its own folder, e.g. `/web`, as a separate Vercel project, so the waitlist site stays untouched.
 - The real-time call provider for 08. It must support voice, an optional camera that is off by default, one screen share at a time from computers only, saved chat, and **join and leave records** (the team checks no-show disputes against them).
-- The SMS provider for the phone OTP.
 - How timed jobs run: hold expiry, reminders, 72-hour auto-release, reschedule expiry, dispute response windows and similar.
 - The exchange-rate source for "≈" prices.
 - The image moderation service (options in `BUILD-ORDER.md`).
@@ -100,6 +124,40 @@ For pages that aren't designed:
 - **Payments.** Treat the provider as the truth for "paid". Verify webhook signatures, handle every webhook idempotently, and reconcile when the user returns before the webhook arrives (05's "confirming your payment" state).
 - **Security.** Turn on RLS for every table, with policies written and tested. Gamer and coach data never mix (diagram 13). Check authorization on the server for every action. Never expose a service key to the client. Validate every input on the server. Rate-limit log in, OTP and password reset. Never reveal whether an email has an account. Uploads are checked for type and size and pass the automatic image check before they go public. Keep secrets in environment variables, never commit them, and keep a `.env.example` up to date.
 - **Ages and countries.** Users must be 18 or older. Only supported countries are allowed, with a shorter list for coaches. Enforce both on the server with the exact wording `DECISIONS.md` fixes.
+
+## Building from the design artefacts
+
+The mockups were written to become the code. Turn them into the app directly, and only change what has to change to make them real.
+
+**What carries over exactly:**
+- `design/foundations/tokens.css` becomes the global stylesheet, with every token kept by its exact name and value.
+- Each `design/foundations/components/<Name>.css` becomes `<Name>.module.css` for a React component `<Name>`, with the same class names, the same variants (e.g. AppShell `wide`, TopNav `gate`, SessionList `compact`, PendingSlot `stacked`) and the same container queries. Copy the CSS as it is. Don't rewrite it.
+- Each page's own `<style>` block becomes that page's `page.module.css`, at the destination its comment names.
+- The markup structure of each state becomes JSX with the same elements, order, class names and ARIA attributes.
+- Copy, labels, icons (from `foundations/icons.js`), flags (`foundations/flags.js`), number, date and price formats, and the empty, loading, error and blocked states, all exactly as drawn.
+- Behaviour, ported to React with identical results:
+  - `OtpInput.js`, `Field.js` (character counter, password Show and Hide), `Rating.js` and `ScrollArea.js`;
+  - tabs that switch in place;
+  - the brand panel animation (with its reduced-motion version);
+  - countdowns;
+  - confirm steps that open in place.
+
+**What doesn't carry over:** the mockup harness is a design tool, not part of the product. That means `mockup.js`, `mockup.css`, the state switcher, the desktop/phone toggle, `data-link` and `data-go`. A mockup's states become real conditions driven by data, so each state appears when the data says it should. Fictional data becomes database data: seed the same cast so the real app can show exactly what each mockup shows.
+
+**Order of work:**
+1. Port the tokens and the whole component library first.
+2. Rebuild `0.2-components.html` as a dev-only `/dev/components` route, and screenshot-check it against the mockup library before you build any page. Every page then puts together parts that have already been checked.
+3. If a page needs something the library doesn't have, add it to the library as a component, matching the mockup. Don't style it inside the page.
+
+**The screenshot check (required for every designed page):**
+- For each state of each page, set the seed data and the dev clock to the mockup's "now".
+- Screenshot the real app and the mockup state at 1440 and 390 wide, with the same browser and fonts. `design/tools/render.mjs` shows how the mockups are rendered, and `design/tools/framediff.py` compares frames.
+- Then compare them pixel by pixel.
+- Fix every difference. A difference may stay only if the owner approves it and it is recorded in `DECISIONS.md`.
+- Also check 1280, 1024, 820 and 320 wide, and a 1280×720 window, for layout breaks.
+- List each page's result in the checkpoint message, and keep the comparison images in a git-ignored folder the owner can open.
+
+**When the design can't be built as drawn:** for example, an accessibility failure, behaviour a provider doesn't allow, or a state that can't be reached. Don't quietly work around it. Log it in `build/GAPS.md` with a recommendation and ask the owner.
 
 ## Step 1: the build plan (before any app code)
 
@@ -175,13 +233,7 @@ For each milestone:
 
 1. **Re-read** the sections of `DECISIONS.md` and the mockups that it touches, and pull the latest design branch the owner names.
 2. **Build the data and the rules first**: migrations, RLS, transition functions and money/time logic, each with unit tests that cover every rule, boundary and forbidden transition. Then build the UI.
-3. **Match the mockups exactly.**
-   - Lift component CSS from `design/foundations/components/` rather than restyling it.
-   - Use the icon sprite and flags as they are.
-   - Copy labels and copy word for word from the mockups.
-   - Responsive rules are container queries on the `app` container, as in the foundations, not media queries.
-   - Screenshot each state of your page with Playwright beside the same state of the mockup at 1440 and 390 wide. `design/tools/render.mjs` and `framediff.py` show how the mockups are rendered. Fix every difference that isn't a deliberate, recorded change.
-   - Also check 1280, 1024, 820 and 320 wide, and a short 1280×720 window.
+3. **Build the UI from the mockups**, as "Building from the design artefacts" describes. The milestone isn't done until every state of every page in it passes the screenshot check.
 4. **Write the milestone's test scenarios as Playwright end-to-end tests**, using the same IDs as `TEST-SCRIPT.md`, so the owner's manual test and the automated test are the same script.
 5. **Before every commit**, run lint, typecheck, the unit tests and the end-to-end tests. Before pushing, re-read your own diff as a hostile reviewer would: money, permissions, time zones, races.
 6. **Checkpoint.** Send the owner a short message with:
@@ -243,6 +295,8 @@ For each milestone:
 - The owner cares about usage. Read what you need, build each part once and well, and avoid repeated rewrites.
 
 ## Your first message
+
+First check that your branch has `design/pages/11-sign-up.html` and the "Sign up and log in layout" section in `design/DECISIONS.md`. If it doesn't, merge `origin/claude/eloquent-turing-p7r99f` into it (a merge commit, no rebase) before reading anything.
 
 Don't write app code yet. Read every source listed above, walk every designed page and state, write `build/GAPS.md`, `build/TEST-SCRIPT.md`, `build/ARCHITECTURE.md` and `build/MILESTONES.md`, then commit and push them. Then send one message with:
 
