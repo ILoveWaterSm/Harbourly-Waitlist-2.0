@@ -590,7 +590,7 @@ Write in sentence case and British English, short and direct, in a plain voice. 
 - **Mockup times in the coach-view copies:** 06 `coach-upcoming` still shows its own moment (Mon 5 Oct 18:00, "Opens in 49h 50m"); from 19 live (14:12) the same booking would read 53h 38m. Left as is, like 04's hold countdown.
 - **Not drawn, by decision:** suspended and banned coach states; the coach-journey emails; snapking's "Preview my public profile" (Phase 6 preview mode).
 
-**Planned for Phase 5 (all handled):**
+**Carried in from the Phase 5 brief** (13's coach choice and the languages field are now done; the rest still apply):
 - **13's coach choice:** in the mockup, Finish setting up goes to 09 whichever role is chosen. Now that 17 exists, point it at 17 when "coach" is chosen with a coach country (Singapore, Malaysia, Philippines). Gamers, and coaches in other countries (13 `coach-unavailable`), keep going to `09#new`. A booking sign-up keeps returning to `03#returning`.
 - **Languages field:** design it in profile setup (21). Coach profile settings (22) reuses it.
 - **Rank proof check (kept, 23 Oct 2026; may be dropped later):** ranks stay checked against proof screenshots at application and on every rank change, as DECISIONS.md "Ranks" says. "Credentials: optional" on the landing page means the portfolio only. If it's dropped later, this changes in the webapp:
