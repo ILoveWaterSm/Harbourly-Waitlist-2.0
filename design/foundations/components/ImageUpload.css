@@ -107,7 +107,7 @@
 .uploadMediaState > .spinner { flex: none; margin-top: 3px; }
 .uploadMediaState > .spinner + span { flex: 1 1 0; min-width: 0; }
 .uploadMediaActions { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); }
-.uploadBanner { display: grid; place-items: center; width: 100%; aspect-ratio: 4 / 1; min-height: 72px; border-radius: var(--radius-md); background: var(--bg-mid); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--subtle); }
+.uploadBanner { display: grid; place-items: center; width: 100%; aspect-ratio: 4 / 1; min-width: 0; border-radius: var(--radius-md); background: var(--bg-mid); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--subtle); }
 .uploadBanner.image { border: 1px dashed var(--line-strong); }
 .uploadBanner.checking { position: relative; }
 @container app (max-width: 480px) {

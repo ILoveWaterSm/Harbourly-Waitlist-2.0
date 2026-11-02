@@ -177,6 +177,8 @@ Also in Phase 4: new shared parts on the component library ("Sign up and log in"
 
 ## Phase 5: Becoming a coach
 
+Pages: [17 Coach application, step 1](https://claude.ai/artifact/UPdfZV5NDEKHgQk6A9m1vL) (`design/pages/17-coach-application-step-1.html`) · [18 Coach application, step 2](https://claude.ai/artifact/UuoARHjHiK321bFmrrT3Ww) (`design/pages/18-coach-application-step-2.html`) · [19 Coach dashboard](https://claude.ai/artifact/PZWfUhEGXGatrN3DdtNneV) (`design/pages/19-coach-dashboard.html`) · [20 Payout setup and settings](https://claude.ai/artifact/VVKZYhCa86RgU13zH5EKU8) (`design/pages/20-payout-setup.html`) · [21 Profile setup](https://claude.ai/artifact/7KKq11638mXPeYQNn17Cxb) (`design/pages/21-profile-setup.html`) · frames on the [canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ)
+
 Rules in DECISIONS.md, "Phase 5 decisions" (2 Nov 2026). snapking applies (Singapore, Stripe, S$); Kairo is the live coach on 19 and 20 (Philippines, Xendit, ₱). 17, 18 and 21 use the focused layout (top nav, no sidebar, 680px column); 19 and 20 the app shell with the Coach block. **No coach dashboard before approval:** until then the Gamer block's "Your coach application" link (with its status) opens 18.
 
 ### 17. Coach application, step 1 · S

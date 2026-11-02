@@ -494,6 +494,15 @@ document.addEventListener('click', function (e) {
   part.querySelector('[data-phone-code]').hidden = true;
   part.querySelector('[data-phone-entry]').hidden = false;
 });
+// Since Phase 5: with a coach country (Singapore here), choosing "I want to coach, and book sessions too" sends
+// Finish setting up to step 1 of the coach application (17); the gamer choice keeps the new-account dashboard (09).
+// Coach in an unsupported country (coach-unavailable) and the booking sign-up are unchanged.
+document.addEventListener('change', function (e) {
+  if (!e.target.matches('[data-state="filled"] input[name="role-r"]')) return;
+  var a = e.target.closest('[data-state]').querySelector('.setupSubmit a'), to = e.target.value === 'coach' ? '17#intro' : '09#new';
+  var pg = to.split('#'); a.dataset.link = to;
+  if (window.mkPages && window.mkPages[pg[0]]) a.href = window.mkPages[pg[0]] + '#' + pg[1];
+});
 document.addEventListener('mk:change', function () {
   document.querySelectorAll('[data-phone-code]').forEach(function (c) { c.hidden = false; c.closest('.setupPart').querySelector('[data-phone-entry]').hidden = true; });
 });

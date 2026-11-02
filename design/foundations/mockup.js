@@ -58,7 +58,10 @@
     "09": "https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM", "10": "https://claude.ai/artifact/RA5wuSQuWSaw8hcPfsJpet",
     "11": "https://claude.ai/artifact/QkABonvTk67WnzxPHH1rrC", "12": "https://claude.ai/artifact/MmPhavSEmaQbDFcxNtvcG4",
     "13": "https://claude.ai/artifact/HoUgKYU9pkBwvGxiaCCDZh", "14": "https://claude.ai/artifact/KFSLVdswwSLN2HGsMyn8ed",
-    "15": "https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4", "16": "https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG"
+    "15": "https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4", "16": "https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG",
+    "17": "https://claude.ai/artifact/UPdfZV5NDEKHgQk6A9m1vL", "18": "https://claude.ai/artifact/UuoARHjHiK321bFmrrT3Ww",
+    "19": "https://claude.ai/artifact/PZWfUhEGXGatrN3DdtNneV", "20": "https://claude.ai/artifact/VVKZYhCa86RgU13zH5EKU8",
+    "21": "https://claude.ai/artifact/7KKq11638mXPeYQNn17Cxb"
   };
   window.mkPages = PAGES;
   var self = (frame.dataset.page || '').slice(0, 2);
