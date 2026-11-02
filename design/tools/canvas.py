@@ -61,7 +61,7 @@ def place(fname, title, key, x, y):
 # Phase 0, page 0.2: library sections in fixed rows (0.1 Tokens is left as it is)
 lib = dict(labels("0.2-components.html"))
 y = 4123
-for row in [["shell", "buttons", "fields"], ["status", "identity", "cards"], ["notices", "confirm", "patterns"], ["booking", "session", "access"]]:
+for row in [["shell", "buttons", "fields"], ["status", "identity", "cards"], ["notices", "confirm", "patterns"], ["booking", "session", "access"], ["coach"]]:
     tallest = 0
     for i, s in enumerate(row):
         for wn, dx in (("desktop", 0), ("phone", 1520)):

@@ -13,6 +13,8 @@
     while (sec.firstChild) slot.appendChild(sec.firstChild);
     slot.removeAttribute('data-slot');
     if (sec.dataset.nav) Array.prototype.forEach.call(shell.querySelectorAll('[data-nav-key="' + sec.dataset.nav + '"]'), function (a) { a.setAttribute('aria-current', 'page'); });
+    // data-coach="19#approved": where this state's Coach dashboard link goes (the coach journey moves on day by day).
+    if (sec.dataset.coach) Array.prototype.forEach.call(shell.querySelectorAll('[data-nav-key="coach-dashboard"]'), function (a) { a.dataset.link = sec.dataset.coach; });
     sec.appendChild(shell);
   });
   // Burger menu in the shell (below 1000px)
@@ -29,14 +31,22 @@
   // The gamer's shell links, written once here so every page gets them: the sidebar (and burger menu)
   // Dashboard, Browse coaches and My sessions, and the logo. Only on shells where snapking is logged in: they open
   // snapking's pages, so other people's shells (Kairo's coach views) keep their links inert until their pages exist.
-  var NAV = { dashboard: '09#busy', browse: '01#results', sessions: '10#list' };
+  // Since Phase 5: "Become a coach" opens step 1 of the application (17), and Kairo's coach shells open his coach
+  // dashboard (19). Kairo has no gamer pages, so his Gamer links and logo stay inert; Coach sessions waits for 23.
+  var NAV = { dashboard: '09#busy', browse: '01#results', sessions: '10#list', become: '17#intro' };
+  var KAIRO = { 'coach-dashboard': '19#live' };
   Array.prototype.forEach.call(frame.querySelectorAll('.appShell'), function (shell) {
     var user = shell.querySelector('.topNavUser'), logo = shell.querySelector('.topNavLogo');
-    if (!user || !/^snapking,/.test(user.getAttribute('aria-label') || '')) return;
+    var who = user ? (user.getAttribute('aria-label') || '') : '';
+    var map = /^snapking,/.test(who) ? NAV : /^Kairo,/.test(who) ? KAIRO : null;
+    if (!map) return;
     Array.prototype.forEach.call(shell.querySelectorAll('[data-nav-key]'), function (a) {
-      if (!a.dataset.link && NAV[a.dataset.navKey]) a.dataset.link = NAV[a.dataset.navKey];
+      if (!a.dataset.link && map[a.dataset.navKey]) a.dataset.link = map[a.dataset.navKey];
     });
-    if (logo && !logo.dataset.link) logo.dataset.link = NAV.dashboard;
+    if (map === NAV) {
+      Array.prototype.forEach.call(shell.querySelectorAll('.sidebarBecome'), function (a) { if (!a.dataset.link) a.dataset.link = NAV.become; });
+      if (logo && !logo.dataset.link) logo.dataset.link = NAV.dashboard;
+    }
   });
   // Links between mockup pages: data-link="07#gamer-after" opens that page's published mockup at that
   // state (in a new tab); a link to a state on this same page just switches to it.
@@ -50,6 +60,7 @@
     "13": "https://claude.ai/artifact/HoUgKYU9pkBwvGxiaCCDZh", "14": "https://claude.ai/artifact/KFSLVdswwSLN2HGsMyn8ed",
     "15": "https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4", "16": "https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG"
   };
+  window.mkPages = PAGES;
   var self = (frame.dataset.page || '').slice(0, 2);
   Array.prototype.forEach.call(frame.querySelectorAll('[data-link]'), function (a) {
     var parts = a.dataset.link.split('#'), pg = parts[0], st = parts[1] || '';

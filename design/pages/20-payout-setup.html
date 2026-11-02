@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>20 Payout setup and settings</title>
+<meta name="description" content="Phase 5, page 20: payout setup with Stripe or Xendit, including the identity check, and a live coach's payout settings.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/Spinner.css">
+<link rel="stylesheet" href="../foundations/components/PendingSlot.css">
+<link rel="stylesheet" href="../foundations/components/PriceBreakdown.css">
+<link rel="stylesheet" href="../foundations/components/Flag.css">
+<link rel="stylesheet" href="../foundations/components/ResultPanel.css">
+<style>
+/* Page: Payout setup and settings (/coach/payout) → app/coach/payout/page.module.css. Layout only.
+   In the app shell (Coach block, Coach dashboard highlighted), a 680px column. Setup hands off to the provider's
+   hosted onboarding (Stripe for Singapore and Malaysia, Xendit for the Philippines), which isn't drawn, like checkout:
+   before the hand-off it says what will be asked and why, and the country lock; after it, confirming, then
+   not finished, checking, verified or couldn't verify. A live coach sees their payout settings. */
+.py { display: grid; gap: var(--space-6); max-width: 680px; }
+.backLink { justify-self: start; font-size: 14px; }
+.pyHead { display: grid; gap: var(--space-3); justify-items: start; }
+.pyLead { max-width: 60ch; font: var(--text-body); color: var(--muted); }
+.pyLead .mono { font-size: 15px; color: var(--ink-soft); }
+.pyCard { display: grid; padding: 0; }
+.pyPart { display: grid; gap: var(--space-4); padding: var(--space-6); }
+.pyPart + .pyPart { border-top: 1px solid var(--line); }
+.pyPart h2 { font: var(--text-h3); }
+.pyPart > p { font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+.pyNeed { display: grid; margin: 0; padding: 0; list-style: none; }
+.pyNeed li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: var(--space-3); padding: var(--space-4) 0; border-top: 1px solid var(--line); }
+.pyNeed li:first-child { border-top: 0; padding-top: 0; }
+.pyNeed li:last-child { padding-bottom: 0; }
+.pyNeed li > svg { width: 20px; height: 20px; margin-top: 2px; color: var(--muted); }
+.pyNeed b { display: block; font-weight: 600; font-size: 15px; line-height: 1.45; color: var(--ink); }
+.pyNeed span span { display: block; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+.pyCountry { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+.pyCountry .flag { margin-top: 3px; }
+.pyCountry b { font-weight: 600; color: var(--ink); }
+.pyGo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.pyGo p { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.pyFacts { margin: 0; }
+.pyFacts dd.text { font: 400 14.5px/1.45 var(--font-body); color: var(--ink); }
+.pyFacts dd .mono, .pyFacts dd.mono { font: var(--text-value); color: var(--ink-soft); }
+.pyFacts dd small { display: block; margin-top: 2px; font-size: 13.5px; color: var(--muted); }
+.pyCountryVal { display: inline-flex; align-items: center; gap: var(--space-2); }
+.pyResult { display: grid; gap: var(--space-4); justify-items: start; max-width: 58ch; padding-top: var(--space-8); }
+.pyResult > .spinner { margin-bottom: var(--space-2); }
+.pyResult p { font: var(--text-body); color: var(--muted); }
+.py .mk-hint { margin-top: 0; }
+@container app (max-width: 640px) {
+  .py { gap: var(--space-5); }
+  .pyPart { padding: var(--space-5); }
+  .pyGo .button { width: 100%; }
+  .pyFacts { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .pyFacts dd { margin-bottom: var(--space-3); }
+  .pyResult { padding-top: var(--space-4); }
+}
+</style>
+</head>
+<body>
+<template id="shell-coach">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody">
+          <nav class="sidebar" aria-label="Main">
+              <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+              </div>
+          </nav>
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-kairo-coach">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="Kairo, account settings"><span class="avatar sm">K</span>Kairo</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">K</span><span><span class="mobileMenuName">Kairo</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="coach-sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody">
+          <nav class="sidebar" aria-label="Main">
+              <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="coach-sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+          </nav>
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="20 Payout setup and settings">
+
+  <section data-state="start" data-label="Not started · Thu 22 Oct, 12:05" data-shell="coach" data-nav="coach-dashboard" data-coach="19#approved">
+      <div class="py">
+        <a class="textLink quiet backLink" href="#" data-link="19#approved"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="pyHead"><h1>Set up payouts</h1><p class="pyLead">Stripe, our payment partner, checks your identity and sets up where your payouts go. It all happens on Stripe's secure page.</p></header>
+        <div class="card accent pyCard">
+          <section class="pyPart" aria-labelledby="h-ask"><h2 id="h-ask">What Stripe will ask for</h2><ul class="pyNeed">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg><span><b>Your legal name, date of birth and home address</b><span>So Stripe can confirm who you are.</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg><span><b>A photo of your government ID, and a selfie</b><span>Stripe checks them. Harbourly never sees or stores your ID.</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><b>A bank account in Singapore, in your name</b><span>This is where your payouts go.</span></span></li>
+            </ul></section>
+          <section class="pyPart" aria-labelledby="h-ctry"><h2 id="h-ctry">Your country</h2><p class="pyCountry"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span>You'll coach from <b>Singapore</b>, paid in SGD. Your country locks once payouts are set up; to change it after that, contact support.</span></p></section>
+          <div class="pyPart"><div class="pyGo"><button class="button primary" type="button" data-go="confirming">Continue to Stripe</button><p>You'll set up payouts on Stripe's secure page. You'll come straight back here.</p></div></div>
+        </div>
+        <p class="mk-hint">Mockup: the Stripe page isn't drawn. <a href="#" data-go="confirming">Come back from Stripe</a></p>
+      </div>
+  </section>
+
+  <section data-state="confirming" data-label="Back from Stripe, confirming · Thu 22 Oct, 12:24" data-shell="coach" data-nav="coach-dashboard" data-coach="19#approved">
+      <div class="py">
+        <div class="pyResult" role="status" aria-live="polite">
+          <span class="spinner lg" aria-hidden="true"></span>
+          <h1>Checking with Stripe</h1>
+          <p>Stripe is sending us your details. This usually takes a few seconds, so keep this page open.</p>
+        </div>
+        <p class="mk-hint">Mockup: <a href="#" data-go="checking">you finished on Stripe</a><a href="#" data-go="unfinished">you left Stripe part-way</a></p>
+      </div>
+  </section>
+
+  <section data-state="unfinished" data-label="Left Stripe part-way · Thu 22 Oct, 12:24" data-shell="coach" data-nav="coach-dashboard" data-coach="19#approved">
+      <div class="py">
+        <a class="textLink quiet backLink" href="#" data-link="19#approved"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="pyHead"><span class="statusLabel action">Not finished</span><h1>Set up payouts</h1></header>
+        <div class="notice warning" role="status"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><p class="noticeTitle">You left Stripe before the end</p><p class="noticeText">Nothing you entered is lost. Pick up where you left off: Stripe still needs a few details before it can check them.</p></div></div>
+        <div class="card accent pyCard"><section class="pyPart" aria-labelledby="h-ask2"><h2 id="h-ask2">What Stripe will ask for</h2><ul class="pyNeed">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg><span><b>Your legal name, date of birth and home address</b><span>So Stripe can confirm who you are.</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg><span><b>A photo of your government ID, and a selfie</b><span>Stripe checks them. Harbourly never sees or stores your ID.</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><b>A bank account in Singapore, in your name</b><span>This is where your payouts go.</span></span></li>
+            </ul></section><div class="pyPart"><div class="pyGo"><button class="button primary" type="button" data-go="confirming">Continue to Stripe</button><p>You'll set up payouts on Stripe's secure page. You'll come straight back here.</p></div></div></div>
+      </div>
+  </section>
+
+  <section data-state="checking" data-label="Stripe checking · Thu 22 Oct, 12:26" data-shell="coach" data-nav="coach-dashboard" data-coach="19#payout-checking">
+      <div class="py">
+        <a class="textLink quiet backLink" href="#" data-link="19#payout-checking"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="pyHead"><span class="statusLabel ended">Checking</span><h1>Set up payouts</h1></header>
+        <div class="pendingSlot" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">Stripe is checking your details</p><p class="pendingSlotText">Sent <span class="mono">Thu 22 Oct, 12:24 SGT</span>. Stripe is checking your ID and your bank account. There's nothing you need to do; this page and your coach dashboard update when it's done.</p></div></div>
+        <section class="card accent pyCard" aria-labelledby="h-next"><div class="pyPart"><h2 id="h-next">While Stripe checks, set up your profile</h2><p>Your photo, a short bio, the languages you coach in, your weekly hours and a price for each game.</p><div class="pyGo"><a class="button primary" href="#" data-link="21#about">Set up your profile</a></div></div></section>
+        <p class="mk-hint">Mockup: <a href="#" data-go="verified">Stripe finishes checking</a><a href="#" data-go="failed">Stripe couldn't verify</a></p>
+      </div>
+  </section>
+
+  <section data-state="verified" data-label="Verified · Thu 22 Oct, 18:02" data-shell="coach" data-nav="coach-dashboard" data-coach="19#in-progress">
+      <div class="py">
+        <a class="textLink quiet backLink" href="#" data-link="19#in-progress"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="pyHead"><span class="statusLabel positive">Done</span><h1>Payouts are set up</h1><p class="pyLead">Stripe has checked your identity. Your payouts go to your bank account ending <span class="mono">4821</span>.</p></header>
+        <div class="card pyCard">
+          <div class="pyPart"><dl class="cardFacts pyFacts">
+              <dt>Paid through</dt><dd class="text">Stripe</dd>
+              <dt>Payouts to</dt><dd class="text">Bank account ending <span class="mono">4821</span></dd>
+              <dt>Currency</dt><dd class="mono">SGD</dd>
+              <dt>Country</dt><dd class="text"><span class="pyCountryVal"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span>Singapore · locked</span><small>To change it, contact <a class="textLink" href="mailto:support@harbourly.gg">support@harbourly.gg</a>.</small></dd>
+            </dl></div>
+          <section class="pyPart" aria-label="How payouts work"><h2>How payouts work</h2><p>Each session is paid out automatically 72 hours after it ends, unless a problem is reported. Harbourly keeps a 12% commission on your price.</p>
+            <div style="display:grid;gap:var(--space-3)"><dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Your price</dt><dd>S$25.00</dd></div><div class="priceBreakdownLine"><dt>Harbourly commission (12%)</dt><dd>−S$3.00</dd></div><div class="priceBreakdownLine total"><dt>Your payout</dt><dd>S$22.00</dd></div></dl><p class="priceBreakdownNote">An example for a S$25 Valorant session. Gamers pay the platform fee on top of your price. Stripe sends payouts to your bank; it can take a few working days to arrive.</p></div></section>
+        </div>
+        <section class="card accent pyCard" aria-labelledby="h-next2"><div class="pyPart"><h2 id="h-next2">Next: finish your profile</h2><p>2 of 5 steps saved. You go live as soon as your profile is done.</p><div class="pyGo"><a class="button primary" href="#" data-link="21#resumed">Continue your profile</a></div></div></section>
+      </div>
+  </section>
+
+  <section data-state="failed" data-label="Couldn't verify · Thu 22 Oct, 14:40" data-shell="coach" data-nav="coach-dashboard" data-coach="19#payout-failed">
+      <div class="py">
+        <a class="textLink quiet backLink" href="#" data-link="19#payout-failed"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="pyHead"><span class="statusLabel action">Couldn't verify</span><h1>Your payout account couldn't be verified</h1></header>
+        <div class="card accent pyCard"><div class="pyPart"><p>Stripe couldn't confirm the details you gave. This can happen when an ID photo is hard to read, or when the name on your bank account doesn't match your ID.</p><p>Your application stays approved, and you can try again as many times as you need. If it keeps happening, our support team can help.</p>
+          <div class="pyGo"><button class="button primary" type="button" data-go="confirming">Try again</button><a class="button secondary" href="mailto:support@harbourly.gg">Contact support</a></div></div></div>
+      </div>
+  </section>
+
+  <section data-state="live" data-label="Live payout settings (Kairo) · Mon 5 Oct, 14:12 PHT" data-shell="kairo-coach" data-nav="coach-dashboard" data-coach="19#live">
+      <div class="py">
+        <a class="textLink quiet backLink" href="#" data-link="19#live"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="pyHead"><span class="statusLabel positive">Active</span><h1>Payout settings</h1><p class="pyLead">Your payouts are active. Payout history and bank details are in your Xendit dashboard.</p></header>
+        <div class="card accent pyCard">
+          <div class="pyPart"><dl class="cardFacts pyFacts">
+              <dt>Paid through</dt><dd class="text">Xendit</dd>
+              <dt>Payouts to</dt><dd class="text">Bank account ending <span class="mono">3307</span></dd>
+              <dt>Currency</dt><dd class="mono">PHP</dd>
+              <dt>Country</dt><dd class="text"><span class="pyCountryVal"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span>Philippines · locked</span><small>To change it, contact <a class="textLink" href="mailto:support@harbourly.gg">support@harbourly.gg</a>.</small></dd>
+            </dl><div class="pyGo"><a class="button secondary" href="#">Open Xendit dashboard</a></div></div>
+          <section class="pyPart" aria-label="How payouts work"><h2>How payouts work</h2><p>Each session is paid out automatically 72 hours after it ends, unless a problem is reported. Harbourly keeps a 12% commission on your price.</p>
+            <div style="display:grid;gap:var(--space-3)"><dl class="priceBreakdown"><div class="priceBreakdownLine"><dt>Your price</dt><dd>₱1,850.00</dd></div><div class="priceBreakdownLine"><dt>Harbourly commission (12%)</dt><dd>−₱222.00</dd></div><div class="priceBreakdownLine total"><dt>Your payout</dt><dd>₱1,628.00</dd></div></dl><p class="priceBreakdownNote">For a Mobile Legends session. Gamers pay the platform fee on top of your price. Xendit sends payouts to your bank; it can take a few working days to arrive.</p></div></section>
+        </div>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* Mockup behaviour for this page: data-go moves to another state of this page. */
+(function () {
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-go]');
+    if (go && !go.disabled && go.getAttribute('aria-disabled') !== 'true') { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+  });
+})();
+</script>
+</body>
+</html>

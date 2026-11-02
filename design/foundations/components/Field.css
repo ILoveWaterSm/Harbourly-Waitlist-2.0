@@ -74,3 +74,8 @@ textarea.fieldControl { min-height: 128px; resize: vertical; line-height: 1.55; 
   .fieldPair { grid-template-columns: minmax(0, 1fr); }
   .fieldPhone { grid-template-columns: 124px minmax(0, 1fr); }
 }
+
+/* Prefix (added in Phase 5): a currency mark inside the input, e.g. S$ before a price. */
+.fieldPrefix { position: relative; max-width: 220px; }
+.fieldPrefix > span { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font: 400 16px/1 var(--font-mono); color: var(--muted); pointer-events: none; }
+.fieldPrefix .fieldControl { padding-left: 52px; font-family: var(--font-mono); }

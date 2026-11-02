@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>18 Coach application, step 2</title>
+<meta name="description" content="Phase 5, page 18: the coach application (games, rank, proof, why you coach), and where it stands until it is approved.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/StepCounter.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/ImageUpload.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/ConfirmStep.css">
+<link rel="stylesheet" href="../foundations/components/Spinner.css">
+<link rel="stylesheet" href="../foundations/components/SaveStatus.css">
+<link rel="stylesheet" href="../foundations/components/PendingSlot.css">
+<link rel="stylesheet" href="../foundations/components/ResultPanel.css">
+<style>
+/* Page: Coach application, step 2 (/coach/apply/details) → app/coach/apply/details/page.module.css. Layout only.
+   Focused layout, 680px column. One form in three parts: Your games (one box per game: game, rank, proof),
+   Coaching elsewhere (optional link), Why you coach. Saves as you go (SaveStatus under the title). Submit opens a
+   confirm step in place. Until approval this page is also where the application's status lives: under review
+   (read-only), changes needed (the reason at the top, the flagged game box outlined in amber, Submit disabled until
+   it changes), the 14-day wait, and not eligible. */
+.ap { display: grid; gap: var(--space-6); max-width: 680px; margin-inline: auto; }
+.backLink { justify-self: start; font-size: 14px; }
+.apHead { display: grid; gap: var(--space-4); }
+.apTitleRow { display: grid; gap: var(--space-3); justify-items: start; }
+.apLead { max-width: 60ch; font: var(--text-body); color: var(--muted); }
+.apLead .mono { font-size: 15px; color: var(--ink-soft); }
+.apCard { display: grid; padding: 0; }
+.apPart { display: grid; gap: var(--space-5); padding: var(--space-6); margin: 0; border: 0; min-width: 0; }
+.apPart + .apPart { border-top: 1px solid var(--line); }
+.apPartHead { display: grid; gap: var(--space-1); }
+.apPartHead h2 { font: var(--text-h3); }
+.apPartHead p { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.apSaveHint { display: inline-flex; font: 400 12.5px/1.4 var(--font-mono); color: var(--muted); }
+
+/* One box per game */
+.agGame { display: grid; gap: var(--space-5); padding: var(--space-5); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); min-width: 0; scroll-margin-top: 100px; }
+.agGameHead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 32px; }
+.agGameHead .label { color: var(--faint); }
+.agGameRemove { min-height: 44px; margin: -6px -8px -6px 0; padding: 0 var(--space-2); border: 0; background: none; color: var(--muted); font: 500 14px/1 var(--font-body); cursor: pointer; }
+.agGameRemove:hover { color: var(--ink); }
+.agRank { font-family: var(--font-mono); }
+.agGame.flagged { border-color: color-mix(in srgb, var(--amber) 60%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--amber) 22%, transparent); }
+.agFlag { display: flex; align-items: flex-start; gap: var(--space-2); font: 500 13.5px/1.45 var(--font-body); color: var(--amber); }
+.agFlag svg { width: 16px; height: 16px; flex: none; margin-top: 1px; }
+.agFlag.changed { color: var(--green); }
+.agMore { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+.agMore .uploadCount { font-size: 12px; }
+.agUploadHint .mono { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+.imageUpload > .fieldError { margin-top: calc(var(--space-1) * -1); }
+
+/* Submit, and its confirm step in place */
+.apSubmit { display: grid; gap: var(--space-4); padding: var(--space-6); border-top: 1px solid var(--line); }
+.apSubmitRow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.apSubmitRow p { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.apSubmit [hidden] { display: none; }
+
+/* Status: the reason, the team's note, the read-only application */
+.apNote { display: grid; gap: var(--space-2); padding: var(--space-4); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-flat); }
+.apNote .label { color: var(--faint); }
+.apNote blockquote { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.apNote .apNoteSent { font: 400 12px/1.4 var(--font-mono); color: var(--muted); }
+.apJump { justify-self: start; font-size: 14px; }
+.apSent { display: grid; gap: 0; }
+.apSentGame { display: grid; gap: var(--space-2); padding: var(--space-4) 0; border-top: 1px solid var(--line); }
+.apSentGame:first-child { border-top: 0; padding-top: 0; }
+.apSentGame b { font-weight: 600; font-size: 15px; color: var(--ink); }
+.apSentFiles { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.apSentFiles li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid var(--line); border-radius: var(--radius-xs); font: 400 12.5px/1.3 var(--font-mono); color: var(--muted); }
+.apSentFiles svg { width: 14px; height: 14px; }
+.apSentText { font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.apSentLink { font: 400 14px/1.4 var(--font-mono); color: var(--ink-soft); overflow-wrap: anywhere; }
+.ap > .resultPanel { padding-top: var(--space-2); }
+.resultPanel .statusLabel { margin-bottom: calc(var(--space-2) * -1); }
+.resultPanelNote a { color: var(--green); }
+@container app (max-width: 640px) {
+  .ap { gap: var(--space-5); }
+  .apPart, .apSubmit { padding: var(--space-5); }
+  .agGame { padding: var(--space-4); }
+  .apSubmitRow .button { width: 100%; }
+  .resultPanelActions .button { width: 100%; }
+}
+</style>
+</head>
+<body>
+<template id="shell-f-draft">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#" data-link="18#draft"><span class="sidebarBecomeText"><span>Your coach application</span><span class="statusLabel action">Draft</span></span><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-f-review">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#" data-link="18#under-review"><span class="sidebarBecomeText"><span>Your coach application</span><span class="statusLabel ended">Under review</span></span><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-f-changes">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#" data-link="18#rejected"><span class="sidebarBecomeText"><span>Your coach application</span><span class="statusLabel action">Changes needed</span></span><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-f-wait">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#" data-link="18#rejected-wait"><span class="sidebarBecomeText"><span>Your coach application</span><span class="statusLabel ended">Reapply from Thu 12 Nov</span></span><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-f-closed">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#" data-link="18#not-eligible"><span class="sidebarBecomeText"><span>Your coach application</span><span class="statusLabel ended">Not eligible</span></span><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="18 Coach application, step 2">
+
+  <section data-state="empty" data-label="Empty · Mon 19 Oct, 21:12" data-shell="f-draft">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="stepCounter"><span class="stepCounterText">Step <b>02</b> / 02</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="current"></span></div></div><div class="apTitleRow"><h1>Your coach application</h1></div><p class="apLead">Tell us what you coach and show us your rank. Our team reviews every application.</p><p class="apSaveHint">Your answers save as you go.</p></header>
+        <form class="card accent apCard" novalidate onsubmit="return false">
+            <fieldset class="apPart"><div class="apPartHead"><h2>Your games</h2><p>Add each game you want to coach. Our team checks each rank against your screenshots.</p></div>
+              <div class="agGame" id="e-g1" role="group" aria-labelledby="e-g1-l">
+                <div class="agGameHead"><span class="label" id="e-g1-l">Game 1</span></div>
+                <div class="field"><label class="fieldLabel" for="e-g1-s">Game</label><select class="fieldControl" id="e-g1-s"><option value="" selected>Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option>Valorant</option><option>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="e-g1-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="e-g1-r" type="text" maxlength="40" autocomplete="off" data-counter="e-g1-r-c" value=""><div class="fieldFoot"><span class="fieldCounter" id="e-g1-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">0 / 5</span></div>
+                </div>
+              </div>
+              <div class="agMore"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add another game</button><span class="uploadCount">1 / 5 games</span></div>
+            </fieldset>
+            <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere <span class="fieldOptional" style="font:400 15px var(--font-body)">(optional)</span></h2></div>
+              <div class="field"><label class="fieldLabel" for="e-l">Your profile on another coaching site</label><span class="fieldHint" id="e-l-h">Metafy, Fiverr or similar, if you coach there. It helps our team, and isn't shown to gamers.</span><input class="fieldControl" id="e-l" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://" value=""></div>
+            </div>
+            <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div>
+              <div class="field"><label class="fieldLabel" for="e-w">What made you start coaching?</label><span class="fieldHint">A few lines are enough. Only our team reads this.</span><textarea class="fieldControl" id="e-w" maxlength="1000" data-counter="e-w-c"></textarea><div class="fieldFoot"><span class="fieldCounter" id="e-w-c"></span></div></div>
+            </div>
+            <div class="apSubmit"><div class="apSubmitRow"><button class="button primary" type="button" data-go="validation">Submit application</button><p>Our team reviews it and emails you the outcome.</p></div></div>
+          </form>
+      </div>
+  </section>
+
+  <section data-state="draft" data-label="Partly filled, draft saved · Mon 19 Oct, 21:34" data-shell="f-draft">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="stepCounter"><span class="stepCounterText">Step <b>02</b> / 02</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="current"></span></div></div><div class="apTitleRow"><h1>Your coach application</h1></div><p class="apLead">Tell us what you coach and show us your rank. Our team reviews every application.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Draft saved · <span>21:34</span></p></header>
+        <form class="card accent apCard" novalidate onsubmit="return false">
+            <fieldset class="apPart"><div class="apPartHead"><h2>Your games</h2><p>Add each game you want to coach. Our team checks each rank against your screenshots.</p></div>
+              <div class="agGame" id="d-g1" role="group" aria-labelledby="d-g1-l">
+                <div class="agGameHead"><span class="label" id="d-g1-l">Game 1</span><button class="agGameRemove" type="button" aria-label="Remove Valorant">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="d-g1-s">Game</label><select class="fieldControl" id="d-g1-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option selected>Valorant</option><option disabled>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="d-g1-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="d-g1-r" type="text" maxlength="40" autocomplete="off" data-counter="d-g1-r-c" value="Ascendant 1"><div class="fieldFoot"><span class="fieldCounter" id="d-g1-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-act-rank.png</span><span class="uploadRowMeta">2.1 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-act-rank.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-career.png</span><span class="uploadRowMeta">1.6 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-career.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div><div class="agGame" id="d-g2" role="group" aria-labelledby="d-g2-l">
+                <div class="agGameHead"><span class="label" id="d-g2-l">Game 2</span><button class="agGameRemove" type="button" aria-label="Remove Counter-Strike 2">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="d-g2-s">Game</label><select class="fieldControl" id="d-g2-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option disabled>Valorant</option><option selected>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="d-g2-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="d-g2-r" type="text" maxlength="40" autocomplete="off" data-counter="d-g2-r-c" value="Premier 18,200"><div class="fieldFoot"><span class="fieldCounter" id="d-g2-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">0 / 5</span></div>
+                </div>
+              </div>
+              <div class="agMore"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add another game</button><span class="uploadCount">2 / 5 games</span></div>
+            </fieldset>
+            <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere <span class="fieldOptional" style="font:400 15px var(--font-body)">(optional)</span></h2></div>
+              <div class="field"><label class="fieldLabel" for="d-l">Your profile on another coaching site</label><span class="fieldHint" id="d-l-h">Metafy, Fiverr or similar, if you coach there. It helps our team, and isn't shown to gamers.</span><input class="fieldControl" id="d-l" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://" value=""></div>
+            </div>
+            <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div>
+              <div class="field"><label class="fieldLabel" for="d-w">What made you start coaching?</label><span class="fieldHint">A few lines are enough. Only our team reads this.</span><textarea class="fieldControl" id="d-w" maxlength="1000" data-counter="d-w-c"></textarea><div class="fieldFoot"><span class="fieldCounter" id="d-w-c"></span></div></div>
+            </div>
+            <div class="apSubmit"><div class="apSubmitRow"><button class="button primary" type="button" data-go="validation">Submit application</button><p>Our team reviews it and emails you the outcome.</p></div></div>
+          </form>
+      </div>
+  </section>
+
+  <section data-state="validation" data-label="Validation · Tue 20 Oct, 20:50" data-shell="f-draft">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="stepCounter"><span class="stepCounterText">Step <b>02</b> / 02</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="current"></span></div></div><div class="apTitleRow"><h1>Your coach application</h1></div><p class="apLead">Tell us what you coach and show us your rank. Our team reviews every application.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Draft saved · 20:50</p></header>
+        <div class="notice error" role="alert" id="v-sum" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><p class="noticeTitle">Fix 3 things before you submit</p><ul class="noticeLinks"><li><a href="#v-g2">Counter-Strike 2: add at least one screenshot of your rank</a></li><li><a href="#v-l">Coaching elsewhere: enter a full web address</a></li><li><a href="#v-w">Tell us what made you start coaching</a></li></ul></div></div>
+        <form class="card accent apCard" novalidate onsubmit="return false">
+            <fieldset class="apPart"><div class="apPartHead"><h2>Your games</h2><p>Add each game you want to coach. Our team checks each rank against your screenshots.</p></div>
+              <div class="agGame" id="v-g1" role="group" aria-labelledby="v-g1-l">
+                <div class="agGameHead"><span class="label" id="v-g1-l">Game 1</span><button class="agGameRemove" type="button" aria-label="Remove Valorant">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="v-g1-s">Game</label><select class="fieldControl" id="v-g1-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option selected>Valorant</option><option disabled>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="v-g1-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="v-g1-r" type="text" maxlength="40" autocomplete="off" data-counter="v-g1-r-c" value="Ascendant 1"><div class="fieldFoot"><span class="fieldCounter" id="v-g1-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-act-rank.png</span><span class="uploadRowMeta">2.1 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-act-rank.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-career.png</span><span class="uploadRowMeta">1.6 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-career.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div><div class="agGame" id="v-g2" role="group" aria-labelledby="v-g2-l">
+                <div class="agGameHead"><span class="label" id="v-g2-l">Game 2</span><button class="agGameRemove" type="button" aria-label="Remove Counter-Strike 2">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="v-g2-s">Game</label><select class="fieldControl" id="v-g2-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option disabled>Valorant</option><option selected>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="v-g2-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="v-g2-r" type="text" maxlength="40" autocomplete="off" data-counter="v-g2-r-c" value="Premier 18,200"><div class="fieldFoot"><span class="fieldCounter" id="v-g2-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">0 / 5</span></div><span class="fieldError" id="v-g2-p-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>Add at least one screenshot of your rank.</span></span>
+                </div>
+              </div>
+              <div class="agMore"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add another game</button><span class="uploadCount">2 / 5 games</span></div>
+            </fieldset>
+            <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere <span class="fieldOptional" style="font:400 15px var(--font-body)">(optional)</span></h2></div>
+              <div class="field"><label class="fieldLabel" for="v-l">Your profile on another coaching site</label><span class="fieldHint" id="v-l-h">Metafy, Fiverr or similar, if you coach there. It helps our team, and isn't shown to gamers.</span><input class="fieldControl" id="v-l" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://" value="metafy snapking" aria-invalid="true" aria-describedby="v-l-e"><span class="fieldError" id="v-l-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>Enter a full web address, like https://metafy.gg/@snapking.</span></span></div>
+            </div>
+            <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div>
+              <div class="field"><label class="fieldLabel" for="v-w">What made you start coaching?</label><span class="fieldHint">A few lines are enough. Only our team reads this.</span><textarea class="fieldControl" id="v-w" maxlength="1000" data-counter="v-w-c" aria-invalid="true" aria-describedby="v-w-e"></textarea><div class="fieldFoot"><span class="fieldError" id="v-w-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>Tell us what made you start coaching.</span></span><span class="fieldCounter" id="v-w-c"></span></div></div>
+            </div>
+            <div class="apSubmit"><div class="apSubmitRow"><button class="button primary" type="button" data-go="validation">Submit application</button><p>Our team reviews it and emails you the outcome.</p></div></div>
+          </form>
+      </div>
+  </section>
+
+  <section data-state="upload-error" data-label="Upload error · Tue 20 Oct, 20:46" data-shell="f-draft">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="stepCounter"><span class="stepCounterText">Step <b>02</b> / 02</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="current"></span></div></div><div class="apTitleRow"><h1>Your coach application</h1></div><p class="apLead">Tell us what you coach and show us your rank. Our team reviews every application.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Draft saved · 20:46</p></header>
+        <form class="card accent apCard" novalidate onsubmit="return false">
+            <fieldset class="apPart"><div class="apPartHead"><h2>Your games</h2><p>Add each game you want to coach. Our team checks each rank against your screenshots.</p></div>
+              <div class="agGame" id="u-g1" role="group" aria-labelledby="u-g1-l">
+                <div class="agGameHead"><span class="label" id="u-g1-l">Game 1</span><button class="agGameRemove" type="button" aria-label="Remove Valorant">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="u-g1-s">Game</label><select class="fieldControl" id="u-g1-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option selected>Valorant</option><option disabled>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="u-g1-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="u-g1-r" type="text" maxlength="40" autocomplete="off" data-counter="u-g1-r-c" value="Ascendant 1"><div class="fieldFoot"><span class="fieldCounter" id="u-g1-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-act-rank.png</span><span class="uploadRowMeta">2.1 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-act-rank.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-career.png</span><span class="uploadRowMeta">1.6 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-career.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div><div class="agGame" id="u-g2" role="group" aria-labelledby="u-g2-l">
+                <div class="agGameHead"><span class="label" id="u-g2-l">Game 2</span><button class="agGameRemove" type="button" aria-label="Remove Counter-Strike 2">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="u-g2-s">Game</label><select class="fieldControl" id="u-g2-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option disabled>Valorant</option><option selected>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="u-g2-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="u-g2-r" type="text" maxlength="40" autocomplete="off" data-counter="u-g2-r-c" value="Premier 18,200"><div class="fieldFoot"><span class="fieldCounter" id="u-g2-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">cs2-premier.png</span><span class="uploadRowMeta">Uploading · 45% of 1.8 MB</span><span class="uploadRowBar" role="progressbar" aria-label="Uploading cs2-premier.png" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"><span style="width:45%"></span></span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Cancel cs2-premier.png">Cancel</button></span></li><li class="uploadRow failed"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">cs2-premier.heic</span><span class="uploadRowMeta">Not uploaded</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove cs2-premier.heic">Remove</button></span><span class="fieldError"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>cs2-premier.heic isn't a JPG, PNG or WebP. Save it as one of those and try again.</span></span></li><li class="uploadRow failed"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">match-history.png</span><span class="uploadRowMeta">Not uploaded</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove match-history.png">Remove</button></span><span class="fieldError"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>match-history.png is <span class="mono">14.2 MB</span>. Images can be up to <span class="mono">10 MB</span>.</span></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">1 / 5</span></div>
+                </div>
+              </div>
+              <div class="agMore"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add another game</button><span class="uploadCount">2 / 5 games</span></div>
+            </fieldset>
+            <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere <span class="fieldOptional" style="font:400 15px var(--font-body)">(optional)</span></h2></div>
+              <div class="field"><label class="fieldLabel" for="u-l">Your profile on another coaching site</label><span class="fieldHint" id="u-l-h">Metafy, Fiverr or similar, if you coach there. It helps our team, and isn't shown to gamers.</span><input class="fieldControl" id="u-l" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://" value="https://metafy.gg/@snapking"></div>
+            </div>
+            <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div>
+              <div class="field"><label class="fieldLabel" for="u-w">What made you start coaching?</label><span class="fieldHint">A few lines are enough. Only our team reads this.</span><textarea class="fieldControl" id="u-w" maxlength="1000" data-counter="u-w-c">I've played Valorant since the beta and CS for longer. I started helping two friends on my uni team with their aim and comms, and both climbed from Gold to Diamond last season. I enjoyed that more than my own games, so I'd like to do it properly.</textarea><div class="fieldFoot"><span class="fieldCounter" id="u-w-c"></span></div></div>
+            </div>
+            <div class="apSubmit"><div class="apSubmitRow"><button class="button primary" type="button" data-go="confirm">Submit application</button><p>Our team reviews it and emails you the outcome.</p></div></div>
+          </form>
+      </div>
+  </section>
+
+  <section data-state="confirm" data-label="Submit confirm · Tue 20 Oct, 20:51" data-shell="f-draft">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="stepCounter"><span class="stepCounterText">Step <b>02</b> / 02</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="current"></span></div></div><div class="apTitleRow"><h1>Your coach application</h1></div><p class="apLead">Tell us what you coach and show us your rank. Our team reviews every application.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Draft saved · 20:51</p></header>
+        <form class="card accent apCard" novalidate onsubmit="return false">
+            <fieldset class="apPart"><div class="apPartHead"><h2>Your games</h2><p>Add each game you want to coach. Our team checks each rank against your screenshots.</p></div>
+              <div class="agGame" id="c-g1" role="group" aria-labelledby="c-g1-l">
+                <div class="agGameHead"><span class="label" id="c-g1-l">Game 1</span><button class="agGameRemove" type="button" aria-label="Remove Valorant">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="c-g1-s">Game</label><select class="fieldControl" id="c-g1-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option selected>Valorant</option><option disabled>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="c-g1-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="c-g1-r" type="text" maxlength="40" autocomplete="off" data-counter="c-g1-r-c" value="Ascendant 1"><div class="fieldFoot"><span class="fieldCounter" id="c-g1-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-act-rank.png</span><span class="uploadRowMeta">2.1 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-act-rank.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-career.png</span><span class="uploadRowMeta">1.6 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-career.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div><div class="agGame" id="c-g2" role="group" aria-labelledby="c-g2-l">
+                <div class="agGameHead"><span class="label" id="c-g2-l">Game 2</span><button class="agGameRemove" type="button" aria-label="Remove Counter-Strike 2">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="c-g2-s">Game</label><select class="fieldControl" id="c-g2-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option disabled>Valorant</option><option selected>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="c-g2-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="c-g2-r" type="text" maxlength="40" autocomplete="off" data-counter="c-g2-r-c" value="Premier 18,200"><div class="fieldFoot"><span class="fieldCounter" id="c-g2-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">cs2-premier.png</span><span class="uploadRowMeta">1.8 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove cs2-premier.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">1 / 5</span></div>
+                </div>
+              </div>
+              <div class="agMore"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add another game</button><span class="uploadCount">2 / 5 games</span></div>
+            </fieldset>
+            <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere <span class="fieldOptional" style="font:400 15px var(--font-body)">(optional)</span></h2></div>
+              <div class="field"><label class="fieldLabel" for="c-l">Your profile on another coaching site</label><span class="fieldHint" id="c-l-h">Metafy, Fiverr or similar, if you coach there. It helps our team, and isn't shown to gamers.</span><input class="fieldControl" id="c-l" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://" value="https://metafy.gg/@snapking"></div>
+            </div>
+            <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div>
+              <div class="field"><label class="fieldLabel" for="c-w">What made you start coaching?</label><span class="fieldHint">A few lines are enough. Only our team reads this.</span><textarea class="fieldControl" id="c-w" maxlength="1000" data-counter="c-w-c">I've played Valorant since the beta and CS for longer. I started helping two friends on my uni team with their aim and comms, and both climbed from Gold to Diamond last season. I enjoyed that more than my own games, so I'd like to do it properly.</textarea><div class="fieldFoot"><span class="fieldCounter" id="c-w-c"></span></div></div>
+            </div>
+            <div class="apSubmit"><div class="apSubmitRow" hidden><button class="button primary" type="button" data-confirm-open>Submit application</button><p>Our team reviews it and emails you the outcome.</p></div><div class="confirmStep" role="group" aria-labelledby="c-cf"><p class="confirmStepTitle" id="c-cf">Send your application?</p><p class="confirmStepText">Our team checks each rank against your screenshots and emails you the outcome. You can't change your application while it's being reviewed.</p><div class="confirmStepActions"><button class="button primary" type="button" data-submit>Submit application</button><button class="button secondary" type="button" data-confirm-close>Keep editing</button></div></div></div>
+          </form>
+      </div>
+  </section>
+
+  <section data-state="submitting" data-label="Submitting · Tue 20 Oct, 20:52" data-shell="f-draft">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="stepCounter"><span class="stepCounterText">Step <b>02</b> / 02</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="current"></span></div></div><div class="apTitleRow"><h1>Your coach application</h1></div><p class="apLead">Tell us what you coach and show us your rank. Our team reviews every application.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Draft saved · 20:51</p></header>
+        <form class="card accent apCard" novalidate onsubmit="return false">
+            <fieldset class="apPart"><div class="apPartHead"><h2>Your games</h2><p>Add each game you want to coach. Our team checks each rank against your screenshots.</p></div>
+              <div class="agGame" id="s-g1" role="group" aria-labelledby="s-g1-l">
+                <div class="agGameHead"><span class="label" id="s-g1-l">Game 1</span><button class="agGameRemove" type="button" aria-label="Remove Valorant">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="s-g1-s">Game</label><select class="fieldControl" id="s-g1-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option selected>Valorant</option><option disabled>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="s-g1-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="s-g1-r" type="text" maxlength="40" autocomplete="off" data-counter="s-g1-r-c" value="Ascendant 1"><div class="fieldFoot"><span class="fieldCounter" id="s-g1-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-act-rank.png</span><span class="uploadRowMeta">2.1 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-act-rank.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-career.png</span><span class="uploadRowMeta">1.6 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-career.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div><div class="agGame" id="s-g2" role="group" aria-labelledby="s-g2-l">
+                <div class="agGameHead"><span class="label" id="s-g2-l">Game 2</span><button class="agGameRemove" type="button" aria-label="Remove Counter-Strike 2">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="s-g2-s">Game</label><select class="fieldControl" id="s-g2-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option disabled>Valorant</option><option selected>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="s-g2-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="s-g2-r" type="text" maxlength="40" autocomplete="off" data-counter="s-g2-r-c" value="Premier 18,200"><div class="fieldFoot"><span class="fieldCounter" id="s-g2-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">cs2-premier.png</span><span class="uploadRowMeta">1.8 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove cs2-premier.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">1 / 5</span></div>
+                </div>
+              </div>
+              <div class="agMore"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add another game</button><span class="uploadCount">2 / 5 games</span></div>
+            </fieldset>
+            <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere <span class="fieldOptional" style="font:400 15px var(--font-body)">(optional)</span></h2></div>
+              <div class="field"><label class="fieldLabel" for="s-l">Your profile on another coaching site</label><span class="fieldHint" id="s-l-h">Metafy, Fiverr or similar, if you coach there. It helps our team, and isn't shown to gamers.</span><input class="fieldControl" id="s-l" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://" value="https://metafy.gg/@snapking"></div>
+            </div>
+            <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div>
+              <div class="field"><label class="fieldLabel" for="s-w">What made you start coaching?</label><span class="fieldHint">A few lines are enough. Only our team reads this.</span><textarea class="fieldControl" id="s-w" maxlength="1000" data-counter="s-w-c">I've played Valorant since the beta and CS for longer. I started helping two friends on my uni team with their aim and comms, and both climbed from Gold to Diamond last season. I enjoyed that more than my own games, so I'd like to do it properly.</textarea><div class="fieldFoot"><span class="fieldCounter" id="s-w-c"></span></div></div>
+            </div>
+            <div class="apSubmit"><div class="apSubmitRow"><button class="button primary" type="button" aria-busy="true" disabled><span class="buttonSpinner" aria-hidden="true"></span>Submitting your application…</button></div></div>
+          </form>
+      </div>
+  </section>
+
+  <section data-state="submitted" data-label="Submitted · Tue 20 Oct, 20:52" data-shell="f-review">
+      <div class="ap">
+        <div class="resultPanel" role="status"><svg class="icon positive" aria-hidden="true"><use href="#i-check"/></svg><h1>Your application is in</h1><p class="resultPanelText">Our team reviews every application and checks each rank against your screenshots. We'll email <b>snapking@example.com</b> with the outcome.</p><p class="resultPanelNote">You can see where it stands any time from <b>Your coach application</b> in the menu.</p><div class="resultPanelActions"><a class="button primary" href="#" data-link="09#busy">Back to dashboard</a></div></div>
+      </div>
+  </section>
+
+  <section data-state="under-review" data-label="Under review · Wed 21 Oct, 09:00" data-shell="f-review">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="apTitleRow"><span class="statusLabel ended">Under review</span><h1>Your coach application</h1></div></header>
+        <div class="pendingSlot" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="pendingSlotBody"><p class="pendingSlotTitle">Our team is reviewing your application</p><p class="pendingSlotText">Sent <span class="mono">Tue 20 Oct, 20:52 SGT</span>. We'll email you with the outcome. You can't change your application while it's being reviewed.</p></div></div>
+        <section class="card apCard" aria-label="What you sent">
+          <div class="apPart"><div class="apPartHead"><h2>Your games</h2></div><div class="apSent"><div class="apSentGame"><b>Valorant</b><span class="gameRankValue mono" style="font-size:14px;color:var(--ink-soft)">Ascendant 1</span><ul class="apSentFiles" aria-label="Proof for Valorant"><li><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>valorant-act-rank.png</li><li><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>valorant-career.png</li></ul></div><div class="apSentGame"><b>Counter-Strike 2</b><span class="gameRankValue mono" style="font-size:14px;color:var(--ink-soft)">Premier 18,200</span><ul class="apSentFiles" aria-label="Proof for Counter-Strike 2"><li><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>cs2-premier.png</li></ul></div></div></div>
+          <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere</h2></div><p class="apSentLink">https://metafy.gg/@snapking</p></div>
+          <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div><p class="apSentText">I've played Valorant since the beta and CS for longer. I started helping two friends on my uni team with their aim and comms, and both climbed from Gold to Diamond last season. I enjoyed that more than my own games, so I'd like to do it properly.</p></div>
+        </section>
+        <p class="mk-hint">Mockup: <a href="#" data-link="19#approved">open the approval email</a><a href="#" data-link="18#rejected">open the changes-needed email</a><a href="#" data-link="18#not-eligible">open the not-eligible email</a></p>
+      </div>
+  </section>
+
+  <section data-state="rejected" data-label="Changes needed · Thu 22 Oct, 12:00" data-shell="f-changes">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="apTitleRow"><span class="statusLabel action">Changes needed</span><h1>Your coach application</h1></div><p class="apSaveHint">Your changes save as you go.</p></header>
+        <div class="notice warning" role="status"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><p class="noticeTitle">Your proof for Counter-Strike 2 doesn't show Premier 18,200.</p><p class="noticeText">Add a screenshot that shows your rating and your in-game name, or change the rank to match your proof. Everything else is kept as you sent it.</p></div></div>
+        <div class="apNote"><span class="label">Note from the Harbourly team</span><blockquote>Your screenshot shows your Premier rating from last season, 16,940. Add one from this season.</blockquote><span class="apNoteSent">Sent Thu 22 Oct, 11:30 SGT</span></div>
+        <a class="textLink apJump" href="#r-g2">Go to Counter-Strike 2<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        <form class="card accent apCard" novalidate onsubmit="return false">
+            <fieldset class="apPart"><div class="apPartHead"><h2>Your games</h2><p>Add each game you want to coach. Our team checks each rank against your screenshots.</p></div>
+              <div class="agGame" id="r-g1" role="group" aria-labelledby="r-g1-l">
+                <div class="agGameHead"><span class="label" id="r-g1-l">Game 1</span><button class="agGameRemove" type="button" aria-label="Remove Valorant">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="r-g1-s">Game</label><select class="fieldControl" id="r-g1-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option selected>Valorant</option><option disabled>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="r-g1-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="r-g1-r" type="text" maxlength="40" autocomplete="off" data-counter="r-g1-r-c" value="Ascendant 1"><div class="fieldFoot"><span class="fieldCounter" id="r-g1-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-act-rank.png</span><span class="uploadRowMeta">2.1 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-act-rank.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-career.png</span><span class="uploadRowMeta">1.6 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-career.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div><div class="agGame flagged" id="r-g2" role="group" aria-labelledby="r-g2-l">
+                <div class="agGameHead"><span class="label" id="r-g2-l">Game 2</span><button class="agGameRemove" type="button" aria-label="Remove Counter-Strike 2">Remove</button></div><p class="agFlag"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>Change this section to send your application again.</span></p>
+                <div class="field"><label class="fieldLabel" for="r-g2-s">Game</label><select class="fieldControl" id="r-g2-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option disabled>Valorant</option><option selected>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="r-g2-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="r-g2-r" type="text" maxlength="40" autocomplete="off" data-counter="r-g2-r-c" value="Premier 18,200"><div class="fieldFoot"><span class="fieldCounter" id="r-g2-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">cs2-premier.png</span><span class="uploadRowMeta">1.8 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove cs2-premier.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button" data-go="rejected-changed"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">1 / 5</span></div>
+                </div>
+              </div>
+              <div class="agMore"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add another game</button><span class="uploadCount">2 / 5 games</span></div>
+            </fieldset>
+            <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere <span class="fieldOptional" style="font:400 15px var(--font-body)">(optional)</span></h2></div>
+              <div class="field"><label class="fieldLabel" for="r-l">Your profile on another coaching site</label><span class="fieldHint" id="r-l-h">Metafy, Fiverr or similar, if you coach there. It helps our team, and isn't shown to gamers.</span><input class="fieldControl" id="r-l" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://" value="https://metafy.gg/@snapking"></div>
+            </div>
+            <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div>
+              <div class="field"><label class="fieldLabel" for="r-w">What made you start coaching?</label><span class="fieldHint">A few lines are enough. Only our team reads this.</span><textarea class="fieldControl" id="r-w" maxlength="1000" data-counter="r-w-c">I've played Valorant since the beta and CS for longer. I started helping two friends on my uni team with their aim and comms, and both climbed from Gold to Diamond last season. I enjoyed that more than my own games, so I'd like to do it properly.</textarea><div class="fieldFoot"><span class="fieldCounter" id="r-w-c"></span></div></div>
+            </div>
+            <div class="apSubmit"><div class="apSubmitRow"><button class="button primary" type="button" aria-disabled="true" aria-describedby="r-sd">Submit application</button><p id="r-sd">Change the highlighted section to send it again.</p></div></div>
+          </form>
+      </div>
+  </section>
+
+  <section data-state="rejected-changed" data-label="Changes needed, section changed · Thu 22 Oct, 12:20" data-shell="f-changes">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="apTitleRow"><span class="statusLabel action">Changes needed</span><h1>Your coach application</h1></div><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Saved · 12:20</p></header>
+        <div class="notice warning" role="status"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><p class="noticeTitle">Your proof for Counter-Strike 2 doesn't show Premier 18,200.</p><p class="noticeText">Add a screenshot that shows your rating and your in-game name, or change the rank to match your proof. Everything else is kept as you sent it.</p></div></div>
+        <div class="apNote"><span class="label">Note from the Harbourly team</span><blockquote>Your screenshot shows your Premier rating from last season, 16,940. Add one from this season.</blockquote><span class="apNoteSent">Sent Thu 22 Oct, 11:30 SGT</span></div>
+        <form class="card accent apCard" novalidate onsubmit="return false">
+            <fieldset class="apPart"><div class="apPartHead"><h2>Your games</h2><p>Add each game you want to coach. Our team checks each rank against your screenshots.</p></div>
+              <div class="agGame" id="rc-g1" role="group" aria-labelledby="rc-g1-l">
+                <div class="agGameHead"><span class="label" id="rc-g1-l">Game 1</span><button class="agGameRemove" type="button" aria-label="Remove Valorant">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="rc-g1-s">Game</label><select class="fieldControl" id="rc-g1-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option selected>Valorant</option><option disabled>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="rc-g1-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="rc-g1-r" type="text" maxlength="40" autocomplete="off" data-counter="rc-g1-r-c" value="Ascendant 1"><div class="fieldFoot"><span class="fieldCounter" id="rc-g1-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-act-rank.png</span><span class="uploadRowMeta">2.1 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-act-rank.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-career.png</span><span class="uploadRowMeta">1.6 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-career.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div><div class="agGame flagged" id="rc-g2" role="group" aria-labelledby="rc-g2-l">
+                <div class="agGameHead"><span class="label" id="rc-g2-l">Game 2</span><button class="agGameRemove" type="button" aria-label="Remove Counter-Strike 2">Remove</button></div><p class="agFlag changed"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Changed. You can send your application again.</span></p>
+                <div class="field"><label class="fieldLabel" for="rc-g2-s">Game</label><select class="fieldControl" id="rc-g2-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option disabled>Valorant</option><option selected>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="rc-g2-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="rc-g2-r" type="text" maxlength="40" autocomplete="off" data-counter="rc-g2-r-c" value="Premier 18,200"><div class="fieldFoot"><span class="fieldCounter" id="rc-g2-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">cs2-premier.png</span><span class="uploadRowMeta">1.8 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove cs2-premier.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">cs2-premier-this-season.png</span><span class="uploadRowMeta">1.9 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove cs2-premier-this-season.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div>
+              <div class="agMore"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add another game</button><span class="uploadCount">2 / 5 games</span></div>
+            </fieldset>
+            <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere <span class="fieldOptional" style="font:400 15px var(--font-body)">(optional)</span></h2></div>
+              <div class="field"><label class="fieldLabel" for="rc-l">Your profile on another coaching site</label><span class="fieldHint" id="rc-l-h">Metafy, Fiverr or similar, if you coach there. It helps our team, and isn't shown to gamers.</span><input class="fieldControl" id="rc-l" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://" value="https://metafy.gg/@snapking"></div>
+            </div>
+            <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div>
+              <div class="field"><label class="fieldLabel" for="rc-w">What made you start coaching?</label><span class="fieldHint">A few lines are enough. Only our team reads this.</span><textarea class="fieldControl" id="rc-w" maxlength="1000" data-counter="rc-w-c">I've played Valorant since the beta and CS for longer. I started helping two friends on my uni team with their aim and comms, and both climbed from Gold to Diamond last season. I enjoyed that more than my own games, so I'd like to do it properly.</textarea><div class="fieldFoot"><span class="fieldCounter" id="rc-w-c"></span></div></div>
+            </div>
+            <div class="apSubmit"><div class="apSubmitRow"><button class="button primary" type="button" data-confirm-open>Submit application</button><p>Our team reviews it and emails you the outcome.</p></div><div class="confirmStep" role="group" aria-labelledby="rc-cf" hidden><p class="confirmStepTitle" id="rc-cf">Send your application?</p><p class="confirmStepText">Our team checks each rank against your screenshots and emails you the outcome. You can't change your application while it's being reviewed.</p><div class="confirmStepActions"><button class="button primary" type="button" data-submit>Submit application</button><button class="button secondary" type="button" data-confirm-close>Keep editing</button></div></div></div>
+          </form>
+      </div>
+  </section>
+
+  <section data-state="rejected-wait" data-label="Third rejection, 14-day wait · Thu 29 Oct, 12:00" data-shell="f-wait">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="apTitleRow"><span class="statusLabel ended">Not approved</span><h1>Your coach application</h1></div><p class="apSaveHint">Your changes save as you go.</p></header>
+        <div class="notice warning" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div><p class="noticeTitle">You can reapply from Thu 12 Nov</p><p class="noticeText">This is the third time your application wasn't approved, so there's a 14-day wait before you can send it again. You can make changes in the meantime; they're saved.</p></div></div>
+        <div class="notice" role="status"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><div><p class="noticeTitle">We couldn't read your proof for Counter-Strike 2.</p><p class="noticeText">Add a clearer, full-size screenshot. Cropped screenshots and photos of a screen are often too blurry.</p></div></div>
+        <a class="textLink apJump" href="#w-g2">Go to Counter-Strike 2<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        <form class="card accent apCard" novalidate onsubmit="return false">
+            <fieldset class="apPart"><div class="apPartHead"><h2>Your games</h2><p>Add each game you want to coach. Our team checks each rank against your screenshots.</p></div>
+              <div class="agGame" id="w-g1" role="group" aria-labelledby="w-g1-l">
+                <div class="agGameHead"><span class="label" id="w-g1-l">Game 1</span><button class="agGameRemove" type="button" aria-label="Remove Valorant">Remove</button></div>
+                <div class="field"><label class="fieldLabel" for="w-g1-s">Game</label><select class="fieldControl" id="w-g1-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option selected>Valorant</option><option disabled>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="w-g1-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="w-g1-r" type="text" maxlength="40" autocomplete="off" data-counter="w-g1-r-c" value="Ascendant 1"><div class="fieldFoot"><span class="fieldCounter" id="w-g1-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-act-rank.png</span><span class="uploadRowMeta">2.1 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-act-rank.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">valorant-career.png</span><span class="uploadRowMeta">1.6 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove valorant-career.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div><div class="agGame flagged" id="w-g2" role="group" aria-labelledby="w-g2-l">
+                <div class="agGameHead"><span class="label" id="w-g2-l">Game 2</span><button class="agGameRemove" type="button" aria-label="Remove Counter-Strike 2">Remove</button></div><p class="agFlag"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>Change this section to send your application again.</span></p>
+                <div class="field"><label class="fieldLabel" for="w-g2-s">Game</label><select class="fieldControl" id="w-g2-s"><option value="">Choose a game</option><option>Mobile Legends</option><option>Call of Duty: Mobile</option><option disabled>Valorant</option><option selected>Counter-Strike 2</option><option>Riftbound</option></select></div>
+                <div class="field"><label class="fieldLabel" for="w-g2-r">Rank or top achievement</label><span class="fieldHint">As the game shows it, e.g. Ascendant 1, Premier 18,200 or Regional Qualifier · Top 8.</span><input class="fieldControl agRank" id="w-g2-r" type="text" maxlength="40" autocomplete="off" data-counter="w-g2-r-c" value="Premier 18,200"><div class="fieldFoot"><span class="fieldCounter" id="w-g2-r-c"></span></div></div>
+                <div class="field imageUpload"><span class="fieldLabel">Proof of your rank</span><span class="fieldHint agUploadHint">Screenshots that show this rank and your in-game name. Only our team sees them. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+                  <ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">cs2-premier.png</span><span class="uploadRowMeta">1.8 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove cs2-premier.png">Remove</button></span></li><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">cs2-premier-this-season.png</span><span class="uploadRowMeta">1.9 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove cs2-premier-this-season.png">Remove</button></span></li></ul>
+                  <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">2 / 5</span></div>
+                </div>
+              </div>
+              <div class="agMore"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add another game</button><span class="uploadCount">2 / 5 games</span></div>
+            </fieldset>
+            <div class="apPart"><div class="apPartHead"><h2>Coaching elsewhere <span class="fieldOptional" style="font:400 15px var(--font-body)">(optional)</span></h2></div>
+              <div class="field"><label class="fieldLabel" for="w-l">Your profile on another coaching site</label><span class="fieldHint" id="w-l-h">Metafy, Fiverr or similar, if you coach there. It helps our team, and isn't shown to gamers.</span><input class="fieldControl" id="w-l" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://" value="https://metafy.gg/@snapking"></div>
+            </div>
+            <div class="apPart"><div class="apPartHead"><h2>Why you coach</h2></div>
+              <div class="field"><label class="fieldLabel" for="w-w">What made you start coaching?</label><span class="fieldHint">A few lines are enough. Only our team reads this.</span><textarea class="fieldControl" id="w-w" maxlength="1000" data-counter="w-w-c">I've played Valorant since the beta and CS for longer. I started helping two friends on my uni team with their aim and comms, and both climbed from Gold to Diamond last season. I enjoyed that more than my own games, so I'd like to do it properly.</textarea><div class="fieldFoot"><span class="fieldCounter" id="w-w-c"></span></div></div>
+            </div>
+            <div class="apSubmit"><div class="apSubmitRow"><button class="button primary" type="button" aria-disabled="true" aria-describedby="w-sd">Submit application</button><p id="w-sd">You can send it again from <span class="mono">Thu 12 Nov</span>.</p></div></div>
+          </form>
+      </div>
+  </section>
+
+  <section data-state="not-eligible" data-label="Not eligible · Thu 22 Oct, 12:00" data-shell="f-closed">
+      <div class="ap">
+        <div class="resultPanel" role="status"><span class="statusLabel ended">Not eligible</span><h1>Your application wasn't approved</h1><p class="resultPanelText">You can't apply to coach again. Your account and your bookings as a gamer aren't affected.</p><p class="resultPanelNote">If you think this is a mistake, contact <a href="mailto:support@harbourly.gg">support@harbourly.gg</a>.</p><div class="resultPanelActions"><a class="button secondary" href="#" data-link="09#busy">Back to dashboard</a></div></div>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* Mockup behaviour for this page: data-go moves to another state; Submit application opens the confirm step in place
+   and Keep editing closes it; confirming submits (a short wait, then "Your application is in"). Changing anything in
+   the flagged game box of a rejected application enables Submit (the "section changed" state). */
+(function () {
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-go]');
+    if (go && !go.disabled && go.getAttribute('aria-disabled') !== 'true') { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); return; }
+    var open = e.target.closest('[data-confirm-open]'), close = e.target.closest('[data-confirm-close]'), sub = e.target.closest('[data-submit]');
+    if (open || close) {
+      var box = (open || close).closest('.apSubmit');
+      box.querySelector('.apSubmitRow').hidden = !!open; box.querySelector('.confirmStep').hidden = !open;
+      (open ? box.querySelector('[data-submit]') : box.querySelector('[data-confirm-open]')).focus();
+    }
+    if (sub) {
+      window.mk.set('submitting'); window.scrollTo(0, 0);
+      setTimeout(function () { if (window.mk.current.state === 'submitting') window.mk.set('submitted'); }, 1400);
+    }
+  });
+  document.addEventListener('input', function (e) {
+    if (e.target.closest('[data-state="rejected"] .agGame.flagged')) window.mk.set('rejected-changed');
+  });
+  // In the states that open on the confirm step, Keep editing reveals the Submit button again.
+  document.addEventListener('mk:change', function () {
+    document.querySelectorAll('[data-state="confirm"] .apSubmit').forEach(function (b) { b.querySelector('.apSubmitRow').hidden = true; b.querySelector('.confirmStep').hidden = false; });
+  });
+})();
+</script>
+</body>
+</html>

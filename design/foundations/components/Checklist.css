@@ -1,0 +1,27 @@
+/* Checklist → Checklist.module.css. The coach dashboard's "Before you go live": one row per condition, each saying
+   where it stands (done, waiting on someone else, needs you, to do), one line of detail and its action.
+   The mark carries the state in shape as well as colour: a tick, a dashed clock, an amber alert, or the step number. */
+.checklist { display: grid; margin: 0; padding: 0; list-style: none; }
+.checklistRow { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: var(--space-4); padding: var(--space-5) 0; border-top: 1px solid var(--line); min-width: 0; }
+.checklistRow:first-child { border-top: 0; padding-top: 0; }
+.checklistRow:last-child { padding-bottom: 0; }
+.checklistMark { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line-strong); border-radius: var(--radius-round); font: 500 13px/1 var(--font-mono); color: var(--ink-soft); }
+.checklistMark svg { width: 18px; height: 18px; }
+.checklistRow.done .checklistMark { border-color: var(--green-line); background: var(--green-tint); color: var(--green); }
+.checklistRow.waiting .checklistMark { border-style: dashed; color: var(--muted); }
+.checklistRow.action .checklistMark { border-color: color-mix(in srgb, var(--amber) 55%, transparent); color: var(--amber); }
+.checklistBody { display: grid; gap: var(--space-2); min-width: 0; padding-top: 6px; }
+.checklistHead { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); }
+.checklistTitle { font: 600 16px/1.35 var(--font-body); color: var(--ink); }
+.checklistText { max-width: 62ch; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+.checklistText .mono { font-size: 13.5px; color: var(--ink-soft); }
+.checklistText b { font-weight: 600; color: var(--ink-sub); }
+.checklistRow.done .checklistText { font-size: 14px; }
+.checklistActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); margin-top: var(--space-2); }
+.checklistActions .textLink { font-size: 14px; }
+@container app (max-width: 520px) {
+  .checklistRow { grid-template-columns: 32px minmax(0, 1fr); gap: var(--space-3); }
+  .checklistMark { width: 32px; height: 32px; }
+  .checklistBody { padding-top: 4px; }
+  .checklistActions .button { flex: 1 1 100%; }
+}
