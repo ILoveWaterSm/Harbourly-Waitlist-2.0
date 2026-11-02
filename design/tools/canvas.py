@@ -95,11 +95,19 @@ PHASES = [
         ("15", "15 Forgot and reset password", "15-forgot-and-reset-password.html", "https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4"),
         ("16", "16 Accept updated terms", "16-accept-updated-terms.html", "https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG"),
     ]),
+    ("phase5", "Phase 5 · Becoming a coach", [
+        ("17", "17 Coach application, step 1", "17-coach-application-step-1.html", "https://claude.ai/artifact/UPdfZV5NDEKHgQk6A9m1vL"),
+        ("18", "18 Coach application, step 2", "18-coach-application-step-2.html", "https://claude.ai/artifact/UuoARHjHiK321bFmrrT3Ww"),
+        ("19", "19 Coach dashboard", "19-coach-dashboard.html", "https://claude.ai/artifact/PZWfUhEGXGatrN3DdtNneV"),
+        ("20", "20 Payout setup and settings", "20-payout-setup.html", "https://claude.ai/artifact/VVKZYhCa86RgU13zH5EKU8"),
+        ("21", "21 Profile setup", "21-profile-setup.html", "https://claude.ai/artifact/7KKq11638mXPeYQNn17Cxb"),
+    ]),
 ]
 CHECKS = {"phase1": ("check2", "Checkpoint 2: the booking flow end to end, pages 01 to 05."),
           "phase2": ("check3", "Checkpoint 3: session lifecycle, pages 06 to 08."),
           "phase3": ("check4", "Checkpoint 4: gamer side complete, pages 09 and 10."),
-          "phase4": ("check5", "Checkpoint 5: getting in, pages 11 to 16.")}
+          "phase4": ("check5", "Checkpoint 5: getting in, pages 11 to 16."),
+          "phase5": ("check6", "Checkpoint 6: coach onboarding, pages 17 to 21.")}
 for nid, ptitle, pages in PHASES:
     top = end + 600
     N[nid] = {**N.get(nid, {}), "kind": "title1", "maxW": 6130, "text": ptitle, "w": 240, "x": 0, "y": top}

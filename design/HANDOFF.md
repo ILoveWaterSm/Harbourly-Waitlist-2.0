@@ -1,6 +1,6 @@
 # Handoff prompt
 
-Paste everything below the line into a new chat. Last updated 30 Oct 2026 (start of Phase 5). Phases 0 to 4 are built and published, and checkpoint 5 is closed. The Phase 4 brief that came before this one is in git history (commit `70497f6` and earlier). What was decided and built in each phase is in DECISIONS.md and BUILD-ORDER.md.
+Paste everything below the line into a new chat. Last updated 2 Nov 2026 (end of Phase 5). Phases 0 to 5 are built and published; checkpoint 6 (coach onboarding) is waiting for review. Checkpoint 5 is closed. The Phase 4 brief that came before this one is in git history (commit `70497f6` and earlier). What was decided and built in each phase is in DECISIONS.md and BUILD-ORDER.md.
 
 ---
 
@@ -17,6 +17,7 @@ We are designing the real webapp pages one at a time. This is design only, not p
 | 2 The session and after | 06 Session detail, 07 Report a problem, 08 Live session | Closed at checkpoint 3, 21 Oct 2026 |
 | 3 The gamer's home | 09 Gamer dashboard, 10 My sessions | Built 23 Oct 2026; 09 redesigned 28 Oct 2026 |
 | 4 Sign up, log in, account access | 11 to 16 | Closed at checkpoint 5, 30 Oct 2026 |
+| 5 Becoming a coach | 17 to 21 | Built and published 2 Nov 2026; waiting for checkpoint 6 |
 
 On 23 Oct 2026 the policies in the 11 Oct marketing copy were reconciled (DECISIONS.md, "Policy update, 23 Oct 2026"):
 - There is no Verified badge, only New Coach.
@@ -33,7 +34,9 @@ On 29 and 30 Oct 2026, Sign up, Log in and Forgot password moved to a split layo
 
 Nothing is open from earlier phases.
 
-**Your task now: build Phase 5, "Becoming a coach".** The pages are:
+**Phase 5 status (2 Nov 2026):** built, tested and published; frames on the canvas under "Phase 5 · Becoming a coach". Every decision is in DECISIONS.md, "Phase 5 decisions". The biggest owner decision: **there is no coach dashboard before approval**: draft, under review, changes needed, the 14-day wait and not eligible live on the application page (18), reached from "Your coach application" in the Gamer block. The next step is the owner's checkpoint 6 review; Phase 6 starts only after it. The brief below is the Phase 5 brief as it was given, kept for reference.
+
+**The Phase 5 task (done):** build Phase 5, "Becoming a coach". The pages are:
 - **17** Coach application, step 1
 - **18** Coach application, step 2
 - **19** Coach dashboard
@@ -318,11 +321,16 @@ Every page below is published as an interactive page, and its source file is in 
 | 14 Log in | https://claude.ai/artifact/KFSLVdswwSLN2HGsMyn8ed | `design/pages/14-log-in.html` |
 | 15 Forgot and reset password | https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4 | `design/pages/15-forgot-and-reset-password.html` |
 | 16 Accept updated terms | https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG | `design/pages/16-accept-updated-terms.html` |
+| 17 Coach application, step 1 | https://claude.ai/artifact/UPdfZV5NDEKHgQk6A9m1vL | `design/pages/17-coach-application-step-1.html` |
+| 18 Coach application, step 2 | https://claude.ai/artifact/UuoARHjHiK321bFmrrT3Ww | `design/pages/18-coach-application-step-2.html` |
+| 19 Coach dashboard | https://claude.ai/artifact/PZWfUhEGXGatrN3DdtNneV | `design/pages/19-coach-dashboard.html` |
+| 20 Payout setup and settings | https://claude.ai/artifact/VVKZYhCa86RgU13zH5EKU8 | `design/pages/20-payout-setup.html` |
+| 21 Profile setup | https://claude.ai/artifact/7KKq11638mXPeYQNn17Cxb | `design/pages/21-profile-setup.html` |
 | Coach card v2 (exploration) | https://claude.ai/artifact/WsAyxiSS39SwGyE3QYp3Xn | `design/explorations/coach-card-v2.html` |
 | Sign up split layout (exploration) | https://claude.ai/artifact/QfL2PD3dCfK7wa6NpjD8qa | `design/explorations/auth-split.html` |
 | Panel message (exploration) | https://claude.ai/artifact/JiEipPbboBorAiwpNxPW1W | `design/explorations/auth-panel-copy.html` |
 | User flow | https://claude.ai/artifact/8QiSx8pFYigdVWvUsqqXBm | `design/USER-FLOW.md` (published copy `design/user-flow.html`) |
-| Canvas, "Harbourly webapp" | https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ | Every library section and every Phase 1 to 4 state, desktop and phone |
+| Canvas, "Harbourly webapp" | https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ | Every library section and every Phase 1 to 5 state, desktop and phone |
 
 ### State ids you can link to
 
@@ -336,7 +344,9 @@ Link with `data-link="NN#id"`.
 
 **06, coach view (Kairo):** coach-upcoming, coach-cancel, coach-request-received, coach-pending, coach-completed, coach-dispute.
 
-**07:** gamer-after, mirae-after (Phase 3), gamer-noshow, gamer-payment, coach-after, coach-payment, validation, upload-error, submitted, respond, response-sent, gamer-respond, gamer-response-sent.
+**06, the coach dashboard's other bookings (Phase 5, Mon 5 Oct 14:12 PHT):** coach-kairo-tue (snapking, Tue 6 Oct), coach-milo-request (milo.exe asked to move Fri 9 Oct), coach-ozzie-dispute (ozzie reported "Session ended early"). Their onward links are inert.
+
+**07:** gamer-after, mirae-after (Phase 3), gamer-noshow, gamer-payment, coach-after, coach-payment, validation, upload-error, submitted, respond, response-sent, coach-ozzie-respond (Phase 5), gamer-respond, gamer-response-sent.
 
 **08:** waiting, no-show, coach-waiting, live, camera, share, banner-10, banner-5, banner-1, end-confirm, end-sent, end-received, reconnecting, other-dropped, blocked, ended, coach-ended.
 
@@ -348,13 +358,23 @@ Link with `data-link="NN#id"`.
 
 **12:** sent, resent, expired, verified, verified-other.
 
-**13:** form, google, missing, phone, wrong-code, filled, username-taken, coach-unavailable, booking, submitting, under-18, not-available. The role choice is a live radio in every form state. Finish setting up in `filled` and `booking` is a `data-link`, today always to `09#new` (or `03#returning` for booking).
+**13:** form, google, missing, phone, wrong-code, filled, username-taken, coach-unavailable, booking, submitting, under-18, not-available. The role choice is a live radio in every form state. Finish setting up in `filled` goes to `17#intro` when the coach option is chosen (Singapore is a coach country), otherwise `09#new`; `booking` goes to `03#returning`.
 
 **14:** form, booking, wrong, too-many, loading.
 
 **15:** request, sent, new-password, expired, done.
 
 **16:** terms.
+
+**17:** intro, not-available.
+
+**18:** empty, draft, validation, upload-error, confirm, submitting, submitted, under-review, rejected, rejected-changed, rejected-wait, not-eligible.
+
+**19:** approved, payout-checking, in-progress, payout-failed, live-new (snapking just live), live (Kairo), loading, error. There are no pre-approval states: 18 holds them.
+
+**20:** start, confirming, unfinished, checking, verified, failed, live (Kairo).
+
+**21:** about, about-checking, about-refused, about-errors, games, games-error, resumed, showcase, review, complete.
 
 ### The files
 
@@ -479,9 +499,9 @@ Don't style it inside the page. Page-only layout goes in the page's own `<style>
 **Layout:**
 - Each state is a pair: desktop, then phone 80 px to its right. Pairs are 200 px apart, three pairs to a row, and rows are 200 px apart.
 - A `title1` note names the phase and each page. A green sticky to the left of each page links its interactive version and source file.
-- The phase titles are at y = 22,971 (Phase 1), 57,058 (Phase 2), 105,255 (Phase 3) and 115,285 (Phase 4). The canvas ends at y = 136,526 (30 Oct 2026).
-- Phase 5 goes below Phase 4. After publishing its pages, add these to canvas.py: `("phase5", "Phase 5 · Becoming a coach", [...])` to `PHASES` and `"phase5": ("check6", "Checkpoint 6: coach onboarding, pages 17 to 21.")` to `CHECKS`, following Phase 4's entries.
-- If you add a library section, add its id to the last library row (it ends with `access`, the "Sign up and log in" section).
+- The phase titles are at y = 28,552 (Phase 1), 62,639 (Phase 2), 113,694 (Phase 3), 123,724 (Phase 4) and 145,565 (Phase 5). The canvas ends at y = 180,696 (2 Nov 2026).
+- A new phase goes below the last one: add its entry to `PHASES` and its checkpoint to `CHECKS` in canvas.py, following Phase 5's.
+- Library rows hold three sections each (canvas.py `PX` has three slots). The Phase 5 "Coach onboarding" section (`coach`) has a row of its own; add the next section beside it.
 
 **To place frames:**
 1. Copy the PNGs into a temporary folder **inside the repo** (e.g. `.frames-upload/`), because the uploader takes files from the working directory only.
@@ -564,7 +584,13 @@ Write in sentence case and British English, short and direct, in a plain voice. 
 
 ## Open items
 
-**For Phase 5:**
+**From Phase 5 (2 Nov 2026):**
+- **Checkpoint 6 review** of pages 17 to 21, the new library section, 06's three coach-view copies and 07's `coach-ozzie-respond`.
+- **The component library at 320 px:** two specimens that were already there before Phase 5 overflow at a 320 px window (the logged-out top bar specimen in "App shell" and the coach card's "Next free" line in "Cards and lists"). The pages themselves don't; only the library's specimen boxes. Not fixed, since they're outside Phase 5.
+- **Mockup times in the coach-view copies:** 06 `coach-upcoming` still shows its own moment (Mon 5 Oct 18:00, "Opens in 49h 50m"); from 19 live (14:12) the same booking would read 53h 38m. Left as is, like 04's hold countdown.
+- **Not drawn, by decision:** suspended and banned coach states; the coach-journey emails; snapking's "Preview my public profile" (Phase 6 preview mode).
+
+**Planned for Phase 5 (all handled):**
 - **13's coach choice:** in the mockup, Finish setting up goes to 09 whichever role is chosen. Now that 17 exists, point it at 17 when "coach" is chosen with a coach country (Singapore, Malaysia, Philippines). Gamers, and coaches in other countries (13 `coach-unavailable`), keep going to `09#new`. A booking sign-up keeps returning to `03#returning`.
 - **Languages field:** design it in profile setup (21). Coach profile settings (22) reuses it.
 - **Rank proof check (kept, 23 Oct 2026; may be dropped later):** ranks stay checked against proof screenshots at application and on every rank change, as DECISIONS.md "Ranks" says. "Credentials: optional" on the landing page means the portfolio only. If it's dropped later, this changes in the webapp:
@@ -607,4 +633,4 @@ Write in sentence case and British English, short and direct, in a plain voice. 
 
 ## Next step
 
-Read everything above, then send me your Phase 5 message: your understanding of 17 to 21, the link map, the new labels and copy, and every gap with your recommendation. Build only after I answer.
+Checkpoint 6: the owner reviews Phase 5. Make the refinements agreed there (HTML first, then re-render and replace the frames), record them in DECISIONS.md, and only then brief Phase 6 ("Running a coach profile": 22 Coach profile settings, 23 Coach sessions) the way Phase 5 was briefed.
