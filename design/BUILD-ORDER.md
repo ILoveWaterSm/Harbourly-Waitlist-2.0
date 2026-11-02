@@ -177,36 +177,36 @@ Also in Phase 4: new shared parts on the component library ("Sign up and log in"
 
 ## Phase 5: Becoming a coach
 
+Rules in DECISIONS.md, "Phase 5 decisions" (2 Nov 2026). snapking applies (Singapore, Stripe, S$); Kairo is the live coach on 19 and 20 (Philippines, Xendit, ₱). 17, 18 and 21 use the focused layout (top nav, no sidebar, 680px column); 19 and 20 the app shell with the Coach block. **No coach dashboard before approval:** until then the Gamer block's "Your coach application" link (with its status) opens 18.
+
 ### 17. Coach application, step 1 · S
 `/coach/apply` *proposed*.
-- What coaching on Harbourly involves; what you'll need (government ID, bank account in your country, proof of rank).
+- What coaching on Harbourly involves; what you'll need (government ID, bank account in your country, proof of rank), each with why; money; the coach's country. Start your application creates the coach record.
+- States: `intro`, `not-available` (a country outside Singapore, Malaysia and the Philippines: nothing created).
 
 ### 18. Coach application, step 2 · L
-`/coach/apply/details` *proposed*.
-- Games and rank per game, proof images (up to 5), marketplace profile link (optional), what made you start coaching.
-- States: empty, partly filled (draft saved), validation, upload error, submit confirm, submitted.
-- Rejected: reason at the top, flagged section highlighted, resubmit disabled until it changes; third rejection (14-day wait with date); not eligible.
+`/coach/apply/details` *proposed*. Also the application's status page until approval.
+- Your games (1 to 5: game, rank or top achievement, up to 5 proof images each), coaching elsewhere (optional link), what made you start coaching (up to 1,000 characters). Saves as you go.
+- States: `empty`, `draft` (draft saved), `validation`, `upload-error`, `confirm` (submit confirm in place), `submitting`, `submitted`, `under-review` (read-only, dashed slot), `rejected` (Changes needed: reason, flagged section, resubmit disabled), `rejected-changed` (resubmit enabled), `rejected-wait` (third rejection: reapply from Thu 12 Nov), `not-eligible`.
 
 ### 19. Coach dashboard · L
-`/coach/dashboard` *proposed*.
-- **Draft:** continue your application.
-- **Submitted:** under review.
-- **Rejected:** reason, edit and resubmit; or wait date.
-- **Not eligible.**
-- **Approved:** what's left before you go live (payout, phone, profile), each done or to do; payout couldn't be verified.
-- **Live:** bookable confirmed, next upcoming session, reschedule request waiting on you, earnings (released and held), rating and recent reviews, game listings with manage link (listing under review), open disputes involving you.
-- Every card's empty state, loading, error.
+`/coach/dashboard` *proposed*. From approval on.
+- **Before you go live** (approval to live): the four rows (application, payouts, phone, profile), each done, waiting or to do, one next step. States: `approved`, `payout-checking`, `in-progress`, `payout-failed`.
+- **Live:** `live-new` (just live, New Coach line, every card's empty state) and `live` (Kairo: To do with a report to answer and a request to move a session, Coming up with Join session, Money held and released per session, Your games with a rank update under review, Reviews).
+- `loading`, `error`.
 
 ### 20. Payout setup and settings · M
 `/coach/payout` *proposed*.
-- Before handing off to Stripe or Xendit; back from it.
-- States: not started, in progress, verified, couldn't verify (retry or contact support), live payout status with link to the provider dashboard, country locked.
+- What Stripe or Xendit will ask and why, the country lock, Continue to Stripe; back from it.
+- States: `start`, `confirming`, `unfinished` (left part-way), `checking` (provider checking), `verified`, `failed` (couldn't verify: Try again, Contact support), `live` (Kairo's payout settings, Open Xendit dashboard).
 
 ### 21. Profile setup · L
 `/coach/setup` *proposed*.
-- Bio (500 characters), avatar or default, banner, languages you coach in, weekly availability in your own time zone, price per game in your currency (not below the floor, about S$10: S$10, RM 35, ₱430), up to 3 credential lines per game, showcase (optional: up to 5 images, caption up to 80 characters each).
-- Photo, banner and showcase uploads: checking, passed (live), refused with a reason (automatic check; see DECISIONS.md "Automatic image check").
-- States: each step, saved and resumed, validation, complete (moves to live once payout and phone are done).
+- Five steps: about you (photo, banner, bio 500, languages), games and prices (price per game not below the floor, payout line, up to 3 credential lines), availability (WeekHours, in the coach's zone), showcase (optional, up to 5 images with captions up to 80), review.
+- Photo, banner and showcase: checking, live, refused with a reason (automatic check), never blocking the form.
+- States: `about`, `about-checking`, `about-refused`, `about-errors`, `games`, `games-error`, `resumed` (availability, "Welcome back"), `showcase`, `review`, `complete` (You're live).
+
+Also in Phase 5: new shared parts in the library, section "Coach onboarding" (Checklist, WeekHours, SaveStatus, ImageUpload rows, checkbox grid, the sidebar's status link); 06 gains `coach-kairo-tue`, `coach-milo-request`, `coach-ozzie-dispute` and 07 `coach-ozzie-respond` for 19 live; the prototype links "Become a coach" and 13's coach choice to 17, and Kairo's coach shells to 19.
 
 **Checkpoint 6:** coach onboarding.
 

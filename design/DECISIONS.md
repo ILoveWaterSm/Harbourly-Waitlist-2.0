@@ -147,9 +147,9 @@ Status and outcome
 - The reapply screen shows the reason at the top and highlights the affected section.
 - Resubmit only enables once something in the flagged section has changed.
 - First and second rejection: resubmit immediately.
-- Third rejection: 14-day wait before the next attempt. The screen shows the date ("You can reapply from 19 Oct") and why.
+- Third rejection: 14-day wait before the next attempt. The screen shows the date ("You can reapply from Thu 12 Nov", the Phase 5 mockup date) and why. Every rejection after the third also waits 14 days (2 Nov 2026).
 - "Not eligible" rejection (fraud, fake proof): plain message, no reapply option.
-- The coach dashboard gains a `rejected` state alongside draft, submitted, approved and live.
+- ~~The coach dashboard gains a `rejected` state alongside draft, submitted, approved and live.~~ Changed 2 Nov 2026: there is no coach dashboard before approval. Draft, under review, changes needed, the 14-day wait and not eligible are shown on the application page (18), reached from "Your coach application" in the sidebar (see "Phase 5 decisions").
 
 ## Currency display (option B)
 
@@ -644,3 +644,77 @@ Fills the gap found in Phase 3 (USER-FLOW diagram 7: the other person can send o
 - **07 Report a problem:** `gamer-respond` (Kairo's report, your response up to 1,000 characters, evidence up to 5 files, Send response) and `gamer-response-sent` (Under review, View session, Back to dashboard).
 - **09 Dashboard:** a new state `reported` on Thu 8 Oct, 09:00: "Kairo reported a problem" first in To do, with the primary Respond to Kairo's report and the time left. The rest follows from the bookings by then: snapking confirmed the Tue 6 Kairo session that evening and Mirae was paid automatically on Tue 6, so both are reviews to leave (with Ghostline's; 3 reviews, so "1 more to do"); Vexa's reschedule request ran out on Wed 7, 10:00 and the Thu 8 Oct 21:00 session keeps its time (Coming up, Join opens 20:50); Vexa's Tue 13 Oct hold ran out unpaid (Recent, Expired); nullpoint's dispute is Under review. Links without a matching state (Mirae's and Kairo's reviews, Vexa's session, nullpoint's session, View all) stay inert, as with the other time-shifted states.
 
+
+## Phase 5 decisions (agreed 2 Nov 2026, before Phase 5)
+
+Pages 17 to 21. Every recommendation in the Phase 5 brief was taken, with these changes from the owner: there is no coach dashboard before approval (G14 revised), every rejection from the third on waits 14 days (G9), and an ordinary rejection is called "Changes needed" (G10).
+
+Who, and when
+- **The applicant is snapking** (Singapore, SGT, Stripe, SGD). He arrives from the sidebar's "Become a coach" after the Phase 3 story, or from 13's coach choice (a what-if branch, like under-18; 17 shows no date). He applies for **Valorant `Ascendant 1`** and **Counter-Strike 2 `Premier 18,200`**, and prices them on 21 at **S$25** and **S$20** (payouts S$25.00 − S$3.00 = S$22.00; S$20.00 − S$2.40 = S$17.60). His Gamer block keeps opening 09, 01 and 10 as before.
+- **19 live and 20 live are Kairo** (Philippines, PHT, Xendit), at **Mon 5 Oct 2026, 14:12 PHT**, the same moment as 09's busy state.
+- **Mockup "now"s (SGT):** starts the application Mon 19 Oct, 21:10; leaves part-way 21:34 ("Draft saved · 21:34"); submits Tue 20 Oct, 20:52; under review Wed 21 Oct, 09:00; decision Thu 22 Oct, 11:30 (approved; the rejected and not-eligible what-ifs use the same time), seen 12:00; payout hand-off Thu 22 Oct, 12:05 to 12:26; couldn't verify (what-if) 14:40; profile steps 1 and 2, 12:30 to 13:05; Stripe verifies 18:02; 19 in progress Fri 23 Oct, 19:00; profile resumed Sat 24 Oct, 10:15; live Sat 24 Oct, 10:48 (19 at 10:50). Third rejection (what-if): rejected Thu 22 Oct, Mon 26 Oct and Thu 29 Oct, 11:30, so "You can reapply from Thu 12 Nov".
+
+Getting in, and where status shows before approval
+- "Become a coach" (Gamer block) opens step 1 (17). Reading 17 creates nothing. **The coach record is created by "Start your application"** on 17 (USER-FLOW diagram 8 updated).
+- **No Coach dashboard and no Coach block before approval** (owner's decision). From the first save until approval, the Gamer block's dashed link becomes **"Your coach application"** with a mono status line: Draft, Under review, Changes needed, Reapply from Thu 12 Nov, Not eligible. It opens the application page (18) in that state. Not eligible keeps the link so the outcome can still be read.
+- **Approved:** the link goes and the Coach block appears with **Coach dashboard**. **Coach sessions** joins it once the coach is live. The "Application approved" email opens 19.
+- A gamer whose country isn't a coach country still sees "Become a coach"; 17 then shows "Coaching isn't available in Indonesia yet. You can still book sessions as a gamer." with no Start button, and nothing is created (17 `not-available`).
+- The logo goes to the gamer dashboard, as diagram 13 has it.
+
+Layouts
+- **17, 18 and 21: focused**, like 04 (top nav, no sidebar; the burger menu has the full sidebar), a centred 680px column. 17 and 18 go back to the gamer dashboard ("← Dashboard"); 21 goes back to the coach dashboard ("← Coach dashboard").
+- **19 and 20: the full app shell**, Coach block active, Coach dashboard highlighted. 19 uses the wide shell like 09; 20 a narrow column.
+
+Application (17, 18)
+- 17 is plain copy, no feature cards: how it works (apply, our team reviews, set up payouts, set up your profile, live as New Coach); what you'll need, each with why (government ID, checked by Stripe or Xendit, never seen or stored by Harbourly; a bank account in your country, where payouts go; screenshots of your rank, which our team checks); money (price from S$10, 12% commission, paid automatically 72 hours after each session); the coach's country; the reliability rule.
+- 18 is one page in three sections: **Your games** (one card per game: game, "Rank or top achievement", proof), **Coaching elsewhere** (optional link), **Why you coach**.
+- Games: 1 to 5, each game once. Rank: one free-text field, 40 characters, counter. **Proof: up to 5 images per game**, inside each game card (private, no automatic check; JPG, PNG or WebP, 10 MB each).
+- Link: optional, `type="url"`; "https://" is added if left out; checked on leaving the field ("Enter a full web address, like https://metafy.gg/@snapking."). Not shown to gamers.
+- "What made you start coaching?": required, up to 1,000 characters, read only by the team.
+- Saves as you go (on leaving each field), with a quiet "Draft saved · 21:34" line. Validation on leaving a field and on submit, never while typing; on submit an error summary at the top ("Fix 2 things before you submit") and focus on the first error.
+- Submit application opens a confirm step in place ("Send your application?"), then "Submitting your application…", then "Your application is in" with Back to dashboard (09). While under review the application is read-only (18 `under-review`, with the dashed "Our team is reviewing your application" slot). No withdraw in the MVP.
+
+Rejections
+- Reason categories: **proof doesn't show the rank entered**; **proof images unclear**; **something else** (the team's note says what). "Rank below our minimum" is dropped: ranks are free text with no ladders, so it can't be applied fairly.
+- Each rejection has one reason and one flagged section (a game card, the link, or "Why you coach"), plus an optional note from the team, shown in a quote box ("Note from the Harbourly team", with its sent time).
+- "Changed" means the flagged section differs from what was sent: text edited, an image added, removed or replaced, or the game removed. Approval is all or nothing: a game that doesn't hold up is a rejection that flags it.
+- Status label **Changes needed** (amber) for an ordinary rejection; **Not approved** (muted) during the 14-day wait; **Not eligible** (muted). Under review is muted.
+- Not eligible: "Your application wasn't approved, and you can't apply again. Your account and your bookings as a gamer aren't affected." plus "If you think this is a mistake, contact support."
+
+Coach dashboard (19)
+- From approval until live: the banner, then one box, **"Before you go live"** (the accent): four rows, Application, Payouts, Phone, Profile, each with a status label, one line and its action (Checklist component). Only the next step is a primary button: **payouts first**, then profile (the identity check can take time). Something waiting on someone else is a dashed row.
+- Phone is always done: "+65 •••• 4567 · verified Thu 24 Sep". The edge case of a removed number isn't drawn.
+- Live: mirrors 09 (wide shell, banner with "Preview my public profile", To do box with the accent on the left, a side column of Coming up, Money, Your games and Reviews; separate column scrolling on desktop). Each booking appears once.
+- **Money, without totals:** "Held until released" (each session, its amount and when it's released) and "Released recently" (the last 3, each with amount and date), then Payout settings. Disputed money stays with its To do item.
+- A new coach sees, under the greeting: the New Coach label and "Shown on your profile until you complete 5 sessions with no upheld problems · 0 of 5". Also on 21's complete screen.
+- States: approved, payout checking, in progress, payout couldn't verify, live (new coach, every card empty), live (Kairo), loading, error. A per-card error isn't drawn (the library's ErrorState covers it).
+- Kairo's live data reuses his reviewers from 02 as his other students: ozzie reported "Session ended early" (Mobile Legends, Sat 3 Oct, 17:00–18:00 PHT; reported Sun 4 Oct, 11:30; respond by Tue 6 Oct, 11:30 PHT); milo.exe asked to move Call of Duty: Mobile, Fri 9 Oct, 20:00–21:00 PHT (asked Mon 5 Oct, 09:00; offered Sat 10 Oct 20:00, Sun 11 Oct 15:00, Tue 13 Oct 20:00; reply by Wed 7 Oct, 09:00); tamtam's Mobile Legends session of Sat 3 Oct, 21:00–22:00 is held until Tue 6 Oct, 22:00 PHT; released recently ricebowl ₱1,628.00 (Fri 2 Oct), nightjar ₱1,848.00 (Wed 30 Sep), milo.exe ₱1,848.00 (Tue 29 Sep). Coming up: snapking Tue 6 Oct and Wed 7 Oct, 20:00 PHT. A rank update is under review: Mobile Legends "Mythical Glory · 92★", with 85★ shown until it's approved (as 02 shows).
+- 06 gains coach-view copies for those bookings: `coach-kairo-tue`, `coach-milo-request`, `coach-ozzie-dispute`; 07 gains `coach-ozzie-respond`. Their onward links stay inert.
+
+Payouts (20)
+- The provider's hosted onboarding isn't drawn; a mockup-only hint stands for coming back.
+- States: not started; confirming (back from the provider); **not finished** (they left part-way, amber); **checking** (the provider is checking, dashed, muted); verified; **couldn't verify**; live payout settings.
+- Before the hand-off it says what the provider asks for and why: legal name, date of birth and address; a photo of a government ID and a selfie ("Harbourly never sees or stores your ID"); a bank account in your name, in your country. Then "Continue to Stripe" (or Xendit), with "You'll set up payouts on Stripe's secure page. You'll come straight back here."
+- **Country lock** shown before the hand-off and in live settings: "You'll coach from Singapore. Your country locks once payouts are set up; to change it after that, contact support."
+- Couldn't verify: "Your payout account couldn't be verified", "Stripe couldn't confirm the details you gave. This can happen when an ID photo is hard to read, or when the name on your bank account doesn't match your ID." Try again (back to the provider) and Contact support. The application stays approved.
+- Live settings: status, provider, account ending, the country lock, how payouts work (72 hours, 12% commission, ₱1,850.00 − ₱222.00 = ₱1,628.00) and "Open Xendit dashboard". No payout history: the provider's dashboard has it, and 19 shows the latest.
+- Contact support opens an email to support@harbourly.gg (there is no support page).
+
+Profile setup (21)
+- Five steps, one per screen, with StepCounter: **About you** (photo, banner, bio, languages), **Games and prices**, **Availability**, **Showcase** (optional), **Review**. Save and continue saves each step; leaving never loses anything; coming back opens the first unfinished step with "Welcome back".
+- **Profile complete** = a bio, at least one language, at least one hour of availability, and a price for **every** approved game. Photo, banner, credentials and showcase are optional.
+- Photo: one photo, also the account photo in the top nav. Bio: 500 characters. Languages: a fixed list (English, Mandarin, Malay, Filipino, Tamil, Indonesian, Thai, Vietnamese, Korean, Japanese, Cantonese), choose 1 to 4.
+- Price per game in the coach's currency, **whole units** (`inputmode="numeric"`), the floor shown up front ("At least S$10 a session."), error "The lowest price is S$10.", and the payout line "You're paid S$22.00 a session (S$25.00 − S$3.00 commission)."
+- Credentials: up to 3 per game, 60 characters each, optional.
+- Availability (WeekHours component): per day, whole-hour ranges chosen with From and To selects (keyboard, no grid cells), several ranges a day, midnight crossing as two ranges, each day's slot count in mono, and the zone line "Times are in Singapore time (SGT)."
+- Image checks run per image and never block the form. Save and continue works while a check runs; the result shows when they come back to that step and on Review. A refused optional image never blocks going live.
+- Finish your profile, then "You're live" with Back to coach dashboard. Review is a summary, not a preview. Nothing asks for a voice intro or portfolio (Phase 6).
+
+Labels (new, used the same everywhere)
+- Start your application · Continue your application · Your coach application · Add another game · Add images · Remove · Submit application (also to resubmit) · Keep editing · Set up payouts · Continue to Stripe / Continue to Xendit · View payout setup · Try again · Contact support · Set up your profile · Continue your profile · Save and continue · Back · Skip for now · Edit · Finish your profile · Add a photo · Add a banner · Replace · Add hours · Add a credential · Back to coach dashboard · Payout settings · Open Stripe dashboard / Open Xendit dashboard. Loading: "Submitting your application…", "Saving…", "Checking…".
+- New error lines: "You can add up to 5 images. Remove one to add another." · "avatar.jpg is 180 × 180 px. Photos need to be at least 256 × 256 px." · "banner.png is 900 px wide. Banners need to be at least 1200 px wide." · caption refused: "This caption can't be shown on Harbourly. Change it and try again."
+
+Not in Phase 5
+- Suspended and banned (after going live; emails cover them; possibly a 19 state at checkpoint 8). The coach-journey emails. Phase 6 items. snapking's "Preview my public profile" (Phase 6 preview mode; inert).
+
+New shared parts for Phase 5: Checklist, WeekHours, SaveStatus, ImageUpload rows (progress, checking, live, refused, caption), a checkbox grid, the Sidebar's status link. All on the component library page, section "Coach onboarding".
