@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Harbourly Webapp Demo</title>
+<meta name="description" content="Clickable demo of the gamer side of the Harbourly webapp: pages 01 to 16 (Phases 1 to 4) linked as one app.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<style>
+/* Start screen for the demo: pick a journey, or open any screen. Layout: one centred column,
+   journeys as a 3-up grid of route cards, then the screens grouped by phase. Dark only, like the app. */
+:root { color-scheme: dark; }
+html, body { background: var(--bg); color: var(--ink); }
+body { margin: 0; font: var(--text-body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding-block: var(--space-6); }
+.top img { height: 30px; width: auto; display: block; }
+.tag { display: inline-flex; align-items: center; gap: var(--space-2); padding: 7px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); font: var(--text-eyebrow); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green-glow); }
+
+.intro { display: grid; gap: var(--space-4); padding-block: var(--space-14) var(--space-10); max-width: 760px; }
+.eyebrow { font: var(--text-eyebrow); letter-spacing: .2em; text-transform: uppercase; color: var(--green); }
+h1 { margin: 0; font: 700 clamp(38px, 6vw, 60px)/1.05 var(--font-display); letter-spacing: -.02em; text-wrap: balance; }
+.lead { margin: 0; font: var(--text-lead); color: var(--muted); max-width: 62ch; }
+@media (max-width: 600px) { .lead { font-size: 18px; } }
+
+h2 { margin: 0 0 var(--space-5); font: var(--text-h3); }
+.section { padding-block: var(--space-8); border-top: 1px solid var(--line); }
+.sectionHead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-2) var(--space-6); }
+.sectionHead p { margin: 0 0 var(--space-5); font: var(--text-body-sm); color: var(--faint); }
+
+.journeys { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+@media (max-width: 960px) { .journeys { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .journeys { grid-template-columns: minmax(0, 1fr); } }
+.journey {
+  display: grid; grid-template-rows: auto auto 1fr auto; gap: var(--space-3); height: 100%; box-sizing: border-box;
+  padding: var(--space-6); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  background: var(--surface); color: inherit; text-decoration: none;
+  transition: border-color .2s, box-shadow .2s, transform .1s;
+}
+.journey:hover { border-color: var(--green-line); box-shadow: var(--shadow-card-sm); }
+.journey:active { transform: scale(.99); }
+.journey:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.who { justify-self: start; display: inline-flex; align-items: center; gap: 6px; font: var(--text-label); letter-spacing: .16em; text-transform: uppercase; color: var(--faint); }
+.who.in { color: var(--green); }
+.journey h3 { margin: 0; font: var(--text-h3); }
+.journey p { margin: 0; font: var(--text-body-sm); color: var(--muted); }
+.route { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; padding-top: var(--space-3); border-top: 1px solid var(--line); font: 400 12.5px/1.4 var(--font-mono); color: var(--ink-sub); font-variant-numeric: tabular-nums; }
+.route i { font-style: normal; color: var(--subtle); }
+
+.phases { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6); }
+@media (max-width: 960px) { .phases { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .phases { grid-template-columns: minmax(0, 1fr); } }
+.phase h3 { margin: 0 0 var(--space-3); font: var(--text-eyebrow); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); line-height: 1.5; }
+.phase ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.screen { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: baseline; gap: var(--space-2); padding: 9px 10px; margin-inline: -10px; border-radius: var(--radius-md); color: var(--ink); text-decoration: none; font: 500 15px/1.35 var(--font-body); }
+.screen:hover { background: var(--fill-subtle); }
+.screen:focus-visible { outline: 2px solid var(--ink); outline-offset: 0; }
+.screen .n { font: 400 12.5px/1 var(--font-mono); color: var(--green); }
+.screen .c { font: 400 12px/1 var(--font-mono); color: var(--subtle); font-variant-numeric: tabular-nums; }
+
+.notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); padding-block: var(--space-8) var(--space-20); border-top: 1px solid var(--line); }
+@media (max-width: 860px) { .notes { grid-template-columns: minmax(0, 1fr); } }
+.note h3 { margin: 0 0 var(--space-2); font: 600 15px/1.3 var(--font-body); }
+.note p { margin: 0; font: var(--text-body-sm); color: var(--muted); max-width: 52ch; }
+.note b { color: var(--ink-sub); font-weight: 600; }
+
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); max-width: calc(100vw - 32px); padding: 12px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-popover); font: 500 14px/1.45 var(--font-body); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly">
+    <span class="tag">Design demo</span>
+  </header>
+
+  <main>
+    <div class="intro">
+      <div class="eyebrow">Gamer side · Phases 1 to 4 · Screens 01 to 16</div>
+      <h1>Harbourly webapp demo</h1>
+      <p class="lead">Use the gamer side of Harbourly as one app: find a coach, book and pay, hold the session, confirm and review, then sign up, log in and get back into your account. Pick a journey to start.</p>
+    </div>
+
+    <section class="section" aria-labelledby="h-journeys">
+      <div class="sectionHead"><h2 id="h-journeys">Start a journey</h2><p>Each one sets who's logged in, then opens the first screen.</p></div>
+      <ul class="journeys">
+        <li><a class="journey" href="01-browse-coaches.html#guest" data-auth="out">
+          <span class="who">Logged out</span>
+          <h3>Book a coach as a visitor</h3>
+          <p>Browse coaches, open Kairo's profile and pick a time. Sign up when asked, verify your email, finish setting up, and you're back on the same time to check out and pay.</p>
+          <span class="route">01 <i>→</i> 02 <i>→</i> 03 <i>→</i> 11 <i>→</i> 12 <i>→</i> 13 <i>→</i> 03 <i>→</i> 04 <i>→</i> 05</span>
+        </a></li>
+        <li><a class="journey" href="11-sign-up.html#form" data-auth="out">
+          <span class="who">Logged out</span>
+          <h3>Create an account</h3>
+          <p>Sign up with email or Google, verify your email, add your details and phone number, and land on a brand-new dashboard.</p>
+          <span class="route">11 <i>→</i> 12 <i>→</i> 13 <i>→</i> 09</span>
+        </a></li>
+        <li><a class="journey" href="09-gamer-dashboard.html#busy" data-auth="in">
+          <span class="who in">snapking</span>
+          <h3>A busy dashboard</h3>
+          <p>snapking has a booking to pay for, a session to confirm, a new-time request from Vexa and sessions coming up. Open any of them.</p>
+          <span class="route">09 <i>→</i> 06 <i>·</i> 04 <i>·</i> 07 <i>·</i> 10</span>
+        </a></li>
+        <li><a class="journey" href="06-session-detail.html#join" data-auth="in">
+          <span class="who in">snapking</span>
+          <h3>Hold a session with Kairo</h3>
+          <p>Join the call, wait for Kairo, go live, turn on your camera, end the session, then confirm it and post a review.</p>
+          <span class="route">06 <i>→</i> 08 <i>→</i> 06 <i>→</i> review</span>
+        </a></li>
+        <li><a class="journey" href="09-gamer-dashboard.html#reported" data-auth="in">
+          <span class="who in">snapking</span>
+          <h3>Respond to a coach's report</h3>
+          <p>Kairo reported a problem with a finished session. Read it, send your side with evidence, and follow the dispute.</p>
+          <span class="route">09 <i>→</i> 07 <i>→</i> 06</span>
+        </a></li>
+        <li><a class="journey" href="14-log-in.html#form" data-auth="out" data-terms>
+          <span class="who">Logged out</span>
+          <h3>Log in after a terms update</h3>
+          <p>Log in, accept the updated Terms of Service, then reach the dashboard. Forgot password and the reset email are one click away.</p>
+          <span class="route">14 <i>→</i> 16 <i>→</i> 09 <i>·</i> 15</span>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="h-screens">
+      <div class="sectionHead"><h2 id="h-screens">Every screen</h2><p>Opens the screen in its first state. The number is how many states it has.</p></div>
+      <div class="phases">
+        <div class="phase"><h3>Phase 1 · Find and book a coach</h3><ul>
+          <li><a class="screen" href="01-browse-coaches.html"><span class="n">01</span>Browse coaches<span class="c" data-count="01">7</span></a></li>
+          <li><a class="screen" href="02-coach-profile.html"><span class="n">02</span>Coach profile<span class="c" data-count="02">6</span></a></li>
+          <li><a class="screen" href="03-pick-a-slot.html"><span class="n">03</span>Pick a slot<span class="c" data-count="03">6</span></a></li>
+          <li><a class="screen" href="04-checkout-summary.html"><span class="n">04</span>Checkout summary<span class="c" data-count="04">6</span></a></li>
+          <li><a class="screen" href="05-payment-return.html"><span class="n">05</span>Payment return<span class="c" data-count="05">4</span></a></li>
+        </ul></div>
+        <div class="phase"><h3>Phase 2 · The session and after</h3><ul>
+          <li><a class="screen" href="06-session-detail.html"><span class="n">06</span>Session detail<span class="c" data-count="06">37</span></a></li>
+          <li><a class="screen" href="07-report-a-problem.html"><span class="n">07</span>Report a problem<span class="c" data-count="07">9</span></a></li>
+          <li><a class="screen" href="08-live-session.html"><span class="n">08</span>Live session<span class="c" data-count="08">15</span></a></li>
+        </ul></div>
+        <div class="phase"><h3>Phase 3 · Gamer home</h3><ul>
+          <li><a class="screen" href="09-gamer-dashboard.html"><span class="n">09</span>Gamer dashboard<span class="c" data-count="09">7</span></a></li>
+          <li><a class="screen" href="10-my-sessions.html"><span class="n">10</span>My sessions<span class="c" data-count="10">4</span></a></li>
+        </ul></div>
+        <div class="phase"><h3>Phase 4 · Sign up, log in, account access</h3><ul>
+          <li><a class="screen" href="11-sign-up.html"><span class="n">11</span>Sign up<span class="c" data-count="11">4</span></a></li>
+          <li><a class="screen" href="12-verify-your-email.html"><span class="n">12</span>Verify your email<span class="c" data-count="12">5</span></a></li>
+          <li><a class="screen" href="13-finish-setting-up.html"><span class="n">13</span>Finish setting up<span class="c" data-count="13">12</span></a></li>
+          <li><a class="screen" href="14-log-in.html"><span class="n">14</span>Log in<span class="c" data-count="14">5</span></a></li>
+          <li><a class="screen" href="15-forgot-and-reset-password.html"><span class="n">15</span>Forgot and reset password<span class="c" data-count="15">5</span></a></li>
+          <li><a class="screen" href="16-accept-updated-terms.html"><span class="n">16</span>Accept updated terms<span class="c" data-count="16">1</span></a></li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="How the demo works">
+      <div class="note"><h3>The Demo button</h3><p>Bottom left on every screen. Use it to jump to any screen and state, including errors, loading and edge cases, to preview at phone width, or to <b>show clickable areas</b>.</p></div>
+      <div class="note"><h3>Dates jump between screens</h3><p>Each screen keeps the date and time it was designed at (Thu 24 Sep, Mon 5 Oct, Thu 8 Oct), so the clock moves as you click through.</p></div>
+      <div class="note"><h3>Gamer side only</h3><p>The coach side (Phase 5 onwards) isn't included. <b>Become a coach</b> and the coach choice when setting up show a short note instead. Dashed boxes are demo shortcuts, such as opening the link in an email.</p></div>
+    </section>
+  </main>
+</div>
+<script>
+/* Starts the demo session the journeys and screens rely on (same format as demo.js). */
+(function () {
+  var KEY = 'hbDemo';
+  function load() {
+    var raw = null;
+    try { raw = sessionStorage.getItem(KEY); } catch (e) {}
+    if (!raw && typeof window.name === 'string' && window.name.indexOf(KEY + ':') === 0) raw = window.name.slice(KEY.length + 1);
+    try { return JSON.parse(raw) || {}; } catch (e) { return {}; }
+  }
+  function save(S) {
+    var raw = JSON.stringify(S);
+    try { sessionStorage.setItem(KEY, raw); } catch (e) {}
+    try { window.name = KEY + ':' + raw; } catch (e) {}
+  }
+  var S = load();
+  if (S.toast) {
+    var t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = S.toast;
+    document.body.appendChild(t); setTimeout(function () { t.hidden = true; }, 3500);
+    S.toast = null; save(S);
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a.journey, a.screen');
+    if (!a) return;
+    var keep = { phone: S.phone, hot: S.hot, panel: S.panel };
+    var next = { auth: a.dataset.auth || S.auth || 'in', booking: false, terms: a.hasAttribute('data-terms'), trail: [] };
+    for (var k in keep) if (keep[k] !== undefined) next[k] = keep[k];
+    save(next);
+  });
+})();
+</script>
+</body>
+</html>
