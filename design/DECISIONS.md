@@ -718,3 +718,9 @@ Not in Phase 5
 - Suspended and banned (after going live; emails cover them; possibly a 19 state at checkpoint 8). The coach-journey emails. Phase 6 items. snapking's "Preview my public profile" (Phase 6 preview mode; inert).
 
 New shared parts for Phase 5: Checklist, WeekHours, SaveStatus, ImageUpload rows (progress, checking, live, refused, caption), a checkbox grid, the Sidebar's status link. All on the component library page, section "Coach onboarding".
+
+## Checkpoint 6 outcomes (closed 4 Nov 2026)
+
+- Checkpoint 6 ("coach onboarding", pages 17 to 21) is closed with no changes. Phase 6 starts next.
+- **Order of work from here (owner, 4 Nov 2026):** build Phase 6 (22, 23) and Phase 7 (24, 25) first. Only after both are done does the owner review Phases 1 to 5 for improvements; until then, earlier pages change only where a Phase 6 or 7 decision reaches them (links, a new state, a shared component).
+- **Research before designing (owner, 4 Nov 2026; applies from Phase 6 on):** before proposing a page, study a handful of well-regarded products that do the same job (for example a seller's listing editor, an availability editor, a sessions list) and the established UI/UX principles behind them, to learn which layouts and placements actually work. It is inspiration, never a copy: DECISIONS.md, the visual rules and the design system always win; anything the research suggests that isn't decided is raised as a recommendation for approval, never built quietly; no real product's names, branding or recognisable design appear in the mockups. The first message for each phase includes a short "What I looked at and what I'm taking from it" per page.

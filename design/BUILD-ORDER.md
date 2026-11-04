@@ -210,7 +210,7 @@ Rules in DECISIONS.md, "Phase 5 decisions" (2 Nov 2026). snapking applies (Singa
 
 Also in Phase 5: new shared parts in the library, section "Coach onboarding" (Checklist, WeekHours, SaveStatus, ImageUpload rows, checkbox grid, the sidebar's status link); 06 gains `coach-kairo-tue`, `coach-milo-request`, `coach-ozzie-dispute` and 07 `coach-ozzie-respond` for 19 live; the prototype links "Become a coach" and 13's coach choice to 17, and Kairo's coach shells to 19.
 
-**Checkpoint 6:** coach onboarding.
+**Checkpoint 6:** coach onboarding. Built and published 2 Nov 2026; closed 4 Nov 2026 with no changes.
 
 ---
 
