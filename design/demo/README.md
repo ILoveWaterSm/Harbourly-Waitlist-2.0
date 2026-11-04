@@ -21,3 +21,10 @@ A clickable demo of design pages 01 to 16 linked as one app. Open `index.html` (
 ## Publishing
 
 `node design/tools/demo.mjs --publish <outDir>` also writes a flat, self-contained copy: styles and scripts inlined, images beside the pages, and the start screen as `index.html` (without its document skeleton) plus `start.html`.
+
+## Presenter walkthrough (20 minutes)
+
+`walkthrough.html` runs the same pages on a fixed 30-step route for presenting in a meeting. Next (→ or Page Down) clicks the highlighted control, a bar at the top shows the chapter and a clock against the 20-minute plan, and N shows the talking points. `guide.html` is the presenter guide: run sheet, talk track for every step, what to cut, likely questions and answers, and what to do if something breaks.
+
+- The route, timings and talking points live in `tour.js` (`CHAPTERS`, `STEPS`); the guide and the walkthrough's run sheet are built from them, so editing a step updates both.
+- `node design/tools/demo.mjs --publish <outDir> --start walkthrough.html` writes the walkthrough's publishable copy (walkthrough as the start screen, plus the guide).

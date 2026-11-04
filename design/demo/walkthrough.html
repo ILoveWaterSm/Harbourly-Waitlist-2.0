@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" data-tour="home">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Harbourly Demo Walkthrough</title>
+<meta name="description" content="A guided 20-minute walkthrough of the Harbourly gamer-side demo (pages 01 to 16), with a welcome slide, a wrap-up slide and presenter controls.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="demo.css">
+<style>
+/* Walkthrough home: three views on the hash. #ready is for the presenter (start, guide, keys, run sheet);
+   #intro and #wrap are full-window slides for the audience. Layout: one left-aligned column per view. Dark only. */
+:root { color-scheme: dark; }
+html, body { background: var(--bg); color: var(--ink); }
+body { margin: 0; font: var(--text-body); }
+.view { box-sizing: border-box; min-height: 100vh; display: grid; align-content: center; padding-block: var(--space-20); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.view[hidden] { display: none; }
+.inner { width: 100%; max-width: 1040px; margin: 0 auto; display: grid; gap: var(--space-8); }
+.logo { height: 30px; width: auto; display: block; }
+.eyebrow { font: var(--text-eyebrow); letter-spacing: .2em; text-transform: uppercase; color: var(--green); }
+h1 { margin: 0; font: 700 clamp(36px, 5.6vw, 64px)/1.05 var(--font-display); letter-spacing: -.02em; text-wrap: balance; max-width: 18ch; }
+.lead { margin: 0; font: var(--text-lead); color: var(--muted); max-width: 60ch; }
+@media (max-width: 600px) { .lead { font-size: 18px; } }
+.head { display: grid; gap: var(--space-4); }
+h2 { margin: 0 0 var(--space-4); font: var(--text-eyebrow); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+
+/* Presenter view */
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.textLinkish { color: var(--green); font: 600 15px/1.2 var(--font-body); text-decoration: none; }
+.textLinkish:hover { text-decoration: underline; }
+.cols { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-10); padding-top: var(--space-8); border-top: 1px solid var(--line); }
+@media (max-width: 820px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.sheet { width: 100%; border-collapse: collapse; font: 400 14.5px/1.4 var(--font-body); }
+.sheet td { padding: 9px 0; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+.sheet td:first-child { width: 56px; font: 400 12.5px/1 var(--font-mono); color: var(--green); font-variant-numeric: tabular-nums; }
+.sheet td:last-child { text-align: right; font: 400 12.5px/1 var(--font-mono); color: var(--faint); font-variant-numeric: tabular-nums; }
+.keys { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); font: var(--text-body-sm); color: var(--ink-sub); }
+.keys li { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: var(--space-3); align-items: baseline; }
+kbd { display: inline-block; min-width: 18px; padding: 3px 7px; margin-right: 4px; border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 6px; background: var(--bg-deep); color: var(--ink); font: 500 12px/1.2 var(--font-mono); text-align: center; }
+.tip { margin: var(--space-5) 0 0; font: var(--text-body-sm); color: var(--faint); max-width: 52ch; }
+
+/* Audience slides */
+.agenda { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); counter-reset: ch; }
+@media (max-width: 820px) { .agenda { grid-template-columns: minmax(0, 1fr); } }
+.agenda li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-2) var(--space-3); align-items: baseline; padding: var(--space-5); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); }
+.agenda .num { font: 600 13px/1 var(--font-mono); color: var(--green); }
+.agenda .t { font: 600 16px/1.35 var(--font-body); }
+.agenda .m { grid-column: 2; font: 400 12.5px/1 var(--font-mono); color: var(--faint); }
+.aside { margin: 0; font: var(--text-body-sm); color: var(--faint); }
+.recap { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.chip { padding: 8px 14px; border: 1px solid var(--green-line); border-radius: var(--radius-pill); background: var(--green-tint); color: var(--ink); font: 500 14.5px/1.2 var(--font-body); }
+.wrapCols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: var(--space-10); padding-top: var(--space-8); border-top: 1px solid var(--line); }
+@media (max-width: 820px) { .wrapCols { grid-template-columns: minmax(0, 1fr); } }
+.wrapCols p { margin: 0; font: var(--text-body-lg); color: var(--ink-sub); max-width: 46ch; }
+.questions { margin: 0; padding-left: 22px; display: grid; gap: var(--space-4); font: 500 19px/1.45 var(--font-body); }
+.questions li::marker { color: var(--green); font-family: var(--font-mono); font-size: 15px; }
+</style>
+</head>
+<body>
+
+<section class="view" id="v-ready" data-view="ready" aria-labelledby="h-ready">
+  <div class="inner">
+    <img class="logo" src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly">
+    <div class="head">
+      <div class="eyebrow">Presenter walkthrough · 20 minutes · gamer side</div>
+      <h1 id="h-ready">Present the Harbourly demo</h1>
+      <p class="lead">The same clickable screens, on a fixed route. Press Next and it clicks the right thing for you, so you can talk to people instead of hunting for buttons.</p>
+    </div>
+    <div class="actions">
+      <button type="button" class="button primary" data-begin>Start presenting</button>
+      <button type="button" class="button secondary" data-begin="notes">Rehearse with notes on</button>
+      <a class="textLinkish" href="guide.html">Open the presenter guide</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h2>Run sheet</h2>
+        <table class="sheet"><tbody id="sheet"></tbody></table>
+        <p class="tip">The clock in the bar turns amber if you're more than about a minute behind. Press S to skip ahead a chapter.</p>
+      </div>
+      <div>
+        <h2>Controls</h2>
+        <ul class="keys">
+          <li><span><kbd>→</kbd><kbd>PgDn</kbd></span>Next: clicks the highlighted control, or moves on</li>
+          <li><span><kbd>←</kbd><kbd>PgUp</kbd></span>Back one step</li>
+          <li><span><kbd>N</kbd></span>Show or hide your notes (keep them off while sharing)</li>
+          <li><span><kbd>S</kbd></span>Skip to the next chapter</li>
+          <li><span><kbd>H</kbd></span>Hide or show the bar</li>
+        </ul>
+        <p class="tip">A presentation clicker works too: most send Page Down and Page Up. You can also click anything yourself. If you wander off the route, Next brings you back.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-intro" data-view="intro" aria-labelledby="h-intro" hidden>
+  <div class="inner">
+    <img class="logo" src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly">
+    <div class="head">
+      <div class="eyebrow">Design demo · Gamer side · Phases 1 to 4</div>
+      <h1 id="h-intro">Find the coach you can actually trust.</h1>
+      <p class="lead">Harbourly is a coaching marketplace for gamers in Southeast Asia. You book a one-hour, 1-on-1 session with an identity-checked coach, and your payment is held until you confirm the session went ahead.</p>
+    </div>
+    <div>
+      <h2>What I'll show</h2>
+      <ol class="agenda" id="agenda"></ol>
+    </div>
+    <p class="aside">The coach side (Phase 5) is being designed now and isn't shown today.</p>
+  </div>
+</section>
+
+<section class="view" id="v-wrap" data-view="wrap" aria-labelledby="h-wrap" hidden>
+  <div class="inner">
+    <img class="logo" src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly">
+    <div class="head">
+      <div class="eyebrow">Wrap up</div>
+      <h1 id="h-wrap">That's the gamer side, end to end.</h1>
+      <div class="recap" aria-label="What you saw">
+        <span class="chip">Browse and profiles</span><span class="chip">Sign up mid-booking</span><span class="chip">Held payment</span>
+        <span class="chip">Your bookings</span><span class="chip">In-app sessions</span><span class="chip">Reviews and disputes</span>
+      </div>
+    </div>
+    <div class="wrapCols">
+      <div>
+        <h2>Coming next</h2>
+        <p>Phase 5, the coach side: applying to coach, payout and profile setup, and the coach dashboard.</p>
+      </div>
+      <div>
+        <h2>I'd love your take</h2>
+        <ol class="questions">
+          <li>Was there a moment you weren't sure what to do next?</li>
+          <li>Would you pay for a session this way? What would make you trust it more?</li>
+          <li>What did you expect to see as a gamer that wasn't there?</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="tour.js"></script>
+<script>
+/* Views on the hash, the run sheet and agenda from the walkthrough data, and the start buttons. */
+(function () {
+  var data = window.HB_TOUR;
+  function fmt(s) { return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+  function show() {
+    var v = (location.hash || '').slice(1);
+    if (!document.getElementById('v-' + v)) v = 'ready';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-view]'), function (el) { el.hidden = el.dataset.view !== v; });
+    window.scrollTo(0, 0);
+  }
+  var per = data.chapters.map(function (c, i) {
+    var steps = data.steps.filter(function (s) { return s.ch === i; });
+    return { title: c.title, goal: c.goal, mark: steps[0].mark, secs: steps.reduce(function (a, s) { return a + s.t; }, 0) };
+  });
+  document.getElementById('sheet').innerHTML = per.map(function (c) {
+    return '<tr><td>' + fmt(c.mark) + '</td><td>' + c.title + '</td><td>' + fmt(c.secs) + '</td></tr>';
+  }).join('') + '<tr><td>' + fmt(data.total) + '</td><td>Done</td><td></td></tr>';
+  document.getElementById('agenda').innerHTML = per.slice(1, -1).map(function (c, i) {
+    return '<li><span class="num">' + (i + 1) + '</span><span class="t">' + c.title + '</span><span class="m">about ' + Math.max(1, Math.round(c.secs / 60)) + ' min</span></li>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-begin]'), function (b) {
+    b.addEventListener('click', function () { window.hbTour.begin(b.dataset.begin === 'notes'); });
+  });
+  window.addEventListener('hashchange', show);
+  show();
+})();
+</script>
+</body>
+</html>

@@ -417,6 +417,22 @@
   }
   hot.checked = !!S.hot; document.body.classList.toggle('dm-hot', !!S.hot);
 
+  /* ---------- Hook for the presenter walkthrough (tour.js) ---------- */
+  window.hbDemo = {
+    S: S, save: save, self: self, toast: toast, togglePanel: togglePanel,
+    key: function () { return self + '#' + current.state; },
+    // Open exactly this screen and state (no adjustments), as the Demo panel does.
+    jump: function (t, o) {
+      o = o || {};
+      var r = split(t);
+      S.then = null; S.booking = !!o.booking;
+      if (o.auth) S.auth = o.auth;
+      save();
+      if (r.pg === self) { set(r.st, null, { push: true }); window.scrollTo(0, 0); }
+      else if (FILES[r.pg]) location.href = FILES[r.pg] + '#' + r.st;
+    }
+  };
+
   /* ---------- Boot ---------- */
   var h = (location.hash || '').slice(1).replace(/-phone$/, '');
   set(sectionOf(h) ? h : current.state, current.width, { boot: true });

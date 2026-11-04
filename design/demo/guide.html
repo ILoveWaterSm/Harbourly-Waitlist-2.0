@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en" data-tour="data">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Harbourly Presenter Guide</title>
+<meta name="description" content="How to present the Harbourly gamer-side demo in 20 minutes: run sheet, talk track for every screen, what to cut, and answers to likely questions.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<style>
+/* Presenter guide: a reading page, built to sit on a phone or a second screen during the meeting.
+   Layout: a single 720px column; the run sheet as a table; the talk track as timed rows. Dark only, like the app. */
+:root { color-scheme: dark; }
+html, body { background: var(--bg); color: var(--ink); }
+body { margin: 0; font: var(--text-body); }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: var(--space-10) var(--space-20); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-10); }
+.top img { height: 26px; width: auto; display: block; }
+.top a { color: var(--green); font: 600 14px/1.2 var(--font-body); text-decoration: none; }
+.top a:hover { text-decoration: underline; }
+.eyebrow { font: var(--text-eyebrow); letter-spacing: .2em; text-transform: uppercase; color: var(--green); }
+h1 { margin: var(--space-3) 0 var(--space-4); font: 700 clamp(32px, 6vw, 46px)/1.08 var(--font-display); letter-spacing: -.015em; text-wrap: balance; }
+.lead { margin: 0; font: var(--text-body-lg); color: var(--muted); max-width: 62ch; }
+nav.toc { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
+nav.toc a { padding: 6px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); color: var(--ink-sub); font: 500 13px/1.2 var(--font-body); text-decoration: none; }
+nav.toc a:hover { border-color: var(--green-line); color: var(--ink); }
+section { margin-top: var(--space-14); scroll-margin-top: var(--space-6); }
+h2 { margin: 0 0 var(--space-5); font: 700 24px/1.2 var(--font-display); text-wrap: balance; }
+h3 { margin: 0; font: 600 17px/1.35 var(--font-body); }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.stack { display: grid; gap: var(--space-4); }
+
+table.sheet { width: 100%; border-collapse: collapse; font: 400 15px/1.45 var(--font-body); }
+.sheet th { text-align: left; padding: 0 0 8px; font: var(--text-label); letter-spacing: .18em; text-transform: uppercase; color: var(--faint); border-bottom: 1px solid var(--line-strong); }
+.sheet td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+.sheet .mono { font: 400 13px/1 var(--font-mono); color: var(--green); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sheet .len { font: 400 13px/1 var(--font-mono); color: var(--faint); white-space: nowrap; text-align: right; padding-right: 0; font-variant-numeric: tabular-nums; }
+.sheet .goal { display: block; margin-top: 3px; font-size: 14px; color: var(--muted); }
+
+.check { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+.check li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: var(--space-3); align-items: baseline; color: var(--ink-sub); }
+.check li::before { content: ""; width: 14px; height: 14px; border: 1.5px solid var(--green-line); border-radius: 4px; transform: translateY(2px); }
+.tips { margin: 0; padding-left: 20px; display: grid; gap: var(--space-3); color: var(--ink-sub); }
+.tips b, .check b { color: var(--ink); font-weight: 600; }
+
+.chapter { padding-top: var(--space-8); margin-top: var(--space-8); border-top: 1px solid var(--line); }
+.chapter:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.chHead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+.chHead .mono { font: 400 13px/1 var(--font-mono); color: var(--faint); font-variant-numeric: tabular-nums; }
+.chGoal { margin-top: var(--space-2); color: var(--muted); font-size: 15px; }
+.step { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: var(--space-4); margin-top: var(--space-5); }
+.step .mark { font: 400 13px/1.6 var(--font-mono); color: var(--green); font-variant-numeric: tabular-nums; }
+.step .screen { font: var(--text-eyebrow); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); line-height: 1.6; }
+.step ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 6px; color: var(--ink-sub); font-size: 15.5px; line-height: 1.55; }
+.step .do { margin-top: 8px; font-weight: 600; font-size: 15px; }
+.step .do span { margin-right: 8px; font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
+@media (max-width: 520px) { .step { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+
+.qa { display: grid; gap: 0; }
+.qa details { border-bottom: 1px solid var(--line); }
+.qa summary { cursor: pointer; padding: 14px 0; font: 600 16px/1.4 var(--font-body); list-style: none; display: flex; justify-content: space-between; gap: var(--space-3); }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::after { content: "+"; color: var(--faint); font-family: var(--font-mono); }
+.qa details[open] summary::after { content: "\2212"; }
+.qa summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.qa details p { padding: 0 0 16px; color: var(--ink-sub); font-size: 15.5px; line-height: 1.6; max-width: 64ch; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-8); }
+@media (max-width: 640px) { .two { grid-template-columns: minmax(0, 1fr); } }
+kbd { display: inline-block; padding: 1px 6px; border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px; background: var(--bg-deep); font: 500 12px/1.4 var(--font-mono); color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly">
+    <a href="walkthrough.html">Open the walkthrough</a>
+  </div>
+
+  <div class="eyebrow">Presenter guide · 20 minutes</div>
+  <h1>How to present the Harbourly demo</h1>
+  <p class="lead">Keep this on your phone or a second screen. Share the walkthrough on the main screen, press Next, and talk. Everything you need to say is below, one screen at a time.</p>
+  <nav class="toc" aria-label="On this page">
+    <a href="#plan">The 20 minutes</a><a href="#before">Before the meeting</a><a href="#casual">Keeping it casual</a>
+    <a href="#track">Talk track</a><a href="#timing">Running long or short</a><a href="#qa">If they ask</a><a href="#broken">If something breaks</a>
+  </nav>
+
+  <section id="plan" aria-labelledby="h-plan">
+    <h2 id="h-plan">The 20 minutes</h2>
+    <table class="sheet">
+      <thead><tr><th>Starts</th><th>Chapter, and the one thing they should take away</th><th style="text-align:right">Length</th></tr></thead>
+      <tbody id="plan-rows"></tbody>
+    </table>
+    <p class="muted" style="margin-top:var(--space-4)">About 15 minutes of demo, with 5 for the welcome, the wrap-up and questions. The walkthrough's clock turns amber if you're more than about a minute behind.</p>
+  </section>
+
+  <section id="before" aria-labelledby="h-before">
+    <h2 id="h-before">Before the meeting</h2>
+    <ul class="check">
+      <li><span><b>Rehearse once with notes on</b> (Rehearse with notes on, on the walkthrough page). It takes about 15 minutes and you'll know every click.</span></li>
+      <li><span><b>Open the walkthrough in the window you'll share</b>, at least 1280 pixels wide, browser zoom at 100%. Close other tabs and mute notifications.</span></li>
+      <li><span><b>Open this guide on your phone</b> or a second screen. Keep the notes in the walkthrough off while you're sharing.</span></li>
+      <li><span><b>Press Start presenting just before you begin.</b> It resets the demo (logged out, nothing booked) and starts the clock on the welcome slide.</span></li>
+      <li><span><b>Know your three questions for the end</b>. They're on the wrap-up slide, but say them in your own words.</span></li>
+      <li><span><b>Have a clicker? It works.</b> Most send Page Down and Page Up, the same as <kbd>→</kbd> and <kbd>←</kbd>.</span></li>
+    </ul>
+  </section>
+
+  <section id="casual" aria-labelledby="h-casual">
+    <h2 id="h-casual">Keeping it casual</h2>
+    <ul class="tips">
+      <li><b>Tell it as a story.</b> "I'm a gamer, I want to get better at Mobile Legends, let's find a coach." Then every screen is just the next thing you'd do.</li>
+      <li><b>One idea per screen.</b> Each screen has a few talking points. Pick the one or two that matter for this audience and move on. You don't have to say all of them.</li>
+      <li><b>Don't read the screen.</b> They can see it. Say why it's there: "This is so you never pay without knowing the refund rule."</li>
+      <li><b>Say it's a design up front.</b> "It's clickable, but nothing's live, so no real payments or emails." Then nobody worries when a dashed demo shortcut appears.</li>
+      <li><b>Pause twice:</b> after checkout ("Would you feel OK paying like this?") and after the dispute ("Does that feel fair?"). Those reactions are the most useful thing you'll get.</li>
+      <li><b>Park the deep questions.</b> "Good one, let me come back to that at the end." Then make sure you do.</li>
+      <li><b>When a step loads by itself</b> (Logging in, Confirming your payment, Kairo joining), keep talking. It moves on within a few seconds.</li>
+    </ul>
+  </section>
+
+  <section id="track" aria-labelledby="h-track">
+    <h2 id="h-track">Talk track</h2>
+    <p class="muted">The time is when that screen should come up. "Then" is what Next clicks for you (the walkthrough rings it in green).</p>
+    <div id="track-body" style="margin-top:var(--space-8)"></div>
+  </section>
+
+  <section id="timing" aria-labelledby="h-timing">
+    <h2 id="h-timing">Running long or short</h2>
+    <div class="two">
+      <div class="stack">
+        <h3>Running long</h3>
+        <ul class="tips">
+          <li>Press <kbd>S</kbd> to skip to the next chapter.</li>
+          <li>On My sessions, skip cancelling and the new-time request: press <kbd>S</kbd> on the dashboard to go straight to the session (saves about 2 minutes).</li>
+          <li>In the session, skip the camera and banners. Just end it.</li>
+          <li>Cut the dispute chapter to one sentence: "If there's a problem, the money waits and the team decides from both sides."</li>
+        </ul>
+      </div>
+      <div class="stack">
+        <h3>Got spare time</h3>
+        <ul class="tips">
+          <li><b>Phones:</b> Demo panel (from Notes, or press <kbd>H</kbd> to hide the bar and use the Demo button) → Width → Phone.</li>
+          <li><b>Log in:</b> Demo panel → 14 Log in, then Log in. <b>Updated terms:</b> Demo panel → 16 Accept updated terms.</li>
+          <li><b>Forgot password:</b> 14 Log in → Forgot password? → the reset email → set a new password.</li>
+          <li><b>Edge cases:</b> Demo panel → 03 Pick a slot → "Slot just taken", or 13 → "Under 18 · blocked".</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="qa" aria-labelledby="h-qa">
+    <h2 id="h-qa">If they ask</h2>
+    <div class="qa">
+      <details><summary>How does Harbourly make money?</summary><p>Gamers pay the coach's price plus a 6% platform fee. Coaches pay a 12% commission, taken from their payout. For Kairo: ₱1,850 + ₱111 fee = ₱1,961 paid, and Kairo receives ₱1,628.</p></details>
+      <details><summary>When does the coach get paid?</summary><p>When the gamer confirms the session went ahead, or automatically 72 hours after it ends. Reporting a problem pauses that until the team decides.</p></details>
+      <details><summary>What if I need to cancel?</summary><p>Up to 1 hour before the start: a full refund, fee included. Inside the last hour: half the coach's price comes back, and the coach is paid the other half. If the coach cancels, the gamer always gets a full refund.</p></details>
+      <details><summary>What if the coach doesn't show up?</summary><p>After 15 minutes the gamer can report a no-show. The coach has 24 hours to respond. With no response, the gamer is refunded in full automatically. Otherwise the team checks the call's join records. Repeat no-shows get a warning, then suspension.</p></details>
+      <details><summary>And if the gamer doesn't show up?</summary><p>The coach can report it. If the team agrees, the coach's price is split 50/50, the same as a late cancellation.</p></details>
+      <details><summary>Can I move a session?</summary><p>Yes, until 24 hours before. You offer up to 3 of the coach's free times, and they pick one. An unanswered request expires after 48 hours, or 12 hours before the original start. A booking can be moved once.</p></details>
+      <details><summary>How are coaches checked?</summary><p>Every coach goes through identity and payout checks: Stripe or Xendit check a government ID and a bank account in their country before they can go live. They also show proof of rank. New coaches carry a New Coach label until they've built a track record. The coach application is the Phase 5 work.</p></details>
+      <details><summary>Which countries and currencies?</summary><p>Gamers in 10 Southeast Asian countries at launch. Coaches in Singapore, Malaysia and the Philippines first, where payouts work. You see prices in your own currency; you're charged in the coach's, and your bank converts.</p></details>
+      <details><summary>How long is a session, and what does it cost?</summary><p>Every session is one hour, 1-on-1. Coaches set their own price per game, with a floor of about S$10.</p></details>
+      <details><summary>Is this the real app?</summary><p>No, it's the design: every screen and state built as clickable pages. The app is built from these next. Payments will use Stripe and Xendit; sign-in uses Supabase, with emails through Resend and phone codes through Twilio.</p></details>
+      <details><summary>Does it work on phones?</summary><p>Every screen is designed for phones too. Show it: Demo panel → Width → Phone. Screen sharing in a session needs a computer; on a phone you can talk, chat and watch.</p></details>
+      <details><summary>What's next?</summary><p>Phase 5, the coach side: applying to coach, payout and profile setup, and the coach dashboard. After that, account settings and the coach's profile settings.</p></details>
+    </div>
+  </section>
+
+  <section id="broken" aria-labelledby="h-broken">
+    <h2 id="h-broken">If something breaks</h2>
+    <ul class="tips">
+      <li><b>Clicked the wrong thing?</b> The bar says "Off the route". Press Next and you're back on track.</li>
+      <li><b>A screen looks stuck?</b> Refresh the page. The walkthrough keeps your place and your clock.</li>
+      <li><b>Lost completely?</b> Press <kbd>N</kbd>, then End walkthrough, then Start presenting again. Use <kbd>S</kbd> to skip to the chapter you were on.</li>
+      <li><b>No internet at the venue?</b> Run it from the repo instead: <code>python3 -m http.server</code> at the repo root, then open /design/demo/walkthrough.html.</li>
+    </ul>
+  </section>
+</div>
+<script src="tour.js"></script>
+<script>
+/* Run sheet and talk track from the walkthrough data in tour.js, so the guide always matches the route. */
+(function () {
+  var data = window.HB_TOUR;
+  function fmt(s) { return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  var html = '', rows = '';
+  data.chapters.forEach(function (c, i) {
+    var steps = data.steps.filter(function (s) { return s.ch === i; });
+    var secs = steps.reduce(function (a, s) { return a + s.t; }, 0);
+    rows += '<tr><td class="mono">' + fmt(steps[0].mark) + '</td><td>' + esc(c.title) + '<span class="goal">' + esc(c.goal) + '</span></td><td class="len">' + fmt(secs) + '</td></tr>';
+    html += '<div class="chapter"><div class="chHead"><h3>' + (i ? i + '. ' : '') + esc(c.title) + '</h3><span class="mono">' + fmt(steps[0].mark) + ' – ' + fmt(steps[0].mark + secs) + '</span></div>' +
+      '<p class="chGoal">' + esc(c.goal) + '</p>' +
+      steps.map(function (s) {
+        return '<div class="step"><div class="mark">' + fmt(s.mark) + '</div><div><div class="screen">' + esc(s.screen) + '</div><ul>' +
+          s.say.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul><p class="do"><span>Then</span>' + esc(s.do) + '</p></div></div>';
+      }).join('') + '</div>';
+  });
+  rows += '<tr><td class="mono">' + fmt(data.total) + '</td><td>Done</td><td></td></tr>';
+  document.getElementById('plan-rows').innerHTML = rows;
+  document.getElementById('track-body').innerHTML = html;
+})();
+</script>
+</body>
+</html>
