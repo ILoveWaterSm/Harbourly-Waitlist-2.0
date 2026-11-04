@@ -36,3 +36,9 @@
 body.mk-capture .mk-bar { display: none; }
 body.mk-capture .mk-stage { padding: 0; }
 body.mk-capture .mk-frame[data-width="phone"] { max-width: none; border: 0; border-radius: 0; min-height: 0; }
+
+/* Mockup-only hints, e.g. "open the link in the email": prototype shortcuts that aren't part of the page.
+   Hidden in canvas renders. */
+.mk-hint { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: var(--space-6); padding: 10px 14px; border: 1px dashed var(--line-strong); border-radius: var(--radius-md); font: 400 12.5px/1.5 var(--font-mono); color: var(--faint); }
+.mk-hint a { color: var(--ink-soft); }
+body.mk-capture .mk-hint { display: none; }

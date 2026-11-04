@@ -1,0 +1,11 @@
+/* GoogleButton → GoogleButton.module.css. "Continue with Google" on Sign up and Log in, with the "or" row
+   that separates it from the email form. Used with .button.secondary.block: an outline pill like every
+   secondary action. Google's full-colour mark is required by its brand rules: the second place colours
+   outside the palette appear, after flags. */
+.googleButton { gap: var(--space-3); }
+.googleButton .googleButtonMark { width: 20px; height: 20px; flex: none; }
+.googleButtonOr {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-3);
+  font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--faint);
+}
+.googleButtonOr::before, .googleButtonOr::after { content: ""; height: 1px; background: var(--line); }

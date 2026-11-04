@@ -1,0 +1,37 @@
+/* WeekHours → WeekHours.module.css. A coach's weekly availability in their own time zone, in whole hours
+   (sessions are a fixed 60 minutes). One row per day: a checkbox to turn the day on, then one or more
+   From–To ranges chosen with plain selects (keyboard-friendly, no tiny grid cells), each day's slot count in mono.
+   Behaviour (mockup): WeekHours.js fills the hour options, adds and removes ranges, and updates the counts. */
+.weekHours { display: grid; min-width: 0; }
+.weekHours [hidden] { display: none; }
+.weekHoursZone { display: flex; align-items: flex-start; gap: var(--space-2); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-2); border-radius: var(--radius-md); background: var(--bg-mid); font-size: 14px; line-height: 1.5; color: var(--muted); }
+.weekHoursZone svg { width: 18px; height: 18px; flex: none; margin-top: 1px; }
+.weekHoursZone b { font-weight: 600; color: var(--ink); }
+.weekDay { display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: var(--space-3) var(--space-5); align-items: start; padding: var(--space-4) 0; border-top: 1px solid var(--line); min-width: 0; }
+.weekDay:first-of-type { border-top: 0; }
+.weekDayHead { display: grid; gap: 4px; padding-top: 12px; }
+.weekDayHead .checkbox { font: 600 15px/1.35 var(--font-body); color: var(--ink); }
+.weekDaySlots { padding-left: 32px; font: 400 12px/1.3 var(--font-mono); color: var(--muted); }
+.weekDayRanges { display: grid; gap: var(--space-2); justify-items: start; min-width: 0; }
+.weekDayOff { display: flex; align-items: center; min-height: 48px; font-size: 14px; color: var(--subtle); }
+.weekRange { display: grid; grid-template-columns: minmax(0, 116px) auto minmax(0, 116px) 44px; align-items: center; gap: var(--space-2); width: 100%; max-width: 340px; }
+.weekRange .fieldControl { padding: 12px 34px 12px 14px; background-position: right 10px center; font-family: var(--font-mono); font-size: 16px; }
+.weekRangeTo { font-size: 14px; color: var(--muted); }
+.weekRange .iconButton { justify-self: end; width: 44px; height: 44px; }
+.weekDayRanges .fieldError { margin-top: var(--space-1); }
+.weekAdd { min-height: 44px; padding: 0; border: 0; background: none; color: var(--green); font: 600 14px/1 var(--font-body); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.weekAdd svg { width: 16px; height: 16px; }
+.weekAdd:hover { text-decoration: underline; text-underline-offset: 4px; }
+@container app (max-width: 640px) {
+  .weekDay { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .weekDayHead { grid-template-columns: minmax(0, 1fr) auto; align-items: center; padding-top: 0; }
+  .weekDaySlots { padding-left: 0; }
+  .weekDayOff { min-height: 0; padding-left: 32px; }
+  .weekDayRanges { padding-left: 32px; }
+}
+@container app (max-width: 400px) {
+  .weekDayRanges { padding-left: 0; }
+  .weekDayOff { padding-left: 32px; }
+  .weekRange { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) 44px; max-width: none; }
+  .weekRange .fieldControl { padding-right: 28px; padding-left: 10px; background-position: right 6px center; background-size: 16px; }
+}

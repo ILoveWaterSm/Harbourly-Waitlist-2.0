@@ -40,7 +40,9 @@
     chat: '<path d="M5 4.5h14A1.5 1.5 0 0 1 20.5 6v9.5A1.5 1.5 0 0 1 19 17h-8.5L6 20.5V17H5a1.5 1.5 0 0 1-1.5-1.5V6A1.5 1.5 0 0 1 5 4.5z"/><path d="M8 9h8M8 12.5h5"/>',
     send: '<path d="M20 4 3.5 10.5l7 3 3 7z"/><path d="m10.5 13.5 4-4"/>',
     "call-end": '<path d="M3.2 14.2c4.9-4.6 12.7-4.6 17.6 0l-1.9 2.5a1 1 0 0 1-1.3.3l-2.7-1.4a1 1 0 0 1-.5-1v-1.8a12.5 12.5 0 0 0-4.8 0v1.8a1 1 0 0 1-.5 1l-2.7 1.4a1 1 0 0 1-1.3-.3z"/>',
-    flag: '<path d="M5.5 21V4M5.5 4.5h11.5l-2.2 4 2.2 4H5.5"/>'
+    flag: '<path d="M5.5 21V4M5.5 4.5h11.5l-2.2 4 2.2 4H5.5"/>',
+    mail: '<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4.5 7.5 7.5 5.5 7.5-5.5"/>',
+    globe: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.2 2.4 3.4 5.2 3.4 8.5s-1.2 6.1-3.4 8.5c-2.2-2.4-3.4-5.2-3.4-8.5s1.2-6.1 3.4-8.5z"/>'
   };
   var s = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">';
   for (var k in paths) s += '<symbol id="i-' + k + '" viewBox="0 0 24 24">' + paths[k] + '</symbol>';

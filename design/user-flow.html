@@ -99,39 +99,45 @@ flowchart TD
 </section>
 <section id="f2" class="flow">
   <h2><span class="n">2</span>Sign up and log in</h2>
-  <p class="note">The gamer or coach choice is a routing hint only. Every account can book as a gamer.</p>
+  <p class="note">The gamer or coach choice is a routing hint only. Every account can book as a gamer. No screen says whether an email has an account: sign-up always continues to &quot;Check your email&quot;, and the email itself tells an existing account holder to log in. Coaching is open in Singapore, Malaysia and the Philippines (Thailand once Stripe confirms). Rules in DECISIONS.md, &quot;Phase 4 decisions&quot; (28 Oct 2026).</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
   Start([&quot;Sign up&quot;]) --&gt; Method{&quot;Method&quot;}
   Method --&gt;|&quot;Email and password&quot;| Email[&quot;Enter email and password&quot;]
-  Email --&gt; Verify[&quot;Verify your email&quot;]
+  Email --&gt; Verify[&quot;Verify your email: link works 24 hours, resend&quot;]
+  Verify --&gt;|&quot;Link opened on another device: log in&quot;| Login
   Verify --&gt; Details
   Method --&gt;|&quot;Google&quot;| Details[&quot;Finish setting up your account&quot;]
 
-  Details --&gt; Fields[&quot;First name, last name, username, date of birth, phone with OTP, country, gamer or coach, accept terms&quot;]
+  Details --&gt; Fields[&quot;First name, last name, username, date of birth, country, phone with OTP, gamer or coach, accept terms&quot;]
   Fields --&gt; Age{&quot;18 or older?&quot;}
-  Age --&gt;|&quot;No&quot;| Under18([&quot;You need to be 18 or older to use Harbourly&quot;])
+  Age --&gt;|&quot;No&quot;| Under18([&quot;You need to be 18 or older to use Harbourly. Account deleted, nothing kept&quot;])
   Age --&gt;|&quot;Yes&quot;| Country{&quot;Country supported?&quot;}
-  Country --&gt;|&quot;No&quot;| NotAvail([&quot;Harbourly isn&#x27;t available in your country yet&quot;])
-  Country --&gt;|&quot;Yes&quot;| Role{&quot;Chose coach?&quot;}
+  Country --&gt;|&quot;No&quot;| NotAvail([&quot;Harbourly isn&#x27;t available in your country yet. Account deleted, nothing kept&quot;])
+  Country --&gt;|&quot;Yes&quot;| SBooking{&quot;Came from a booking?&quot;}
+  SBooking --&gt;|&quot;Yes&quot;| BackToSlot
+  SBooking --&gt;|&quot;No&quot;| Role{&quot;Chose coach?&quot;}
   Role --&gt;|&quot;No&quot;| GDash([&quot;Gamer dashboard&quot;])
   Role --&gt;|&quot;Yes&quot;| CoachCountry{&quot;Coach country supported?&quot;}
-  CoachCountry --&gt;|&quot;No&quot;| NoCoach[&quot;Coaching isn&#x27;t available in your country yet. You can still book as a gamer&quot;]
+  CoachCountry --&gt;|&quot;No, shown before submitting&quot;| NoCoach[&quot;Coaching isn&#x27;t available in your country yet. You can still book as a gamer&quot;]
   NoCoach --&gt; GDash
   CoachCountry --&gt;|&quot;Yes&quot;| AppIntro([&quot;Coach application, step 1&quot;])
 
   Login([&quot;Log in&quot;]) --&gt; LMethod{&quot;Method&quot;}
   LMethod --&gt;|&quot;Email and password&quot;| Creds[&quot;Email and password&quot;]
-  LMethod --&gt;|&quot;Google&quot;| Google[&quot;Google&quot;]
+  LMethod --&gt;|&quot;Google, no account yet: creates one&quot;| Google[&quot;Google&quot;]
+  Creds --&gt;|&quot;Wrong details: try again. Too many tries: wait 15 minutes&quot;| Creds
   Creds --&gt;|&quot;Forgot password&quot;| Forgot[&quot;Forgot password&quot;]
-  Forgot --&gt; ResetEmail[&quot;Reset email sent&quot;]
-  ResetEmail --&gt; Reset[&quot;Set a new password&quot;]
+  Forgot --&gt; ResetEmail[&quot;Reset email sent, if the email has an account. Link works 1 hour&quot;]
+  ResetEmail --&gt; Reset[&quot;Set a new password. Other devices logged out&quot;]
   Reset --&gt; Login
-  Creds --&gt; Checks
+  Creds --&gt; EmailOK{&quot;Email verified?&quot;}
+  EmailOK --&gt;|&quot;No: a new link is sent&quot;| Verify
+  EmailOK --&gt;|&quot;Yes&quot;| Checks
   Google --&gt; Checks{&quot;Setup finished?&quot;}
   Checks --&gt;|&quot;No&quot;| Details
   Checks --&gt;|&quot;Yes&quot;| Terms{&quot;Latest terms accepted?&quot;}
-  Terms --&gt;|&quot;No&quot;| AcceptTerms[&quot;Accept the updated terms&quot;]
+  Terms --&gt;|&quot;No&quot;| AcceptTerms[&quot;Accept the updated terms, or sign out&quot;]
   AcceptTerms --&gt; Return
   Terms --&gt;|&quot;Yes&quot;| Return{&quot;Came from a booking?&quot;}
   Return --&gt;|&quot;Yes&quot;| BackToSlot([&quot;Back to the same booking step&quot;])
@@ -268,36 +274,39 @@ flowchart TD
 </section>
 <section id="f8" class="flow">
   <h2><span class="n">8</span>Coach journey: application to live</h2>
-  <p class="note">The four conditions to go live: application approved, payout setup complete, phone verified, profile complete. There is no Verified badge; a portfolio never shortens the New Coach period. Scamming, predatory or grooming conduct is a permanent ban at any stage.</p>
+  <p class="note">The four conditions to go live: application approved, payout setup complete, phone verified, profile complete (a bio, a language, at least one hour of availability, a price for every approved game). There is no Verified badge; a portfolio never shortens the New Coach period. Scamming, predatory or grooming conduct is a permanent ban at any stage. Before approval there is no coach dashboard: the application page shows where the application stands (DECISIONS.md, &quot;Phase 5 decisions&quot;, 2 Nov 2026).</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
-  Become([&quot;Become a coach&quot;]) --&gt; Row[&quot;Coach record created. Coach dashboard appears in the sidebar&quot;]
-  Row --&gt; Step1[&quot;Step 1: what coaching on Harbourly involves, and what you&#x27;ll need&quot;]
-  Step1 --&gt; Step2[&quot;Step 2: games and rank per game, proof images up to 5, marketplace profile link optional, what made you start coaching&quot;]
-  Step2 --&gt;|&quot;Leave and come back&quot;| Draft[&quot;Draft saved. Dashboard: continue your application&quot;]
+  Become([&quot;Become a coach, in the sidebar&#x27;s Gamer block&quot;]) --&gt; Step1[&quot;Step 1: what coaching on Harbourly involves, and what you&#x27;ll need&quot;]
+  Step1 --&gt; CoachCountry{&quot;Coach country? Singapore, Malaysia, Philippines&quot;}
+  CoachCountry --&gt;|&quot;No&quot;| NoCoach([&quot;Coaching isn&#x27;t available in your country yet. Nothing created&quot;])
+  CoachCountry --&gt;|&quot;Yes: Start your application&quot;| Row[&quot;Coach record created. Sidebar: Your coach application, with its status. No coach dashboard yet&quot;]
+  Row --&gt; Step2[&quot;Step 2: games, rank per game, proof images up to 5 per game, marketplace profile link optional, what made you start coaching&quot;]
+  Step2 --&gt;|&quot;Leave and come back&quot;| Draft[&quot;Draft saved as you go. Sidebar: Your coach application · Draft&quot;]
   Draft --&gt; Step2
-  Step2 --&gt; Submitted[&quot;Submitted. Dashboard: under review&quot;]
+  Step2 --&gt;|&quot;Submit application, confirm step&quot;| Submitted[&quot;Submitted. Application page read-only: under review&quot;]
   Submitted --&gt; Decision{&quot;Team decision&quot;}
 
-  Decision --&gt;|&quot;Rejected&quot;| Rejected[&quot;Rejected: reason shown, flagged section highlighted, inputs kept&quot;]
+  Decision --&gt;|&quot;Rejected&quot;| Rejected[&quot;Changes needed: reason shown, flagged section highlighted, inputs kept&quot;]
   Rejected --&gt; Attempts{&quot;Which rejection?&quot;}
   Attempts --&gt;|&quot;First or second&quot;| Fix[&quot;Change the flagged section, resubmit now&quot;]
-  Attempts --&gt;|&quot;Third&quot;| Wait[&quot;Wait 14 days, then resubmit&quot;]
+  Attempts --&gt;|&quot;Third or later&quot;| Wait[&quot;Wait 14 days, then resubmit. Changes allowed meanwhile&quot;]
   Fix --&gt; Submitted
   Wait --&gt; Submitted
-  Decision --&gt;|&quot;Not eligible&quot;| Closed([&quot;Not eligible. No reapply&quot;])
+  Decision --&gt;|&quot;Not eligible&quot;| Closed([&quot;Not eligible. No reapply. Contact support if it&#x27;s a mistake&quot;])
 
-  Decision --&gt;|&quot;Approved&quot;| Gates[&quot;Dashboard: what&#x27;s left before you go live&quot;]
-  Gates --&gt; Payout[&quot;Payout setup with Stripe or Xendit, including identity check&quot;]
+  Decision --&gt;|&quot;Approved. Email&quot;| Gates[&quot;Coach block appears. Coach dashboard: before you go live&quot;]
+  Gates --&gt; Payout[&quot;Payout setup with Stripe or Xendit, including identity check. Country locks&quot;]
+  Payout --&gt;|&quot;Left part-way&quot;| Payout
   Payout --&gt;|&quot;Couldn&#x27;t verify&quot;| PayoutFail[&quot;Your payout account couldn&#x27;t be verified. Try again or contact support&quot;]
   PayoutFail --&gt; Payout
-  Gates --&gt; PhoneGate[&quot;Phone verified&quot;]
-  Gates --&gt; Setup[&quot;Profile setup: bio, avatar, banner, languages, availability, price and credentials per game, showcase (optional)&quot;]
+  Gates --&gt; PhoneGate[&quot;Phone verified, at sign-up&quot;]
+  Gates --&gt; Setup[&quot;Profile setup, 5 steps: about you (bio, photo, banner, languages), games and prices with credentials, availability, showcase (optional), review. Photos checked automatically&quot;]
   Setup --&gt;|&quot;Leave and come back&quot;| Setup
   Payout --&gt; AllDone{&quot;All four done?&quot;}
   PhoneGate --&gt; AllDone
   Setup --&gt; AllDone
-  AllDone --&gt;|&quot;Yes&quot;| Live([&quot;Live and bookable as a New Coach. Email&quot;])
+  AllDone --&gt;|&quot;Yes&quot;| Live([&quot;Live and bookable as a New Coach. Coach sessions appears. Email&quot;])
 
   Live --&gt; NewCoach{&quot;New Coach period&quot;}
   NewCoach --&gt;|&quot;5 completed sessions, no upheld dispute&quot;| Dropped([&quot;Label stops showing. Email&quot;])
@@ -382,10 +391,10 @@ stateDiagram-v2
   
   <div class="diagram"><pre class="mermaid">
 stateDiagram-v2
-  [*] --&gt; draft: Become a coach
+  [*] --&gt; draft: Start your application
   draft --&gt; submitted: submit application
-  submitted --&gt; rejected: team rejects
-  rejected --&gt; submitted: resubmit after changes
+  submitted --&gt; rejected: team rejects (Changes needed)
+  rejected --&gt; submitted: resubmit after changes (third and later: after 14 days)
   submitted --&gt; not_eligible: team marks not eligible
   submitted --&gt; approved: team approves
   approved --&gt; live: payout, phone and profile all complete
@@ -406,7 +415,7 @@ stateDiagram-v2
 </section>
 <section id="f13" class="flow">
   <h2><span class="n">13</span>Navigation and dual-role routing</h2>
-  <p class="note">Gamer and coach data never mix. Each dashboard and each sessions list is its own route with its own data.</p>
+  <p class="note">Gamer and coach data never mix. Each dashboard and each sessions list is its own route with its own data. Before approval there is no Coach block: &quot;Your coach application&quot; opens the application page (2 Nov 2026).</p>
   <div class="diagram"><pre class="mermaid">
 flowchart LR
   Top[&quot;Top bar, always: logo, name and sign out, or log in and sign up&quot;]
@@ -418,12 +427,12 @@ flowchart LR
     GTodo[&quot;To do /dashboard/to-do, opened from the dashboard&#x27;s View all. Dashboard stays highlighted&quot;]
     GBrowse[&quot;Browse coaches /coaches&quot;]
     GSess[&quot;My sessions /sessions&quot;]
-    GBecome[&quot;Become a coach, until a coach record exists&quot;]
+    GBecome[&quot;Become a coach; once started, Your coach application with its status, until approved&quot;]
   end
 
-  subgraph Coach[&quot;Coach block, once a coach record exists&quot;]
+  subgraph Coach[&quot;Coach block, once the application is approved&quot;]
     CDash[&quot;Coach dashboard /coach/dashboard&quot;]
-    CSess[&quot;Coach sessions /coach/sessions&quot;]
+    CSess[&quot;Coach sessions /coach/sessions, once live&quot;]
   end
 
   GDash --&gt;|&quot;View all, when more than 3 to do&quot;| GTodo

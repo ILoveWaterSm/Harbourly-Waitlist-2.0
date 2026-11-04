@@ -1,73 +1,208 @@
 # Handoff prompt
 
-Paste everything below the line into a new chat. Last updated 28 Oct 2026: Phases 0 to 3 are built and published (09 Gamer dashboard was redesigned on 28 Oct). The owner has moved on to **Phase 4: Sign up, log in, account access (pages 11 to 16)**; this handoff briefs it.
+Paste everything below the line into a new chat. Last updated 4 Nov 2026 (start of Phase 6). Phases 0 to 5 are built and published, and checkpoint 6 is closed. The Phase 5 brief that came before this one is in git history (commit `2faa7df` and earlier). What was decided and built in each phase is in DECISIONS.md and BUILD-ORDER.md.
 
 ---
 
-You're joining as the product designer for **Harbourly**, a Southeast Asia-focused esports coaching marketplace. Gamers browse identity-checked coaches, book and pay for one-hour 1-on-1 sessions, hold the session in-app (call, chat, screen share), then confirm and leave a review. Payment is held until the session is confirmed. The brand is built on trust, so every screen should feel calm, precise and dependable, not flashy.
+You're joining as the product designer for **Harbourly**, an esports coaching marketplace focused on Southeast Asia. Gamers browse coaches whose identity has been checked. They book and pay for one-hour 1-on-1 sessions and hold the session in the app (call, chat, screen share). Afterwards they confirm the session and leave a review. Payment is held until the session is confirmed. The brand is built on trust, so every screen should feel calm, precise and dependable, not flashy.
 
-We are designing the actual webapp pages one at a time. Design only, not production code. All planning is recorded in the repo.
+We are designing the real webapp pages one at a time. This is design only, not production code. All planning is recorded in the repo.
 
-**Where we are:** Phase 0 (foundations) was approved at checkpoint 1. Phase 1 (find and book a coach, pages 01 to 05) was closed at checkpoint 2 on 16 Oct 2026. Phase 2 (the session and after: 06 Session detail, 07 Report a problem, 08 Live session) was closed at checkpoint 3 on 21 Oct 2026, with one refinement: on 06, a response that hasn't been sent yet is a dashed status slot, never the quote box. On 23 Oct 2026 the policies in the 11 Oct marketing copy were reconciled (DECISIONS.md, "Policy update, 23 Oct 2026": no Verified badge, only New Coach; gamer pays a 6% platform fee and the coach pays a 12% commission; cancel up to 1 hour before for a full refund, inside the last hour half the coach's price is refunded; no-shows stay disputes, and an upheld gamer no-show splits the coach's price 50/50; S$10 price floor; fixed 60-minute sessions) and applied to the library and pages 01 to 08. Phase 3 (the gamer's home: 09 Gamer dashboard, 10 My sessions) was built on 23 Oct 2026, and 09 was redesigned on 28 Oct 2026 (full-width page, floating welcome banner, a To do box showing 3 items with a "N more to do · View all" link to a To do page, columns that scroll separately on desktop and one page scroll on phone; new ScrollArea component and AppShell "wide" option; all in DECISIONS.md, "Phase 3 decisions"). I haven't formally closed checkpoint 4, but I'm moving on to Phase 4. Three Phase 3 items are still open, so mention each in one line in your first message and don't act on them: (1) 10 My sessions is still at the old 1080px width, and I haven't said whether it should be full width like 09; (2) Kairo's coach-view sidebar links to snapking's 09 and 10 (the sidebar links are only meant for snapking); (3) the "gamer response to a coach's report" gap (see Open items).
+**Where we are:**
 
-**Your task now: build Phase 4, "Sign up, log in, account access"**: pages **11 Sign up, 12 Verify your email, 13 Finish setting up your account, 14 Log in, 15 Forgot and reset password, 16 Accept updated terms** (full spec in `design/BUILD-ORDER.md`, "Phase 4"). Work the same way Phase 3 was built: read everything below, send me your understanding of each page, a link map and every gap in **one message** with your recommendations, and **build only after I answer**. Then build each page once, well, render and check every state at desktop and phone, click through every link, publish each page, put the frames on the canvas under a "Phase 4 · Sign up, log in, account access" title, and **stop for checkpoint 5** ("getting in"). Don't start Phase 5.
+| Phase | Pages | Status |
+|---|---|---|
+| 0 Foundations | | Approved at checkpoint 1 |
+| 1 Find and book a coach | 01 to 05 | Closed at checkpoint 2, 16 Oct 2026 |
+| 2 The session and after | 06 Session detail, 07 Report a problem, 08 Live session | Closed at checkpoint 3, 21 Oct 2026 |
+| 3 The gamer's home | 09 Gamer dashboard, 10 My sessions | Built 23 Oct 2026; 09 redesigned 28 Oct 2026 |
+| 4 Sign up, log in, account access | 11 to 16 | Closed at checkpoint 5, 30 Oct 2026 |
+| 5 Becoming a coach | 17 to 21 | Closed at checkpoint 6, 4 Nov 2026, no changes |
+| **6 Running a coach profile** | **22 Coach profile settings, 23 Coach sessions** | **Your task now** |
+| 7 Account and system pages | 24 Account settings, 25 System pages | Next, after checkpoint 7 |
 
-**What makes Phase 4 different from Phase 3:** these pages are what a stranger meets first, and they are the doorway into every flow already built. The quality bar is **flow consistency and trust**: the user flow's diagram 2 (sign up and log in) must be reproduced exactly (every branch, every blocked state, every return path), the words must match the rest of the product, and the screens must feel calm and precise rather than like a generic auth template. People who give a phone number, a date of birth and a password are deciding whether to trust Harbourly, so each screen says plainly what is asked and why.
+**The plan from here (the owner's order):** build Phase 6, then Phase 7, both with the new research practice below. Only after both are done does the owner review Phases 1 to 5 for improvements. Until then, earlier pages change only where a Phase 6 or 7 decision reaches them (a link, a new state, a shared component), and you say which ones.
 
-## Phase 4 at a glance (from the flow and decisions; check against them, don't trust this summary alone)
+**What Phase 5 settled that Phase 6 builds on** (DECISIONS.md, "Phase 5 decisions"):
+- **No coach dashboard before approval.** Draft, under review, changes needed, the 14-day wait and not eligible live on the application page (18), reached from "Your coach application" in the Gamer block. The Coach block appears at approval with Coach dashboard; **Coach sessions appears once the coach is live.**
+- **19 Coach dashboard, live,** mirrors 09: banner with "Preview my public profile", a To do box (the accent), and Coming up, Money (held and released per session, no totals), Your games and Reviews. Kairo's live state is set at **Mon 5 Oct 2026, 14:12 PHT**. Its "Manage" links (one per game) and "All coach sessions" are the inert links Phase 6 brings to life.
+- **Shared parts from Phase 5** that 22 reuses: WeekHours (availability editor), the checkbox grid (languages), Field `fieldPrefix` (price with currency mark) with the payout line, upload rows (uploading, checking, live, refused, failed, caption), single photo and banner (`uploadMedia`, `uploadBanner`), SaveStatus, the Notice error summary, Checklist. Rules for them: languages a fixed list, 1 to 4; credentials up to 3 per game, 60 characters; prices in whole units with the floor shown up front ("At least S$10 a session.", "The lowest price is S$10."); image checks never block the form.
+- **Cast data already shown on 19 live** that 22 and 23 must agree with: Kairo's games (Mobile Legends `Mythical Glory · 85★` ₱1,850; Call of Duty: Mobile `Legendary · Top 500` ₱2,100); a **rank update under review** (Mobile Legends `Mythical Glory · 92★`, sent Sun 4 Oct, 85★ shown until approved); his bookings at 14:12 (snapking Tue 6 Oct and Wed 7 Oct 20:00 PHT; milo.exe Fri 9 Oct 20:00 with a reschedule request; ozzie Sat 3 Oct 17:00 disputed; tamtam Sat 3 Oct 21:00 pending, released Tue 6 Oct 22:00; ricebowl Thu 1 Oct, nightjar Mon 28 Sep and milo.exe Sun 27 Sep released). Kairo's other students are his reviewers from 02 (ricebowl, tamtam, nightjar, ozzie, milo.exe), all in the Philippines.
 
-- **Sign-in:** email and password, plus Google. No Discord or other social login. Phone OTP at sign-up for everyone. 18+ only. Supported countries only (Singapore, Malaysia, Philippines, Indonesia, Thailand, Vietnam, Brunei, Cambodia, Laos, Myanmar for gamers; coaches are limited to the payout list in DECISIONS.md, "Supported countries").
-- **USER-FLOW diagram 2 is the spec.** Sign up: method (email/password → "Enter email and password" → **Verify your email** → **Finish setting up your account**; Google → straight to Finish setting up). Finish setting up: first name, last name, username, date of birth, phone with OTP, country, gamer or coach, accept terms. Then: under 18 → blocked ("You need to be 18 or older to use Harbourly."); country unsupported → blocked ("Harbourly isn't available in your country yet."); gamer → dashboard; coach with an unsupported coach country → "Coaching isn't available in {country} yet. You can still book sessions as a gamer." then dashboard; coach with a supported country → coach application step 1 (page 17, Phase 5, not built yet).
-- **Log in:** email and password or Google. Forgot password → reset email → set a new password → back to log in. Then the checks, in this order: setup unfinished → Finish setting up; latest terms not accepted → Accept the updated terms; came from a booking → back to the same booking step (03's "Returning after log in" state); otherwise → dashboard.
-- **The gamer or coach choice is a routing hint only.** Every account can book as a gamer.
-- **Phase 4 is the first time the logged-out shell is used on its own pages**: top nav with Log in and Sign up buttons (as on 01 to 03), no sidebar, content centred under the nav (AppShell's "no sidebar" layout; `narrow` for focused flows). Look at how 03 and 04 do it. Check whether the logged-in shell is ever needed in Phase 4 (16 Accept updated terms is shown to a logged-in person who must act before continuing; decide with me what nav it shows).
-- Existing places that already point at these pages and should link to them once published (propose, don't just do): the top nav Log in and Sign up buttons on 01, 02, 03 and the checkout pages; 03's "Log in to continue" and "New to Harbourly? Sign up"; 03's "Returning after log in" state is where a booking login returns to; the sidebar "Become a coach" link leads to 17 (later phase); the new-account state of 09 (`09#new`, Thu 24 Sep 2026, 11:00 SGT, snapking just signed up) is where a gamer lands after Finish setting up.
+**Your task now: build Phase 6, "Running a coach profile".** The pages are:
+- **22** Coach profile settings
+- **23** Coach sessions
+
+The full spec is in `design/BUILD-ORDER.md`, "Phase 6". Work the way Phases 4 and 5 were built:
+1. Read everything below.
+2. **Research first** (the next section).
+3. Send me **one message** with what you looked at and what you're taking from it, your understanding of each page, a link map and every gap, with your recommendations.
+4. **Build only after I answer.**
+5. Build each page once, well.
+6. Render and check every state at desktop and phone, and click through every link.
+7. Publish each page.
+8. Put the frames on the canvas under a "Phase 6 · Running a coach profile" title.
+9. **Stop for checkpoint 7** ("coach side complete"). Don't start Phase 7 until I've reviewed.
+
+**What makes Phase 6 different:** 22 is the place a live coach comes back to again and again, for years, to keep their public profile true: their bio and photos, the languages and hours they coach, their prices, their ranks, the games they offer, their voice intro, showcase and portfolio. Several of those changes go live at once, some wait for an automatic image check, and some wait for the team (a rank update, a new game, a voice intro, a portfolio), while the old version stays visible to gamers. The quality bar is **a coach always knows exactly what gamers see right now, what's waiting for a check or the team, and what will change when**. 23 is the coach's complete record of their sessions, the counterpart of 10 My sessions. Diagram 9 (managing a live profile) must be reproduced exactly.
+
+## Research before you design (new from Phase 6, and for every phase after)
+
+Before you propose a page, study how the best products solve the same problem, so the layout and placement of every part rest on what's proven to work, not on guesswork.
+
+**What to look at, for each page:**
+- 3 to 5 well-regarded products that do the same job, in a similar spirit (calm, trustworthy, marketplace or account tools rather than flashy consumer apps). For 22: how sellers, hosts and professionals manage a public listing or profile (for example a rental host's listing editor, a freelance marketplace's seller profile, a coaching or tutoring platform's coach settings, a scheduling tool's availability editor, a payments dashboard's settings). For 23: booking and session lists (scheduling tools, payments and orders lists).
+- What they put first and what they hide behind a click; how they group sections; where the primary action and Save sit; how they show "live now" against "pending review"; how they preview the public result; how they handle empty, error and pending states; what they do on a phone.
+- The established principles behind good layouts: Nielsen's usability heuristics (visibility of system status, match with the real world, user control, consistency, error prevention, recognition over recall), WCAG 2.2 AA, Fitts's law for target size and placement, progressive disclosure, Gestalt grouping and proximity, form design best practice (one column, labels above fields, inline validation on leaving a field, errors that say how to fix them), and clear information hierarchy.
+
+**How to use it:**
+- **Inspiration, never a copy.** Take the pattern and the reason it works, then express it in Harbourly's own system. Never recreate a real product's design, and never put real product names, logos, branding or recognisable layouts in the mockups.
+- **What's decided wins.** DECISIONS.md, the visual rules and the design system always beat research. If research suggests something that conflicts with them, or adds a feature, section or data that isn't decided, raise it as a recommendation for me to approve. Never build it quietly.
+- **Keep it proportionate.** A bounded pass, about 3 to 5 references per page, is enough. Prefer well-known, current products and published design guidance; skip trend pieces and Dribbble-style concept shots, which look good but haven't been tested by real use.
+
+**How to report it:** in your first message, a short section per page, **"What I looked at and what I'm taking from it"**: each reference in one line (what it is, the one thing worth borrowing and why), then how it shaped your proposal. Say where you deliberately did something different, and why. When a recommendation in your gaps list comes from research, say so.
+
+## Phase 6 at a glance
+
+This is drawn from the flow and decisions. Check it against them; don't trust this summary alone.
+
+**Diagram 9 is the spec.** From the Coach dashboard:
+- **Coach profile settings (22):**
+  - Edit bio, avatar, banner, languages. Photos checked automatically on upload.
+  - Edit weekly availability, in your own time zone.
+  - Edit price per game, not below the floor (S$10, RM 35, ₱430). A booked session keeps the price it was booked at.
+  - Update rank: a new screenshot; the old rank is shown until the team approves the new one.
+  - Add a game: rank and proof; the listing is under review until approved.
+  - Record a voice intro: pending, then approved or declined.
+  - Showcase: up to 5 images with optional captions (80 characters); add, replace, remove, reorder, edit captions; each checked automatically (checking, live, or refused with a reason); a replaced image stays live until its replacement passes; empty (no showcase).
+  - Submit a portfolio: reviewed by hand, shown on your profile if it passes, or "didn't pass" with the reason. It never grants a badge and never shortens the New Coach period.
+  - Preview my public profile: opens 02 in preview mode (02 `preview` exists, for Kairo, with "Back to profile settings").
+- **Payout settings** (20 `live`, built).
+- **Coach sessions list (23)** → Session detail, coach view (06's coach states).
+- **Open disputes involving you** → Session detail (shown on 19 live's To do, built).
+
+**23 Coach sessions** (BUILD-ORDER): a plain list: gamer, date and time, status, the amber "Reschedule requested" second line. States: list, empty, loading, error. Its gamer-side counterpart is 10 My sessions (two groups, Upcoming soonest first and Past newest first, rows open 06, "Load more" after 20, no amounts, no filters, full width). Coaches never see awaiting-payment or expired bookings.
+
+**Uploads and checks** (DECISIONS.md "Uploads", "Automatic image check for every public image", "Coach profile showcase"): rank proof is private (no automatic check, up to 5, 10 MB, JPG, PNG or WebP); profile photo, banner and showcase are public and checked; uncertain counts as refused; no email for the image check; the fixed refusal lines.
+
+**Emails** (not drawn): "Rank update, new game listing, voice intro: approved or declined" and "Portfolio result". Screens must not contradict them.
+
+**Not in Phase 6:** 24 Account settings (the account photo outside coach settings, name, email, password, phone, country, delete account) and 25 System pages are Phase 7. Suspended and banned coach states stay out unless you find they belong here; ask.
 
 ## Repo and branch
 
-Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. `main` has the work up to the browse refinement. Everything since (02 to 05 refinements, Phase 2, the 23 Oct policy update, Phase 3, these docs) is on `claude/fervent-wozniak-svxqyk`, not merged to `main` yet (it already holds `claude/laughing-turing-yhzz0h`, `claude/vibrant-curie-s51c0x` and `claude/epic-pascal-tqw0lh`). If your branch doesn't have the "Phase 3 decisions" section in `design/DECISIONS.md`, merge `origin/claude/fervent-wozniak-svxqyk` into it first (a merge commit, no rebase), then work from there.
+Repo: `ILoveWaterSm/Harbourly-Waitlist-2.0`. `main` has the work up to the browse refinement. Everything since then is on `claude/funny-johnson-7e9olg`, not merged to `main` yet: Phases 1 to 5, their refinements, the 23 Oct policy update and these docs. It already contains `claude/serene-feynman-pavlc0` and the branches before it.
+
+If your branch doesn't have the "Checkpoint 6 outcomes" section in `design/DECISIONS.md`, merge `origin/claude/funny-johnson-7e9olg` into it first, then work from there. Use a merge commit, not a rebase.
 
 ## Read these first, in this order
 
-1. `design/DECISIONS.md`: every agreed decision. **Source of truth.** Anything not covered here or in the flow needs my approval before it's designed. Phase 4 leans most on: "Core product decisions" (sign-in methods, phone OTP), "Supported countries" (gamer list, coach list, the exact blocked-state wording), "Age" (18+ only), "Account and system pages" (the second sign-up layer, updated terms as a blocking screen, forgot and reset password, verify your email with resend), "Emails" (verify, reset and terms emails: their content isn't a page here), "Visual rules for the webapp", "Navigation and identity" and "Browse card and top nav" (the logged-out nav), "Booking from the coach profile" and "Phase 1 decisions" (the login return to the booking step), and "Phase 3 decisions" (where a new account lands: `09#new`).
-2. `design/USER-FLOW.md`: the full MVP user flow in 13 Mermaid diagrams. **Phase 4 is diagram 2 (sign up and log in), line by line**, plus diagram 1 (map: Auth is the front door), diagram 3 (the booking flow's login handoff: "Log in or sign up" and back to the slot), diagram 8 (coach application, where "coach" sends you) and diagram 13 (navigation: logged-out top bar, logo behaviour). Every node in diagram 2 is a state of one of pages 11 to 16. Also at https://claude.ai/artifact/8QiSx8pFYigdVWvUsqqXBm. If the flow changes, run `python3 design/tools/flowsync.py` to copy every diagram and note into `design/user-flow.html`, then republish it to that link.
-3. `design/BUILD-ORDER.md`: 25 pages in 8 phases, with every state each page must show, routes, sizes, checkpoints and published links. Phase 4 lists the states of 11 to 16.
-4. `design/foundations/`: tokens, components, icons, flags and the mockup harness (details below). Read `tokens.css` and the component files before designing anything. For Phase 4 the main parts are **Field** (text inputs, errors, the character counter), **OtpInput** (and `OtpInput.js`), **Checkbox**, **Button** (primary, secondary, block, loading), **TextLink**, **Notice** (inline errors and blocked states), **Card**, **Spinner**, **Flag** and **Icon**; **EmptyState** and **ErrorState** for blocked and expired states; **AppShell** (logged-out, no sidebar, `narrow`) and **TopNav** (logged-out). The library's Field already has text, select, textarea, a counter, an amber error state, the three-field date of birth and a phone field, so use those as they are. Check the library page for a password field with show/hide, a Google button, a resend-timer line and a blocked-state layout; if one doesn't exist, tell me and add it as a new component (and to the library page) rather than styling it inside a page.
-5. **The built pages in `design/pages/`, all of them, as the reference for every pattern and every link target.** For Phase 4: **03 Pick a slot** (its logged-out booking panel "Log in to continue" and the `returning` state), **01 and 02** (logged-out top nav), **04 and 05** (focused, narrow, no-sidebar pages: layout and tone to match), **09's `new` state** (where a new account lands) and **0.2 Components** (Field, OtpInput, Checkbox, Notice, Button).
-6. `design-system/README.md` and `design-system/tokens.json`: the brand design system (also at https://claude.ai/artifact/4HHoqwJVacXMMDzG9XLp4n).
-7. `design/explorations/mono-specimen.html`: what is set in Geist Mono. Where it differs from DECISIONS.md, DECISIONS.md wins.
-8. `landing.html`: brand feel only, not a template.
+1. **`design/DECISIONS.md`:** every agreed decision, and the **source of truth**. Anything not covered here or in the flow needs my approval before it's designed. These are the sections Phase 6 leans on most:
+
+   | Section | What it settles for Phase 6 |
+   |---|---|
+   | "Core product decisions" | Coach games and rates; adding a game later goes through review; the New Coach label |
+   | "Ranks" | Free-text rank, about 40 characters; a rank change needs a new screenshot and the old rank stays visible until approved |
+   | "Uploads" | Limits and error lines; voice intro length and portfolio format are **still to decide in Phase 6** |
+   | "Automatic image check for every public image" | Photo, banner, showcase: checking, live, refused; a replaced image stays until its replacement passes |
+   | "Coach profile showcase" | What it is; 22 adds, replaces, removes, reorders and edits captions |
+   | "Policy update, 23 Oct 2026" | Portfolio (reviewed by hand, never a badge); price floor; booked sessions keep their price |
+   | "Emails" | Coach journey: rank update, new game, voice intro, portfolio results |
+   | "Account and system pages" | "Preview my public profile" |
+   | "Phase 1 decisions" | 02's profile: voice intro player (mocked at 0:45), reviews, availability preview |
+   | "Phase 2 decisions" | The coach view of 06 (price, commission, payout; times in the coach's zone) |
+   | "Phase 3 decisions" | 10 My sessions, the model for 23 |
+   | "Phase 5 decisions" | Everything 22 reuses (languages, credentials, availability, prices, image checks), the coach shells, 19 live's data and links |
+   | "Checkpoint 6 outcomes" | The order of work and the research practice |
+   | "Visual rules for the webapp", "Navigation and identity" | |
+
+2. **`design/USER-FLOW.md`:** the full MVP user flow in 13 Mermaid diagrams.
+   - **Phase 6 is diagram 9 (live coach: managing the profile), line by line.**
+   - Also diagram 8's end (live, the New Coach period), diagram 12 (live, suspended, banned), diagram 13 (the Coach block: Coach sessions once live) and diagram 3 (what gamers see on the profile).
+   - It's also published at https://claude.ai/artifact/8QiSx8pFYigdVWvUsqqXBm. If the flow changes, run `python3 design/tools/flowsync.py` to copy every diagram and note into `design/user-flow.html`, then republish it to that link.
+
+3. **`design/BUILD-ORDER.md`:** 25 pages in 8 phases, with every state each page must show, its route, size, checkpoint and published link. Phase 6 lists the states of 22 and 23; Phase 7 lists 24 and 25, so you can see what is deliberately left out.
+
+4. **`design/foundations/`:** tokens, components, icons, flags and the mockup harness (details below). Read `tokens.css` and the component files before designing anything.
+   - The main parts for Phase 6: **WeekHours**, **Checkbox** (grid), **Field** (prefix, counter, error, label row), **ImageUpload** (rows, single media, banner), **SaveStatus**, **Notice** (error summary), **AudioPlayer** (the voice intro as gamers hear it), **Gallery** (the showcase as gamers see it), **GameRank**, **Price**, **PendingSlot** (anything waiting on the team is a dashed slot, never a quote box), **StatusLabel**, **ConfirmStep** (removing a game or an image, in place, never a pop-up), **Tabs**, **SessionList**, **EmptyState**, **Skeleton**, **ErrorState**, **Sidebar**, **AppShell**.
+   - Things probably **not in the library yet**: a voice recorder (record, re-record, play back, the time limit), a way to reorder showcase images that works with a keyboard and on a phone, and whatever the portfolio needs once its format is decided. If one is missing, tell me and add it as a new component (and to the library page) rather than styling it inside a page.
+
+5. **The built pages in `design/pages/`, all of them.** They are the reference for every pattern and every link target. For Phase 6:
+   - **21 Profile setup:** the same fields as 22's profile parts, as a first-time setup. 22 is the same data, edited later.
+   - **02 Coach profile:** what gamers see; `preview` is the preview mode 22 opens; `own` is Kairo looking at his own profile.
+   - **19 Coach dashboard, `live` and `live-new`:** the links into 22 and 23.
+   - **10 My sessions:** the list pattern 23 should match.
+   - **06's coach states:** 23's row targets (`coach-upcoming`, `coach-cancel`, `coach-request-received`, `coach-pending`, `coach-completed`, `coach-dispute`, `coach-kairo-tue`, `coach-milo-request`, `coach-ozzie-dispute`).
+   - **20 `live`:** a settings page in the app shell, the model for 22's shell.
+   - **0.2 Components**, especially the "Coach onboarding" section.
+
+6. **`design-system/README.md` and `design-system/tokens.json`:** the brand design system (also at https://claude.ai/artifact/4HHoqwJVacXMMDzG9XLp4n).
+7. **`design/explorations/mono-specimen.html`:** what is set in Geist Mono. Where it differs from DECISIONS.md, DECISIONS.md wins.
+8. **`landing.html`:** brand feel and the coach pitch only, not a template.
 
 ## Flow consistency: the rules for this phase
 
-- **Every interactive element maps to a node in USER-FLOW.md diagram 2 (or its neighbours) and to a state that exists.** Before building, make a link map: each button, link, form submit and error recovery on 11 to 16, the flow node it belongs to, and the page and state it leads to (`12#sent`, `13#phone`, `09#new`, `03#returning`…). Put the map in your first message. Anything with no node or no existing target is a gap: ask, don't invent. Targets in later phases (17 Coach application) are inert links, marked in the map.
-- **Cover every branch of diagram 2.** Sign up (email, Google), verify email, finish setting up (under 18, unsupported country, coach in an unsupported coach country, phone OTP, username taken), log in (email, Google, wrong details), forgot and reset password, the post-login checks (setup unfinished, terms, came from a booking, dashboard) and accept updated terms. Say in the map which state shows each node.
-- **Same words everywhere.** Reuse labels already in the product exactly: "Log in", "Sign up", "Log in to continue", "Browse coaches", "Back to dashboard", "Become a coach". Decide each new label once (e.g. "Continue", "Verify", "Resend code", "Finish setting up") and use it identically on every Phase 4 page; list the new labels in your first message. The blocked-state wording is fixed by DECISIONS.md: "You need to be 18 or older to use Harbourly.", "Harbourly isn't available in your country yet.", "Coaching isn't available in {country} yet. You can still book sessions as a gamer."
-- **Same facts everywhere.** The country list is the supported-countries list; a coach's country list is the shorter coach list. Dates and times use the product's format (`Mon 5 Oct`, 24-hour, zone label) and British English.
-- **Plain, trustworthy copy.** Say why each thing is asked (phone: "so coaches and Harbourly can reach you about sessions", date of birth: "Harbourly is for people 18 and over"), without marketing filler. Errors say what happened and what to do next, never blame the person, and never reveal whether an email has an account where that would be a privacy leak (e.g. forgot password says "If that email has an account, we've sent a link"; **ask me** if you think log in's wrong-details copy should differ).
-- **Navigation stays as built.** Logged-out top nav (logo to the marketing home, Log in, Sign up), no sidebar, burger below 1000px only where the nav needs it. The logo goes to the marketing home when logged out and to the dashboard when logged in.
-- **Link the mockups together.** `data-link="09#new"` on an `<a>` opens that page's mockup at that state (new tab); `data-go="state"` switches state within the page. Add 11 to 16 to the page table in `foundations/mockup.js` once published. Then propose (don't just do) pointing the Log in and Sign up buttons on 01 to 05 and 03's "Log in to continue" at 14 and 11, and republishing those pages, so the whole prototype can be walked from a logged-out visitor to a booked session.
-- **One account story.** The sign-up journey is for a new gamer who ends up as **snapking** (gamer only, signed up Thu 24 Sep 2026, 11:00 SGT, which is the "now" of `09#new`). Use snapking's data in filled forms: don't invent a new cast. The coach path ends at 17 (not built).
+- **Every interactive element maps to a node in diagram 9 (or its neighbours) and to a state that exists.**
+  - Before building, make a link map: each button, link, save, upload, record, submit, reorder, remove and error recovery on 22 and 23, the flow node it belongs to, and the page and state it leads to (`22#…`, `02#preview`, `06#coach-upcoming`, `19#live`…). Put the map in your first message.
+  - Anything with no node or no existing target is a gap: ask, don't invent.
+  - Targets in Phase 7 (24 Account settings, 25 System pages) are inert links, marked as such in the map.
+- **Cover every branch of diagram 9:** each edit that goes live at once; each that waits for the automatic check (checking, live, refused); each that waits for the team (pending, approved, declined or didn't pass) with the old version still shown to gamers; the preview; and 23's list, empty, loading and error. Say in the map which state shows each node.
+- **Gamers' view stays true.** Whatever 22 shows as "live" must match what 02 shows; whatever is pending must not be on 02 yet. Where a Phase 6 state changes what 02 shows (a new voice intro, a portfolio once it passes, an approved rank), say which 02 states that touches and ask before changing 02.
+- **Same words everywhere.**
+  - Reuse labels already in the product exactly: "Coach dashboard", "Coach sessions", "Preview my public profile", "Manage", "New Coach", "View session", "Back to coach dashboard", "Add images", "Remove", "Replace", "Add a photo", "Add a banner", "Add hours", "Add a credential", "Save and continue" (setup only), "Under review", the upload hint and error lines from DECISIONS.md "Uploads", the image-check refusal lines, and 21's field labels and hints.
+  - Decide each new label once (e.g. "Save changes", "Update rank", "Add a game", "Record a voice intro", "Submit portfolio") and use it identically. List the new labels in your first message.
+- **Same facts everywhere:**
+  - Prices are in the coach's own currency, never "≈" on the coach's own pages; the floor per currency (S$10, RM 35, ₱430); the payout line as 21 shows it (₱1,850.00 − ₱222.00 = ₱1,628.00).
+  - Dates and times use the product's format (`Mon 5 Oct`, 24-hour, zone label) in the coach's own time zone (PHT for Kairo). Write in British English.
+  - Every number on 22 and 23 agrees with 19 live and 06 (the rank under review, the bookings, the amounts).
+- **Plain, trustworthy copy.** Say what changes for gamers and when ("Gamers see this as soon as you save." / "Gamers keep seeing 85★ until our team approves 92★."), who is doing what, and never promise a review time I haven't agreed.
+- **Navigation stays as built:** logged-in top nav, the sidebar with Gamer and Coach blocks, the burger below 1000px, the logo to the gamer dashboard. Decide with me which link each page highlights (22 isn't a sidebar link) and whether 22 is one page with sections, tabs or several pages.
+- **Link the mockups together.**
+  - `data-link="22#…"` on an `<a>` opens that page's mockup at that state in a new tab. Cross-page buttons must be `<a class="button">`, because the harness only sets `href` on `<a>`. `data-go="state"` switches state within the page.
+  - Add 22 and 23 to the page table in `foundations/mockup.js` once published.
+  - Then propose, don't just do, these changes, so a live coach's whole day can be walked: 19 live's "Manage" → 22 and "All coach sessions" → 23; the sidebar's Coach sessions on Kairo's shells → 23 (the harness's `KAIRO` table in `mockup.js`); 02 `preview`'s "Back to profile settings" → 22; 06's coach-view "Coach sessions" back links → 23; and republishing those pages (06 is about 260 KB built; see publishing below).
+- **One story per account.** Kairo (live, established, Mon 5 Oct 2026, 14:12 PHT) is the natural owner of 22 and 23; snapking (just live as a New Coach, Sat 24 Oct 2026) owns `19#live-new`. Don't invent a new cast without asking. See the gaps below.
 
-## Accessibility and mobile (matters most on forms)
+## Accessibility and mobile
 
-- Every field has a visible label (not placeholder-only), a helper line where useful, an inline error tied to the field, and the error state doesn't rely on colour alone (there is no red in this product; errors use Field's amber border plus an icon and message, as in the library).
-- Phone-first: one column, 16px+ inputs (no iOS zoom), 44px minimum targets, the right `autocomplete`, `inputmode` and `type` hints written into the markup where it is visible (email, tel, one-time-code, current-password/new-password), password show/hide.
-- The primary action is one per screen. Loading states disable the submit and say what's happening ("Creating your account…"). Nothing important sits only in a toast.
-- Layouts must scale cleanly from 320px to a large desktop (container queries, as everywhere else): check 1440, 1280, 1024, 820, 390 and 320 wide, and a short desktop window (1280×720). The form sits centred at a readable width on desktop, not stretched.
+- **Every field:** a visible label, not just a placeholder, and a helper line where useful; an inline error tied to the field; a counter where there's a limit (bio 500, captions 80, credentials 60, rank 40); errors signalled with more than colour (Field's amber border, an icon and a message; there is no red).
+- **Long settings pages:** clear sections, each saying how it saves. Nothing is lost by leaving: say what happens to unsaved changes. Validation runs on save and on leaving a field, never while typing. On save, focus moves to the first error with a summary at the top.
+- **Uploads:** a visible button (not drag-and-drop only), the hint, progress, one row per file with its own state and Remove, error lines that name the file, and a "Checking…" state that doesn't block the rest.
+- **Reordering** works with a keyboard and on a 320px phone (for example Move up / Move down buttons), not only by dragging.
+- **Recording audio** has a keyboard path, says plainly when the microphone is blocked and how to allow it (08 has the pattern), and offers an alternative if recording isn't possible.
+- **Phone-first and the primary action:** one column on phones, 16px+ inputs (no iOS zoom), 44px minimum targets, the right `autocomplete`, `inputmode` and `type` hints, one primary action per screen, loading states that disable the button and say what's happening, nothing important only in a toast.
+- **Layouts scale cleanly from 320px to a large desktop** (container queries, as everywhere else). Check 1440, 1280, 1024, 820, 390 and 320 wide, and a short desktop window (1280×720). 23 uses the width like 10.
 
 ## Before you build anything
 
-Read everything above, then come back to me with, in one message:
-- your understanding of each page's layout and how its states differ, in a few lines per page (11 to 16);
-- the link map (see the rules above), including which diagram 2 node each state shows;
-- the new labels and error copy you propose, in a short table;
-- every gap or ambiguity you find in the decisions or flow, for example: the sign-up password assumption (see Open items: confirm it); whether the email-sign-up verification link opens 12's "verified" state and continues to Finish setting up on its own or after a button press, and what a Google sign-up shows instead of 12; whether sign-up (11) asks for the terms checkbox or only 13 does (the flow says 13); what the password rules are (length, strength meter or plain rules) and where "weak password" copy comes from; how an unsupported country is reached if the country dropdown lists supported countries only (DECISIONS.md says both: recommend an "Other country" option that triggers the blocked state); the supported coach countries list and whether Thailand is shown; whether the date of birth is a typed field or three selects, and how under-18 is shown without storing anything; the OTP rules (digits, resend timer length, attempts before a lockout) and what happens to the form data when the phone step is open; username rules (length, characters, taken-state suggestions); how the "log in to book with Kairo" context appears (a small card with Kairo and the time, matching 03's returning state); what log in does for a Google account that hasn't finished setup; what 16 Accept updated terms shows (what changed? link to the terms, one checkbox or one button, what a person who doesn't accept can do: sign out only) and which nav it uses; the "now" and the data each state uses; and whether verification and reset emails are drawn as pages (recommend no: out of scope unless I say so);
-- your recommendation for each, so I can answer quickly.
+Read everything above and do the research, then come back to me with all of this in one message:
+- **What I looked at and what I'm taking from it**, per page (see "Research before you design").
+- **Each page:** your understanding of its layout and how its states differ, in a few lines (22, 23).
+- **The link map** (see the rules above), including which diagram 9 node each state shows.
+- **The new labels and copy** you propose, in a short table: buttons, the status lines for live, checking, pending and declined, the save lines, the errors.
+- **Every gap or ambiguity** you find in the decisions or flow, each with your recommendation, so I can answer quickly. The ones I already know about:
+  - **Who and when.** Kairo at Mon 5 Oct 2026, 14:12 PHT for 22 and 23 (matching 19 live, including the rank update under review), and snapking at Sat 24 Oct for 23's empty state? Or another split? Give the "now" for each state, and how every fact agrees with 19 live, 06 and 02.
+  - **22's structure.** One long page with sections, tabs (the Tabs component exists) or a hub with sub-pages? Which sections, in which order (profile, availability, games and prices, voice intro, showcase, portfolio)? Where "Preview my public profile" sits. Research should inform this.
+  - **How 22 saves.** Per section ("Save changes" with a SaveStatus line), autosave, or one Save for the page? What happens to unsaved changes when someone leaves? Which edits go live at once, which wait for the image check, and which wait for the team.
+  - **Prices.** The note that booked sessions keep their price, and where it shows.
+  - **Availability changes.** What happens to sessions already booked outside the new hours, and to times held in an open reschedule request? Recommend: nothing changes for them, and say so on the page.
+  - **Update rank.** One field and up to 5 screenshots per game? Can a pending update be withdrawn or replaced? What a declined update shows (the reason, and the old rank still live), and how 02 and 19 stay in step.
+  - **Add a game.** Only games not listed yet; rank and proof; when the price is set (with the request, or after approval); what "under review" looks like on 22 and 19; declined.
+  - **Voice intro.** The length (still to decide; 02 is mocked at 0:45), record in the browser or upload a file (and which formats), re-record before sending, review by the team (pending, approved, declined with a reason), and what gamers hear meanwhile (the old intro, or none). The microphone-blocked state.
+  - **Portfolio.** The format (still to decide: links, images, PDFs?), what the team reviews, the states (submit, under review, shown on your profile, didn't pass with the reason), and how it shows on 02 once it passes (a change to a Phase 1 page: ask). Its images also go through the automatic image check once public.
+  - **Showcase.** Reordering (keyboard and phone), editing a caption on a live image (does the caption get checked again?), the empty state, and what's shown while an image is checking.
+  - **Photo and banner.** A replaced photo stays until the new one passes; the photo is also the account photo (24 in Phase 7 edits it too).
+  - **Preview my public profile.** 02 `preview` is Kairo; does it need to show the pending rank as gamers see it (the old rank)? Where its "Back to profile settings" goes.
+  - **23 Coach sessions.** Mirror 10 (Upcoming soonest first, Past newest first, rows open 06, "Load more" after 20)? Does a row show the coach's payout, or no amounts like 10? Which of Kairo's bookings appear, and which 06 coach states they open: some exist, others (tamtam's pending session, the released ones) would need new 06 copies or stay inert. Recommend which.
+  - **New Coach progress.** 19 `live-new` shows "0 of 5". Does 22 or 23 show anything about it? Not specced, so ask before adding.
+  - **Anything research suggests that isn't decided** (pausing bookings, hiding the profile, a public profile link to share, availability exceptions for holidays…): list it as a recommendation, don't add it.
+  - **Emails.** Recommend not drawing the coach emails as pages.
 
-Build only after I answer. Build each page once, well: render it, look at every state at desktop and phone once, fix what the renders show, click through every link and `data-go` with a Playwright script, then publish.
+Build only after I answer. Build each page once, well: render it, look at every state at desktop and phone once, and fix what the renders show. Click through every link and `data-go` with a Playwright script, and check every width for horizontal overflow. Then publish.
 
 ## What exists
+
+Every page below is published as an interactive page, and its source file is in the repo.
 
 | | Interactive page | Source |
 |---|---|---|
@@ -83,88 +218,279 @@ Build only after I answer. Build each page once, well: render it, look at every 
 | 08 Live session | https://claude.ai/artifact/LB4gwSiruwp8qDVRLS27Nt | `design/pages/08-live-session.html` |
 | 09 Gamer dashboard | https://claude.ai/artifact/Qcz63mYRxQufNaf8wUr1fM | `design/pages/09-gamer-dashboard.html` |
 | 10 My sessions | https://claude.ai/artifact/RA5wuSQuWSaw8hcPfsJpet | `design/pages/10-my-sessions.html` |
+| 11 Sign up | https://claude.ai/artifact/QkABonvTk67WnzxPHH1rrC | `design/pages/11-sign-up.html` |
+| 12 Verify your email | https://claude.ai/artifact/MmPhavSEmaQbDFcxNtvcG4 | `design/pages/12-verify-your-email.html` |
+| 13 Finish setting up your account | https://claude.ai/artifact/HoUgKYU9pkBwvGxiaCCDZh | `design/pages/13-finish-setting-up.html` |
+| 14 Log in | https://claude.ai/artifact/KFSLVdswwSLN2HGsMyn8ed | `design/pages/14-log-in.html` |
+| 15 Forgot and reset password | https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4 | `design/pages/15-forgot-and-reset-password.html` |
+| 16 Accept updated terms | https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG | `design/pages/16-accept-updated-terms.html` |
+| 17 Coach application, step 1 | https://claude.ai/artifact/UPdfZV5NDEKHgQk6A9m1vL | `design/pages/17-coach-application-step-1.html` |
+| 18 Coach application, step 2 | https://claude.ai/artifact/UuoARHjHiK321bFmrrT3Ww | `design/pages/18-coach-application-step-2.html` |
+| 19 Coach dashboard | https://claude.ai/artifact/PZWfUhEGXGatrN3DdtNneV | `design/pages/19-coach-dashboard.html` |
+| 20 Payout setup and settings | https://claude.ai/artifact/VVKZYhCa86RgU13zH5EKU8 | `design/pages/20-payout-setup.html` |
+| 21 Profile setup | https://claude.ai/artifact/7KKq11638mXPeYQNn17Cxb | `design/pages/21-profile-setup.html` |
 | Coach card v2 (exploration) | https://claude.ai/artifact/WsAyxiSS39SwGyE3QYp3Xn | `design/explorations/coach-card-v2.html` |
+| Sign up split layout (exploration) | https://claude.ai/artifact/QfL2PD3dCfK7wa6NpjD8qa | `design/explorations/auth-split.html` |
+| Panel message (exploration) | https://claude.ai/artifact/JiEipPbboBorAiwpNxPW1W | `design/explorations/auth-panel-copy.html` |
 | User flow | https://claude.ai/artifact/8QiSx8pFYigdVWvUsqqXBm | `design/USER-FLOW.md` (published copy `design/user-flow.html`) |
-| Canvas, "Harbourly webapp" | https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ | Every library section and every Phase 1, 2 and 3 state, desktop and phone (Phase 4 goes below) |
+| Canvas, "Harbourly webapp" | https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ | Every library section and every Phase 1 to 5 state, desktop and phone |
 
-State ids you can link to (`data-link="NN#id"`):
-- **05:** confirming, confirmed, failed, released.
-- **06 (gamer):** upcoming, cancel-confirm (full refund), cancel-late (inside the last hour), cancelled, coach-cancelled, locked, reschedule-form, reschedule-waiting, reschedule-received, reschedule-keep-or-cancel, moved, reschedule-declined, reschedule-expired, join, in-session, pending, pending-soon, confirm-step, completed-review, review-posted, disputed-open, disputed-review, resolved-refunded, resolved-paid, payment-problem, awaiting-payment, expired, loading, error. **06 (the dashboard's other bookings, Phase 3):** kairo-tue, vexa-request, mirae-pending, mirae-confirm, ghostline-review, nullpoint-open (their onward links are inert). **06 (coach):** coach-upcoming, coach-cancel, coach-request-received, coach-pending, coach-completed, coach-dispute.
-- **07:** gamer-after, mirae-after (Phase 3), gamer-noshow, gamer-payment, coach-after, coach-payment, validation, upload-error, submitted, respond, response-sent.
-- **08:** waiting, no-show, coach-waiting, live, camera, share, banner-10, banner-5, banner-1, end-confirm, end-sent, end-received, reconnecting, other-dropped, blocked, ended, coach-ended.
-- **09:** busy, todo-all (the To do page), quiet (nothing to do), new (brand-new account), loading, error. **10:** list, empty, loading, error.
+### State ids you can link to
 
-The files:
-- `design/foundations/tokens.css`: the global stylesheet. Every design-system token by its exact name, plus `--shadow-flat` and `--shadow-cta-rest`, base styles and the webapp type scale.
-- `design/foundations/components/<Name>.css`: one file per shared component, each lifting straight into `<Name>.module.css`. Every selector starts with the component's root class. Components: AppShell, TopNav, Sidebar, MobileMenu, Button, TextLink, IconButton, Field, Checkbox, OtpInput, ImageUpload, StepCounter, StatusLabel, Badge, Avatar, Flag, Price, GameRank, Rating, Card, CoachCard, SessionList (`compact`: rows stack at every width, added in Phase 3), Notice (with CallBanner), Countdown (with HoldTimer), ConfirmStep, EmptyState, Skeleton, ErrorState, PendingSlot (a response, review or reply not sent yet; `stacked` for narrow columns; added in Phase 3), Icon, OptionCard, SlotPicker (one time, or up to 3), AudioPlayer, ReviewItem, PriceBreakdown, Spinner, Gallery, ParticipantTile, CallControls, ChatPanel. Behaviour files beside them: `OtpInput.js`, `Rating.js` (star input), `Field.js` (character counter). All are shown on the component library page.
-- `design/foundations/icons.js`: the line icon sprite (24px grid, 1.8 stroke). Use `<svg class="icon"><use href="#i-name"/></svg>`. Add new icons in the same style. `design/foundations/flags.js`: simplified country flags (ph, sg, my).
-- `design/foundations/mockup.css` and `mockup.js`: the mockup harness, not product code. Pages put each state in `<section data-state="id" data-label="Label">` inside `<div class="mk-frame" data-page="NN Page">`; the harness builds the state switcher and the desktop/phone toggle. `window.mk.set(stateId, "desktop" | "phone")` switches from script. A state with `data-shell="name"` is wrapped in `<template id="shell-name">` (the app shell, written once per page; copy the gamer shell from 06) and `data-nav="key"` marks the current sidebar link. The harness also wires the burger menu and the `data-link` cross-page links, and gives every gamer shell its links: logo and sidebar Dashboard → 09, Browse coaches → 01, My sessions → 10 (only when snapking is logged in). Use a 2-digit `data-page` name, e.g. `09 Gamer dashboard`.
-- Mockup behaviour (a page's own interactions, like `data-go` steps) goes in a `<script>` in the page; behaviour that belongs to a shared component goes in `foundations/components/<Name>.js`, included before `mockup.js`. `build.mjs` inlines local scripts.
-- Phase 2 and Phase 3 pages were generated once by scratch scripts that aren't in the repo; the HTML files are the source now, so edit them directly.
-- A page without its own `<meta charset>` can render with garbled characters ("Â·") in local renders. The component library now declares it; 0.1 Tokens still doesn't, so add it there before re-rendering that page.
-- Responsive rules are container queries on a container named `app` (the app shell; the mockup frame in the harness), not media queries. Breakpoints in use: 1099px (two-column page bodies stack), 999px (sidebar folds into the burger menu), 640px, 560px, 520px, 400px.
-- Top nav is 76px tall (68px below 1000px). Sticky elements sit under it: the sidebar at `top: 76px`, sticky side panels at `top: 100px`.
+Link with `data-link="NN#id"`.
 
-**Reuse these components on every page.** If a page needs a new shared part, add it as a new component file and to the component library page (and a library row in canvas.py if you add a new library section), and tell me, rather than styling it inside the page. Page-only layout goes in the page's own `<style>` block (it becomes that page's `page.module.css`).
+**01:** results, guest, filtered, empty, loading, more, error.
+
+**02:** verified (Kairo, several games), one-game, new-coach, guest, own (Kairo's own profile), preview (preview mode, Kairo, "Back to profile settings"), loading, not-found.
+
+**03:** available, guest, none, taken, returning, phone.
+
+**04:** different-currency, same-currency, under-24h, nearly-expired, expired, failed.
+
+**05:** confirming, confirmed, failed, released.
+
+**06, gamer view:** upcoming, cancel-confirm (full refund), cancel-late (inside the last hour), cancelled, coach-cancelled, locked, reschedule-form, reschedule-waiting, reschedule-received, reschedule-keep-or-cancel, moved, reschedule-declined, reschedule-expired, join, in-session, pending, pending-soon, confirm-step, completed-review, review-posted, disputed-open, disputed-review, resolved-refunded, resolved-paid, payment-problem, awaiting-payment, expired, loading, error, reported (Kairo reported a problem, respond), reported-responded.
+
+**06, the dashboard's other bookings (Phase 3):** kairo-tue, vexa-request, mirae-pending, mirae-confirm, ghostline-review, nullpoint-open. Their onward links are inert.
+
+**06, coach view (Kairo):** coach-upcoming, coach-cancel, coach-request-received, coach-pending, coach-completed, coach-dispute.
+
+**06, the coach dashboard's other bookings (Phase 5, Mon 5 Oct 14:12 PHT):** coach-kairo-tue (snapking, Tue 6 Oct), coach-milo-request (milo.exe asked to move Fri 9 Oct), coach-ozzie-dispute (ozzie reported "Session ended early"). Their onward links are inert.
+
+**07:** gamer-after, mirae-after (Phase 3), gamer-noshow, gamer-payment, coach-after, coach-payment, validation, upload-error, submitted, respond, response-sent, coach-ozzie-respond (Phase 5), gamer-respond, gamer-response-sent.
+
+**08:** waiting, no-show, coach-waiting, live, camera, share, banner-10, banner-5, banner-1, end-confirm, end-sent, end-received, reconnecting, other-dropped, blocked, ended, coach-ended.
+
+**09:** busy, todo-all (the To do page), reported (Kairo reported a problem, Thu 8 Oct), quiet (nothing to do), new (brand-new account), loading, error.
+
+**10:** list, empty, loading, error.
+
+**11:** form, booking, errors, loading.
+
+**12:** sent, resent, expired, verified, verified-other.
+
+**13:** form, google, missing, phone, wrong-code, filled, username-taken, coach-unavailable, booking, submitting, under-18, not-available. The role choice is a live radio in every form state. Finish setting up in `filled` goes to `17#intro` when the coach option is chosen (Singapore is a coach country), otherwise `09#new`; `booking` goes to `03#returning`.
+
+**14:** form, booking, wrong, too-many, loading.
+
+**15:** request, sent, new-password, expired, done.
+
+**16:** terms.
+
+**17:** intro, not-available.
+
+**18:** empty, draft, validation, upload-error, confirm, submitting, submitted, under-review, rejected, rejected-changed, rejected-wait, not-eligible.
+
+**19:** approved, payout-checking, in-progress, payout-failed, live-new (snapking just live), live (Kairo), loading, error. There are no pre-approval states: 18 holds them.
+
+**20:** start, confirming, unfinished, checking, verified, failed, live (Kairo).
+
+**21:** about, about-checking, about-refused, about-errors, games, games-error, resumed, showcase, review, complete.
+
+### The files
+
+**`design/foundations/tokens.css`:** the global stylesheet. It has every design-system token by its exact name, plus `--shadow-flat` and `--shadow-cta-rest`, base styles and the webapp type scale.
+
+**`design/foundations/components/<Name>.css`:** one file per shared component, each lifting straight into `<Name>.module.css`. Every selector starts with the component's root class.
+
+| Component | Notes |
+|---|---|
+| AppShell | Options `narrow` and `wide`, and `noSidebar` |
+| TopNav | `gate`: logo and Sign out only |
+| Sidebar | Gamer and Coach blocks; the "Become a coach" link |
+| MobileMenu | |
+| Button | |
+| TextLink | |
+| IconButton | |
+| Field | Text, select, textarea, counter, date of birth, phone, `password` with Show and Hide, label row |
+| Checkbox | |
+| OtpInput | |
+| ImageUpload | |
+| StepCounter | |
+| StatusLabel | |
+| Badge | New Coach only |
+| Avatar | |
+| Flag | |
+| Price | |
+| GameRank | |
+| Rating | |
+| Card | |
+| CoachCard | |
+| SessionList | `compact` |
+| Notice | With CallBanner |
+| Countdown | With HoldTimer |
+| ConfirmStep | |
+| EmptyState | |
+| Skeleton | |
+| ErrorState | |
+| PendingSlot | `stacked` |
+| ScrollArea | |
+| Icon | |
+| OptionCard | |
+| SlotPicker | |
+| AudioPlayer | |
+| ReviewItem | |
+| PriceBreakdown | |
+| Spinner | |
+| Gallery | |
+| ParticipantTile | |
+| CallControls | |
+| ChatPanel | |
+| GoogleButton | Added in Phase 4 |
+| Tabs | Added in Phase 4 |
+| AuthLayout | Added in Phase 4. Its mark image ships as `harbourly-mark.png` beside the page, so pass it as a supporting file when publishing 11, 14, 15 and the library |
+| ResultPanel | Added in Phase 4. A whole-page outcome: icon, title, text, one way on |
+| Checklist | Added in Phase 5. 19's "Before you go live" rows: done, waiting, needs you, to do |
+| SaveStatus | Added in Phase 5. "Draft saved · 21:34", "Saving…", "Saved" |
+| WeekHours | Added in Phase 5, with `WeekHours.js`. Weekly hours in whole-hour ranges, in the coach's zone |
+| (additions) | Phase 5 also added ImageUpload rows, single media and banner; the Checkbox grid; Field `fieldPrefix`; Notice `noticeLinks` (error summary); the Sidebar's "Your coach application" status link |
+
+**Behaviour files** sit beside the components: `OtpInput.js`, `Rating.js` (star input), `Field.js` (character counter, password Show and Hide), `ScrollArea.js`, `WeekHours.js` (fills the hour selects, adds and removes ranges, counts slots). Every component is shown on the component library page.
+
+**`design/foundations/icons.js`:** the line icon sprite (24px grid, 1.8 stroke). Use `<svg class="icon"><use href="#i-name"/></svg>`, and add new icons in the same style. `design/foundations/flags.js` has simplified country flags (ph, sg, my).
+
+**`design/foundations/mockup.css` and `mockup.js`:** the mockup harness, not product code.
+- Pages put each state in `<section data-state="id" data-label="Label">` inside `<div class="mk-frame" data-page="NN Page">`. The harness builds the state switcher and the desktop/phone toggle. `window.mk.set(stateId, "desktop" | "phone")` switches state from a script.
+- A state with `data-shell="name"` is wrapped in `<template id="shell-name">`. That is the app shell, written once per page; copy the gamer shell from 09 and the coach shells from 06. `data-nav="key"` marks the current sidebar link.
+- The harness wires the burger menu and the `data-link` cross-page links. Sidebar targets come from two tables near the top of `mockup.js`, chosen by the shell's `.topNavUser` aria-label: **snapking** (`NAV`: Dashboard → `09#busy`, Browse coaches → `01#results`, My sessions → `10#list`, "Become a coach" → `17#intro`, the logo → `09#busy`) and **Kairo** (`KAIRO`: Coach dashboard → `19#live`; his Gamer links and logo stay inert, since he has no gamer pages). Coach sessions has no target yet: adding `'coach-sessions': '23#list'` to `KAIRO` is part of Phase 6's wiring. A state's `data-coach="19#…"` sets that state's Coach dashboard link (used by 18 to 21, where the journey moves on day by day). `window.mkPages` exposes the page table to page scripts (13 uses it for its coach choice).
+- `.mk-hint` (dashed "Mockup: …" line) is a mockup-only shortcut for steps that happen outside the app or take time, such as opening an email link, coming back from Stripe or a check finishing. It is hidden in canvas renders.
+- Use a 2-digit `data-page` name, e.g. `19 Coach dashboard`.
+
+**Page behaviour:** a page's own interactions (like `data-go` steps) go in a `<script>` in the page. Behaviour that belongs to a shared component goes in `foundations/components/<Name>.js`, included before `mockup.js`. `build.mjs` inlines local scripts.
+
+**Editing pages:** every earlier page was generated once by scratch scripts that aren't in the repo. The HTML files are the source now, so edit them directly. Phase 5's pages were generated by scratch scripts too (not in the repo); edit their HTML directly. If you generate Phase 6 pages with a script, treat the HTML as the source once it's committed.
+
+**Outside edits:** once in Phase 4, another process changed pages and files in the working tree between turns. Before every commit, run `git status` and read the diff. Never commit a change you can't explain; stash it and tell me.
+
+**`<meta charset>`:** a page without its own `<meta charset>` can render with garbled characters ("Â·") in local renders. 0.1 Tokens still doesn't declare it, so add it there before re-rendering that page.
+
+**Responsive rules** are container queries on a container named `app` (the app shell; the mockup frame in the harness), not media queries. The breakpoints in use are 1188px (09's columns stack), 1099px (two-column page bodies stack), 999px (the sidebar folds into the burger menu), 640px, 560px, 520px, 400px and 360px.
+
+**Top nav and sticky elements:** the top nav is 76px tall (68px below 1000px). Sticky elements sit under it: the sidebar at `top: 76px`, sticky side panels at `top: 100px`.
+
+**Reuse these components on every page.** If a page needs a new shared part:
+- add it as a new component file and to the component library page
+- add a library row in canvas.py if you add a new library section
+- tell me
+
+Don't style it inside the page. Page-only layout goes in the page's own `<style>` block, which becomes that page's `page.module.css`.
 
 ## How pages are built and published
 
-- Build a publishable copy: `node design/tools/build.mjs design/pages/<page>.html <outDir>`. It inlines the CSS and JS and copies the logo next to the page.
-- Publish the built file as a private artifact, passing the logo as a supporting file (`files: {"harbourly-logo.png": "<outDir>/harbourly-logo.png"}`). A new page is a new artifact (no `url`; give it an `icon`). To update an existing page, publish to its existing link (`url`) so the link never changes. Add each new page's link to its phase in BUILD-ORDER.md, to the table above and to the page table in `mockup.js`.
-- Publishing over a link this chat hasn't published is refused once with a diff of the live version. If the diff shows only your own edits (it should: these pages only change from the repo), publish the same file again; if that's refused as "identical content", publish it once more and it goes through. For a very large page (06, about 215 KB) the refusal instead saves the live source and asks you to Read every line of it: first diff it locally against a build of the repo version (strip the platform's wrapper lines), then Read it in chunks of about 450 to 700 lines (25,000 tokens per Read), then publish.
-- Each chat can watch at most 10 artifacts for changes; a "wake subscription not registered" notice after that is harmless.
-- Render the frames: `node design/tools/render.mjs <outDir>/<page>.html <framesDir> <prefix>` (prefix `11` to `16`; optional 4th argument = window height, default 900). It renders every state at 1440 and 390 wide, at 2x, as `<prefix>__<state>__<desktop|phone>.png`. Playwright is installed globally; a test script of your own loads it with `createRequire(import.meta.url)(execSync('npm root -g').toString().trim() + '/playwright')`. Use one to click through every link and state change before publishing.
-- Review renders cheaply: `python3 design/tools/sheet.py out.png <cropHeightCss> <scale> frame1.png frame2.png …` makes a contact sheet.
-- When replacing existing frames, keep the previous renders and run `python3 design/tools/framediff.py <oldDir> <newDir>`; spinners, skeletons and ticking countdowns can differ by a few pixels, which isn't a change.
+**Build:**
+- Build a publishable copy with `node design/tools/build.mjs design/pages/<page>.html <outDir>`. It inlines the CSS and JS and copies the images the page uses (the logo, and the mark on 11, 14, 15 and the library) next to the page.
+- Publish the built file as a private artifact, passing each copied image as a supporting file (`files: {"harbourly-logo.png": "<outDir>/harbourly-logo.png"}`).
+- A new page is a new artifact: no `url`, and give it an `icon`. To update an existing page, publish to its existing link (`url`) so the link never changes.
+- Add each new page's link to its phase in BUILD-ORDER.md, to the table above and to the page table (`PAGES`) in `mockup.js`.
+
+**Publishing over a link this chat hasn't published** is refused once, with a diff of the live version.
+- If the diff shows only your own edits (it should, because these pages only change from the repo), publish the same file again. If that's refused as "identical content", publish it once more and it goes through.
+- In Phase 5 every page came back with a line diff (06 included, about 260 KB built), which is quick to check. If a page instead comes back with its whole live source inline or saved to a file and asks you to read it, compare it against a build of the repo version, then publish.
+
+**Watching:** each chat can watch at most 10 artifacts for changes. A "wake subscription not registered" notice after that is harmless.
+
+**Render the frames** with `node design/tools/render.mjs <outDir>/<page>.html <framesDir> <prefix>`. The prefix is `22` and `23`. An optional 4th argument sets the window height (default 900; 09 uses 700 because of its fixed-height desktop columns). It renders every state at 1440 and 390 wide, at 2x, as `<prefix>__<state>__<desktop|phone>.png`.
+
+**Test before publishing:**
+- Playwright is installed globally. A test script of your own loads it with `createRequire(import.meta.url)(execSync('npm root -g').toString().trim() + '/playwright')`.
+- Write one that, for every state, clicks every `[data-link]` and `[data-go]` in the visible state (`[data-state]:not([hidden])`) and checks the target exists.
+- Write another that loads every state at 320, 390, 820, 1024, 1280×720 and 1440 and reports any horizontal overflow.
+- The Phase 5 versions were scratch files and are gone; write your own.
+
+**Review renders cheaply:** `python3 design/tools/sheet.py out.png <cropHeightCss> <scale> frame1.png frame2.png …` makes a contact sheet.
+
+**Replacing existing frames:** keep the previous renders and run `python3 design/tools/framediff.py <oldDir> <newDir>`. Spinners, skeletons and ticking countdowns can differ by a few pixels, which isn't a change.
 
 ## The canvas
 
+**Rules:**
 - **Never create a second canvas.** All frames go on https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ.
-- Each frame is one artboard: a `.dc.html` that only shows an uploaded PNG at its true CSS size (PNG pixels ÷ 2). Board titles follow "NN Page · State · Width", e.g. "09 Gamer dashboard · Busy account · Phone". File names are `<prefix>-<state>-<desktop|phone>.dc.html`.
-- Layout: each state is a pair (desktop, then phone 80 px to its right), 200 px between pairs, three pairs per row, 200 px between rows. A `title1` note names the phase and each page, and a green sticky to the left of each page links its interactive version and source file. Phase 1's title is at y = 21,807; Phase 2's at y = 56,690; Phase 3's at y = 101,690, and the canvas ends at y = 110,588 (28 Oct 2026). Phase 4 goes below it (canvas.py places it; add it to `PHASES` and `CHECKS` after publishing its pages).
-- For Phase 4: add `("phase4", "Phase 4 · Sign up, log in, account access", [("11", …), …])` to `PHASES` in `design/tools/canvas.py` and `"phase4": ("check5", "Checkpoint 5: getting in, pages 11 to 16.")` to `CHECKS`, after publishing the pages.
-- To place frames:
-  1. Copy the PNGs into a temporary folder **inside the repo** (e.g. `.frames-upload/`; the uploader takes files from the working directory only), upload them as canvas assets in batches of up to 25 (`url` = the canvas, `asset: true`, `file_paths`), and write each `<prefix>__<state>__<width> <asset id>` line into a blobs file. Every frame of a new page must be in the blobs file. Delete the folder afterwards; never commit it.
-  2. canvas.py reads frames from `<framesDir>/<prefix>/<key>.png`, so put each page's renders in a folder named after its prefix.
-  3. **Read `project/canvas.json` from the canvas right before publishing** (uploads and the editor both bump its version). When replacing existing artboards, read those `project/<file>.dc.html` files too, in the same call (`paths`). New artboards need no read.
-  4. Run `python3 design/tools/canvas.py <that canvas.json> <blobs file> <framesDir> <outRoot>`. It writes the artboards for the uploaded frames, re-flows every row and keeps everything else; it prints the `files` map.
-  5. Publish with `url` = the canvas, `root` = outRoot, `file_path` = `<outRoot>/project/canvas.json`, `files` = the printed map. If it's refused for not having viewed the latest version, read the canvas url (no path), then publish again.
-- Changes always go through the HTML page first, then the frames are re-rendered and replaced.
+- Each frame is one artboard: a `.dc.html` that only shows an uploaded PNG at its true CSS size (PNG pixels ÷ 2).
+- Board titles follow "NN Page · State · Width", e.g. "19 Coach dashboard · Approved · Phone". File names are `<prefix>-<state>-<desktop|phone>.dc.html`.
+
+**Layout:**
+- Each state is a pair: desktop, then phone 80 px to its right. Pairs are 200 px apart, three pairs to a row, and rows are 200 px apart.
+- A `title1` note names the phase and each page. A green sticky to the left of each page links its interactive version and source file.
+- The phase titles are at y = 28,552 (Phase 1), 62,639 (Phase 2), 113,694 (Phase 3), 123,724 (Phase 4) and 145,565 (Phase 5). The canvas ends at y = 180,696 (2 Nov 2026).
+- Phase 6 goes below Phase 5. After publishing its pages, add `("phase6", "Phase 6 · Running a coach profile", [...])` to `PHASES` and `"phase6": ("check7", "Checkpoint 7: coach side complete, pages 22 and 23.")` to `CHECKS` in canvas.py, following Phase 5's entries.
+- New states added to an existing page (for example new 06 copies) need their frames uploaded too: canvas.py places every state of every listed page.
+- Library rows hold three sections each (canvas.py `PX` has three slots). The Phase 5 "Coach onboarding" section (`coach`) has a row of its own; add the next section beside it.
+
+**To place frames:**
+1. Copy the PNGs into a temporary folder **inside the repo** (e.g. `.frames-upload/`), because the uploader takes files from the working directory only.
+   - Upload them as canvas assets in batches of up to 25 (`url` = the canvas, `asset: true`, `file_paths`).
+   - Write each `<prefix>__<state>__<width> <asset id>` line into a blobs file. Every frame of a new page must be in the blobs file.
+   - Delete the folder afterwards. Never commit it.
+2. canvas.py reads frames from `<framesDir>/<prefix>/<key>.png`, so put each page's renders in a folder named after its prefix.
+3. **Read `project/canvas.json` from the canvas right before publishing**, because uploads and the editor both bump its version. When replacing existing artboards, read those `project/<file>.dc.html` files too, in the same call (`paths`). New artboards need no read.
+4. Run `python3 design/tools/canvas.py <that canvas.json> <blobs file> <framesDir> <outRoot>`. It writes the artboards for the uploaded frames, re-flows every row and keeps everything else. It prints the `files` map.
+5. Publish with `url` = the canvas, `root` = outRoot, `file_path` = `<outRoot>/project/canvas.json` and `files` = the printed map. If it's refused for not having viewed the latest version, read the canvas url (no path), then publish again.
+
+**Changes** always go through the HTML page first. Then the frames are re-rendered and replaced.
 
 ## Visual rules (summary; full list in DECISIONS.md)
 
-- Dark theme only. Flat surfaces: page `--bg`, cards solid `--surface`, insets `--bg-mid`, one slight shadow `--shadow-flat`. Only the top nav keeps blur and transparency.
-- Green glow only as a deliberate accent: a thin glowing top line on the one card that matters most in view, stronger on hover. On a dashboard that means one card, not every card that needs action. Primary buttons rest with `--shadow-cta-rest` and get the halo on hover. Secondary button: outline pill with a `--line-strong` border. Inputs also use `--line-strong`.
-- Amber outline button only for the final step of a cancel or delete. Confirm steps open in place, never as a pop-up.
-- A response, review or reply that hasn't been sent yet is a dashed slot with a status line, never the quote box (Checkpoint 3 refinements).
-- No background grid, film grain or hero glow in the webapp.
-- Fonts: Sora headings, Geist body and UI, Geist Mono for data and labels. No other fonts.
-- Status: mono label with a coloured dot. Green = confirmed, in session, completed. Amber = needs action (awaiting payment, pending confirmation, disputed, reschedule requested). Muted = ended (expired, refunded, cancelled, resolved disputes). No red.
-- Icons: inline SVG line icons only, from the sprite.
+- **Surfaces:** dark theme only, and flat. The page is `--bg`, cards are solid `--surface`, insets are `--bg-mid`, with one slight shadow, `--shadow-flat`. Only the top nav keeps blur and transparency.
+- **Green glow** is only a deliberate accent: a thin glowing top line on the one card that matters most in view, stronger on hover. On a dashboard that means one card, not every card that needs action.
+- **Buttons and inputs:**
+  - Primary buttons rest with `--shadow-cta-rest` and get the halo on hover.
+  - The secondary button is an outline pill with a `--line-strong` border. Inputs also use `--line-strong`.
+  - The amber outline button is only for the final step of a cancel or delete.
+  - Confirm steps open in place, never as a pop-up.
+- **Waiting on someone:** a response, review, reply or decision that hasn't come yet is a dashed slot with a status line, never a quote box (Checkpoint 3 refinements). That includes "Our team is reviewing your application".
+- **Backgrounds:** no background grid, film grain or hero glow in the webapp. The only exception is the brand panel on 11, 14 and 15.
+- **Fonts:** Sora for headings, Geist for body and UI, Geist Mono for data and labels (ranks, prices, dates, status labels). No other fonts.
+- **Status:** a mono label with a coloured dot.
+  - Green: confirmed, in session, completed, live, verified.
+  - Amber: needs action (awaiting payment, pending confirmation, disputed, reschedule requested, a rejection to fix, payout couldn't verify).
+  - Muted: ended or waiting on others (expired, refunded, cancelled, resolved disputes, under review).
+  - No red. "Under review", "Checking" and "Not eligible" are muted; "Changes needed" and "Couldn't verify" are amber (Phase 5).
+- **Icons:** inline SVG line icons only, from the sprite.
 
 ## Avoid ("not AI-looking")
 
-Purple, indigo or blue-to-pink gradients, gradient text, colours outside the palette; glassmorphism except the top nav; emoji, sparkle icons, mixed icon styles; three-column grids of identical icon-in-a-square feature cards; centring by default; identical padding and weight everywhere with no hierarchy; badges scattered everywhere (only where they carry real status); placeholder copy, "John Doe", invented stats, marketing filler; blobs, abstract illustrations, stock imagery; heavy shadows, glow everywhere, hover effects on non-interactive things. **No charts, trends, totals-spent tiles or analytics on dashboards.** A dashboard here is a list of things to do and things coming up, not a report.
+- **Colour:** purple, indigo or blue-to-pink gradients; gradient text; colours outside the palette.
+- **Effects:** glassmorphism (except the top nav); heavy shadows; glow everywhere; hover effects on things that aren't interactive.
+- **Icons and decoration:** emoji, sparkle icons, mixed icon styles; blobs, abstract illustrations, stock imagery.
+- **Layout:** three-column grids of identical icon-in-a-square feature cards (a settings overview is the obvious risk: lay settings out as plain, specific sections); centring by default; identical padding and weight everywhere with no hierarchy.
+- **Badges** scattered everywhere. Use them only where they carry real status.
+- **Content:** placeholder copy, "John Doe", invented stats, marketing filler; "earn up to" promises.
+- **No charts, trends, totals tiles or analytics on dashboards.** A dashboard here is a list of things to do and things coming up, not a report. That includes 19.
 
 ## Content and copy
 
-Realistic content: fictional gamer handles only (no real people), the 5 games (Mobile Legends, Call of Duty: Mobile, Valorant, Counter-Strike 2, Riftbound), free-text ranks, prices like "S$45 / session" and "from ≈ S$43", times in the viewer's zone (e.g. `20:00 SGT`), real session states. Sentence case, British English, short and direct, plain voice. Same action, same label everywhere.
+**Realistic content:**
+- fictional gamer handles only (no real people)
+- the 5 games: Mobile Legends, Call of Duty: Mobile, Valorant, Counter-Strike 2, Riftbound
+- free-text ranks (`Mythical Glory · 85★`, `Immortal 2`, `Premier 21,450`)
+- prices like "S$45 / session"
+- times in the viewer's zone (e.g. `20:00 SGT`, `20:00 PHT`)
+- real states
 
-Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; Phase 2 "now"s are in DECISIONS.md ("Mockup times (Phase 2)"). Viewer in Singapore (SGT, SGD). Phase 3's "now"s are in DECISIONS.md ("Booking set and mockup times (Phase 3)"); Phase 4 needs one "now" for the sign-up journey (propose Thu 24 Sep 2026, 11:00 SGT, snapking just signed up, matching `09#new`) and one for log in (the busy account, Mon 5 Oct 2026, 14:12 SGT, so a login from a booking lands on 03's returning state at the same time). Full cast details are in DECISIONS.md; bios are in `design/pages/01-browse-coaches.html`.
-- **Kairo** `@kairo.gg`, Philippines, English and Filipino, PHT. Past the New Coach period (no label), 4.9 (57). Mobile Legends `Mythical Glory · 85★` at ₱1,850 (≈ S$43); Call of Duty: Mobile `Legendary · Top 500` at ₱2,100 (≈ S$49). Paid with Xendit.
-- **Vexa** `@vexa`, Singapore, English and Mandarin, SGT. Past the New Coach period (no label), 4.8 (32). Valorant `Immortal 2` at S$45. Paid with Stripe.
-- **nullpoint** `@nullpoint`, Malaysia, English and Malay, MYT. New Coach, no reviews. Counter-Strike 2 `Premier 21,450` at RM 150 (≈ S$43).
-- **Mirae**, **Ghostline** and filler coaches Lumen, Pallas, Marlowe, Kestrel, Tidewalker, Rook, Hanabi.
-- Logged-in gamer: **snapking** (gamer only; shows "Become a coach" in the sidebar), the person who signs up and logs in on Phase 4's pages. Details for filled forms: username `snapking`, Singapore (SGT, SGD), +65 phone. The bookings in Phase 3's story (Kairo, Vexa, Mirae, nullpoint, Ghostline) are listed in DECISIONS.md and are not needed on Phase 4 pages except Kairo for the "log in to book with Kairo" context (Mobile Legends, Wed 7 Oct 2026, 20:00–21:00 SGT, as on 03 and 04).
+Write in sentence case and British English, short and direct, in a plain voice. The same action always has the same label.
+
+**Mockup times:** Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT. The "now"s for Phases 2 to 4 are in DECISIONS.md: "Mockup times (Phase 2)", "Booking set and mockup times (Phase 3)", "Phase 4 decisions" and "Gamer response to a coach's report". Phase 5's are in "Phase 5 decisions". Phase 6 needs its own; see the gaps. Full cast details are in DECISIONS.md, and bios are in `design/pages/01-browse-coaches.html`.
+
+**Keep using the same cast:**
+
+| Who | Details |
+|---|---|
+| **Kairo** `@kairo.gg` | Philippines, English and Filipino, PHT. Past the New Coach period (no label), 4.9 (57). Mobile Legends `Mythical Glory · 85★` at ₱1,850 (≈ S$43); Call of Duty: Mobile `Legendary · Top 500` at ₱2,100 (≈ S$49). Paid with Xendit (bank account ending 3307). Payout per Mobile Legends session ₱1,628.00, per Call of Duty: Mobile session ₱1,848.00. He is the coach in every coach-view state of 02, 06, 07, 08, 19 `live` and 20 `live`. A Mobile Legends rank update (`Mythical Glory · 92★`) is under review since Sun 4 Oct. His other students: ricebowl, tamtam, nightjar, ozzie, milo.exe (Philippines). |
+| **Vexa** `@vexa` | Singapore, English and Mandarin, SGT. Past the New Coach period (no label), 4.8 (32). Valorant `Immortal 2` at S$45. Paid with Stripe. |
+| **nullpoint** `@nullpoint` | Malaysia, English and Malay, MYT. New Coach, no reviews. Counter-Strike 2 `Premier 21,450` at RM 150 (≈ S$43). |
+| **Mirae**, **Ghostline** | |
+| Filler coaches | Lumen, Pallas, Marlowe, Kestrel, Tidewalker, Rook, Hanabi |
+| **snapking** | Ryan Tan, born 14 Mar 1999, snapking@example.com, +65 9182 4567 (shown as "+65 •••• 4567"), Singapore (SGT, SGD). Signed up Thu 24 Sep 2026, 11:00 SGT. His bookings with Kairo, Vexa, Mirae, nullpoint and Ghostline are listed in DECISIONS.md ("Booking set and mockup times (Phase 3)"). In Phase 5 he applied (Mon 19 Oct) and went live as a **New Coach** on Sat 24 Oct 2026, 10:48 SGT: Valorant `Ascendant 1` at S$25 and Counter-Strike 2 `Premier 18,200` at S$20, Stripe (bank account ending 4821), English and Mandarin. Before that date his pages show "Become a coach". |
 
 ## How I like to work
 
 - Explain any non-obvious design decision in one sentence.
 - If anything in the feature list, flow or decisions is ambiguous, **ask me before guessing**. Never add features, sections or data without asking.
-- When I ask for a layout change I haven't seen, confirm your understanding first; if the change is big, make a quick exploration in `design/explorations/`, publish it, show me the renders, and build only after I approve.
-- Record every new decision I approve in `design/DECISIONS.md`; keep `USER-FLOW.md` (and `user-flow.html`, republished) and `BUILD-ORDER.md` in sync if anything changes. When a decision reaches other pages or later phases, say which and update their entries.
+- When I ask for a layout change I haven't seen, confirm your understanding first. If the change is big, make a quick exploration in `design/explorations/`, publish it, show me the renders, and build only after I approve.
+- **Research before designing** each page (the section near the top), and report it in your first message. Inspiration, never a copy; what's decided always wins.
+- Record every new decision I approve in `design/DECISIONS.md` (a "Phase 6 decisions" section). Keep `USER-FLOW.md` (and `user-flow.html`, republished) and `BUILD-ORDER.md` in sync if anything changes. When a decision reaches other pages or later phases, say which and update their entries.
 - Commit and push work to the designated branch as you go (the repo's stop hook requires it). Don't open pull requests unless I ask.
-- I'm not a design specialist on token and type-scale questions; recommend a choice and explain briefly.
+- I'm not a design specialist on token and type-scale questions. Recommend a choice and explain briefly.
 - I care about Pro usage: build each page once, well, rather than duplicating work.
 - When I ask to see a page, open its artifact in the chat.
 - Each phase ends with a review checkpoint. Don't start the next phase until I've reviewed.
@@ -172,24 +498,34 @@ Keep using the same cast. Phase 1 mockups are set at Mon 5 Oct 2026, 14:10 SGT; 
 
 ## Open items
 
-- **Avatar and showcase images:** I'll supply fictional avatar and showcase images. Until then, avatars show the default (first letter in Sora) and showcase images are marked empty slots.
-- **Sign-up password (assumed, not confirmed):** email sign-ups enter email and password once, on the sign-up page, and "Finish setting up" doesn't ask again; Google sign-ups never set a password. **Confirm with me in your first message** (Phase 4 is where it matters).
-- **10 My sessions width (open since 28 Oct 2026):** 09 is full width; 10 still uses the old 1080px cap. Ask me whether to apply AppShell's `wide` option to 10. Don't change it unasked.
-- **Sidebar links for dual-role accounts (open):** the harness wires the sidebar's Dashboard, Browse coaches and My sessions links to snapking's pages on every gamer shell, including Kairo's coach-view shell. Ask me whether to limit the wiring to snapking.
-- **Phase 6:** voice intro length and portfolio format are still to decide.
-- **Languages field:** design it in profile setup (21) and coach profile settings (22).
-- **Logged-out currency (assumed, not confirmed):** logged-out visitors see SGD in the mockups; how their currency is chosen is still to decide.
-- **Ideas held back (not approved):** a "Rank checked by Harbourly" line under ranks; a one-line explanation of "New coach"; a sticky Continue bar on phone for Pick a slot. Raise them only if relevant.
-- **Next-session card in the dashboard banner (removed 28 Oct 2026, kept for later):** in the dashboard v2 exploration, a compact card on the right of the welcome banner showed the next session (who, game, date and time, "Join opens at 19:50 SGT, in 29h 38m", Join session and View session stacked on its right) and carried the green accent line. It was removed to give the To do and side columns more height. The full version is kept in `design/explorations/dashboard-v2-banner-next-session.html` (and in git, commit `19214aa`). If it comes back: the accent line moves from the To do box to this card, the banner is two columns again, and "Coming up" drops its first block (the next session with Join session) and lists only the later sessions.
-- **Rank proof check (kept, 23 Oct 2026; may be dropped later):** ranks stay checked against proof screenshots at application and on every rank change, as DECISIONS.md "Ranks" says. "Credentials: optional" on the landing page means the portfolio only. If it's dropped later, this changes in the webapp: 17 Application step 1 loses "proof of your rank" from "What you'll need"; 18 Application step 2 loses the proof images (up to 5), their upload error state, and the rejection reasons about proof ("proof doesn't show the rank claimed", "proof images unclear"); 22 Coach profile settings: "Update rank" goes live at once (no screenshot, no pending state, no old rank held), and "Add a game" may need no proof (then no "under review" listing, also on the coach dashboard, 19); the "Rank update: approved or declined" email goes; DECISIONS.md "Ranks", "Coach location and identity" (what you'll need), "Rejected coach applications" (reason examples) and the Uploads table's rank-proof row change; USER-FLOW.md diagrams 8 (application step 2) and 9 (add a game) change. Pages 01 to 05 don't change. The held-back idea of a "Rank checked by Harbourly" line would then be off the table.
-- **Post-MVP:** several sessions in one checkout, and session packs.
-- **Post-MVP:** importing reviews from Metafy and Fiverr (DECISIONS.md, "Policy update, 23 Oct 2026"); other session lengths and types.
-- **Landing copy (the owner's to change, don't edit it):** two lines in `landing.html`'s FAQ go further than the webapp: it says either side can report a no-show and an unconfirmed report becomes a refund (the webapp keeps no-shows as disputes, and only a coach no-show refunds automatically after 24 hours), and it promises importing reviews from Metafy and Fiverr (post-MVP).
-- **Gamer response to a coach's report (gap found in Phase 3):** the flow lets a gamer respond to a report a coach files against them, but 06 and 07 only draw the coach responding. Proposed for after checkpoint 4: a gamer "filed against you" state on 06 and a gamer response form on 07; the dashboard (09) then gains a To do card for it. Needs my go-ahead.
-- **04's hold countdown:** 04#same-currency shows 28:41 left; 06 and 09 show 24:12 for the same Vexa hold at 14:12. Left as is (04 shows the hold as first opened).
-- **When building:** confirm on a real iPhone that camera photos convert to JPEG on upload.
-- **Before code is built (not before design):** confirm coach launch countries with Stripe and Xendit (including Thailand), pick an exchange-rate source, pick the image moderation service (options in BUILD-ORDER.md), finalise chat retention with the Terms of Service.
+**For Phase 6:**
+- **Still to decide in Phase 6:** voice intro length and how it's made (record or upload), and the portfolio's format and how it shows on 02.
+- **Rank proof check (kept, 23 Oct 2026; may be dropped later):** ranks stay checked against proof screenshots at application and on every rank change. If it's dropped later: 22's "Update rank" goes live at once (no screenshot, no pending state, no old rank held), "Add a game" may need no proof, 19's "Rank update under review" goes, 17 and 18 lose the proof parts, the "Rank update: approved or declined" email goes, and DECISIONS.md ("Ranks", "Coach location and identity", "Rejected coach applications", Uploads) and USER-FLOW diagrams 8 and 9 change.
+- **When building:** confirm on a real iPhone that camera photos convert to JPEG on upload (18's proof, 21's and 22's photos).
+- **Mockup times in coach-view copies:** 06 `coach-upcoming` still shows its own moment (Mon 5 Oct 18:00, "Opens in 49h 50m"); from 19 live (14:12) the same booking would read 53h 38m. Left as is, like 04's hold countdown. Keep 23's rows consistent with 19 live.
+- **Not drawn, by decision:** suspended and banned coach states; the coach-journey emails.
+
+**For the review of Phases 1 to 5 (after Phase 7, the owner's plan):**
+- Keep a short running list in DECISIONS.md or HANDOFF.md of anything the Phase 6 and 7 research suggests for earlier pages (a better pattern, a placement, a missing state). Don't change those pages for it now; it feeds the review.
+- **The component library at 320 px:** two specimens overflow at a 320 px window (the logged-out top bar in "App shell" and the coach card's "Next free" line in "Cards and lists"). The pages themselves don't. Left for the review.
+
+**Carried forward:**
+- **Avatar and showcase images:** I'll supply fictional avatar and showcase images. Until then, avatars show the default (first letter in Sora) and showcase images and uploads are marked empty slots.
+- **Mockup-only hints:** 12, 15, 18, 20 and 21 carry a dashed "Mockup: …" line (`.mk-hint`) so the prototype can be walked. It's hidden in canvas renders and isn't part of the design.
+- **03 "Phone not verified" state:** everyone verifies their phone at sign-up, so this state is an edge case (for example, a number removed by support). Kept as built.
+- **Logged-out currency (assumed, not confirmed):** logged-out visitors see SGD in the mockups. How their currency is chosen is still to decide.
+- **Ideas held back (not approved):** a "Rank checked by Harbourly" line under ranks; a one-line explanation of "New coach" for gamers; a sticky Continue bar on phone for Pick a slot. Raise them only if relevant.
+- **Next-session card in the dashboard banner (removed 28 Oct 2026, kept for later):** kept in `design/explorations/dashboard-v2-banner-next-session.html` (and in git, commit `19214aa`). If it comes back, the accent line moves from the To do box to this card on 09, and the same choice applies to 19.
+- **Post-MVP:** several sessions in one checkout, and session packs; importing reviews from Metafy and Fiverr (DECISIONS.md, "Policy update, 23 Oct 2026"); other session lengths and types.
+- **Landing copy (the owner's to change, don't edit it):** two lines in `landing.html`'s FAQ go further than the webapp: it says either side can report a no-show and an unconfirmed report becomes a refund (the webapp keeps no-shows as disputes, and only a coach no-show refunds automatically after 24 hours), and it promises importing reviews from Metafy and Fiverr, which is post-MVP.
+- **04's hold countdown:** 04#same-currency shows 28:41 left, while 06 and 09 show 24:12 for the same Vexa hold at 14:12. Left as is, because 04 shows the hold as it was when first opened.
+- **Sign-in services (agreed 28 Oct 2026):** Supabase Auth, Resend for auth emails (as Supabase's SMTP) and Twilio Verify for phone codes. Details are in DECISIONS.md, "Sign-in services".
+- **Before code is built (not before design):** confirm coach launch countries with Stripe and Xendit (including Thailand); pick an exchange-rate source; pick the image moderation service (options in BUILD-ORDER.md); finalise chat retention with the Terms of Service.
+
+## After Phase 6
+
+Phase 7 ("Account and system pages": 24 Account settings, 25 System pages, checkpoint 8) follows after checkpoint 7, with the same research practice, in this chat or a new one. Keep this handoff (`design/HANDOFF.md`) current at the end of Phase 6 so it can brief Phase 7. After Phase 7, the owner reviews Phases 1 to 5.
 
 ## Next step
 
-Phase 4. Read everything above, then send me the one message described in "Before you build anything" (understanding, link map, new labels, gaps with recommendations, and one line each on the three open Phase 3 items). Build only after I answer. When the six pages are built, published and on the canvas, stop for **checkpoint 5**, update this handoff, DECISIONS.md, BUILD-ORDER.md and USER-FLOW.md, commit and push, and wait for my review. Don't start Phase 5.
+Read everything above, do the research, then send me your Phase 6 message: what you looked at and what you're taking from it, your understanding of 22 and 23, the link map, the new labels and copy, and every gap with your recommendation. Build only after I answer.

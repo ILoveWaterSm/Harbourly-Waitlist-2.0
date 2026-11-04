@@ -1,0 +1,5 @@
+/* SaveStatus → SaveStatus.module.css. The quiet line on long forms that says your work is kept:
+   "Draft saved · 21:34", "Saving…", "Saved". Never a toast: it sits where people look for it, under the title. */
+.saveStatus { display: inline-flex; align-items: center; gap: var(--space-2); font: 400 12.5px/1.4 var(--font-mono); color: var(--muted); }
+.saveStatus svg { width: 15px; height: 15px; flex: none; color: var(--green); }
+.saveStatus .spinner { width: 14px; height: 14px; border-width: 2px; }

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>16 Accept updated terms</title>
+<meta name="description" content="Phase 4, page 16: the blocking screen to accept a new Terms of Service version before continuing.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<style>
+/* Page: Accept updated terms (/terms/accept) → app/terms/accept/page.module.css. Layout only. */
+.auth { display: grid; gap: var(--space-6); width: 100%; max-width: 440px; margin-inline: auto; padding-top: var(--space-6); }
+.authHead { display: grid; gap: var(--space-3); }
+.authLead { font: var(--text-body); color: var(--muted); }
+.authCard { display: grid; gap: var(--space-5); }
+.authAlt { font-size: 14.5px; color: var(--muted); }
+.authContext { display: grid; gap: var(--space-3); padding-bottom: var(--space-5); border-bottom: 1px solid var(--line); }
+.authContextBox { display: flex; align-items: center; gap: var(--space-3); }
+.authContextTitle { font-weight: 600; font-size: 15px; line-height: 1.4; color: var(--ink); }
+.authContextMeta { margin-top: 2px; font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
+.authContextMeta .mono { font-size: 13px; white-space: nowrap; }
+.authContextNote { display: flex; gap: var(--space-2); font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.authContextNote svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+.backLink { justify-self: start; font-size: 14px; }
+@container app (max-width: 640px) {
+  .auth { padding-top: var(--space-2); gap: var(--space-5); }
+}
+.auth.terms { max-width: 560px; }
+.termsCard { display: grid; gap: var(--space-5); }
+.termsTop { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+.termsDate { font: var(--text-value); letter-spacing: .02em; color: var(--muted); }
+.termsList { display: grid; gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+.termsList li { position: relative; padding-left: var(--space-5); font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.termsList li::before { content: ""; position: absolute; left: 2px; top: .7em; width: 6px; height: 6px; border-radius: var(--radius-round); background: var(--green); }
+.termsList b { font-weight: 600; color: var(--ink); }
+.termsCard > p { font-size: 14.5px; }
+.termsAccept { display: grid; gap: var(--space-4); padding-top: var(--space-5); border-top: 1px solid var(--line); }
+.termsConsent { font-size: 14px; line-height: 1.55; color: var(--muted); }
+@container app (max-width: 640px) { .termsActions .button { width: 100%; } }
+</style>
+</head>
+<body>
+<template id="shell-gate">
+      <div class="appShell">
+        <header class="topNav gate">
+          <span class="topNavLogo"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></span>
+          <div class="topNavRight">
+            <button class="topNavSignOut" type="button">Sign out</button>
+          </div>
+        </header>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="16 Accept updated terms">
+
+  <section data-state="terms" data-label="Accept updated terms" data-shell="gate">
+      <div class="auth terms">
+        <div class="authHead"><h1>We've updated our Terms of Service</h1><p class="authLead">Read what's changed, then accept the updated terms to keep using Harbourly.</p></div>
+        <section class="card accent termsCard" aria-labelledby="t-h">
+          <div class="termsTop"><h2 class="cardTitle" id="t-h">What's changed</h2><span class="termsDate">Updated Thu 1 Oct 2026</span></div>
+          <ul class="termsList">
+            <li><b>Cancelling.</b> Cancel at least 1 hour before the start for a full refund. Inside the last hour, half the coach's price is refunded.</li>
+            <li><b>Fees.</b> You pay a 6% platform fee on top of the coach's price. Coaches pay a 12% commission from their payout.</li>
+            <li><b>Missed sessions.</b> If you don't join within 15 minutes of the start and the coach reports it, the coach's price is split 50/50 once Harbourly upholds the report.</li>
+          </ul>
+          <p><a class="textLink" href="#">Read the full Terms of Service</a></p>
+          <div class="termsAccept">
+            <p class="termsConsent">By pressing Accept and continue, you agree to the Terms of Service updated on Thu 1 Oct 2026.</p>
+            <div class="termsActions"><a class="button primary" href="#" data-link="09#busy">Accept and continue</a></div>
+          </div>
+        </section>
+        <p class="authAlt">Not ready? You can <button class="textLink" type="button">sign out</button> and come back later.</p>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>// Steps inside this page (data-go) switch state in place.
+document.addEventListener('click', function (e) {
+  var go = e.target.closest('[data-go]');
+  if (go && !go.disabled) { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+});
+</script>
+</body>
+</html>

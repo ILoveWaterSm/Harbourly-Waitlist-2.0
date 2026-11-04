@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>21 Profile setup</title>
+<meta name="description" content="Phase 5, page 21: profile setup in five steps (about you, games and prices, availability, showcase, review), then live.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/StepCounter.css">
+<link rel="stylesheet" href="../foundations/components/Field.css">
+<link rel="stylesheet" href="../foundations/components/Checkbox.css">
+<link rel="stylesheet" href="../foundations/components/ImageUpload.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/Spinner.css">
+<link rel="stylesheet" href="../foundations/components/SaveStatus.css">
+<link rel="stylesheet" href="../foundations/components/WeekHours.css">
+<link rel="stylesheet" href="../foundations/components/GameRank.css">
+<link rel="stylesheet" href="../foundations/components/ResultPanel.css">
+<style>
+/* Page: Profile setup (/coach/setup) → app/coach/setup/page.module.css. Layout only.
+   Focused layout (top nav, no sidebar), 680px column. Five steps, one per screen, each saved by Save and continue:
+   About you (photo, banner, bio, languages), Games and prices, Availability, Showcase (optional), Review.
+   Public images go through the automatic image check in place (Checking…, then live or refused) and never block
+   the form. Coming back opens the first unfinished step with "Welcome back". */
+.ps { display: grid; gap: var(--space-6); max-width: 680px; margin-inline: auto; }
+.backLink { justify-self: start; font-size: 14px; }
+.psHead { display: grid; gap: var(--space-4); }
+.psLead { max-width: 60ch; font: var(--text-body); color: var(--muted); }
+.psCard { display: grid; padding: 0; }
+.psPart { display: grid; gap: var(--space-4); padding: var(--space-6); margin: 0; border: 0; min-width: 0; }
+.psPart + .psPart { border-top: 1px solid var(--line); }
+.psPart legend { float: left; width: 100%; padding: 0; }
+.psPart legend + * { clear: both; }
+.psPartHead { display: grid; gap: var(--space-1); }
+.psPartHead .fieldLabel, .psPartHead h2 { font: 600 16px/1.35 var(--font-body); color: var(--ink); }
+.psPartHead p, .psHint { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.psHint .mono, .psPartHead .mono { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+.psSaveHint { display: inline-flex; font: 400 12.5px/1.4 var(--font-mono); color: var(--muted); }
+.psActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); padding: var(--space-6); border-top: 1px solid var(--line); }
+.psActions .textLink { font-size: 14px; }
+.psActions .psSkip { margin-left: auto; }
+.uploadMediaState .mono { font-size: 12.5px; }
+.psImg { display: grid; place-items: center; width: 88px; height: 88px; border: 1px dashed var(--line-strong); border-radius: var(--radius-round); font: var(--text-label); letter-spacing: .14em; text-transform: uppercase; color: var(--subtle); }
+.psBanner { display: grid; gap: var(--space-3); }
+.psBannerRow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+
+/* Games and prices */
+.psGame { display: grid; gap: var(--space-5); padding: var(--space-5); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); min-width: 0; }
+.psGameHead { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+.psGameHead .gameRankGame { font-weight: 600; font-size: 16px; color: var(--ink); }
+.psGameHead .label { color: var(--faint); padding-top: 4px; }
+.psPayout { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.psPayout .mono { font-size: 13.5px; color: var(--ink); }
+.psCreds { display: grid; gap: var(--space-2); }
+.psCred { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-1) var(--space-2); align-items: start; }
+.psCred .fieldCounter { grid-column: 1; justify-self: end; }
+.psCred .uploadRowAction { min-height: 48px; }
+.psAdd { justify-self: start; }
+
+/* Review */
+.rvPart { display: grid; gap: var(--space-3); padding: var(--space-6); }
+.rvPart + .rvPart { border-top: 1px solid var(--line); }
+.rvPartHead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.rvPartHead h2 { font: var(--text-h3); }
+.rvPartHead .textLink { font-size: 14px; min-height: 44px; display: inline-flex; align-items: center; }
+.rvFacts { margin: 0; }
+.rvFacts dd.text { font: 400 14.5px/1.5 var(--font-body); color: var(--ink); }
+.rvFacts dd .mono { font: var(--text-value); color: var(--ink-soft); }
+.rvGames { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.rvGames li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-1) var(--space-4); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); }
+.rvGames .gmPrice { font: 500 14px/1.3 var(--font-mono); color: var(--ink); text-align: right; }
+.rvGames .gmPay { grid-column: 1 / -1; font-size: 13.5px; color: var(--muted); }
+.rvGames .gmPay .mono { font-size: 13px; color: var(--ink-soft); }
+.rvText { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+.rvText .mono { font-size: 13.5px; }
+.ps > .resultPanel { padding-top: var(--space-2); }
+.resultPanel .statusLabel { margin-bottom: calc(var(--space-2) * -1); }
+.resultPanelNote { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+.ps .mk-hint { margin-top: 0; }
+@container app (max-width: 640px) {
+  .ps { gap: var(--space-5); }
+  .psPart, .psActions, .rvPart { padding: var(--space-5); }
+  .psGame { padding: var(--space-4); }
+  .psActions .button { width: 100%; }
+  .psActions .psSkip { margin-left: 0; }
+  .resultPanelActions .button { width: 100%; }
+}
+</style>
+</head>
+<body>
+<template id="shell-f-coach">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-f-coach-live">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="coach-sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="21 Profile setup">
+
+  <section data-state="about" data-label="Step 1, empty · Thu 22 Oct, 12:30" data-shell="f-coach" data-coach="19#payout-checking">
+      <div class="ps">
+        <a class="textLink quiet backLink" href="#" data-link="19#payout-checking"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="psHead"><div class="stepCounter"><span class="stepCounterText">Step <b>01</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="current"></span><span></span><span></span><span></span><span></span></div></div><h1>About you</h1><p class="psLead">Your photo, a short bio and the languages you coach in. This is what gamers see first.</p><p class="psSaveHint">Saved each time you continue.</p></header>
+        <form class="card accent psCard" novalidate onsubmit="return false">
+          <div class="psPart"><div class="psPartHead"><span class="fieldLabel">Profile photo <span class="fieldOptional">(optional)</span></span><span class="psHint">It's also your account photo, in the top bar. <span class="mono">JPG, PNG or WebP · up to 5 MB · at least 256 × 256 px</span></span></div>
+            <div class="uploadMedia"><span class="uploadMediaPreview"><span class="avatar">S</span></span><div class="uploadMediaInfo"><span class="uploadMediaState" role="status"><span>No photo yet. Gamers see your first initial.</span></span><div class="uploadMediaActions"><button class="button secondary sm" type="button" data-go="about-checking"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add a photo</button></div></div></div></div>
+          <div class="psPart"><div class="psPartHead"><span class="fieldLabel">Banner <span class="fieldOptional">(optional)</span></span><span class="psHint">Shown across the top of your profile. <span class="mono">JPG, PNG or WebP · up to 10 MB · at least 1200 px wide</span></span></div><div class="psBanner"><div class="uploadBanner">No banner</div><div class="psBannerRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add a banner</button></div></div></div>
+          <div class="psPart"><div class="field"><label class="fieldLabel" for="a-b">About you</label><span class="fieldHint">What you coach and how you coach it. Gamers read this first.</span><textarea class="fieldControl" id="a-b" maxlength="500" data-counter="a-b-c"></textarea><div class="fieldFoot"><span class="fieldCounter" id="a-b-c"></span></div></div></div>
+          <fieldset class="psPart" id="a-lg" aria-describedby="a-lg-h"><legend class="psPartHead"><span class="fieldLabel">Languages you coach in</span></legend><span class="psHint" id="a-lg-h">Choose up to 4. They show on your profile and in Browse coaches.</span><div class="checkboxGrid"><label class="checkbox"><input class="checkboxInput" type="checkbox">English</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Mandarin</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Malay</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Filipino</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Tamil</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Indonesian</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Thai</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Vietnamese</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Korean</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Japanese</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Cantonese</label></div></fieldset>
+          <div class="psActions"><button class="button primary" type="button" data-go="about-errors">Save and continue</button></div>
+        </form>
+      </div>
+  </section>
+
+  <section data-state="about-checking" data-label="Step 1, photo checking · Thu 22 Oct, 12:34" data-shell="f-coach" data-coach="19#payout-checking">
+      <div class="ps">
+        <a class="textLink quiet backLink" href="#" data-link="19#payout-checking"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="psHead"><div class="stepCounter"><span class="stepCounterText">Step <b>01</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="current"></span><span></span><span></span><span></span><span></span></div></div><h1>About you</h1><p class="psLead">Your photo, a short bio and the languages you coach in. This is what gamers see first.</p><p class="psSaveHint">Saved each time you continue.</p></header>
+        <form class="card accent psCard" novalidate onsubmit="return false">
+          <div class="psPart"><div class="psPartHead"><span class="fieldLabel">Profile photo <span class="fieldOptional">(optional)</span></span><span class="psHint">It's also your account photo, in the top bar. <span class="mono">JPG, PNG or WebP · up to 5 MB · at least 256 × 256 px</span></span></div>
+            <div class="uploadMedia"><span class="uploadMediaPreview checking"><span class="psImg">Photo</span><span class="spinner" aria-hidden="true"></span></span><div class="uploadMediaInfo"><span class="uploadMediaState" role="status"><span class="spinner" aria-hidden="true" style="width:14px;height:14px;border-width:2px"></span><span>Checking… You can carry on while this runs.</span></span><div class="uploadMediaActions"><button class="uploadRowAction" type="button" aria-label="Remove the photo">Remove</button></div></div></div></div>
+          <div class="psPart"><div class="psPartHead"><span class="fieldLabel">Banner <span class="fieldOptional">(optional)</span></span><span class="psHint">Shown across the top of your profile. <span class="mono">JPG, PNG or WebP · up to 10 MB · at least 1200 px wide</span></span></div><div class="psBanner"><ul class="uploadRows"><li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">banner-valorant.png</span><span class="uploadRowMeta">Uploading · 60% of 4.2 MB</span><span class="uploadRowBar" role="progressbar" aria-label="Uploading banner-valorant.png" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><span style="width:60%"></span></span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Cancel banner-valorant.png">Cancel</button></span></li></ul></div></div>
+          <div class="psPart"><div class="field"><label class="fieldLabel" for="ac-b">About you</label><span class="fieldHint">What you coach and how you coach it. Gamers read this first.</span><textarea class="fieldControl" id="ac-b" maxlength="500" data-counter="ac-b-c">Valorant and CS2 coach from Singapore. I focus on the basics that win rounds: crosshair placement, utility and comms. Bring a recent match and we'll go through it round by round, or play a deathmatch while I watch and call things out.</textarea><div class="fieldFoot"><span class="fieldCounter" id="ac-b-c"></span></div></div></div>
+          <fieldset class="psPart" id="ac-lg" aria-describedby="ac-lg-h"><legend class="psPartHead"><span class="fieldLabel">Languages you coach in</span></legend><span class="psHint" id="ac-lg-h">Choose up to 4. They show on your profile and in Browse coaches.</span><div class="checkboxGrid"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>English</label><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>Mandarin</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Malay</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Filipino</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Tamil</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Indonesian</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Thai</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Vietnamese</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Korean</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Japanese</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Cantonese</label></div></fieldset>
+          <div class="psActions"><button class="button primary" type="button" data-go="games">Save and continue</button></div>
+        </form>
+        <p class="mk-hint">Mockup: <a href="#" data-go="about-refused">the check refuses the photo</a></p>
+      </div>
+  </section>
+
+  <section data-state="about-refused" data-label="Step 1, photo refused · Thu 22 Oct, 12:36" data-shell="f-coach" data-coach="19#payout-checking">
+      <div class="ps">
+        <a class="textLink quiet backLink" href="#" data-link="19#payout-checking"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="psHead"><div class="stepCounter"><span class="stepCounterText">Step <b>01</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="current"></span><span></span><span></span><span></span><span></span></div></div><h1>About you</h1><p class="psLead">Your photo, a short bio and the languages you coach in. This is what gamers see first.</p><p class="psSaveHint">Saved each time you continue.</p></header>
+        <form class="card accent psCard" novalidate onsubmit="return false">
+          <div class="psPart"><div class="psPartHead"><span class="fieldLabel">Profile photo <span class="fieldOptional">(optional)</span></span><span class="psHint">It's also your account photo, in the top bar. <span class="mono">JPG, PNG or WebP · up to 5 MB · at least 256 × 256 px</span></span></div>
+            <div class="uploadMedia"><span class="uploadMediaPreview"><span class="avatar">S</span></span><div class="uploadMediaInfo"><span class="uploadMediaState" role="status"><span class="mono">lan-night-me.jpg</span></span><span class="fieldError"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>This photo can't be used on Harbourly. Choose a different one.</span></span><div class="uploadMediaActions"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add a photo</button></div></div></div></div>
+          <div class="psPart"><div class="psPartHead"><span class="fieldLabel">Banner <span class="fieldOptional">(optional)</span></span><span class="psHint">Shown across the top of your profile. <span class="mono">JPG, PNG or WebP · up to 10 MB · at least 1200 px wide</span></span></div><div class="psBanner"><div class="uploadBanner image">Banner</div><div class="psBannerRow"><span class="statusLabel positive">Live</span><span class="uploadRowMeta">banner-valorant.png</span><button class="button secondary sm" type="button">Replace</button><button class="uploadRowAction" type="button" aria-label="Remove the banner">Remove</button></div></div></div>
+          <div class="psPart"><div class="field"><label class="fieldLabel" for="ar-b">About you</label><span class="fieldHint">What you coach and how you coach it. Gamers read this first.</span><textarea class="fieldControl" id="ar-b" maxlength="500" data-counter="ar-b-c">Valorant and CS2 coach from Singapore. I focus on the basics that win rounds: crosshair placement, utility and comms. Bring a recent match and we'll go through it round by round, or play a deathmatch while I watch and call things out.</textarea><div class="fieldFoot"><span class="fieldCounter" id="ar-b-c"></span></div></div></div>
+          <fieldset class="psPart" id="ar-lg" aria-describedby="ar-lg-h"><legend class="psPartHead"><span class="fieldLabel">Languages you coach in</span></legend><span class="psHint" id="ar-lg-h">Choose up to 4. They show on your profile and in Browse coaches.</span><div class="checkboxGrid"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>English</label><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>Mandarin</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Malay</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Filipino</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Tamil</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Indonesian</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Thai</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Vietnamese</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Korean</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Japanese</label><label class="checkbox"><input class="checkboxInput" type="checkbox">Cantonese</label></div></fieldset>
+          <div class="psActions"><button class="button primary" type="button" data-go="games">Save and continue</button></div>
+        </form>
+      </div>
+  </section>
+
+  <section data-state="about-errors" data-label="Step 1, validation · Thu 22 Oct, 12:31" data-shell="f-coach" data-coach="19#payout-checking">
+      <div class="ps">
+        <a class="textLink quiet backLink" href="#" data-link="19#payout-checking"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="psHead"><div class="stepCounter"><span class="stepCounterText">Step <b>01</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="current"></span><span></span><span></span><span></span><span></span></div></div><h1>About you</h1><p class="psLead">Your photo, a short bio and the languages you coach in. This is what gamers see first.</p><p class="psSaveHint">Saved each time you continue.</p></header>
+        <div class="notice error" role="alert" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><p class="noticeTitle">Fix 2 things before you continue</p><ul class="noticeLinks"><li><a href="#ae-b">Write a few lines about how you coach</a></li><li><a href="#ae-lg">Choose at least one language</a></li></ul></div></div>
+        <form class="card accent psCard" novalidate onsubmit="return false">
+          <div class="psPart"><div class="psPartHead"><span class="fieldLabel">Profile photo <span class="fieldOptional">(optional)</span></span><span class="psHint">It's also your account photo, in the top bar. <span class="mono">JPG, PNG or WebP · up to 5 MB · at least 256 × 256 px</span></span></div>
+            <div class="uploadMedia"><span class="uploadMediaPreview"><span class="avatar">S</span></span><div class="uploadMediaInfo"><span class="uploadMediaState" role="status"><span>No photo yet. Gamers see your first initial.</span></span><div class="uploadMediaActions"><button class="button secondary sm" type="button" data-go="about-checking"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add a photo</button></div></div></div></div>
+          <div class="psPart"><div class="psPartHead"><span class="fieldLabel">Banner <span class="fieldOptional">(optional)</span></span><span class="psHint">Shown across the top of your profile. <span class="mono">JPG, PNG or WebP · up to 10 MB · at least 1200 px wide</span></span></div><div class="psBanner"><div class="uploadBanner">No banner</div><div class="psBannerRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add a banner</button></div></div></div>
+          <div class="psPart"><div class="field"><label class="fieldLabel" for="ae-b">About you</label><span class="fieldHint">What you coach and how you coach it. Gamers read this first.</span><textarea class="fieldControl" id="ae-b" maxlength="500" data-counter="ae-b-c" aria-invalid="true" aria-describedby="ae-b-e"></textarea><div class="fieldFoot"><span class="fieldError" id="ae-b-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>Write a few lines about how you coach.</span></span><span class="fieldCounter" id="ae-b-c"></span></div></div></div>
+          <fieldset class="psPart" id="ae-lg" aria-describedby="ae-lg-h"><legend class="psPartHead"><span class="fieldLabel">Languages you coach in</span></legend><span class="psHint" id="ae-lg-h">Choose up to 4. They show on your profile and in Browse coaches.</span><div class="checkboxGrid invalid"><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">English</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Mandarin</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Malay</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Filipino</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Tamil</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Indonesian</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Thai</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Vietnamese</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Korean</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Japanese</label><label class="checkbox"><input class="checkboxInput" type="checkbox" aria-invalid="true">Cantonese</label></div><span class="fieldError" id="ae-lg-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>Choose at least one language.</span></span></fieldset>
+          <div class="psActions"><button class="button primary" type="button" data-go="about-errors">Save and continue</button></div>
+        </form>
+      </div>
+  </section>
+
+  <section data-state="games" data-label="Step 2, games and prices · Thu 22 Oct, 12:58" data-shell="f-coach" data-coach="19#payout-checking">
+      <div class="ps">
+        <a class="textLink quiet backLink" href="#" data-link="19#payout-checking"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="psHead"><div class="stepCounter"><span class="stepCounterText">Step <b>02</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="current"></span><span></span><span></span><span></span></div></div><h1>Games and prices</h1><p class="psLead">A price for each game you were approved for, in Singapore dollars, for a 60-minute session. Gamers in other countries see it converted to their currency.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Step 1 saved · 12:52</p></header>
+        <form class="card accent psCard" novalidate onsubmit="return false">
+          <div class="psPart"><div class="psGame" id="g-v" role="group" aria-labelledby="g-v-n">
+              <div class="psGameHead"><div class="gameRank"><span class="gameRankGame" id="g-v-n">Valorant</span><span class="gameRankValue">Ascendant 1</span></div><span class="label">Approved Thu 22 Oct</span></div>
+              <div class="field"><label class="fieldLabel" for="g-v-p">Price per session</label><span class="fieldHint" id="g-v-p-h">At least S$10 a session.</span><div class="fieldPrefix"><span aria-hidden="true">S$</span><input class="fieldControl" id="g-v-p" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" value="25" aria-describedby="g-v-p-h"></div><p class="psPayout" role="status">You're paid <span class="mono">S$22.00</span> a session (<span class="mono">S$25.00 − S$3.00</span> commission).</p></div>
+              <div class="field"><span class="fieldLabel">Credentials <span class="fieldOptional">(optional)</span></span><span class="fieldHint">Up to 3 short lines gamers can check: a team, a tournament, a title.</span><div class="psCreds"><div class="psCred"><input class="fieldControl" id="g-v-1" type="text" maxlength="60" data-counter="g-v-1-c" aria-label="Credential 1" value="Ascendant 1, Episode 9 Act 3"><button class="uploadRowAction" type="button" aria-label="Remove credential 1">Remove</button><span class="fieldCounter" id="g-v-1-c"></span></div><div class="psCred"><input class="fieldControl" id="g-v-2" type="text" maxlength="60" data-counter="g-v-2-c" aria-label="Credential 2" value="In-game leader for my university team, 2025"><button class="uploadRowAction" type="button" aria-label="Remove credential 2">Remove</button><span class="fieldCounter" id="g-v-2-c"></span></div><button class="button secondary sm psAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add a credential</button></div></div>
+            </div><div class="psGame" id="g-c" role="group" aria-labelledby="g-c-n">
+              <div class="psGameHead"><div class="gameRank"><span class="gameRankGame" id="g-c-n">Counter-Strike 2</span><span class="gameRankValue">Premier 18,200</span></div><span class="label">Approved Thu 22 Oct</span></div>
+              <div class="field"><label class="fieldLabel" for="g-c-p">Price per session</label><span class="fieldHint" id="g-c-p-h">At least S$10 a session.</span><div class="fieldPrefix"><span aria-hidden="true">S$</span><input class="fieldControl" id="g-c-p" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" value="20" aria-describedby="g-c-p-h"></div><p class="psPayout" role="status">You're paid <span class="mono">S$17.60</span> a session (<span class="mono">S$20.00 − S$2.40</span> commission).</p></div>
+              <div class="field"><span class="fieldLabel">Credentials <span class="fieldOptional">(optional)</span></span><span class="fieldHint">Up to 3 short lines gamers can check: a team, a tournament, a title.</span><div class="psCreds"><button class="button secondary sm psAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add a credential</button></div></div>
+            </div></div>
+          <div class="psActions"><button class="button primary" type="button" data-go="resumed">Save and continue</button><a class="textLink quiet" href="#" data-go="about-checking">Back</a></div>
+        </form>
+        <p class="mk-hint">Mockup: <a href="#" data-go="games-error">enter S$8 for Counter-Strike 2</a></p>
+      </div>
+  </section>
+
+  <section data-state="games-error" data-label="Step 2, price under the floor · Thu 22 Oct, 13:00" data-shell="f-coach" data-coach="19#payout-checking">
+      <div class="ps">
+        <a class="textLink quiet backLink" href="#" data-link="19#payout-checking"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="psHead"><div class="stepCounter"><span class="stepCounterText">Step <b>02</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="current"></span><span></span><span></span><span></span></div></div><h1>Games and prices</h1><p class="psLead">A price for each game you were approved for, in Singapore dollars, for a 60-minute session. Gamers in other countries see it converted to their currency.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Step 1 saved · 12:52</p></header>
+        <div class="notice error" role="alert" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><p class="noticeTitle">Fix 1 thing before you continue</p><ul class="noticeLinks"><li><a href="#ge-c-p">Counter-Strike 2: the lowest price is S$10</a></li></ul></div></div>
+        <form class="card accent psCard" novalidate onsubmit="return false">
+          <div class="psPart"><div class="psGame" id="ge-v" role="group" aria-labelledby="ge-v-n">
+              <div class="psGameHead"><div class="gameRank"><span class="gameRankGame" id="ge-v-n">Valorant</span><span class="gameRankValue">Ascendant 1</span></div><span class="label">Approved Thu 22 Oct</span></div>
+              <div class="field"><label class="fieldLabel" for="ge-v-p">Price per session</label><span class="fieldHint" id="ge-v-p-h">At least S$10 a session.</span><div class="fieldPrefix"><span aria-hidden="true">S$</span><input class="fieldControl" id="ge-v-p" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" value="25" aria-describedby="ge-v-p-h"></div><p class="psPayout" role="status">You're paid <span class="mono">S$22.00</span> a session (<span class="mono">S$25.00 − S$3.00</span> commission).</p></div>
+              <div class="field"><span class="fieldLabel">Credentials <span class="fieldOptional">(optional)</span></span><span class="fieldHint">Up to 3 short lines gamers can check: a team, a tournament, a title.</span><div class="psCreds"><div class="psCred"><input class="fieldControl" id="ge-v-1" type="text" maxlength="60" data-counter="ge-v-1-c" aria-label="Credential 1" value="Ascendant 1, Episode 9 Act 3"><button class="uploadRowAction" type="button" aria-label="Remove credential 1">Remove</button><span class="fieldCounter" id="ge-v-1-c"></span></div><div class="psCred"><input class="fieldControl" id="ge-v-2" type="text" maxlength="60" data-counter="ge-v-2-c" aria-label="Credential 2" value="In-game leader for my university team, 2025"><button class="uploadRowAction" type="button" aria-label="Remove credential 2">Remove</button><span class="fieldCounter" id="ge-v-2-c"></span></div><button class="button secondary sm psAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add a credential</button></div></div>
+            </div><div class="psGame" id="ge-c" role="group" aria-labelledby="ge-c-n">
+              <div class="psGameHead"><div class="gameRank"><span class="gameRankGame" id="ge-c-n">Counter-Strike 2</span><span class="gameRankValue">Premier 18,200</span></div><span class="label">Approved Thu 22 Oct</span></div>
+              <div class="field"><label class="fieldLabel" for="ge-c-p">Price per session</label><span class="fieldHint" id="ge-c-p-h">At least S$10 a session.</span><div class="fieldPrefix"><span aria-hidden="true">S$</span><input class="fieldControl" id="ge-c-p" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" value="8" aria-invalid="true" aria-describedby="ge-c-p-e"></div><span class="fieldError" id="ge-c-p-e"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>The lowest price is S$10.</span></span></div>
+              <div class="field"><span class="fieldLabel">Credentials <span class="fieldOptional">(optional)</span></span><span class="fieldHint">Up to 3 short lines gamers can check: a team, a tournament, a title.</span><div class="psCreds"><button class="button secondary sm psAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add a credential</button></div></div>
+            </div></div>
+          <div class="psActions"><button class="button primary" type="button" data-go="games-error">Save and continue</button><a class="textLink quiet" href="#" data-go="about-checking">Back</a></div>
+        </form>
+      </div>
+  </section>
+
+  <section data-state="resumed" data-label="Step 3, resumed: availability · Sat 24 Oct, 10:15" data-shell="f-coach" data-coach="19#in-progress">
+      <div class="ps">
+        <a class="textLink quiet backLink" href="#" data-link="19#in-progress"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="psHead"><div class="stepCounter"><span class="stepCounterText">Step <b>03</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="current"></span><span></span><span></span></div></div><h1>Availability</h1><p class="psLead">The hours you can coach each week. Sessions start on the hour and last 60 minutes.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Steps 1 and 2 saved · Thu 22 Oct, 13:05</p></header>
+        <div class="notice" role="status"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div><p class="noticeTitle">Welcome back</p><p class="noticeText">Your first two steps are saved, so you can carry on with your weekly hours.</p></div></div>
+        <form class="card accent psCard" novalidate onsubmit="return false">
+          <div class="psPart"><div class="weekHours" role="group" aria-label="Weekly hours">
+              <p class="weekHoursZone"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span>Times are in <b>Singapore time (SGT)</b>. Gamers see them in their own time zone, and can book from 2 hours ahead up to 4 weeks ahead.</span></p>
+              <div class="weekDay"><div class="weekDayHead"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>Monday</label><span class="weekDaySlots"></span></div>
+              <div class="weekDayRanges"><div class="weekRange"><select class="fieldControl weekFrom" data-hour="19" aria-label="Monday, from"></select><span class="weekRangeTo">to</span><select class="fieldControl weekTo" data-hour="23" aria-label="Monday, to"></select><button class="iconButton quiet weekRemove" type="button" aria-label="Remove Monday 19:00 to 23:00"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="weekAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add hours</button></div><p class="weekDayOff" hidden>Not available</p></div><div class="weekDay"><div class="weekDayHead"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>Tuesday</label><span class="weekDaySlots"></span></div>
+              <div class="weekDayRanges"><div class="weekRange"><select class="fieldControl weekFrom" data-hour="19" aria-label="Tuesday, from"></select><span class="weekRangeTo">to</span><select class="fieldControl weekTo" data-hour="23" aria-label="Tuesday, to"></select><button class="iconButton quiet weekRemove" type="button" aria-label="Remove Tuesday 19:00 to 23:00"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="weekAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add hours</button></div><p class="weekDayOff" hidden>Not available</p></div><div class="weekDay"><div class="weekDayHead"><label class="checkbox"><input class="checkboxInput" type="checkbox">Wednesday</label><span class="weekDaySlots"></span></div>
+              <div class="weekDayRanges" hidden><div class="weekRange"><select class="fieldControl weekFrom" data-hour="19" aria-label="Wednesday, from"></select><span class="weekRangeTo">to</span><select class="fieldControl weekTo" data-hour="23" aria-label="Wednesday, to"></select><button class="iconButton quiet weekRemove" type="button" aria-label="Remove Wednesday 19:00 to 23:00"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="weekAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add hours</button></div><p class="weekDayOff">Not available</p></div><div class="weekDay"><div class="weekDayHead"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>Thursday</label><span class="weekDaySlots"></span></div>
+              <div class="weekDayRanges"><div class="weekRange"><select class="fieldControl weekFrom" data-hour="19" aria-label="Thursday, from"></select><span class="weekRangeTo">to</span><select class="fieldControl weekTo" data-hour="23" aria-label="Thursday, to"></select><button class="iconButton quiet weekRemove" type="button" aria-label="Remove Thursday 19:00 to 23:00"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="weekAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add hours</button></div><p class="weekDayOff" hidden>Not available</p></div><div class="weekDay"><div class="weekDayHead"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>Friday</label><span class="weekDaySlots"></span></div>
+              <div class="weekDayRanges"><div class="weekRange"><select class="fieldControl weekFrom" data-hour="19" aria-label="Friday, from"></select><span class="weekRangeTo">to</span><select class="fieldControl weekTo" data-hour="23" aria-label="Friday, to"></select><button class="iconButton quiet weekRemove" type="button" aria-label="Remove Friday 19:00 to 23:00"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="weekAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add hours</button></div><p class="weekDayOff" hidden>Not available</p></div><div class="weekDay"><div class="weekDayHead"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>Saturday</label><span class="weekDaySlots"></span></div>
+              <div class="weekDayRanges"><div class="weekRange"><select class="fieldControl weekFrom" data-hour="13" aria-label="Saturday, from"></select><span class="weekRangeTo">to</span><select class="fieldControl weekTo" data-hour="17" aria-label="Saturday, to"></select><button class="iconButton quiet weekRemove" type="button" aria-label="Remove Saturday 13:00 to 17:00"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><div class="weekRange"><select class="fieldControl weekFrom" data-hour="19" aria-label="Saturday, from"></select><span class="weekRangeTo">to</span><select class="fieldControl weekTo" data-hour="23" aria-label="Saturday, to"></select><button class="iconButton quiet weekRemove" type="button" aria-label="Remove Saturday 19:00 to 23:00"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="weekAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add hours</button></div><p class="weekDayOff" hidden>Not available</p></div><div class="weekDay"><div class="weekDayHead"><label class="checkbox"><input class="checkboxInput" type="checkbox" checked>Sunday</label><span class="weekDaySlots"></span></div>
+              <div class="weekDayRanges"><div class="weekRange"><select class="fieldControl weekFrom" data-hour="14" aria-label="Sunday, from"></select><span class="weekRangeTo">to</span><select class="fieldControl weekTo" data-hour="18" aria-label="Sunday, to"></select><button class="iconButton quiet weekRemove" type="button" aria-label="Remove Sunday 14:00 to 18:00"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><button class="weekAdd" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add hours</button></div><p class="weekDayOff" hidden>Not available</p></div>
+            </div></div>
+          <div class="psActions"><button class="button primary" type="button" data-go="showcase">Save and continue</button><a class="textLink quiet" href="#" data-go="games">Back</a></div>
+        </form>
+      </div>
+  </section>
+
+  <section data-state="showcase" data-label="Step 4, showcase with checks · Sat 24 Oct, 10:32" data-shell="f-coach" data-coach="19#in-progress">
+      <div class="ps">
+        <a class="textLink quiet backLink" href="#" data-link="19#in-progress"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="psHead"><div class="stepCounter"><span class="stepCounterText">Step <b>04</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="done"></span><span class="current"></span><span></span></div></div><h1>Showcase</h1><p class="psLead">Optional. Up to 5 images gamers see on your profile: rank screenshots, tournament photos, notes you share with students. Each one is checked automatically before it shows.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Step 3 saved · 10:24</p></header>
+        <form class="card accent psCard" novalidate onsubmit="return false">
+          <div class="psPart"><div class="field imageUpload"><span class="fieldLabel">Showcase images</span><span class="psHint">Each caption can be up to 80 characters. <span class="mono">JPG, PNG or WebP · up to 10 MB · up to 5</span></span>
+            <ul class="uploadRows">
+              <li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">ascendant-act3.png</span><span class="uploadRowMeta"><span class="statusLabel positive">Live</span>1.4 MB</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove ascendant-act3.png">Remove</button></span><div class="uploadRowCaption"><label class="fieldLabel" for="s-c1">Caption <span class="fieldOptional">(optional)</span></label><input class="fieldControl" id="s-c1" type="text" maxlength="80" data-counter="s-c1-c" value="End of Episode 9, Act 3: Ascendant 1"><span class="fieldCounter" id="s-c1-c"></span></div></li>
+              <li class="uploadRow"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">ascent-smokes-notes.png</span><span class="uploadRowMeta" role="status"><span class="spinner" aria-hidden="true"></span>Checking…</span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Remove ascent-smokes-notes.png">Remove</button></span><div class="uploadRowCaption"><label class="fieldLabel" for="s-c2">Caption <span class="fieldOptional">(optional)</span></label><input class="fieldControl" id="s-c2" type="text" maxlength="80" data-counter="s-c2-c" value="My smoke lineups for Ascent, the ones I share with students"><span class="fieldCounter" id="s-c2-c"></span></div></li>
+              <li class="uploadRow refused"><span class="uploadRowThumb"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg></span><span class="uploadRowInfo"><span class="uploadRowName">lan-night.jpg</span><span class="uploadRowMeta"><span class="statusLabel action">Not shown</span></span></span><span class="uploadRowActions"><button class="uploadRowAction" type="button" aria-label="Replace lan-night.jpg">Replace</button><button class="uploadRowAction" type="button" aria-label="Remove lan-night.jpg">Remove</button></span><span class="fieldError"><svg class="icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span>This image can't be shown on Harbourly. Choose a different one.</span></span></li>
+            </ul>
+            <div class="uploadAddRow"><button class="button secondary sm" type="button"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Add images</button><span class="uploadCount">3 / 5</span></div></div></div>
+          <div class="psActions"><button class="button primary" type="button" data-go="review">Save and continue</button><a class="textLink quiet" href="#" data-go="resumed">Back</a><a class="textLink quiet psSkip" href="#" data-go="review">Skip for now</a></div>
+        </form>
+      </div>
+  </section>
+
+  <section data-state="review" data-label="Step 5, review · Sat 24 Oct, 10:40" data-shell="f-coach" data-coach="19#in-progress">
+      <div class="ps">
+        <a class="textLink quiet backLink" href="#" data-link="19#in-progress"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Coach dashboard</a>
+        <header class="psHead"><div class="stepCounter"><span class="stepCounterText">Step <b>05</b> / 05</span><div class="stepCounterBar" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="current"></span></div></div><h1>Review</h1><p class="psLead">Check everything once more. You can change any of it later in your profile settings.</p><p class="saveStatus" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Step 4 saved · 10:38</p></header>
+        <div class="notice" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><div><p class="noticeTitle">You go live as soon as you finish</p><p class="noticeText">Your payouts and phone are already done, so gamers can book you straight away.</p></div></div>
+        <div class="card accent psCard">
+          <section class="rvPart" aria-label="About you"><div class="rvPartHead"><h2>About you</h2><a class="textLink quiet" href="#" data-go="about-checking" aria-label="Edit about you">Edit</a></div><dl class="cardFacts rvFacts"><dt>Photo</dt><dd class="text"><span class="statusLabel positive">Live</span></dd><dt>Banner</dt><dd class="text"><span class="statusLabel positive">Live</span></dd><dt>Languages</dt><dd class="text">English, Mandarin</dd></dl><p class="rvText">Valorant and CS2 coach from Singapore. I focus on the basics that win rounds: crosshair placement, utility and comms. Bring a recent match and we'll go through it round by round, or play a deathmatch while I watch and call things out.</p></section><section class="rvPart" aria-label="Games and prices"><div class="rvPartHead"><h2>Games and prices</h2><a class="textLink quiet" href="#" data-go="games" aria-label="Edit games and prices">Edit</a></div><ul class="rvGames"><li><div class="gameRank"><span class="gameRankGame">Valorant</span><span class="gameRankValue">Ascendant 1</span></div><span class="gmPrice">S$25 / session</span><span class="gmPay">You're paid <span class="mono">S$22.00</span> · 2 credentials</span></li><li><div class="gameRank"><span class="gameRankGame">Counter-Strike 2</span><span class="gameRankValue">Premier 18,200</span></div><span class="gmPrice">S$20 / session</span><span class="gmPay">You're paid <span class="mono">S$17.60</span> · no credentials</span></li></ul></section><section class="rvPart" aria-label="Availability"><div class="rvPartHead"><h2>Availability</h2><a class="textLink quiet" href="#" data-go="resumed" aria-label="Edit availability">Edit</a></div><p class="rvText">Mon, Tue, Thu and Fri <span class="mono">19:00–23:00</span> · Sat <span class="mono">13:00–17:00</span> and <span class="mono">19:00–23:00</span> · Sun <span class="mono">14:00–18:00</span> · <span class="mono">SGT</span><br>28 one-hour slots a week. Wednesday off.</p></section><section class="rvPart" aria-label="Showcase"><div class="rvPartHead"><h2>Showcase</h2><a class="textLink quiet" href="#" data-go="showcase" aria-label="Edit showcase">Edit</a></div><p class="rvText">2 images, live on your profile. lan-night.jpg isn't used: it can't be shown on Harbourly.</p></section>
+          <div class="psActions"><button class="button primary" type="button" data-go="complete">Finish your profile</button><a class="textLink quiet" href="#" data-go="showcase">Back</a></div>
+        </div>
+      </div>
+  </section>
+
+  <section data-state="complete" data-label="You're live · Sat 24 Oct, 10:48" data-shell="f-coach-live" data-coach="19#live-new">
+      <div class="ps">
+        <div class="resultPanel" role="status"><span class="statusLabel positive">Live</span><h1>You're live</h1><p class="resultPanelText">Gamers can now find you on Browse coaches and book your free times. We've emailed you too.</p><p class="resultPanelNote"><span class="badge newCoach">New Coach</span><span>Shown on your profile until you complete 5 sessions with no upheld problems.</span></p><div class="resultPanelActions"><a class="button primary" href="#" data-link="19#live-new">Back to coach dashboard</a></div></div>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/components/WeekHours.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* Mockup behaviour for this page: data-go moves to another state of this page. */
+(function () {
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-go]');
+    if (go && !go.disabled && go.getAttribute('aria-disabled') !== 'true') { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+  });
+})();
+</script>
+</body>
+</html>

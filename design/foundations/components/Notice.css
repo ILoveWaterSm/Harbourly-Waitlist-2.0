@@ -35,3 +35,9 @@
 .callBannerText { font-size: 14px; color: var(--ink); }
 .callBannerClock { margin-left: auto; font: 500 15px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
 .callBanner.final { border-color: color-mix(in srgb, var(--amber) 35%, transparent); }
+
+/* Error summary (added in Phase 5): the list under an error notice at the top of a long form, each item a link
+   that moves focus to its field. */
+.noticeLinks { display: grid; gap: var(--space-1); margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+.noticeLinks a { color: var(--ink-soft); font-size: 14px; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.noticeLinks a:hover { color: var(--ink); text-decoration-color: var(--ink); }

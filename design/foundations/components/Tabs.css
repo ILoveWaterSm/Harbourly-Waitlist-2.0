@@ -1,0 +1,7 @@
+/* Tabs → Tabs.module.css. A pill switch between two or three views that sit side by side, e.g. Log in | Sign up.
+   The selected tab is a raised pill with the green glow, as tabs are on the landing page. Each tab is at least 44px tall. */
+.tabs { display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: 4px; padding: 4px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); background: var(--bg-mid); }
+.tabsItem { display: grid; place-items: center; min-height: 44px; padding: 0 var(--space-4); border-radius: var(--radius-pill); color: var(--muted); font: 600 15px/1 var(--font-body); text-decoration: none; transition: color .2s, background-color .2s, box-shadow .2s; }
+.tabsItem:hover { color: var(--ink); }
+.tabsItem:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.tabsItem[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1px var(--green-line), 0 0 22px -8px var(--green-glow); }

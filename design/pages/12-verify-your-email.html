@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12 Verify your email</title>
+<meta name="description" content="Phase 4, page 12: check your email, resend, link expired, verified, with every state.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/Countdown.css">
+<link rel="stylesheet" href="../foundations/components/ResultPanel.css">
+<style>
+/* Page: Verify your email (/verify-email) → app/verify-email/page.module.css. Layout only. */
+.auth { display: grid; width: 100%; max-width: 440px; margin-inline: auto; padding-top: var(--space-6); }
+.auth > .resultPanel { padding-top: 0; }
+.resultPanel .notice { justify-self: stretch; }
+.resultPanel .mk-hint { margin-top: 0; }
+@container app (max-width: 640px) { .auth { padding-top: var(--space-2); } }
+</style>
+</head>
+<body>
+<template id="shell-gate">
+      <div class="appShell">
+        <header class="topNav gate">
+          <span class="topNavLogo"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></span>
+          <div class="topNavRight">
+            <button class="topNavSignOut" type="button">Sign out</button>
+          </div>
+        </header>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-guest">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Harbourly home"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="button secondary" href="#" data-link="14#form">Log in</a>
+            <a class="button primary" href="#" data-link="11#form">Sign up</a>
+          </div>
+        </header>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="12 Verify your email">
+
+  <section data-state="sent" data-label="Check your email" data-shell="gate">
+      <div class="auth">
+        <div class="resultPanel" role="status">
+          <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+          <h1>Check your email</h1>
+          <p class="resultPanelText">We've sent a link to <b>snapking@example.com</b>. Open it to verify your email, then add a few details to finish setting up.</p>
+          <p class="mk-hint">Mockup: <a href="#" data-link="12#verified">open the link in the email</a><a href="#" data-link="12#verified-other">open it on another device</a></p><p class="resultPanelNote">Resend email in <span class="countdown" data-resend="42">0:42</span><br>The link works for 24 hours. Can't find it? Check your spam folder.</p><div class="resultPanelActions"><a class="textLink quiet" href="#" data-link="11#form">Use a different email</a></div>
+        </div>
+      </div>
+  </section>
+  <section data-state="resent" data-label="New link sent" data-shell="gate">
+      <div class="auth">
+        <div class="resultPanel" role="status">
+          <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+          <h1>Check your email</h1>
+          <p class="resultPanelText">We've sent a link to <b>snapking@example.com</b>. Open it to verify your email, then add a few details to finish setting up.</p>
+          <div class="notice" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><div><p class="noticeTitle">We sent a new link at <span class="mono">10:55 SGT</span></p><p class="noticeText">Only the latest link works, so use the newest email.</p></div></div>
+          <p class="mk-hint">Mockup: <a href="#" data-link="12#verified">open the link in the email</a><a href="#" data-link="12#verified-other">open it on another device</a></p><p class="resultPanelNote">Resend email in <span class="countdown" data-resend="59">0:59</span><br>The link works for 24 hours. Can't find it? Check your spam folder.</p><div class="resultPanelActions"><a class="textLink quiet" href="#" data-link="11#form">Use a different email</a></div>
+        </div>
+      </div>
+  </section>
+  <section data-state="expired" data-label="Link expired" data-shell="gate">
+      <div class="auth">
+        <div class="resultPanel" role="status">
+          <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+          <h1>This link has expired</h1>
+          <p class="resultPanelText">Verification links work for 24 hours. Send a new one, then use the link in the latest email.</p>
+          <div class="resultPanelActions"><a class="button primary" href="#" data-link="12#resent">Send a new link</a><a class="textLink quiet" href="#" data-link="11#form">Use a different email</a></div>
+        </div>
+      </div>
+  </section>
+  <section data-state="verified" data-label="Verified" data-shell="gate">
+      <div class="auth">
+        <div class="resultPanel" role="status">
+          <svg class="icon positive" aria-hidden="true"><use href="#i-check"/></svg>
+          <h1>Your email is verified</h1>
+          <p class="resultPanelText"><b>snapking@example.com</b> is confirmed. Next, add a few details to finish setting up your account.</p>
+          <div class="resultPanelActions"><a class="button primary" href="#" data-link="13#form">Continue</a></div>
+        </div>
+      </div>
+  </section>
+  <section data-state="verified-other" data-label="Verified on another device" data-shell="guest">
+      <div class="auth">
+        <div class="resultPanel" role="status">
+          <svg class="icon positive" aria-hidden="true"><use href="#i-check"/></svg>
+          <h1>Your email is verified</h1>
+          <p class="resultPanelText"><b>snapking@example.com</b> is confirmed. You opened the link on a different device or browser, so you're not logged in here. Log in to finish setting up your account.</p>
+          <div class="resultPanelActions"><a class="button primary" href="#" data-link="14#form">Log in</a></div>
+        </div>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/components/Field.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>// Steps inside this page (data-go) switch state in place.
+document.addEventListener('click', function (e) {
+  var go = e.target.closest('[data-go]');
+  if (go && !go.disabled) { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+});
+// The resend timer counts down, then becomes the Resend email link.
+document.querySelectorAll('[data-resend]').forEach(function (el) {
+  var left = +el.dataset.resend;
+  var t = setInterval(function () {
+    left--;
+    if (left > 0) { el.textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0'); return; }
+    clearInterval(t);
+    var a = document.createElement('a'); a.className = 'textLink'; a.href = '#'; a.textContent = 'Resend email'; a.dataset.go = 'resent';
+    el.parentNode.replaceChild(a, el); a.previousSibling.textContent = '';
+  }, 1000);
+});
+</script>
+</body>
+</html>

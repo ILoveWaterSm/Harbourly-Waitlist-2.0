@@ -31,3 +31,9 @@
 }
 .sidebarBecome svg { width: 18px; height: 18px; flex: none; }
 .sidebarBecome:hover { border-color: var(--green); }
+
+/* Application in progress (added in Phase 5): once someone starts a coach application, and until it's approved,
+   "Become a coach" becomes "Your coach application" with its status underneath. There is no Coach block before
+   approval, so this is where the application lives. */
+.sidebarBecome .sidebarBecomeText { display: grid; gap: 6px; min-width: 0; }
+.sidebarBecome .statusLabel { font-size: 10px; }

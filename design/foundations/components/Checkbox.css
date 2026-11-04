@@ -19,3 +19,12 @@
 .checkboxInput[aria-invalid="true"] { border-color: var(--amber); }
 .checkboxInput:disabled { border-color: var(--line-strong); cursor: not-allowed; }
 .checkbox a { color: var(--green); text-decoration: none; border-bottom: 1px solid var(--green-line); }
+
+/* Checkbox grid (added in Phase 5): several choices from a fixed list (languages you coach in), each a 44px
+   bordered tile so it's easy to tap; a checked tile takes the green border. */
+.checkboxGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--space-2); margin: 0; padding: 0; border: 0; min-width: 0; }
+.checkboxGrid .checkbox { align-items: center; min-height: 48px; padding: 0 var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-md); font-size: 15px; color: var(--ink-soft); }
+.checkboxGrid .checkbox:has(.checkboxInput:checked) { border-color: var(--green-line); background: color-mix(in srgb, var(--green) 6%, transparent); color: var(--ink); }
+.checkboxGrid .checkboxInput { margin: 0; }
+.checkboxGrid.invalid .checkbox { border-color: color-mix(in srgb, var(--amber) 45%, transparent); }
+@container app (max-width: 400px) { .checkboxGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

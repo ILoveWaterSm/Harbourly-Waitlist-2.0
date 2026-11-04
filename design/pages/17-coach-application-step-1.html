@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17 Coach application, step 1</title>
+<meta name="description" content="Phase 5, page 17: what coaching on Harbourly involves and what you will need, before the application starts.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/StepCounter.css">
+<link rel="stylesheet" href="../foundations/components/Notice.css">
+<link rel="stylesheet" href="../foundations/components/Flag.css">
+<style>
+/* Page: Coach application, step 1 (/coach/apply) → app/coach/apply/page.module.css. Layout only.
+   Focused layout like checkout (top nav, no sidebar; the burger menu has the full sidebar), a centred 680px column.
+   Plain copy in one card, no feature tiles: how it works, what you'll need and why, money and sessions.
+   Reading this page creates nothing; "Start your application" creates the coach record. */
+.ap { display: grid; gap: var(--space-6); max-width: 680px; margin-inline: auto; }
+.backLink { justify-self: start; font-size: 14px; }
+.apHead { display: grid; gap: var(--space-4); }
+.apLead { max-width: 60ch; font: var(--text-body); color: var(--muted); }
+.apCard { display: grid; padding: 0; }
+.apPart { display: grid; gap: var(--space-4); padding: var(--space-6); }
+.apPart + .apPart { border-top: 1px solid var(--line); }
+.apPart h2 { font: var(--text-h3); }
+.apSteps { display: grid; gap: var(--space-4); margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.apSteps li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: var(--space-2); counter-increment: step; }
+.apSteps li::before { content: counter(step, decimal-leading-zero); padding-top: 3px; font: 500 12px/1.4 var(--font-mono); color: var(--green); }
+.apSteps b, .apNeed b { display: block; font-weight: 600; font-size: 15px; line-height: 1.45; color: var(--ink); }
+.apSteps span, .apNeed span { display: block; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+.apNeed { display: grid; margin: 0; padding: 0; list-style: none; }
+.apNeed li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: var(--space-3); padding: var(--space-4) 0; border-top: 1px solid var(--line); }
+.apNeed li:first-child { border-top: 0; padding-top: 0; }
+.apNeed li:last-child { padding-bottom: 0; }
+.apNeed li > svg { width: 20px; height: 20px; margin-top: 2px; color: var(--muted); }
+.apFacts { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.apFacts li { position: relative; padding-left: var(--space-5); font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+.apFacts li::before { content: ""; position: absolute; left: 2px; top: .7em; width: 6px; height: 6px; border-radius: var(--radius-round); background: var(--line-strong); }
+.apFacts .mono { font-size: 13.5px; color: var(--ink); }
+.apCountry { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+.apCountry .flag { margin-top: 3px; }
+.apCountry b { font-weight: 600; color: var(--ink); }
+.apGo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.apGo p { font-size: 14px; line-height: 1.5; color: var(--muted); }
+@container app (max-width: 640px) {
+  .ap { gap: var(--space-5); }
+  .apPart { padding: var(--space-5); }
+  .apGo .button { width: 100%; }
+}
+</style>
+</head>
+<body>
+<template id="shell-focused">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+                <a class="sidebarBecome" href="#">Become a coach<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody noSidebar">
+          <main class="appShellMain"><div class="appShellContent narrow" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="17 Coach application, step 1">
+
+  <section data-state="intro" data-label="What's involved · Mon 19 Oct, 21:10" data-shell="focused">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><div class="stepCounter"><span class="stepCounterText">Step <b>01</b> / 02</span><div class="stepCounterBar" aria-hidden="true"><span class="current"></span><span></span></div></div><h1>Coach on Harbourly</h1><p class="apLead">Coach gamers in one-hour sessions held in Harbourly. Here's how it works and what you'll need, so nothing comes as a surprise.</p></header>
+        <div class="card accent apCard">
+          <section class="apPart" aria-labelledby="h-how"><h2 id="h-how">How it works</h2>
+            <ol class="apSteps">
+              <li><span><b>Apply</b><span>Tell us which games you coach and show us your rank. Our team reviews every application and emails you the outcome.</span></span></li>
+              <li><span><b>Set up payouts</b><span>Stripe, our payment partner, checks your identity and sets up where your payouts go.</span></span></li>
+              <li><span><b>Set up your profile</b><span>A photo, a short bio, the languages you coach in, your weekly hours and a price for each game.</span></span></li>
+              <li><span><b>Go live</b><span>Gamers can find you and book you. Your profile shows New Coach until you complete 5 sessions with no upheld problems.</span></span></li>
+            </ol>
+          </section>
+          <section class="apPart" aria-labelledby="h-need"><h2 id="h-need">What you'll need</h2>
+            <ul class="apNeed">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg><span><b>A government ID</b><span>Stripe checks it when you set up payouts. Harbourly never sees or stores it.</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span><b>A bank account in Singapore, in your name</b><span>This is where your payouts go.</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span><b>Screenshots of your rank</b><span>Our team checks the rank you claim against them. Only the team sees them.</span></span></li>
+            </ul>
+          </section>
+          <section class="apPart" aria-labelledby="h-money"><h2 id="h-money">Money and sessions</h2>
+            <ul class="apFacts">
+              <li>Sessions are 60 minutes, 1-on-1, held in Harbourly: call, chat and screen share.</li>
+              <li>You set a price for each game, from <span class="mono">S$10</span> a session. Gamers pay a 6% platform fee on top, which doesn't come out of your price.</li>
+              <li>Harbourly keeps 12% of your price. For a <span class="mono">S$25.00</span> session you're paid <span class="mono">S$22.00</span>.</li>
+              <li>Each session is paid out automatically 72 hours after it ends, unless a problem is reported.</li>
+              <li>If you cancel inside 24 hours, or don't show up, the gamer gets a full refund and it counts against you.</li>
+            </ul>
+            <p class="apCountry"><span class="flag" role="img" aria-label="Singapore"><svg><use href="#flag-sg"/></svg></span><span>You'll coach from <b>Singapore</b>, paid in SGD through Stripe. Coaching is open in Singapore, Malaysia and the Philippines.</span></p>
+          </section>
+        </div>
+        <div class="apGo"><a class="button primary" href="#" data-link="18#empty">Start your application</a><p>Your answers save as you go, so you can stop and come back.</p></div>
+      </div>
+  </section>
+
+  <section data-state="not-available" data-label="Country outside the coach list" data-shell="focused">
+      <div class="ap">
+        <a class="textLink quiet backLink" href="#" data-link="09#busy"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Dashboard</a>
+        <header class="apHead"><h1>Coach on Harbourly</h1></header>
+        <div class="notice warning" role="status"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><div><p class="noticeTitle">Coaching isn't available in Indonesia yet. You can still book sessions as a gamer.</p><p class="noticeText">Coaching is open in Singapore, Malaysia and the Philippines for now, because coaches can only be paid out there. Nothing has been set up, and your account is unchanged.</p></div></div>
+        <div class="apGo"><a class="button secondary" href="#" data-link="09#busy">Back to dashboard</a></div>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* Mockup behaviour for this page: data-go moves to another state of this page. */
+(function () {
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-go]');
+    if (go && !go.disabled && go.getAttribute('aria-disabled') !== 'true') { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+  });
+})();
+</script>
+</body>
+</html>

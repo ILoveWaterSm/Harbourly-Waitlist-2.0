@@ -1,0 +1,16 @@
+/* ResultPanel → ResultPanel.module.css. A whole-page outcome with one way on: an icon, the title (the page's
+   h1), what happened and what to do, then the action. Left-aligned. Used for "check your email", expired links,
+   verified, password changed and the blocked sign-up screens (05 Payment return uses the same layout).
+   Icon colours: muted by default; positive (green) once something is done; warn (amber) when it needs action. */
+.resultPanel { display: grid; gap: var(--space-4); justify-items: start; max-width: 58ch; padding-top: var(--space-8); }
+.resultPanel > .icon { width: 28px; height: 28px; margin-bottom: var(--space-2); color: var(--muted); }
+.resultPanel > .icon.positive { color: var(--green); }
+.resultPanel > .icon.warn { color: var(--amber); }
+.resultPanelText { font: var(--text-body); color: var(--muted); }
+.resultPanelText b { font-weight: 600; color: var(--ink); }
+.resultPanelActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); margin-top: var(--space-3); }
+.resultPanelNote { font-size: 14px; line-height: 1.55; color: var(--muted); }
+.resultPanelNote .mono { font-size: 13.5px; color: var(--ink-soft); }
+@container app (max-width: 640px) {
+  .resultPanel { padding-top: var(--space-4); }
+}
