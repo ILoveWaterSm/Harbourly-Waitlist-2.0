@@ -114,3 +114,23 @@
   .uploadMedia { align-items: flex-start; gap: var(--space-4); }
   .uploadMediaPreview .avatar, .uploadPhotoSlot { --avatar-size: 72px; width: 72px; height: 72px; }
 }
+
+/* Reorder (added in Phase 6): an ordered list of rows (the showcase) gets a footer on each row with its position and
+   Move up / Move down, so the order can be changed with a keyboard and on a 320px phone, never only by dragging.
+   The first row's Move up and the last row's Move down are disabled. Moves are announced ("Moved to position 2 of 5"). */
+.uploadRowOrder { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-1) var(--space-3); padding-top: var(--space-2); border-top: 1px solid var(--line); }
+.uploadRowPos { font: 400 12px/1.4 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+.uploadRowMoves { display: flex; gap: var(--space-1); }
+.uploadRowMove { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 var(--space-3); border: 0; border-radius: var(--radius-xs); background: none; color: var(--muted); font: 500 14px/1 var(--font-body); cursor: pointer; }
+.uploadRowMove svg { width: 16px; height: 16px; }
+.uploadRowMove:hover:not(:disabled) { color: var(--ink); background: var(--fill-subtle); }
+.uploadRowMove:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.uploadRowMove:disabled { color: var(--subtle); cursor: not-allowed; }
+/* A replacement being checked, or refused, under the image it would replace (which stays live meanwhile). */
+.uploadRowReplace { grid-column: 1 / -1; display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--space-1) var(--space-3); align-items: start; padding: var(--space-3); border: 1px dashed var(--line-strong); border-radius: var(--radius-xs); font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.uploadRowReplace > svg, .uploadRowReplace > .spinner { width: 16px; height: 16px; margin-top: 2px; color: var(--muted); }
+.uploadRowReplace > .spinner { border-width: 2px; }
+.uploadRowReplace .mono { font-size: 12.5px; color: var(--ink-soft); }
+.uploadRowReplace.refused { border-style: solid; border-color: color-mix(in srgb, var(--amber) 45%, transparent); }
+.uploadRowReplace.refused > svg { color: var(--amber); }
+.uploadRowReplace .uploadRowActions { grid-column: 2; margin-left: calc(var(--space-2) * -1); }

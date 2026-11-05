@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>23 Coach sessions</title>
+<meta name="description" content="Phase 6, page 23: every session gamers have booked with you, upcoming and past, each row opening its session.">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<link rel="stylesheet" href="../foundations/components/StatusLabel.css">
+<link rel="stylesheet" href="../foundations/components/SessionList.css">
+<link rel="stylesheet" href="../foundations/components/EmptyState.css">
+<link rel="stylesheet" href="../foundations/components/Skeleton.css">
+<link rel="stylesheet" href="../foundations/components/ErrorState.css">
+<style>
+/* Page: Coach sessions (/coach/sessions) → app/coach/sessions/page.module.css. Layout only.
+   The coach's complete record, the counterpart of My sessions (10): two plain lists, Upcoming (soonest first:
+   confirmed, in session) and Past (newest first: pending confirmation, disputed, completed, refunded, cancelled).
+   Times in the coach's zone. The whole row opens session detail, coach view. No filters, no amounts (money is on the
+   coach dashboard and on each session). Past shows 20, then "Load more". Coaches never see awaiting-payment or
+   expired bookings. */
+.pageHead { margin-bottom: var(--space-8); }
+.secHead { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-4); }
+.secCount { font: 400 13.5px/1 var(--font-mono); color: var(--muted); }
+.statusStack { display: inline-block; }
+.allLink { justify-self: start; font-size: 14px; }
+.allLink svg { margin: 0 0 0 6px; }
+.msGroup + .msGroup { margin-top: var(--space-10); }
+.msSkel { display: grid; gap: var(--space-2); }
+.msSkelRow { display: flex; align-items: center; gap: var(--space-4); padding: 14px var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); }
+@container app (max-width: 640px) {
+  .pageHead { margin-bottom: var(--space-6); }
+  .msGroup + .msGroup { margin-top: var(--space-8); }
+}
+</style>
+</head>
+<body>
+<template id="shell-kairo-coach">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="Kairo, account settings"><span class="avatar sm">K</span>Kairo</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">K</span><span><span class="mobileMenuName">Kairo</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="coach-sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody">
+          <nav class="sidebar" aria-label="Main">
+              <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="coach-sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+          </nav>
+          <main class="appShellMain"><div class="appShellContent wide" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<template id="shell-coach-live">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="snapking, account settings"><span class="avatar sm">S</span>snapking</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">S</span><span><span class="mobileMenuName">snapking</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="coach-sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody">
+          <nav class="sidebar" aria-label="Main">
+              <div class="sidebarBlock">
+                <span class="sidebarBlockLabel">Gamer</span>
+                <a class="sidebarLink" href="#" data-nav-key="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="browse"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+                <a class="sidebarLink" href="#" data-nav-key="sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+              </div>
+              <div class="sidebarBlock active">
+                <span class="sidebarBlockLabel">Coach</span>
+                <a class="sidebarLink" href="#" data-nav-key="coach-dashboard"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+                <a class="sidebarLink" href="#" data-nav-key="coach-sessions"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+              </div>
+          </nav>
+          <main class="appShellMain"><div class="appShellContent wide" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="23 Coach sessions">
+
+  <section data-state="list" data-label="List (Kairo) · Mon 5 Oct, 14:12 PHT" data-shell="kairo-coach" data-nav="coach-sessions">
+      <header class="pageHead"><h1>Coach sessions</h1></header>
+      <section class="msGroup" aria-labelledby="u-h">
+        <div class="secHead"><h2 id="u-h">Upcoming</h2><span class="secCount">3</span></div>
+        <div class="sessionList">
+          <div class="sessionListHead"><span>Gamer</span><span>Date and time</span><span>Status</span><span></span></div>
+          <a class="sessionRow" href="#" data-link="06#coach-kairo-tue"><span class="sessionRowWho"><span class="avatar sm">S</span><span><span class="sessionRowName">snapking</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Tue 6 Oct · 20:00 PHT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#coach-upcoming"><span class="sessionRowWho"><span class="avatar sm">S</span><span><span class="sessionRowName">snapking</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Wed 7 Oct · 20:00 PHT</span><span class="sessionRowStatus"><span class="statusLabel positive">Confirmed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#coach-milo-request"><span class="sessionRowWho"><span class="avatar sm">M</span><span><span class="sessionRowName">milo.exe</span><span class="sessionRowGame">Call of Duty: Mobile</span></span></span><span class="sessionRowWhen">Fri 9 Oct · 20:00 PHT</span><span class="sessionRowStatus"><span class="statusStack"><span class="statusLabel positive">Confirmed</span><span class="statusLabelNote">Reschedule requested</span></span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+        </div>
+      </section>
+      <section class="msGroup" aria-labelledby="p-h">
+        <div class="secHead"><h2 id="p-h">Past</h2><span class="secCount">5</span></div>
+        <div class="sessionList">
+          <div class="sessionListHead"><span>Gamer</span><span>Date and time</span><span>Status</span><span></span></div>
+          <a class="sessionRow" href="#" data-link="06#coach-tamtam-pending"><span class="sessionRowWho"><span class="avatar sm">T</span><span><span class="sessionRowName">tamtam</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Sat 3 Oct · 21:00 PHT</span><span class="sessionRowStatus"><span class="statusLabel action">Pending confirmation</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#coach-ozzie-dispute"><span class="sessionRowWho"><span class="avatar sm">O</span><span><span class="sessionRowName">ozzie</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Sat 3 Oct · 17:00 PHT</span><span class="sessionRowStatus"><span class="statusLabel action">Disputed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#coach-ricebowl-completed"><span class="sessionRowWho"><span class="avatar sm">R</span><span><span class="sessionRowName">ricebowl</span><span class="sessionRowGame">Mobile Legends</span></span></span><span class="sessionRowWhen">Thu 1 Oct · 20:00 PHT</span><span class="sessionRowStatus"><span class="statusLabel positive">Completed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#coach-nightjar-completed"><span class="sessionRowWho"><span class="avatar sm">N</span><span><span class="sessionRowName">nightjar</span><span class="sessionRowGame">Call of Duty: Mobile</span></span></span><span class="sessionRowWhen">Mon 28 Sep · 21:00 PHT</span><span class="sessionRowStatus"><span class="statusLabel positive">Completed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+          <a class="sessionRow" href="#" data-link="06#coach-milo-completed"><span class="sessionRowWho"><span class="avatar sm">M</span><span><span class="sessionRowName">milo.exe</span><span class="sessionRowGame">Call of Duty: Mobile</span></span></span><span class="sessionRowWhen">Sun 27 Sep · 14:00 PHT</span><span class="sessionRowStatus"><span class="statusLabel positive">Completed</span></span><span class="sessionRowGo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a>
+        </div>
+      </section>
+  </section>
+
+  <section data-state="empty" data-label="Empty (snapking, just live) · Sat 24 Oct, 10:50 SGT" data-shell="coach-live" data-nav="coach-sessions" data-coach="19#live-new">
+      <header class="pageHead"><h1>Coach sessions</h1></header>
+      <div class="emptyState"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg><p class="emptyStateTitle">No sessions yet</p><p class="emptyStateText">When gamers book you, their sessions show here, soonest first.</p></div>
+  </section>
+
+  <section data-state="loading" data-label="Loading" data-shell="kairo-coach" data-nav="coach-sessions">
+      <header class="pageHead"><h1>Coach sessions</h1></header>
+      <div class="msSkel" aria-busy="true" aria-label="Loading your coach sessions"><div style="margin-bottom:var(--space-4)"><span class="skeleton" style="width:120px;height:24px"></span></div><div class="msSkelRow"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="msSkel" style="flex:1.5"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:55%;height:12px"></span></div><div style="flex:1.3"><span class="skeleton" style="width:70%;height:12px"></span></div><div style="flex:1.1"><span class="skeleton" style="width:60%;height:11px"></span></div></div><div class="msSkelRow"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="msSkel" style="flex:1.5"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:55%;height:12px"></span></div><div style="flex:1.3"><span class="skeleton" style="width:70%;height:12px"></span></div><div style="flex:1.1"><span class="skeleton" style="width:60%;height:11px"></span></div></div><div class="msSkelRow"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="msSkel" style="flex:1.5"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:55%;height:12px"></span></div><div style="flex:1.3"><span class="skeleton" style="width:70%;height:12px"></span></div><div style="flex:1.1"><span class="skeleton" style="width:60%;height:11px"></span></div></div><div class="msSkelRow"><span class="skeleton circle" style="width:40px;height:40px"></span><div class="msSkel" style="flex:1.5"><span class="skeleton" style="width:40%;height:13px"></span><span class="skeleton" style="width:55%;height:12px"></span></div><div style="flex:1.3"><span class="skeleton" style="width:70%;height:12px"></span></div><div style="flex:1.1"><span class="skeleton" style="width:60%;height:11px"></span></div></div></div>
+  </section>
+
+  <section data-state="error" data-label="Error" data-shell="kairo-coach" data-nav="coach-sessions">
+      <header class="pageHead"><h1>Coach sessions</h1></header>
+      <div class="errorState" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><p class="errorStateTitle">We couldn't load your coach sessions</p><p class="errorStateText">Check your connection and try again. Your bookings and payouts aren't affected.</p><div class="errorStateAction"><button class="button secondary" type="button" data-go="list"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Try again</button></div></div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/mockup.js"></script>
+<script>
+/* Mockup behaviour for this page: Try again steps back to the loaded state. */
+(function () {
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-go]');
+    if (go && !go.disabled) { e.preventDefault(); window.mk.set(go.dataset.go); window.scrollTo(0, 0); }
+  });
+})();
+</script>
+</body>
+</html>

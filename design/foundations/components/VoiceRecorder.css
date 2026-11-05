@@ -1,0 +1,26 @@
+/* VoiceRecorder → VoiceRecorder.module.css. Records a short voice intro in the browser (added in Phase 6).
+   idle: Record a voice intro, with Upload a file as the alternative (no microphone, or recording isn't possible).
+   recording: a green dot with "Recording", the elapsed time against the limit ("0:32 / 1:00") and a thin progress
+   line, and Stop; it stops by itself at the limit. No red, no waveform. recorded: the take plays back in the
+   AudioPlayer, with Re-record and the next step. blocked: the browser said no to the microphone, with how to allow it.
+   Every step is a button, so the whole thing works from a keyboard. Times are announced through role="timer". */
+.voiceRecorder { display: grid; gap: var(--space-4); padding: var(--space-5); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); background: var(--bg-mid); min-width: 0; }
+.voiceRecorderTitle { font: 600 15px/1.4 var(--font-body); color: var(--ink); }
+.voiceRecorderText { font-size: 14px; line-height: 1.55; color: var(--muted); max-width: 60ch; }
+.voiceRecorderMeta { font: 400 12px/1.4 var(--font-mono); color: var(--muted); }
+.voiceRecorderActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.voiceRecorderLive { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+.voiceRecorderStatus { display: inline-flex; align-items: center; gap: 8px; font: 500 11.5px/1 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--green); }
+.voiceRecorderStatus::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 18%, transparent); }
+.voiceRecorderTime { font: 500 22px/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.voiceRecorderTime span { color: var(--muted); font-size: 15px; font-weight: 400; }
+.voiceRecorderTrack { height: 4px; border-radius: var(--radius-pill); background: var(--fill-subtle); overflow: hidden; }
+.voiceRecorderTrack > span { display: block; height: 100%; border-radius: inherit; background: var(--green); }
+.voiceRecorder .audioPlayer { max-width: none; background: var(--surface); }
+.voiceRecorder.blocked { border-color: color-mix(in srgb, var(--amber) 40%, transparent); }
+.voiceRecorderBlocked { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--space-3); align-items: start; }
+.voiceRecorderBlocked > svg { width: 20px; height: 20px; color: var(--amber); }
+@container app (max-width: 520px) {
+  .voiceRecorder { padding: var(--space-4); }
+  .voiceRecorderActions .button { flex: 1 1 100%; }
+}

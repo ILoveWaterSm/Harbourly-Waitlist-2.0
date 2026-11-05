@@ -42,7 +42,14 @@
     "call-end": '<path d="M3.2 14.2c4.9-4.6 12.7-4.6 17.6 0l-1.9 2.5a1 1 0 0 1-1.3.3l-2.7-1.4a1 1 0 0 1-.5-1v-1.8a12.5 12.5 0 0 0-4.8 0v1.8a1 1 0 0 1-.5 1l-2.7 1.4a1 1 0 0 1-1.3-.3z"/>',
     flag: '<path d="M5.5 21V4M5.5 4.5h11.5l-2.2 4 2.2 4H5.5"/>',
     mail: '<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4.5 7.5 7.5 5.5 7.5-5.5"/>',
-    globe: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.2 2.4 3.4 5.2 3.4 8.5s-1.2 6.1-3.4 8.5c-2.2-2.4-3.4-5.2-3.4-8.5s1.2-6.1 3.4-8.5z"/>'
+    globe: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.2 2.4 3.4 5.2 3.4 8.5s-1.2 6.1-3.4 8.5c-2.2-2.4-3.4-5.2-3.4-8.5s1.2-6.1 3.4-8.5z"/>',
+    // Added in Phase 6: reorder, recording, links out, copy.
+    "arrow-up": '<path d="M12 19V5M6 11l6-6 6 6"/>',
+    "arrow-down": '<path d="M12 5v14M6 13l6 6 6-6"/>',
+    stop: '<rect x="6.5" y="6.5" width="11" height="11" rx="2"/>',
+    external: '<path d="M13.5 4.5h6v6M19.5 4.5 11 13M17.5 13.5v5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h5"/>',
+    link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.3 1.3"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.3-1.3"/>',
+    copy: '<rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/>'
   };
   var s = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">';
   for (var k in paths) s += '<symbol id="i-' + k + '" viewBox="0 0 24 24">' + paths[k] + '</symbol>';

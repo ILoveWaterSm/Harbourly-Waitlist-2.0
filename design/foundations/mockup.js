@@ -32,9 +32,10 @@
   // Dashboard, Browse coaches and My sessions, and the logo. Only on shells where snapking is logged in: they open
   // snapking's pages, so other people's shells (Kairo's coach views) keep their links inert until their pages exist.
   // Since Phase 5: "Become a coach" opens step 1 of the application (17), and Kairo's coach shells open his coach
-  // dashboard (19). Kairo has no gamer pages, so his Gamer links and logo stay inert; Coach sessions waits for 23.
-  var NAV = { dashboard: '09#busy', browse: '01#results', sessions: '10#list', become: '17#intro' };
-  var KAIRO = { 'coach-dashboard': '19#live' };
+  // dashboard (19). Kairo has no gamer pages, so his Gamer links and logo stay inert.
+  // Since Phase 6: Coach sessions opens 23, Kairo's list (Mon 5 Oct) or snapking's empty list (just live, Sat 24 Oct).
+  var NAV = { dashboard: '09#busy', browse: '01#results', sessions: '10#list', become: '17#intro', 'coach-sessions': '23#empty' };
+  var KAIRO = { 'coach-dashboard': '19#live', 'coach-sessions': '23#list' };
   Array.prototype.forEach.call(frame.querySelectorAll('.appShell'), function (shell) {
     var user = shell.querySelector('.topNavUser'), logo = shell.querySelector('.topNavLogo');
     var who = user ? (user.getAttribute('aria-label') || '') : '';

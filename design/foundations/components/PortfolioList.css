@@ -1,0 +1,27 @@
+/* PortfolioList → PortfolioList.module.css. A coach's portfolio (added in Phase 6): up to 5 things they've achieved,
+   each a title, an optional year and a link that shows it. Checked by hand by the team before it shows.
+   Display (02 and 22's summaries): one row per entry on the inset ground; the link names the site and opens in a new
+   tab. Editor (22): one bordered group per entry with its title, year and link fields and its own Remove. */
+.portfolioList { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.portfolioItem { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--space-4); align-items: center; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); min-width: 0; }
+.portfolioItemTitle { font: 500 15px/1.45 var(--font-body); color: var(--ink); overflow-wrap: anywhere; }
+.portfolioItemYear { font: 400 12.5px/1.4 var(--font-mono); color: var(--muted); }
+.portfolioItemLink { grid-row: 1 / span 2; grid-column: 2; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font: 400 12.5px/1.2 var(--font-mono); color: var(--ink-soft); text-decoration: none; white-space: nowrap; }
+.portfolioItemLink svg { width: 15px; height: 15px; color: var(--muted); }
+.portfolioItemLink:hover { color: var(--ink); }
+.portfolioItemLink:hover svg { color: var(--ink); }
+.portfolioItemLink:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: var(--radius-xs); }
+.portfolioItem.flagged { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--amber) 45%, transparent); }
+.portfolioItem > .fieldError { grid-column: 1 / -1; }
+
+.portfolioEntries { display: grid; gap: var(--space-3); }
+.portfolioEntry { display: grid; gap: var(--space-4); padding: var(--space-5); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); min-width: 0; margin: 0; }
+.portfolioEntryHead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.portfolioEntryHead .label { color: var(--faint); }
+.portfolioEntryPair { display: grid; grid-template-columns: minmax(0, 1fr) 128px; gap: var(--space-4); align-items: start; }
+@container app (max-width: 520px) {
+  .portfolioEntry { padding: var(--space-4); }
+  .portfolioEntryPair { grid-template-columns: minmax(0, 1fr); }
+  .portfolioItem { grid-template-columns: minmax(0, 1fr); }
+  .portfolioItemLink { grid-row: auto; grid-column: 1; min-height: 36px; }
+}

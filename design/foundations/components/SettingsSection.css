@@ -1,0 +1,51 @@
+/* SettingsSection → SettingsSection.module.css. One section of a settings overview (added in Phase 6): its title,
+   what's there now as a short summary (what other people see), its status and an Edit link to the section's own page.
+   Several sit in one card (.settingsList), divided by hairlines, so the whole overview reads as one plain list rather
+   than a grid of feature cards. Used by Coach profile settings (22); Account settings (24) reuses it. */
+.settingsList { display: grid; padding: 0; }
+.settingsSection { display: grid; gap: var(--space-4); padding: var(--space-6); min-width: 0; }
+.settingsSection + .settingsSection { border-top: 1px solid var(--line); }
+.settingsSectionHead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); min-width: 0; }
+.settingsSectionTitle { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); min-width: 0; }
+.settingsSectionTitle h2 { font: var(--text-h3); letter-spacing: -0.01em; }
+.settingsSectionEdit { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; flex: none; }
+.settingsSectionBody { display: grid; gap: var(--space-3); min-width: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+.settingsSectionBody .mono { font-size: 13.5px; }
+.settingsSectionNote { font-size: 14px; line-height: 1.55; color: var(--muted); }
+.settingsSectionActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.settingsSectionActions .textLink { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; }
+/* Facts: a small label column and its value, e.g. Languages · English, Filipino. */
+.settingsFacts { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-2) var(--space-5); align-items: baseline; margin: 0; }
+.settingsFacts dt { margin: 0; font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.settingsFacts dd { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); color: var(--ink-soft); }
+/* Media: small previews in a row (photo, banner, showcase thumbnails), each a marked slot until real images exist. */
+.settingsMedia { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.settingsThumb { display: grid; place-items: center; width: 64px; height: 48px; border: 1px dashed var(--line-strong); border-radius: var(--radius-xs); color: var(--subtle); }
+.settingsThumb svg { width: 18px; height: 18px; }
+.settingsThumb.round { width: 56px; height: 56px; border-radius: var(--radius-round); }
+.settingsThumb.wide { width: 168px; height: 42px; font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; }
+/* Item rows: one per game (or portfolio entry), on the inset ground, with the status and any dashed slot below. */
+.settingsRows { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.settingsRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2) var(--space-4); align-items: center; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--bg-mid); min-width: 0; }
+.settingsRowSide { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2) var(--space-4); }
+.settingsRowPrice { font: 500 14px/1.3 var(--font-mono); color: var(--ink); white-space: nowrap; }
+.settingsRowPrice span { color: var(--muted); font-weight: 400; }
+.settingsRow > .pendingSlot, .settingsRow > .settingsRowMore { grid-column: 1 / -1; }
+.settingsRowMore { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); }
+.settingsRowMore .textLink { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; }
+@container app (max-width: 640px) {
+  .settingsSection { padding: var(--space-5); }
+}
+@container app (max-width: 520px) {
+  .settingsMedia { gap: var(--space-2); }
+  .settingsThumb { width: 48px; height: 36px; }
+}
+@container app (max-width: 400px) {
+  .settingsRow { grid-template-columns: minmax(0, 1fr); }
+  .settingsRowSide { justify-content: flex-start; }
+  .settingsThumb.wide { width: 120px; }
+}
+@container app (max-width: 360px) {
+  .settingsThumb { width: 40px; height: 32px; }
+  .settingsThumb.round { width: 48px; height: 48px; }
+}

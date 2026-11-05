@@ -1,0 +1,9 @@
+/* TeamNote → TeamNote.module.css. Words the Harbourly team actually sent with a decision (a declined rank update,
+   voice intro, game or portfolio; an application that needs changes): the label "Note from the Harbourly team",
+   the note itself and when it was sent. Words someone sent keep a solid box; anything not sent yet is a PendingSlot.
+   Promoted in Phase 6 from 18's page style. inset: on a card, it sits on the inset ground without a shadow. */
+.teamNote { display: grid; gap: var(--space-2); padding: var(--space-4); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-flat); }
+.teamNote.inset { background: var(--bg-mid); box-shadow: none; }
+.teamNote .label { color: var(--faint); }
+.teamNote blockquote { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.teamNoteSent { font: 400 12px/1.4 var(--font-mono); color: var(--muted); }
