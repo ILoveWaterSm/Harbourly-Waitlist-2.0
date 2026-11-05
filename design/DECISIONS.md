@@ -817,3 +817,4 @@ For the review of Phases 1 to 5 (found in Phase 6, not changed now)
 - 02 `preview` shows a Singapore gamer's prices and times (≈ S$43, SGT) rather than saying whose view it is.
 - 03 (Phase 1) shows Sat 10 Oct 20:00 and Sun 11 Oct 15:00 as free; since Phase 5, milo.exe's open reschedule request holds them.
 - 21's Review summary could use the SettingsSection component; 18's team note could use TeamNote.
+- 06 `loading` overflows a 320 px window by 48 px (a skeleton line), found by Phase 6's overflow test.

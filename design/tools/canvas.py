@@ -102,12 +102,17 @@ PHASES = [
         ("20", "20 Payout setup and settings", "20-payout-setup.html", "https://claude.ai/artifact/VVKZYhCa86RgU13zH5EKU8"),
         ("21", "21 Profile setup", "21-profile-setup.html", "https://claude.ai/artifact/7KKq11638mXPeYQNn17Cxb"),
     ]),
+    ("phase6", "Phase 6 · Running a coach profile", [
+        ("22", "22 Coach profile settings", "22-coach-profile-settings.html", "https://claude.ai/artifact/QLJBYMizAiBYA8eCW1BuJG"),
+        ("23", "23 Coach sessions", "23-coach-sessions.html", "https://claude.ai/artifact/TsLQ1ZB6C3stYYVgKE2myS"),
+    ]),
 ]
 CHECKS = {"phase1": ("check2", "Checkpoint 2: the booking flow end to end, pages 01 to 05."),
           "phase2": ("check3", "Checkpoint 3: session lifecycle, pages 06 to 08."),
           "phase3": ("check4", "Checkpoint 4: gamer side complete, pages 09 and 10."),
           "phase4": ("check5", "Checkpoint 5: getting in, pages 11 to 16."),
-          "phase5": ("check6", "Checkpoint 6: coach onboarding, pages 17 to 21.")}
+          "phase5": ("check6", "Checkpoint 6: coach onboarding, pages 17 to 21."),
+          "phase6": ("check7", "Checkpoint 7: coach side complete, pages 22 and 23.")}
 for nid, ptitle, pages in PHASES:
     top = end + 600
     N[nid] = {**N.get(nid, {}), "kind": "title1", "maxW": 6130, "text": ptitle, "w": 240, "x": 0, "y": top}

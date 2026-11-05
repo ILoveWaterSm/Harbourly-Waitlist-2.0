@@ -216,6 +216,8 @@ Also in Phase 5: new shared parts in the library, section "Coach onboarding" (Ch
 
 ## Phase 6: Running a coach profile
 
+Pages: [22 Coach profile settings](https://claude.ai/artifact/QLJBYMizAiBYA8eCW1BuJG) (`design/pages/22-coach-profile-settings.html`) · [23 Coach sessions](https://claude.ai/artifact/TsLQ1ZB6C3stYYVgKE2myS) (`design/pages/23-coach-sessions.html`) · frames uploaded to the [canvas](https://claude.ai/artifact/AqzF4kYNMmXf555w8KbJpZ), not yet placed: the canvas is at its 512-file limit (HANDOFF.md, "The canvas")
+
 ### 22. Coach profile settings · L
 `/coach/profile` *proposed*. Kairo, Mon 5 Oct 2026, 14:12 PHT; outcomes Tue 6 and Wed 7 Oct (DECISIONS.md, "Phase 6 decisions").
 - An overview (what gamers see now, what's checking or with the team, Preview my public profile, Copy profile link) and one page per section, in 02's order: photo and banner, about you, voice intro, showcase, games and prices, portfolio, availability.
@@ -229,7 +231,7 @@ Also in Phase 5: new shared parts in the library, section "Coach onboarding" (Ch
 
 Also in Phase 6: new shared parts in the library, section "Running a coach profile" (SettingsSection, VoiceRecorder, ImageUpload move controls, TeamNote, PortfolioList); 06 gains `coach-tamtam-pending`, `coach-ricebowl-completed`, `coach-nightjar-completed`, `coach-milo-completed`, and its coach-view back links open 23; 02 gains `portfolio`, and its preview and own states link to 22; 19 live's Manage and All coach sessions open 22 and 23; Kairo's and snapking's coach shells link Coach sessions to 23.
 
-**Checkpoint 7:** coach side complete.
+**Checkpoint 7:** coach side complete. Built and published 5 Nov 2026; waiting for the owner's review.
 
 ---
 

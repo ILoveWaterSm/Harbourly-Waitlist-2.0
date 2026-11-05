@@ -62,7 +62,8 @@
     "15": "https://claude.ai/artifact/G9xYuLRFwRgfjnnBu7A1Y4", "16": "https://claude.ai/artifact/Ma6d46PmT2aacA6483XTeG",
     "17": "https://claude.ai/artifact/UPdfZV5NDEKHgQk6A9m1vL", "18": "https://claude.ai/artifact/UuoARHjHiK321bFmrrT3Ww",
     "19": "https://claude.ai/artifact/PZWfUhEGXGatrN3DdtNneV", "20": "https://claude.ai/artifact/VVKZYhCa86RgU13zH5EKU8",
-    "21": "https://claude.ai/artifact/7KKq11638mXPeYQNn17Cxb"
+    "21": "https://claude.ai/artifact/7KKq11638mXPeYQNn17Cxb", "22": "https://claude.ai/artifact/QLJBYMizAiBYA8eCW1BuJG",
+    "23": "https://claude.ai/artifact/TsLQ1ZB6C3stYYVgKE2myS"
   };
   window.mkPages = PAGES;
   var self = (frame.dataset.page || '').slice(0, 2);
