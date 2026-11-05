@@ -263,12 +263,13 @@ In the design
 | Rank proof (application, rank update, new game) | JPG, PNG, WebP | 10 MB each | Up to 5 |
 | Dispute evidence | JPG, PNG, WebP, PDF | 10 MB each | Up to 5 |
 | Showcase (coach profile) | JPG, PNG, WebP | 10 MB each | Up to 5; optional caption up to 80 characters; checked automatically (see "Automatic image check") |
+| Voice intro (added in Phase 6) | MP3, M4A, WAV (or recorded in the browser) | 10 MB | 10 seconds to 1 minute; listened to by the team before gamers hear it |
 
 - No GIF (animated avatars pull attention) and no video evidence in the MVP; a clip can be linked in the dispute description.
 - No HEIC. iPhone screenshots are PNG already; iPhone Safari is expected to convert camera photos to JPEG on upload when HEIC isn't accepted. Confirm on a real iPhone when building.
 - Build note: strip location and other metadata from uploaded images before storing them.
 - Upload hint line, e.g. "JPG, PNG or WebP · up to 10 MB". Errors: "season-stats.png is 14.2 MB. Images can be up to 10 MB." and "rank-proof.heic isn't a JPG, PNG or WebP. Save it as one of those and try again."
-- Still to decide in Phase 6: voice intro length, portfolio format.
+- Voice intro (decided in Phase 6): recorded in the browser, or uploaded as MP3, M4A or WAV, up to 10 MB, 10 seconds to 1 minute. Portfolio (decided in Phase 6): up to 5 entries, each a title, an optional year and a link; no files. See "Phase 6 decisions".
 
 ## Booking from the coach profile (agreed before Phase 1)
 
@@ -351,7 +352,7 @@ A new, optional part of the coach profile. Not in the feature list.
 What it is
 - Coaches can add up to 5 images of anything they want to show gamers: rank screenshots, tournament photos, notes they share with students. With no images, the profile leaves the section out entirely.
 - Each image can have an optional caption, up to 80 characters, e.g. "MPL Philippines 2024, with the team as substitute jungler".
-- Separate from the portfolio: the portfolio is reviewed by the team and, once it passes, shown on the profile (changed 23 Oct 2026; how it shows is decided with its format in Phase 6). The showcase isn't reviewed by hand.
+- Separate from the portfolio: the portfolio is reviewed by the team and, once it passes, shown on the profile (changed 23 Oct 2026; since Phase 6 a list of up to 5 linked entries in a "Portfolio" section after Games). The showcase isn't reviewed by hand.
 
 On the profile (page 02)
 - A "Showcase" section straight after About.
@@ -382,7 +383,7 @@ Profile order at one-column widths (below 1100px)
 Extends the showcase check above to every image other people can see.
 
 - Covered: profile photos (every account, gamer or coach: they show in the top nav, on reviews and on coach profiles), coach banners, and showcase images with their captions.
-- Not covered: private uploads only the team sees (rank proof, dispute evidence, a portfolio under review). The team already looks at those. A portfolio that passes review is public, so its images also go through this check before they show (added 23 Oct 2026).
+- Not covered: private uploads only the team sees (rank proof, dispute evidence, a portfolio under review). The team already looks at those. A portfolio that passes review is public, so its images also go through this check before they show (added 23 Oct 2026; since Phase 6 the portfolio is links only, with no images, so nothing of it goes through the check).
 - Same behaviour everywhere: checked when uploaded or changed; passes, live at once; fails, not used, and the person is told in place with a plain reason ("This photo can't be used on Harbourly. Choose a different one."); uncertain counts as a fail; no email; no manual review.
 - A replaced photo or banner stays until its replacement passes. A first photo that fails leaves the default avatar (first letter); a first banner that fails leaves the plain `--bg-mid` band.
 - Where it's designed: profile setup (21: photo, banner, showcase), coach profile settings (22: the same), account settings (24: photo). Each upload shows a short "Checking…" state, then passed or refused.
@@ -466,7 +467,7 @@ New Coach label, no Verified badge
 
 Portfolio
 - Optional, reviewed by the team by hand. If it holds up, it's shown on the coach's profile. It never gates bookings, never shortens the New Coach period and never grants a badge.
-- How it shows on the profile is decided with its format in Phase 6. Once public, its images also go through the automatic image check. The Showcase stays separate and isn't reviewed by hand.
+- How it shows on the profile: decided in Phase 6 ("Phase 6 decisions": up to 5 linked entries, a "Portfolio" section on 02 after Games). It has no images, so the automatic image check doesn't apply. The Showcase stays separate and isn't reviewed by hand.
 
 Rank proof (kept)
 - Ranks stay checked against proof screenshots at application and on every rank change ("Ranks" above). "Credentials: optional" in the landing copy refers to the portfolio only. What dropping this later would change is noted in `HANDOFF.md`, Open items.
@@ -724,3 +725,95 @@ New shared parts for Phase 5: Checklist, WeekHours, SaveStatus, ImageUpload rows
 - Checkpoint 6 ("coach onboarding", pages 17 to 21) is closed with no changes. Phase 6 starts next.
 - **Order of work from here (owner, 4 Nov 2026):** build Phase 6 (22, 23) and Phase 7 (24, 25) first. Only after both are done does the owner review Phases 1 to 5 for improvements; until then, earlier pages change only where a Phase 6 or 7 decision reaches them (links, a new state, a shared component).
 - **Research before designing (owner, 4 Nov 2026; applies from Phase 6 on):** before proposing a page, study a handful of well-regarded products that do the same job (for example a seller's listing editor, an availability editor, a sessions list) and the established UI/UX principles behind them, to learn which layouts and placements actually work. It is inspiration, never a copy: DECISIONS.md, the visual rules and the design system always win; anything the research suggests that isn't decided is raised as a recommendation for approval, never built quietly; no real product's names, branding or recognisable design appear in the mockups. The first message for each phase includes a short "What I looked at and what I'm taking from it" per page.
+
+## Phase 6 decisions (agreed 5 Nov 2026, before Phase 6)
+
+Pages 22 and 23. The owner took every recommendation in the Phase 6 brief (gaps G1 to G21).
+
+Who, and when (G1)
+- **Kairo owns 22 and 23** (Philippines, PHT, PHP), at **Mon 5 Oct 2026, 14:12 PHT**, the moment of 19 live. At that moment: Mobile Legends `Mythical Glory · 85★` ₱1,850 and Call of Duty: Mobile `Legendary · Top 500` ₱2,100, both live; the Mobile Legends rank update `Mythical Glory · 92★` under review since Sun 4 Oct; a profile photo and banner, live (shown as marked slots until images are supplied; avatars elsewhere keep the first letter); the 0:45 voice intro, live; five showcase images with 02's captions (the third has none); no portfolio.
+- **Edits Kairo makes "now"** run 14:13 to 14:40 PHT: bio saved 14:15; a new photo checking 14:18, refused 14:19; showcase replace 14:20, refused 14:21; Mobile Legends price ₱1,850 → ₱1,950 saved 14:25 (paid ₱1,950.00 − ₱234.00 = ₱1,716.00); Call of Duty: Mobile rank update `Legendary · Top 200` sent 14:30; Valorant `Ascendant 2` at ₱1,500 (paid ₱1,320.00) sent 14:35; a 0:52 voice intro sent 14:38; a portfolio sent 14:40.
+- **Outcomes (what-ifs):** the team's decisions on the rank update, the new game and the voice intro on **Tue 6 Oct, 11:00 PHT**; the portfolio on **Wed 7 Oct, 10:00 PHT**. These states keep their cross-page links inert (as Phase 3's time-shifted states), so Preview never opens a 02 that disagrees with them.
+- **snapking** (just live, Sat 24 Oct 2026, 10:50 SGT) owns 23's empty state.
+- **Kairo's weekly hours (PHT):** Mon 19:00–20:00 and 21:00–23:00; Tue and Wed 19:00–23:00; Thu 20:00–22:00; Fri 20:00–21:00; Sat 14:00–17:00 and 20:00–22:00; Sun 14:00–16:00. 21 one-hour slots a week. They give 02's and 03's free times with his bookings. ozzie's Sat 3 Oct 17:00 session falls outside them: booked under his earlier hours, it shows that changing hours never touches booked sessions.
+- **Kairo's past session times** (19 shows dates only): ricebowl Thu 1 Oct 20:00, nightjar Mon 28 Sep 21:00, milo.exe Sun 27 Sep 14:00, all PHT.
+
+22 Coach profile settings: structure (G2)
+- `/coach/profile`. **An overview plus one page per section**, in 02's order: Photo and banner · About you · Voice intro · Showcase · Games and prices · Portfolio · Availability. All states of one mockup page.
+- **Overview:** h1 "Profile settings", "← Coach dashboard", one line ("What gamers see on your profile now, and anything waiting for a check or our team."), and "Preview my public profile" in the header. One card of SettingsSection blocks: each shows what gamers see now (a summary, as 21's Review), its status, any dashed PendingSlot, and Edit.
+- **Section pages:** "← Profile settings", the title, a lead line that says how that section saves, the form card, then the section's action and Cancel (Cancel returns to the overview and discards).
+- The app shell with the Coach block; **Coach dashboard is highlighted** (22 isn't a sidebar link, as 20). A 680px column, as 20 and 21.
+- 19 live's two "Manage" links open the Games and prices page. 02's own-profile "Edit profile" and preview's "Back to profile settings" open the overview.
+
+How 22 saves (G3)
+- **Typed content** (bio, languages, prices, credentials, captions and order, weekly hours) saves with **Save changes** on its section page and goes live at once. The page stays put and shows "Saved · 14:15. Gamers see this now." (SaveStatus). Validation runs on leaving a field and on save, never while typing; on save, an error summary ("Fix 2 things before you save") and focus on the first error.
+- **Image files** (photo, banner, showcase) go to the automatic check as soon as they're chosen: no Save. Checking, then live, or refused with the fixed line. A replaced image stays live until its replacement passes.
+- **Team items** (rank update, new game, voice intro, portfolio) go with **Send for review**: under review (dashed PendingSlot), then live, or declined with the reason. The old version stays in front of gamers meanwhile. One pending item of each kind per thing; it can be **withdrawn** (Withdraw, no confirm, nothing changes for gamers), not edited.
+- **Leaving with unsaved changes:** the browser's own "Leave site?" prompt. Not drawn.
+- **Declined** results stay on 22 until the coach sends a new one or presses **Dismiss**. The team records one reason category plus an optional note (shown as "Note from the Harbourly team", with its sent time). The emails ("approved or declined", "Portfolio result") say the same.
+
+Prices (G4)
+- Price per game in the coach's currency, whole units, the floor up front ("At least ₱430 a session."), error "The lowest price is ₱430.", the payout line ("You're paid ₱1,716.00 a session (₱1,950.00 − ₱234.00 commission)."). The Games and prices lead says "Sessions already booked keep the price they were booked at."; after saving a changed price the saved line names them ("snapking's sessions on Tue 6 Oct and Wed 7 Oct keep ₱1,850.").
+
+Availability (G5)
+- WeekHours as on 21, with "Times are in Philippine time (PHT)." Saved changes are bookable at once. Sessions already booked and times held for an open reschedule request aren't affected, and the page says so. At least one hour stays required (21's rule): "Add at least one hour. Gamers can't book you without any." No zero-hours pause in the MVP.
+
+Update rank (G6)
+- Per game: one field "New rank or top achievement" (40 characters, counter) and **up to 5 screenshots** (private: only the team sees them; JPG, PNG or WebP, 10 MB each; no automatic check). Errors: "Enter your new rank.", "That's your current rank. Enter the new one.", "Add at least one screenshot that shows your new rank."
+- Under review: "Rank update under review · Mythical Glory · 92★, sent Sun 4 Oct. Gamers see 85★ until our team approves it." (19's words). Update rank is hidden for that game while one is pending; Withdraw instead.
+- Declined: the reason (18's categories: proof doesn't show the rank entered; proof images unclear; something else) and the team's note; the old rank stays live ("Gamers still see 85★."); Update rank and Dismiss. Approved: the new rank is Live with "Approved Tue 6 Oct. Gamers see it now."; 19's slot goes and 02 shows the new rank.
+
+Add a game (G7)
+- Only games not listed yet (Kairo: Valorant, Counter-Strike 2, Riftbound; "Games you already coach aren't listed."). The request: game, rank (40), screenshots (up to 5, private), **price** (floor and payout line), so approval makes it bookable straight away. Credentials are added once it's live.
+- Under review: a dashed card, "Valorant under review · Ascendant 2 at ₱1,500, sent Mon 5 Oct. Gamers can't see or book it until our team approves it.", with Withdraw. (19's Your games would show the same dashed row; 19 at 14:12 needs no change.)
+- Declined: reason and note, inputs kept, **Edit and send again** and Dismiss.
+
+Remove a game, credentials (G13)
+- **Remove this game** (confirm step in place, amber final button): the listing comes off the profile at once; booked sessions for it go ahead; the last game can't be removed ("You need at least one game on your profile."); adding it back goes through review again.
+- Credentials (up to 3 per game, 60 characters) are edited on the Games and prices page and go live on save, as on 21. Added to diagram 9.
+
+Voice intro (G8)
+- **10 seconds to 1 minute.** Recorded in the browser (Record a voice intro → Recording, with the elapsed time "0:32 / 1:00", stopping by itself at 1:00 → Stop → play it back → Re-record or Send for review), or **uploaded** as the alternative when recording isn't possible: MP3, M4A or WAV, up to 10 MB.
+- Our team listens before gamers hear it. Under review: "Gamers hear your current intro until our team approves the new one." (A first intro: nothing until approved.) Declined: the reason and note; the current intro stays.
+- Decline reasons: we couldn't hear it clearly; it isn't about your coaching; it includes contact details or asks gamers to book outside Harbourly (G14); something else.
+- Microphone blocked: 08's words, "Your browser blocked the microphone. Allow microphone access for Harbourly in your browser's site settings, then try again." plus "Or upload a recording instead."
+- Errors: "Your intro is 0:06. Record at least 10 seconds." · "intro.ogg isn't an MP3, M4A or WAV. Save it as one of those and try again." · "intro.wav is 14.2 MB. Audio files can be up to 10 MB." · "intro.mp3 is 1:24 long. Intros can be up to 1 minute."
+- The recording indicator is a green dot with "Recording" and the time: no red, no waveform. **Remove intro** (confirm step) takes it off the profile at once; added to diagram 9. 02's player stays as built (0:45).
+
+Showcase (G10)
+- As on 21, plus: **Move up / Move down** buttons on each row (44px, "Moved to position 2 of 5" announced; no dragging), Replace and Remove per image. Order and captions go live with Save changes; an edited caption is checked again on save and the old caption stays until the new one passes ("This caption can't be shown on Harbourly. Change it and try again." · "Gamers still see the current caption."). A replacement checks beside the image it replaces, which stays live. At 5 images Add images is disabled with "You can add up to 5 images. Remove one to add another." Remove: a confirm step in place ("Remove this image? It comes off your profile straight away.", Remove image / Keep image). Empty: "No showcase yet. Your profile leaves the section out until you add an image." (drawn as a Kairo what-if).
+
+Photo and banner (G11)
+- Replace and Remove for each; a new one checks while the current one stays live ("Gamers see your current photo until the new one passes."); refused leaves the current one ("Gamers still see your current photo."). "It's also your account photo, in the top bar." Account settings (24) edits the same photo with the same rules. Remove's confirm step isn't drawn.
+
+Portfolio (G9, G14)
+- **Format: up to 5 entries**, each a title (up to 80 characters, e.g. "MPL Philippines 2024 · substitute jungler"), an optional year, and a **link** that shows it (a tournament page, a team announcement, a match video; `type="url"`, "https://" added if left out, 18's error line). No images and no files: the showcase is for images, so the portfolio needs no image check (the "Automatic image check" note about portfolio images no longer applies).
+- **Reviewed by hand**, all or nothing: the team opens every link and checks it shows what the title says. Reasons: a link doesn't show what its title says; a link doesn't open; it includes contact details or booking outside Harbourly (G14); something else.
+- States: none ("Add a portfolio"), under review ("Nothing shows on your profile until our team approves it."), **shown on your profile** (Live, "Shown on your profile since Wed 7 Oct."), **didn't pass** (amber, the reason and note, entries kept, Edit and send again). Editing a shown portfolio sends it for review again; the shown version stays until the new one passes. **Remove portfolio** takes it off at once. Never a badge; never shortens the New Coach period; doesn't change bookings.
+- **On 02:** a "Portfolio" section after Games, before Reviews: each entry's title, year (mono) and a link to the site (opens in a new tab, with "Opens a page outside Harbourly" for screen readers). New 02 state `portfolio` (Kairo, from Wed 7 Oct). PortfolioList component.
+
+No going around Harbourly (G14, new policy)
+- Voice intros and portfolio links must not include contact details or ask gamers to book outside Harbourly. It's a decline reason for both. Bios and captions are covered by the automatic check for captions and by reports; no new screen.
+
+Preview (G12)
+- 02 `preview` already shows 85★ while 92★ is pending, as gamers see it. Its "Back to profile settings" opens 22's overview. Its prices and times are as a gamer in Singapore sees them (≈ S$43, SGT); left as built and listed for the review of Phases 1 to 5.
+
+23 Coach sessions (G15)
+- `/coach/sessions`, 10's layout in the coach shell (wide), Coach sessions highlighted. h1 "Coach sessions"; **Upcoming** (soonest first) and **Past** (newest first), each with its count. Columns Gamer · Date and time (coach's zone) · Status, the amber "Reschedule requested" second line; the whole row opens 06's coach view. **No amounts** (money is on 19 and 06). Past shows 20, then "Load more" (not drawn). Coaches never see awaiting-payment or expired bookings.
+- Kairo at 14:12: Upcoming snapking Tue 6 Oct 20:00 (`06#coach-kairo-tue`), snapking Wed 7 Oct 20:00 (`06#coach-upcoming`), milo.exe Fri 9 Oct 20:00 with Reschedule requested (`06#coach-milo-request`); Past tamtam Sat 3 Oct 21:00 Pending confirmation, ozzie Sat 3 Oct 17:00 Disputed (`06#coach-ozzie-dispute`), ricebowl Thu 1 Oct 20:00, nightjar Mon 28 Sep 21:00 and milo.exe Sun 27 Sep 14:00 Completed.
+- **New 06 copies** so no row is a dead end (onward links inert): `coach-tamtam-pending` (released automatically Tue 6 Oct, 22:00 PHT, 31h 48m), `coach-ricebowl-completed` (₱1,628.00, ricebowl's review), `coach-nightjar-completed` (₱1,848.00, nightjar's review), `coach-milo-completed` (₱1,848.00; no review yet, a dashed slot: milo.exe can review until Thu 29 Oct).
+- Empty (snapking): "No sessions yet" · "When gamers book you, their sessions show here, soonest first." No button. Loading and error as 10.
+- Every coach-view "Coach sessions" back link on 06 opens 23.
+
+Not added (G16 to G18, G21)
+- Nothing about New Coach progress on 22 or 23 (19 has it). Suspended and banned stay out. Coach emails aren't drawn. Not in the MVP: date-specific hours or time off, pausing bookings or hiding the profile, a review-time estimate, a profile score. **Approved: "Copy profile link"** beside Preview on the overview (copies the public profile address; "Link copied" in place, never a toast).
+
+Labels (new, used the same everywhere)
+- Profile settings · Save changes · Cancel · Update rank · Add a game · Send for review · Withdraw · Dismiss · Edit and send again · Remove this game · Record a voice intro · Stop · Re-record · Upload a file · Remove intro · Move up · Move down · Remove image · Keep image · Add a portfolio · Add an entry · Remove portfolio · Copy profile link. Loading: "Saving…", "Sending…", "Checking…". Status labels: Live (green), Checking… and Under review (muted), Not shown, Declined and Didn't pass (amber).
+
+New shared parts for Phase 6: SettingsSection (the summary block with Edit; 24 reuses it), VoiceRecorder, ImageUpload move controls, TeamNote (18's "Note from the Harbourly team" box, promoted), PortfolioList (editor rows and the 02 display); icons arrow-up, arrow-down, stop, external, link, copy. All on the component library page, section "Running a coach profile".
+
+For the review of Phases 1 to 5 (found in Phase 6, not changed now)
+- 02 `preview` shows a Singapore gamer's prices and times (≈ S$43, SGT) rather than saying whose view it is.
+- 03 (Phase 1) shows Sat 10 Oct 20:00 and Sun 11 Oct 15:00 as free; since Phase 5, milo.exe's open reschedule request holds them.
+- 21's Review summary could use the SettingsSection component; 18's team note could use TeamNote.

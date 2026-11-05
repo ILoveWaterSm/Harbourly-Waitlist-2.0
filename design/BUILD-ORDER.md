@@ -217,19 +217,17 @@ Also in Phase 5: new shared parts in the library, section "Coach onboarding" (Ch
 ## Phase 6: Running a coach profile
 
 ### 22. Coach profile settings · L
-`/coach/profile` *proposed*.
-- Edit bio, avatar, banner, languages, availability, prices (not below the floor; booked sessions keep their price). A new photo or banner is checked automatically: checking, live, or refused with a reason (the old one stays until the new one passes).
-- Showcase: add, replace, remove, reorder, edit captions; each image checking, live, or refused with a reason (replaced image stays live until the new one passes); empty (no showcase).
-- Update rank (screenshot, pending, old rank still shown).
-- Add a game (proof, under review).
-- Voice intro (record, pending, approved, declined).
-- Portfolio (submit, under review, shown on your profile, didn't pass). Never grants a badge.
-- Preview my public profile (opens 2 in preview mode).
+`/coach/profile` *proposed*. Kairo, Mon 5 Oct 2026, 14:12 PHT; outcomes Tue 6 and Wed 7 Oct (DECISIONS.md, "Phase 6 decisions").
+- An overview (what gamers see now, what's checking or with the team, Preview my public profile, Copy profile link) and one page per section, in 02's order: photo and banner, about you, voice intro, showcase, games and prices, portfolio, availability.
+- Typed content saves with Save changes and goes live at once; images go to the automatic check (the current one stays until the new one passes); rank updates, new games, voice intros and portfolios go with Send for review (the version gamers see stays until approved; withdraw while under review; declined with the reason, Dismiss).
+- States: `overview`, `loading`, `error`; `about`, `about-errors`, `about-saved`; `photos`, `photos-checking`, `photos-refused`; `voice`, `voice-blocked`, `voice-recording`, `voice-recorded`, `voice-pending`, `voice-declined`; `showcase`, `showcase-checking`, `showcase-refused`, `showcase-remove`, `showcase-empty`; `games`, `games-saved`, `games-error`, `games-remove`; `rank`, `rank-sent`, `rank-declined`, `rank-approved`; `add-game`, `add-game-pending`, `add-game-declined`; `portfolio`, `portfolio-pending`, `portfolio-live`, `portfolio-declined`; `availability`.
 
 ### 23. Coach sessions · S
-`/coach/sessions` (feature list).
-- Plain list: gamer, date and time, status, "Reschedule requested" second line.
-- States: list, empty, loading, error.
+`/coach/sessions` (feature list). 10's layout in the coach shell.
+- Plain list: gamer, date and time, status, "Reschedule requested" second line. Upcoming soonest first, Past newest first, rows open 06's coach view, no amounts, "Load more" after 20.
+- States: `list` (Kairo, Mon 5 Oct 14:12 PHT), `empty` (snapking, Sat 24 Oct), `loading`, `error`.
+
+Also in Phase 6: new shared parts in the library, section "Running a coach profile" (SettingsSection, VoiceRecorder, ImageUpload move controls, TeamNote, PortfolioList); 06 gains `coach-tamtam-pending`, `coach-ricebowl-completed`, `coach-nightjar-completed`, `coach-milo-completed`, and its coach-view back links open 23; 02 gains `portfolio`, and its preview and own states link to 22; 19 live's Manage and All coach sessions open 22 and 23; Kairo's and snapking's coach shells link Coach sessions to 23.
 
 **Checkpoint 7:** coach side complete.
 

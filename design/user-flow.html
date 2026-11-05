@@ -151,7 +151,7 @@ flowchart TD
 flowchart TD
   Browse[&quot;Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency&quot;] --&gt; Card[&quot;Coach card&quot;]
   Browse --&gt;|&quot;Load more&quot;| Browse
-  Card --&gt; Profile[&quot;Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, showcase images if added, availability preview, voice intro, reviews&quot;]
+  Card --&gt; Profile[&quot;Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, showcase images if added, portfolio if it passed review, availability preview, voice intro, reviews&quot;]
   Profile --&gt; Own{&quot;Is this your own coach profile?&quot;}
   Own --&gt;|&quot;Yes&quot;| NoBook([&quot;No Book button. This is your profile&quot;])
   Own --&gt;|&quot;No&quot;| Game[&quot;Choose a game&quot;]
@@ -316,22 +316,25 @@ flowchart TD
 </section>
 <section id="f9" class="flow">
   <h2><span class="n">9</span>Live coach: managing the profile</h2>
-  
+  <p class="note">Anything waiting for the team (a rank update, a new game, a voice intro, a portfolio) can be withdrawn while it&#x27;s under review, and the version gamers see stays until it&#x27;s approved. Voice intros and portfolios that include contact details or ask gamers to book outside Harbourly are declined (DECISIONS.md, &quot;Phase 6 decisions&quot;, 5 Nov 2026).</p>
   <div class="diagram"><pre class="mermaid">
 flowchart TD
-  CDash([&quot;Coach dashboard&quot;]) --&gt; Settings[&quot;Coach profile settings&quot;]
-  Settings --&gt; Bio[&quot;Edit bio, avatar, banner, languages. Photos checked automatically on upload&quot;]
-  Settings --&gt; Avail[&quot;Edit weekly availability, in your own time zone&quot;]
-  Settings --&gt; Rates[&quot;Edit price per game, not below the floor (about S$10)&quot;]
-  Settings --&gt; Rank[&quot;Update rank: new screenshot, old rank shown until approved&quot;]
-  Settings --&gt; AddGame[&quot;Add a game: proof, listing under review until approved&quot;]
-  Settings --&gt; Voice[&quot;Record a voice intro: pending, then approved or declined&quot;]
-  Settings --&gt; Showcase[&quot;Showcase: up to 5 images, optional captions. Checked automatically on upload; shown at once if it passes, refused with a reason if not&quot;]
-  Settings --&gt; Portfolio[&quot;Submit portfolio: reviewed by hand, shown on your profile if it passes&quot;]
+  CDash([&quot;Coach dashboard&quot;]) --&gt; Settings[&quot;Coach profile settings: an overview of every section, what gamers see now and what&#x27;s waiting&quot;]
+  Settings --&gt; Bio[&quot;Edit bio, avatar, banner, languages. Photos checked automatically on upload; the current one stays until the new one passes&quot;]
+  Settings --&gt; Avail[&quot;Edit weekly availability, in your own time zone. Booked sessions and held reschedule times aren&#x27;t affected&quot;]
+  Settings --&gt; Rates[&quot;Edit price per game, not below the floor (about S$10), and credentials. Booked sessions keep their price&quot;]
+  Settings --&gt; Rank[&quot;Update rank: new screenshot, old rank shown until approved. Under review, then approved or declined&quot;]
+  Settings --&gt; AddGame[&quot;Add a game: rank, proof and price, listing under review until approved, or declined&quot;]
+  Settings --&gt; RemoveGame[&quot;Remove a game: off the profile at once, booked sessions go ahead. Not the last game&quot;]
+  Settings --&gt; Voice[&quot;Record or upload a voice intro: pending, then approved or declined. The current intro plays until then. Remove intro&quot;]
+  Settings --&gt; Showcase[&quot;Showcase: up to 5 images, optional captions. Add, replace, remove, reorder. Checked automatically on upload; shown at once if it passes, refused with a reason if not&quot;]
+  Settings --&gt; Portfolio[&quot;Submit portfolio, up to 5 linked entries: reviewed by hand, shown on your profile if it passes, or didn&#x27;t pass with the reason&quot;]
   Settings --&gt; Preview[&quot;Preview my public profile&quot;]
+  Preview --&gt;|&quot;Back to profile settings&quot;| Settings
   CDash --&gt; PayoutSet[&quot;Payout settings: status and link to Stripe or Xendit&quot;]
-  CDash --&gt; CSessions[&quot;Coach sessions list&quot;]
+  CDash --&gt; CSessions[&quot;Coach sessions list: upcoming and past&quot;]
   CSessions --&gt; Detail[&quot;Session detail, coach view&quot;]
+  Detail --&gt;|&quot;Coach sessions&quot;| CSessions
   CDash --&gt; Disputes[&quot;Open disputes involving you&quot;]
   Disputes --&gt; Detail
 </pre></div>

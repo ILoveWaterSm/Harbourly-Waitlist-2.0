@@ -110,7 +110,7 @@ The gamer or coach choice is a routing hint only. Every account can book as a ga
 flowchart TD
   Browse["Browse coaches: filter by game and price, sort by price, rating, most reviewed. Prices in your currency"] --> Card["Coach card"]
   Browse -->|"Load more"| Browse
-  Card --> Profile["Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, showcase images if added, availability preview, voice intro, reviews"]
+  Card --> Profile["Coach profile: bio, country, languages and time zone, per-game rank and credentials, per-game price, showcase images if added, portfolio if it passed review, availability preview, voice intro, reviews"]
   Profile --> Own{"Is this your own coach profile?"}
   Own -->|"Yes"| NoBook(["No Book button. This is your profile"])
   Own -->|"No"| Game["Choose a game"]
@@ -292,22 +292,27 @@ The four conditions to go live: application approved, payout setup complete, pho
 
 ```mermaid
 flowchart TD
-  CDash(["Coach dashboard"]) --> Settings["Coach profile settings"]
-  Settings --> Bio["Edit bio, avatar, banner, languages. Photos checked automatically on upload"]
-  Settings --> Avail["Edit weekly availability, in your own time zone"]
-  Settings --> Rates["Edit price per game, not below the floor (about S$10)"]
-  Settings --> Rank["Update rank: new screenshot, old rank shown until approved"]
-  Settings --> AddGame["Add a game: proof, listing under review until approved"]
-  Settings --> Voice["Record a voice intro: pending, then approved or declined"]
-  Settings --> Showcase["Showcase: up to 5 images, optional captions. Checked automatically on upload; shown at once if it passes, refused with a reason if not"]
-  Settings --> Portfolio["Submit portfolio: reviewed by hand, shown on your profile if it passes"]
+  CDash(["Coach dashboard"]) --> Settings["Coach profile settings: an overview of every section, what gamers see now and what's waiting"]
+  Settings --> Bio["Edit bio, avatar, banner, languages. Photos checked automatically on upload; the current one stays until the new one passes"]
+  Settings --> Avail["Edit weekly availability, in your own time zone. Booked sessions and held reschedule times aren't affected"]
+  Settings --> Rates["Edit price per game, not below the floor (about S$10), and credentials. Booked sessions keep their price"]
+  Settings --> Rank["Update rank: new screenshot, old rank shown until approved. Under review, then approved or declined"]
+  Settings --> AddGame["Add a game: rank, proof and price, listing under review until approved, or declined"]
+  Settings --> RemoveGame["Remove a game: off the profile at once, booked sessions go ahead. Not the last game"]
+  Settings --> Voice["Record or upload a voice intro: pending, then approved or declined. The current intro plays until then. Remove intro"]
+  Settings --> Showcase["Showcase: up to 5 images, optional captions. Add, replace, remove, reorder. Checked automatically on upload; shown at once if it passes, refused with a reason if not"]
+  Settings --> Portfolio["Submit portfolio, up to 5 linked entries: reviewed by hand, shown on your profile if it passes, or didn't pass with the reason"]
   Settings --> Preview["Preview my public profile"]
+  Preview -->|"Back to profile settings"| Settings
   CDash --> PayoutSet["Payout settings: status and link to Stripe or Xendit"]
-  CDash --> CSessions["Coach sessions list"]
+  CDash --> CSessions["Coach sessions list: upcoming and past"]
   CSessions --> Detail["Session detail, coach view"]
+  Detail -->|"Coach sessions"| CSessions
   CDash --> Disputes["Open disputes involving you"]
   Disputes --> Detail
 ```
+
+Anything waiting for the team (a rank update, a new game, a voice intro, a portfolio) can be withdrawn while it's under review, and the version gamers see stays until it's approved. Voice intros and portfolios that include contact details or ask gamers to book outside Harbourly are declined (DECISIONS.md, "Phase 6 decisions", 5 Nov 2026).
 
 ---
 
