@@ -1,0 +1,83 @@
+---
+name: negativity
+description: Review a Harbourly page specification, design, mockup or feature for content that points at something missing or empty (no reviews yet, 0 sessions, empty sections, missing features) and doesn't help the user, then flag each case with a positive rewrite or a removal. Use when the user asks to review a page spec, design or feature with this rule, runs /negativity, or mentions the "negativity rule" or "main rule".
+---
+
+# Negativity review
+
+## The rule
+
+Remove or reframe anything that points at something **missing or empty** and doesn't help the user. It doesn't have to be openly negative: anything that makes a person, listing or the product look less impressive by showing what isn't there counts. Pages lead with what is there.
+
+Why: showing an absence draws attention to it. "No reviews yet" on a marketplace profile highlights a lack of social proof and weakens the viewer's confidence. Other trust signals (rank, languages, next free time) should carry the content instead.
+
+The examples in this file illustrate the rule; they are not a complete list. Apply the test below to every piece of content, including new features, details and designs that match no example.
+
+## The test
+
+Run this on each piece of content: copy, labels, counts, sections, states, empty states, badges, placeholders.
+
+1. **Does it point at something missing or empty?** No reviews, no sessions, a count of 0, an empty section, a feature or option that isn't there.
+   - Covers **absence only**. Low but real numbers (e.g. "4.2 (1)", "2 sessions") pass and are not flagged.
+   - If no: it passes. Move on.
+2. **Does the user need it to act, decide, recover, understand their money, or stay within policy or the law?**
+   - **No:** flag it. Suggest a **positive rewrite first**. Suggest **removing it** only when no rewrite works (e.g. leave out a rating that has no reviews; leave out a section that has nothing in it).
+   - **Yes:** keep the information. If the wording dwells on the gap, you may suggest a calmer version that leads with the next step, but the information stays.
+3. **If something is removed, can a positive signal take its place?** Say what already carries the content (e.g. rank, languages, next free time on a coach card), or suggest one.
+4. **Not sure?** Don't decide. Put it in the "Unsure" list with a short reason.
+
+## Scope
+
+- **Public pages** (what other people see: coach cards, profiles, browse results) and the **user's own private pages** (dashboard, My sessions, settings). Private pages may be dropped from scope later; follow the latest instruction from the user.
+- Any page, design or feature: existing, being specified, or new.
+
+## Usually flagged (examples, not a complete list)
+
+- Missing social proof: "No reviews yet", empty ratings, review or session counts of 0, "0 sessions completed".
+- Empty sections on profiles or listings: "This coach hasn't added a showcase", "No voice intro". Leave the section out instead.
+- Empty or no-results states that lead with what's missing. Keep the state, but lead with the next step: "Counter-Strike 2 coaching starts at ≈ S$43 a session" before "No coaches up to S$30".
+- Counts that read 0 in summaries, such as "0 coaches · Counter-Strike 2 · up to S$30". Hide the count when a message already covers it.
+- Empty states on private pages: "No sessions coming up" can become "Book your next session" with the action.
+- Product-level gaps stated when they aren't needed: "only 5 games supported", "limited availability".
+
+## Always kept (examples of the principle, not a complete list)
+
+Keep anything the user needs to act, decide, recover, understand their money, or stay within policy or the law:
+
+- Errors and failures: "We couldn't load coaches", "Payment didn't go through". Users need them to recover. Wording may be made calmer and fix-focused.
+- Money, policy and legal facts: cancellation rules, refund amounts, platform fee, payment holds, converted prices ("≈").
+- Blocking conditions: under 18, country not supported, phone not verified.
+- Things the user must know about their own account: a dispute filed against them, a hold about to expire, a deadline.
+- The **New Coach label**. It's a policy decision; this rule doesn't touch it.
+
+## How to run a review
+
+1. Read the whole spec, design or feature, including every state (loading, empty, error, logged out, filtered, etc.) and every role view.
+2. Apply the test to each piece of content.
+3. Don't edit the spec or design until the user approves the findings, unless they asked for the changes to be applied.
+4. Report using the format below.
+
+## Output format
+
+Start with one line: how many items were flagged, and how many are unsure.
+
+**Flagged**
+
+| # | Where (section or state) | Current content | Why it's flagged | Suggestion |
+| --- | --- | --- | --- | --- |
+| 1 | Coach card, Proof | "No reviews yet" | Shows missing social proof; the viewer doesn't need it to choose | Remove. Show no rating; rank, languages and next free time carry the card |
+
+The Suggestion column starts with **Rewrite:** (and the new wording) or **Remove.** (and what carries the content instead).
+
+**Unsure**
+
+| # | Where | Current content | Why it's unclear |
+| --- | --- | --- | --- |
+
+**Kept on purpose** (optional, short): items that touch an absence but stay because users need them, with a few words on why. Include only when the reason isn't obvious.
+
+If nothing is flagged, say so in one line.
+
+## Learning from decisions
+
+When the user decides an "Unsure" item, or overrules a finding, offer to add it to this file as a new example under "Usually flagged" or "Always kept", so later reviews follow the same call.
