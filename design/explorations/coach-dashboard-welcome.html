@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coach dashboard welcome</title>
+<meta name="description" content="Exploration for 19 Coach dashboard: one welcome block for a newly live coach instead of empty cards (option 3 of S4).">
+<link rel="stylesheet" href="../foundations/tokens.css">
+<link rel="stylesheet" href="../foundations/mockup.css">
+<link rel="stylesheet" href="../foundations/components/Icon.css">
+<link rel="stylesheet" href="../foundations/components/AppShell.css">
+<link rel="stylesheet" href="../foundations/components/TopNav.css">
+<link rel="stylesheet" href="../foundations/components/Sidebar.css">
+<link rel="stylesheet" href="../foundations/components/MobileMenu.css">
+<link rel="stylesheet" href="../foundations/components/Button.css">
+<link rel="stylesheet" href="../foundations/components/TextLink.css">
+<link rel="stylesheet" href="../foundations/components/IconButton.css">
+<link rel="stylesheet" href="../foundations/components/Badge.css">
+<link rel="stylesheet" href="../foundations/components/Avatar.css">
+<link rel="stylesheet" href="../foundations/components/Flag.css">
+<link rel="stylesheet" href="../foundations/components/Price.css">
+<link rel="stylesheet" href="../foundations/components/GameRank.css">
+<link rel="stylesheet" href="../foundations/components/Rating.css">
+<link rel="stylesheet" href="../foundations/components/CoachCard.css">
+<link rel="stylesheet" href="../foundations/components/Card.css">
+<style>
+/* Exploration: 19 Coach dashboard, the "newly live" state (option 3 of S4).
+   A coach who has just gone live sees one welcome block instead of empty cards (reviews, earnings, next session,
+   disputes). It follows 09's brand-new account: the welcome banner on the page, then what gamers now see and what
+   happens next. The normal cards take over once there is something to show. Layout only; parts are shared components. */
+.cw { container: cw / inline-size; display: grid; gap: var(--space-8); }
+@container app (max-width: 999px) { .cw { gap: var(--space-6); } }
+
+/* Welcome banner: on the page, no card (as on 09). */
+.cwBanner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-4) var(--space-8); align-items: center; }
+.cwBannerAction { justify-self: end; }
+.cwHelloTop { display: flex; align-items: center; gap: var(--space-5); min-width: 0; }
+.cwHelloTop .avatar { --avatar-size: 56px; }
+.cwDate { display: block; margin-bottom: var(--space-2); font: var(--text-label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.cwHelloTop h1 { font: 700 34px/1.1 var(--font-display); letter-spacing: -.015em; }
+.cwHelloText { grid-column: 1 / -1; max-width: 62ch; font-size: 15.5px; line-height: 1.6; color: var(--muted); }
+
+.cwSection { display: grid; gap: var(--space-3); min-width: 0; }
+.cwSectionHead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+.cwSectionNote { font-size: 13.5px; color: var(--muted); }
+.cwSectionNote .mono { color: var(--ink-soft); }
+.cwListing { margin: 0; padding: 0; list-style: none; }
+.cwListingFoot { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); align-items: center; font-size: 14px; }
+.cwListingFoot .textLink svg { margin: 0 0 0 6px; }
+
+/* What happens next: a real sequence, so the steps are numbered. */
+.cwSteps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6); margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.cwStep { display: grid; gap: var(--space-2); align-content: start; min-width: 0; counter-increment: step; }
+.cwStep::before { content: counter(step, decimal-leading-zero); font: var(--text-label); letter-spacing: .2em; color: var(--green); }
+.cwStepTitle { font-weight: 600; font-size: 15.5px; color: var(--ink); }
+.cwStepText { font-size: 14px; line-height: 1.55; color: var(--muted); }
+.cwStepText .mono { color: var(--ink-soft); font-size: 13px; white-space: nowrap; }
+
+@container cw (max-width: 1099px) {
+  .cwSteps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cwHelloTop h1 { font-size: 28px; }
+  .cwHelloTop .avatar { --avatar-size: 48px; }
+}
+@container cw (max-width: 639px) {
+  .cwBanner { grid-template-columns: minmax(0, 1fr); }
+  .cwBannerAction { justify-self: start; order: 3; }
+  .cwSteps { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+  .cwHelloTop { gap: var(--space-4); }
+}
+</style>
+</head>
+<body>
+<template id="shell-coach">
+      <div class="appShell">
+        <header class="topNav">
+          <a class="topNavLogo" href="#" aria-label="Dashboard"><img src="../../design-system/assets/Brand/harbourly-logo.png" alt="Harbourly"></a>
+          <div class="topNavRight">
+            <a class="topNavUser" href="#" aria-label="Lumen, account settings"><span class="avatar sm">L</span>Lumen</a>
+            <button class="topNavSignOut" type="button">Sign out</button>
+            <button class="iconButton quiet topNavMenu" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+        </header>
+        <nav class="mobileMenu" aria-label="Main" hidden>
+          <a class="mobileMenuUser" href="#"><span class="avatar sm">L</span><span><span class="mobileMenuName">Lumen</span><span class="mobileMenuSub">Account settings</span></span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="sidebarBlock">
+            <span class="sidebarBlockLabel">Gamer</span>
+            <a class="sidebarLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+            <a class="sidebarLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+            <a class="sidebarLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+          </div>
+          <div class="sidebarBlock active">
+            <span class="sidebarBlockLabel">Coach</span>
+            <a class="sidebarLink" href="#" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+            <a class="sidebarLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+          </div>
+          <button class="button secondary block" type="button">Sign out</button>
+        </nav>
+        <div class="appShellBody">
+          <nav class="sidebar" aria-label="Main">
+            <div class="sidebarBlock">
+              <span class="sidebarBlockLabel">Gamer</span>
+              <a class="sidebarLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Dashboard</a>
+              <a class="sidebarLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Browse coaches</a>
+              <a class="sidebarLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>My sessions</a>
+            </div>
+            <div class="sidebarBlock active">
+              <span class="sidebarBlockLabel">Coach</span>
+              <a class="sidebarLink" href="#" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>Coach dashboard</a>
+              <a class="sidebarLink" href="#"><svg class="icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>Coach sessions</a>
+            </div>
+          </nav>
+          <main class="appShellMain"><div class="appShellContent wide" data-slot></div></main>
+        </div>
+      </div>
+    </template>
+<div class="mk-stage">
+<div class="mk-frame" data-page="19 Coach dashboard · exploration">
+
+  <section data-state="newly-live" data-label="Newly live · Thu 1 Oct, 10:00 PHT" data-shell="coach">
+      <div class="cw">
+          <header class="cwBanner">
+            <div class="cwHelloTop"><span class="avatar">L</span><div><span class="cwDate">Thursday, 1 October</span><h1>You're live, Lumen</h1></div></div>
+            <div class="cwBannerAction"><a class="button primary" href="#">Preview my public profile</a></div>
+            <p class="cwHelloText">Gamers can now find you in Browse coaches and book a one-hour session with you. Your sessions, earnings and reviews show here as they come in.</p>
+          </header>
+
+          <section class="cwSection" aria-labelledby="h-listing">
+            <div class="cwSectionHead">
+              <h2 id="h-listing">How gamers see you</h2>
+              <p class="cwSectionNote">As a gamer in Singapore sees it, in <span class="mono">SGD</span> and <span class="mono">SGT</span></p>
+            </div>
+            <ul class="cwListing">
+              <li><a class="coachCard" href="#"><span class="avatar">L</span>
+                <div class="coachCardWho">
+                  <div class="coachCardId">
+                    <div class="coachCardName">Lumen <span class="badge newCoach">New coach</span></div>
+                    <p class="coachCardMeta"><span class="handle">@lumen</span><span class="coachCardSep">·</span><span class="coachCardPlace"><span class="flag" role="img" aria-label="Philippines"><svg><use href="#flag-ph"/></svg></span><span class="coachCardCountry">Philippines</span></span></p>
+                    <p class="coachCardMeta"><span><span class="coachCardLong">Speaks </span>English, Filipino</span><span class="coachCardSep">·</span><span class="coachCardZone">PHT</span><span class="coachCardLong">, same time as you</span></p>
+                  </div>
+                  <p class="coachCardBio">Regional qualifier in Riftbound's first season. I teach deck building, mulligans and how to read your opponent's lines. Bring a decklist.</p>
+                </div>
+                <div class="coachCardProof"><div class="gameRank"><span class="gameRankGame">Riftbound</span><span class="gameRankValue">Regional Qualifier · Top 16</span></div></div>
+                <div class="coachCardDecision"><span class="price"><span class="priceAmount"><span class="priceApprox">≈</span>S$29</span> <span class="pricePer">/ session</span></span><p class="coachCardNext"><span>Next free</span><span class="mono">Today, 20:00 SGT</span></p></div>
+                <span class="coachCardGo" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></a></li>
+            </ul>
+            <div class="cwListingFoot">
+              <a class="textLink" href="#">Edit profile<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              <a class="textLink quiet" href="#">Edit availability<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            </div>
+          </section>
+
+          <section class="cwSection" aria-labelledby="h-next">
+            <h2 id="h-next">How your first session works</h2>
+            <div class="card accent">
+              <ol class="cwSteps">
+                <li class="cwStep"><p class="cwStepTitle">A gamer books you</p><p class="cwStepText">You get an email with the game, date and time. Harbourly holds the gamer's payment until the session is confirmed.</p></li>
+                <li class="cwStep"><p class="cwStepTitle">You meet in Harbourly</p><p class="cwStepText">Join session opens 10 minutes before the start, from Coach sessions. Talk, chat and share your screen.</p></li>
+                <li class="cwStep"><p class="cwStepTitle">The session is confirmed</p><p class="cwStepText">The gamer confirms it went ahead, or it's confirmed automatically 72 hours after the end.</p></li>
+                <li class="cwStep"><p class="cwStepTitle">You're paid</p><p class="cwStepText">Your price less the 12% commission goes to your payout account: <span class="mono">₱1,250.00 − ₱150.00 = ₱1,100.00</span>.</p></li>
+              </ol>
+            </div>
+          </section>
+      </div>
+  </section>
+
+</div>
+</div>
+<script src="../foundations/flags.js"></script>
+<script src="../foundations/icons.js"></script>
+<script src="../foundations/mockup.js"></script>
+</body>
+</html>
