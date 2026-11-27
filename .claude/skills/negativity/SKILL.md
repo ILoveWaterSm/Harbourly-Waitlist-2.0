@@ -26,6 +26,13 @@ Run this on each piece of content: copy, labels, counts, sections, states, empty
 3. **If something is removed, can a positive signal take its place?** Say what already carries the content (e.g. rank, languages, next free time on a coach card), or suggest one.
 4. **Not sure?** Don't decide. Put it in the "Unsure" list with a short reason.
 
+## Fix the cause, not the symptom
+
+Prefer removing what causes an absence over hiding its count or message case by case. Hiding something only when it's empty makes elements behave differently from one view to the next (e.g. a result count that shows for every result except 0). When the cause is removed, the element can always show and stays consistent.
+
+- Example (decided 27 Nov 2026, Browse coaches): instead of a no-results message and a hidden "0 coaches" count, only games that have live coaches get a filter pill. Every filter returns coaches, so the no-results state goes away and the count always shows.
+- When suggesting a fix, check first whether the empty case can be prevented. Suggest a rewrite or removal only when it can't.
+
 ## Scope
 
 - **Public pages** (what other people see: coach cards, profiles, browse results) and the **user's own private pages** (dashboard, My sessions, settings). Private pages may be dropped from scope later; follow the latest instruction from the user.
@@ -35,8 +42,9 @@ Run this on each piece of content: copy, labels, counts, sections, states, empty
 
 - Missing social proof: "No reviews yet", empty ratings, review or session counts of 0, "0 sessions completed".
 - Empty sections on profiles or listings: "This coach hasn't added a showcase", "No voice intro". Leave the section out instead.
-- Empty or no-results states that lead with what's missing. Keep the state, but lead with the next step: "Counter-Strike 2 coaching starts at ≈ S$43 a session" before "No coaches up to S$30".
-- Counts that read 0 in summaries, such as "0 coaches · Counter-Strike 2 · up to S$30". Hide the count when a message already covers it.
+- Filters, categories or options that can return nothing. Don't offer them at all (e.g. only games with live coaches get a filter pill), so there's no empty result to show. See "Fix the cause, not the symptom".
+- Empty or no-results states that can't be prevented and lead with what's missing. Keep the state, but lead with what's there and the next step, not "No coaches…".
+- Counts that read 0 in summaries, such as "0 coaches". Prevent the 0 first; hide a count only when a 0 can't be prevented.
 - Empty states on private pages: "No sessions coming up" can become "Book your next session" with the action.
 - Product-level gaps stated when they aren't needed: "only 5 games supported", "limited availability".
 
