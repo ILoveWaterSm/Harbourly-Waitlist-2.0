@@ -26,6 +26,15 @@ Run this on each piece of content: copy, labels, counts, sections, states, empty
 3. **If something is removed, can a positive signal take its place?** Say what already carries the content (e.g. rank, languages, next free time on a coach card), or suggest one.
 4. **Not sure?** Don't decide. Put it in the "Unsure" list with a short reason.
 
+## Copy versus state names
+
+A spec mixes two kinds of text. Tell them apart before flagging anything.
+
+- **User-facing copy:** words the user will actually see, usually in quotes (e.g. "No reviews yet", "Nothing needs you right now"). Flag these as copy, with a **Rewrite:** or **Remove.** suggestion.
+- **State names and descriptions:** labels that tell the designer which situation to draw (e.g. "nothing free this week", "empty", "showcase empty", "no results"). They are not shown to users. Never flag them as copy and never suggest renaming them.
+- When a spec only names a state and doesn't say what the page shows in it, review what the page *would* show in that situation. Give the finding as **Guidance:** for that state, i.e. what the state should lead with (e.g. "Show the coach's next free time and a jump to that week"). The state name stays as it is.
+- Not sure whether a line is copy or a label? Put it in "Unsure".
+
 ## Fix the cause, not the symptom
 
 Prefer removing what causes an absence over hiding its count or message case by case. Hiding something only when it's empty makes elements behave differently from one view to the next (e.g. a result count that shows for every result except 0). When the cause is removed, the element can always show and stays consistent.
@@ -61,21 +70,31 @@ Keep anything the user needs to act, decide, recover, understand their money, or
 ## How to run a review
 
 1. Read the whole spec, design or feature, including every state (loading, empty, error, logged out, filtered, etc.) and every role view.
-2. Apply the test to each piece of content.
+2. Sort each line into user-facing copy or a state name (see "Copy versus state names"), then apply the test to the copy and to what each state would show.
 3. Don't edit the spec or design until the user approves the findings, unless they asked for the changes to be applied.
 4. Report using the format below.
 
 ## Output format
 
-Start with one line: how many items were flagged, and how many are unsure.
+Start with one line: how many copy items were flagged, how many states got guidance, and how many are unsure.
 
 **Flagged**
 
-| # | Where (section or state) | Current content | Why it's flagged | Suggestion |
+Report copy and states in two tables.
+
+**Flagged copy** (words users see)
+
+| # | Where | Current copy | Why it's flagged | Suggestion |
 | --- | --- | --- | --- | --- |
 | 1 | Coach card, Proof | "No reviews yet" | Shows missing social proof; the viewer doesn't need it to choose | Remove. Show no rating; rank, languages and next free time carry the card |
 
 The Suggestion column starts with **Rewrite:** (and the new wording) or **Remove.** (and what carries the content instead).
+
+**State guidance** (states whose content isn't written yet)
+
+| # | Where | State (name kept) | Why it needs guidance | Guidance |
+| --- | --- | --- | --- | --- |
+| 1 | Pick a slot | Nothing free this week | The page could lead with the missing times | Guidance: show the coach's next free time and a jump to that week |
 
 **Unsure**
 
